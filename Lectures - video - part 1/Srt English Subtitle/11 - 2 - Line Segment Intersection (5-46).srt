@@ -1,0 +1,279 @@
+1
+00:00:02,035 --> 00:00:08,002
+So now let's look at a basic geometric
+data processing problem of determining
+
+2
+00:00:08,002 --> 00:00:12,538
+intersections among a set of line
+segments. So, it's called the orthogonal
+
+3
+00:00:12,538 --> 00:00:18,328
+line segment, segment intersection search
+where the lines segments or constrained to
+
+4
+00:00:18,328 --> 00:00:23,585
+be either horizontal or vertical. And so,
+suppose we have a large number of such
+
+5
+00:00:23,585 --> 00:00:29,002
+line segments and what we want to be able
+to do is to find all places where they
+
+6
+00:00:29,002 --> 00:00:33,934
+intersect. And as we'll see this extends
+to a practical problem in a number of
+
+7
+00:00:33,934 --> 00:00:39,245
+situations. So, in this case there's four
+places where these lines intersect. So,
+
+8
+00:00:39,245 --> 00:00:44,627
+how are we going to be able to determine
+these intersections efficiently? Now, the
+
+9
+00:00:44,627 --> 00:00:50,036
+natural algorithm, or the naive
+brute-force algorithm, is quadratic in
+
+10
+00:00:50,036 --> 00:00:56,613
+time. So that is, for every line segment,
+you check whether it intersects with every
+
+11
+00:00:56,613 --> 00:01:03,091
+other line segment. And again, as we know,
+such an algorithm is not going to be
+
+12
+00:01:03,091 --> 00:01:10,553
+practical, for huge numbers of line
+segments. So, just, to simplify our code
+
+13
+00:01:10,553 --> 00:01:15,821
+in the slides in it's off, off from the
+case for geometric data processing. We
+
+14
+00:01:15,821 --> 00:01:21,338
+don't have to worry about degeneracies
+where lots of things have the same x or y
+
+15
+00:01:21,338 --> 00:01:27,285
+coordinate. And just to simplify the code
+and to get it the main principles of the
+
+16
+00:01:27,285 --> 00:01:33,040
+algorithms, we're going to assume that all
+the coordinates that we have are distinct
+
+17
+00:01:33,253 --> 00:01:38,332
+that we've preprocessed in some way to
+remove the ones that touch without
+
+18
+00:01:38,332 --> 00:01:44,254
+intersecting. So the method that we're
+going to look at is a so called Sweep Line
+
+19
+00:01:44,254 --> 00:01:51,236
+algorithm and the idea is to think of
+vertical line that sweeps left to right
+
+20
+00:01:51,236 --> 00:02:00,037
+through the data. In to. Consider it as a
+every time it hits some line segment as an
+
+21
+00:02:00,037 --> 00:02:06,055
+event where we have to do something. So
+sweeping from left to right means we
+
+22
+00:02:06,055 --> 00:02:13,395
+consider each x coordinate as an event. So
+first thing is if we hit a horizontal line
+
+23
+00:02:13,395 --> 00:02:19,128
+segment. Well we're going to hit the left
+endpoint first, and so what we'll do when
+
+24
+00:02:19,128 --> 00:02:25,556
+we hit the left, endpoint is, insert, the
+y coordinate of that line into a binary
+
+25
+00:02:25,556 --> 00:02:31,486
+search tree. So, we're going to keep track
+of y coordinates in a binary search tree.
+
+26
+00:02:31,486 --> 00:02:36,905
+So that's what's happening over in the
+right there. So now again, sweep from left
+
+27
+00:02:36,905 --> 00:02:42,311
+to right. What's the next smallest x
+coordinate? In this case it's the line
+
+28
+00:02:42,311 --> 00:02:48,334
+number one there, and we'll remember its y
+coordinate in a binary search tree. And
+
+29
+00:02:48,334 --> 00:02:53,788
+then two and three. So those that's one
+kind of event that can happen as we sweep
+
+30
+00:02:53,788 --> 00:02:59,018
+from left to right. Another kind of event
+is that we hit the right endpoint of a
+
+31
+00:02:59,018 --> 00:03:04,261
+horizontal line segment. In this case we
+hit the right endpoint of line segment
+
+32
+00:03:04,261 --> 00:03:10,258
+two. So, at that point the right point of
+a horizontal line segment we just remove
+
+33
+00:03:10,258 --> 00:03:15,534
+it because we've processed that line
+completely. In this case we didn't find
+
+34
+00:03:15,734 --> 00:03:20,473
+any intersections. So, left endpoint
+insert the y coordinate into a BST, right
+
+35
+00:03:20,473 --> 00:03:25,932
+endpoint remove that ycoordinate from the
+BST. So, the BST contains the y
+
+36
+00:03:25,932 --> 00:03:32,075
+coordinates of all the horizontal lines
+that currently might involve an
+
+37
+00:03:32,075 --> 00:03:38,069
+intersection. And then the third kind of
+event is what happens when we hit a
+
+38
+00:03:38,069 --> 00:03:45,000
+vertical line segment? Well, in that case
+all we want, need to do is just do a range
+
+39
+00:03:45,000 --> 00:03:51,666
+search, for the interval of y end points.
+So, any point that's inside that interval,
+
+40
+00:03:51,899 --> 00:03:57,952
+is going to represent a horizontal line
+segment that is an intersection. That's
+
+41
+00:03:57,952 --> 00:04:03,550
+the basic idea behind the sweep line
+algorithm, to find intersections in sets
+
+42
+00:04:03,550 --> 00:04:10,372
+of horizontal and vertical lines. And it's
+actually a very simple algorithm, and it's
+
+43
+00:04:10,372 --> 00:04:17,024
+very easy to see that the running time is
+going to be proportional to N log N plus
+
+44
+00:04:17,024 --> 00:04:22,371
+the number of intersections returned.
+Where there's N horizontal vertical line
+
+45
+00:04:22,371 --> 00:04:26,917
+segments. And it's, and a couple of ways
+to implement it, one thing is you could
+
+46
+00:04:26,917 --> 00:04:32,328
+sort according to the x coordinates, or
+you could just put them all on a priority
+
+47
+00:04:32,328 --> 00:04:39,721
+queue. And then, so, so that's going to
+take N log N for every one of the lines to
+
+48
+00:04:39,978 --> 00:04:45,277
+process them all either N to build the
+priorit y queue and then log N to take the
+
+49
+00:04:45,277 --> 00:04:50,695
+smallest off each time, or N log N for the
+sort. And then putting the y coordinates
+
+50
+00:04:50,695 --> 00:04:56,494
+into, into a binary search tree is, again,
+N log N. And same for deleting. Each point
+
+51
+00:04:56,494 --> 00:05:02,519
+has to be inserted, deleted. It could be
+as many as N in the tree for each one. So
+
+52
+00:05:02,519 --> 00:05:08,486
+it's a total of N log N. And then the,
+range search, in the binary tree, for
+
+53
+00:05:08,486 --> 00:05:14,961
+each, each one of the range searches. It
+might take, log N, it might be as many as
+
+54
+00:05:14,961 --> 00:05:23,479
+N. And then there's, plus the number of
+points return. So, That's a, quick sketch
+
+55
+00:05:23,479 --> 00:05:31,508
+of the proof of this proposition. And with
+that 1D range search, implementation, we
+
+56
+00:05:31,508 --> 00:05:38,199
+get an efficient N log N, 2D orthogonal,
+orthogonal line segment, intersection

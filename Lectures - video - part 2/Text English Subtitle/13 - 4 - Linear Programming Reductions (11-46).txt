@@ -1,0 +1,229 @@
+So, well finish off by taking a brief look
+at reductions to linear programming
+problems. So, first, first of all, is the
+idea of re, reducing to the standard form.
+when we first proposed the problem, we did
+it in terms of inequalities. And there's
+all sorts of different versions that you
+might imagine are more convenient for
+different types of problems with fewer
+restrictions. so as we've talked about
+there's easy ways to deal with each of
+them the, the standard form is not that
+different than the types of things people
+might want to do. So, one thing, if maybe
+somebody wants to minimize. So, if
+somebody wants to minimize, you replace
+that minimization with the standard form
+says maximize. So, you just negate
+everything so that's equivalent. if you
+have inequalities, add a slack variable.
+subtract the slack variable, it's going to
+be positive. That converts a greater than
+or equal to constraint to an equality just
+by adding a variable. and if you have
+variables that are supposed to
+unrestricted, just replace it as the
+difference between two variables that both
+have to be positive. so, so those are just
+examples of taking nonstandard form and
+reducing it to a problem that's in the
+standard form. so for any particular
+problem that we might want to come up,
+then we can use the less restricted
+nonstandard knowing, knowing that, you
+know, it's easy to for the LP solver to do
+the reduction from our nonstandard form to
+the standard form. And certainly that's
+something that the solver can do for us.
+So actually, I didn't mention at the
+beginning is why is it called linear
+programming? We're, we're used to
+programming that's, say, write Java code
+to solve a problem. but you have to
+remember, this is 1947 that's actually
+well before computers came into use and
+people were write, were writing programs
+to do this stuff. And actually, for
+smaller variables, you can basically solve
+it by hand. So, what they meant by
+programming was more, there was another
+term, it's called planning. And, and so
+that was more take your probl 'em and put
+it into a form that we can solve.
+Nowadays, we call that reduction. redu,
+collect reduction to the linear
+programming problem. So, it's the process
+of formulating your problem at the linear
+programming problem. and so, and again,
+it's reduction solution to the linear
+program gives the solution to your
+problem. so what do you have to do? You
+have to identify what are the variables,
+you have to define the constraints, the
+inequalities and equations, and you have
+to identify and define an objective
+function. That's all you have to do,
+though. once you have those things, and
+pretty much you have a linear programming
+problem. and you do have to convert to the
+standard form. But usually, you can count
+on the software to go ahead and do that.
+so, let's look at some examples that I
+have said, reduce to linear programming
+problems or can be modeled as linear
+programming problems. and, you know, we'll
+just use the modern term of reduction. So,
+for example, Maxflow problem. so this is
+the Maxflow problem that we consider. and
+it's input is a weighted digraph. and
+there's a source vertex s in a sync vertex
+t. and the, the weights indicate capacity.
+and we're, we're supposed to find out is
+what's the maximum flow from s to t. It
+doesn't seem to be that much related to
+linear programming. But, if you just look
+at the idea, well what are the variables
+going to be? the that's going to be and
+what are the constraints going to be and
+what are the variable flow, the variables
+are the amount of flow along each edge.
+And the constraints is going to be a
+positive flow and it's constrained by the
+capacity. So, this is just a mathematical
+formulation of the problem. from zero to
+one, you have to flow this between zero
+and one. from zero to two you have to flow
+through zero and three, like that. That is
+what I am saying, that's what the capacity
+constraints are. And the other thing about
+the flow is that we said, the inflow has
+to equal the outflow at every vertex. so
+we have a variable corresponding to the
+flow in each edge and then we can just
+express the flow conservation constraints,
+the amount that comes into vertex one,
+which is X01, has to equal the amount that
+comes out which is X13 + fourteen.
+And you have one of those constraints for
+each one of the vertices. and then, what's
+the objective function? Well, you want to
+maximize the amount of flow that goes into
+number five which is X35 + X45. That's an
+LP formulation of the Maxflow problem.
+It's really and it illustrates how really
+easy it is to represent a maximization
+problem as an LP problem. And again, you
+have an LP solver you just put in those,
+those constraints. so, the variables are
+positive, it's just all inequalities and a
+couple of equations. then the software
+converts it to the standard form and gives
+you the solution. Now, it might take
+longer than our specialized algorithm that
+we looked at based on searching in the
+graph and so forth which is a very
+wonderful algorithm and very useful and
+lots of applications. but the advantage of
+the LP formulation is that if the problem
+gets more complicated, say, we also want
+to insist may be there's cost assigned
+with each flow. so you want to maximize
+it, but you also want to keep the cost
+under control. or any kind of specialized
+constraints that might come up. In the LP
+formulation, you just add those
+constraints you know, in other formulation
+it might completely ruin our approach to
+the problem. That's the advantage of LP
+and why it's so widely used. here's
+another example, this doesn't seem at all
+to have that much to do with linear
+programming but it's the bi-part, maximum
+cardinality bipartite matching problem
+that we considered, and that's matching
+students to jobs. and so this is for we've
+got a bipartite graph one set of nodes
+corresponds to students, the other set of
+nodes corresponds to jobs, we have edges
+corresponding to job offers. And if we
+want to know the maximum set of edges
+connecting one to another the matches a
+student to a job. and we did that one by
+reducing it to Maxflow, actually. but also
+you can just specify it as a an LP,
+formulation of an LP problem. So, it's
+kind of that's going to be, everything has
+got to be zero and it's just going to
+maximize this is all the possible
+matchings. and then, the constraints are
+there has to be at most one job per
+person. So, if A has three edges, just say
+X0 plus X0 plus the two, less than or
+equal to one and do that for each person.
+And then, at most one person per job, just
+do it that way. Now, these this is not a
+trivial reduction. There was some math,
+quite a bit of math done early on,
+including Von Neumann was involved. So, if
+you have a polyhedron like this that where
+the right-hand sides of the inequalities
+are all one. all the extreme points of
+this polyhedron have integer coordinates
+that are either zero or one so we need
+that theorem. But and it's not always so
+lucky, but in this case, you can, you can
+do it. and you can just use this linear
+programming linear program to solve the
+matching problem. Again, no specialized
+algorithm, I just throw in your
+constraints and you have the solution. use
+your LP solver. so that's just two
+examples. and there's many, many more
+examples. And again, as I said, you can
+take a problem like one that we solved and
+just add more things. So, I want the
+shortest path that doesn't go through a
+certain node or that only has the certain
+number of nodes on it, or whatever else.
+Any other kind of constraints that you
+might think of you can just throw them in
+if you've got an optimization problem, one
+thing you can do is definitely you know,
+use an algorithm that you learned and go
+to the literature and try to find the
+solution. And that is certainly very
+effective for many of the fundamental
+problems that we've considered. but if
+things start to get complicated, it's
+really a good idea to think about using
+linear programming cuz it's often easy to
+model your problem as a linear program.
+And you can solve it with a commercial
+solver or available, if it's a small one,
+a readily available solver. It might take
+a little longer than your sp ecialized
+solution if you had one, but you might not
+care and you might not have one. And the
+idea is, it really is a good idea to learn
+to use an LP solver. the really the
+takeaway from this is there's a lot of
+problems that reduce right to linear
+programming and we've got a fast way to
+solve it. so that's a powerful problem
+solving model with broad scope. it's we
+can solve it. And we can reduce a lot of
+important practical problems to it and
+that's why it's important. So, this leads
+us to a really profound question that's
+called the P and P question. and that'll
+tell us and we'll talk about this in
+detail in, in the next lecture that
+there's condition that is very fundamental
+to the efficiency of computation that'll
+tell us that people don't think that there
+is a universal problem-solving model. for
+the time being, however, and for the last
+50 years, the closest thing that we have
+to a universal problem-solving model is
+linear programming.

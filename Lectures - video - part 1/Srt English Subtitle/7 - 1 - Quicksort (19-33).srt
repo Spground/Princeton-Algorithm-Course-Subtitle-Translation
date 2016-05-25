@@ -1,0 +1,1244 @@
+1
+00:00:02,004 --> 00:00:04,096
+Welcome back.
+Today we're going to look at Quicksort.
+
+2
+00:00:05,016 --> 00:00:09,734
+It was named as one of the most important
+algorithms of the twentieth century and
+
+3
+00:00:09,734 --> 00:00:14,040
+it's widely used for system sorts and many
+other applications.
+
+4
+00:00:14,040 --> 00:00:19,079
+Last lecture, we looked at Mergesort,
+another classic sorting algorithm, that's
+
+5
+00:00:19,079 --> 00:00:24,492
+used in many systems, and today we are
+looking at Quicksort which is used in many
+
+6
+00:00:24,492 --> 00:00:28,030
+others.
+You can even get a Quicksort t-shirt
+
+7
+00:00:28,030 --> 00:00:31,061
+nowadays.
+So what is the Quicksort method?
+
+8
+00:00:31,061 --> 00:00:36,375
+It's also a recursive method, but the
+basic idea behind Quicksort is that it
+
+9
+00:00:36,375 --> 00:00:42,029
+does the recursion after it does the work,
+whereas Mergesort did it before it did the
+
+10
+00:00:42,029 --> 00:00:45,044
+work.
+So, the idea is first randomly shuffle the
+
+11
+00:00:45,044 --> 00:00:48,073
+array.
+That's an important step that we'll talk
+
+12
+00:00:48,073 --> 00:00:54,010
+about later, and then partition the array,
+so that's to divide it so that for sum
+
+13
+00:00:54,010 --> 00:00:57,046
+value j the entry a of j is in place in
+the array.
+
+14
+00:00:57,046 --> 00:01:02,084
+There's no larger entry to the left of j
+and no smaller entry to the right of j.
+
+15
+00:01:02,084 --> 00:01:06,682
+Once we have the array partitioned in that
+way, shown here in the middle.
+
+16
+00:01:06,682 --> 00:01:11,184
+Right here, we have K in its position.
+And we have everybody to the left.
+
+17
+00:01:11,184 --> 00:01:15,732
+There's nobody greater than K.
+And everybody to the right, there's nobody
+
+18
+00:01:15,732 --> 00:01:18,818
+less.
+Once we have it arranged in that way, then
+
+19
+00:01:18,818 --> 00:01:23,488
+we recursively sort the two parts.
+Sort the left part, sort the right part.
+
+20
+00:01:23,488 --> 00:01:27,624
+And then after those two things are done,
+the whole thing is sorted.
+
+21
+00:01:27,624 --> 00:01:32,793
+This method was invented in 1961 by Tony
+Hore, who won the Turing Award in 1980 for
+
+22
+00:01:32,793 --> 00:01:37,783
+this and other work.
+So let's look at a demo of how Quicksort
+
+23
+00:01:37,783 --> 00:01:41,570
+partitioning works.
+The idea is to arbitrarily choose the
+
+24
+00:01:41,570 --> 00:01:44,372
+first element to be the partitioning
+element.
+
+25
+00:01:44,372 --> 00:01:48,261
+Since we shuffled the array, that's our
+random element from the array.
+
+26
+00:01:48,261 --> 00:01:53,502
+And then we're going to maintain an I
+pointer that moves from left to right, and
+
+27
+00:01:53,502 --> 00:01:58,478
+a J pointer that moves from right to left.
+Let's look how it works in the demo.
+
+28
+00:01:58,478 --> 00:02:02,887
+So we start again by picking K as the
+partitioning element.
+
+29
+00:02:02,887 --> 00:02:08,022
+And then our method is to move the I
+pointer from left to right.
+
+30
+00:02:08,022 --> 00:02:12,350
+As long as what we have is less than the
+partitioning element.
+
+31
+00:02:12,350 --> 00:02:17,542
+And move the j pointer from right to left
+as long as it points to an item that's
+
+32
+00:02:17,542 --> 00:02:21,999
+greater than the partitioning element.
+So, in this example the i pointer stops
+
+33
+00:02:21,999 --> 00:02:26,569
+right away because it's pointing to an r
+which is bigger than the partitioning
+
+34
+00:02:26,569 --> 00:02:30,088
+element.
+The j pointer decrements until it gets to
+
+35
+00:02:30,088 --> 00:02:34,680
+the c which it stops there which is less
+than the partitioning element.
+
+36
+00:02:34,680 --> 00:02:39,140
+And so now what's going to happen is those
+two elements are out of place.
+
+37
+00:02:39,140 --> 00:02:43,804
+The partitioning elements in between them
+and they're in the wrong order.
+
+38
+00:02:43,804 --> 00:02:47,057
+So what we want to do is exchange those.
+And then move on.
+
+39
+00:02:47,057 --> 00:02:51,516
+Now we increment I, as long as it's
+pointing to an element that's less than
+
+40
+00:02:51,516 --> 00:02:54,881
+the partitioning element.
+Stop here at t cuz that's bigger.
+
+41
+00:02:54,881 --> 00:02:59,530
+And now we decrement j, as long as it's
+pointing to something that's bigger than
+
+42
+00:02:59,530 --> 00:03:02,934
+the partitioning element.
+Stop her at I because that's less.
+
+43
+00:03:02,934 --> 00:03:07,419
+Again, t and I are in the wrong places.
+If we exchange them, we'll maintain the
+
+44
+00:03:07,419 --> 00:03:12,514
+invariant that everything to the left of I
+is less than the partitioning element, or
+
+45
+00:03:12,514 --> 00:03:17,232
+nothing to the left of I is greater than
+the partitioning element, and nothing to
+
+46
+00:03:17,232 --> 00:03:20,406
+the right of j is less than the
+partitioning element.
+
+47
+00:03:20,406 --> 00:03:23,376
+So exchange increment I as long as it's
+less.
+
+48
+00:03:23,376 --> 00:03:27,504
+Stop at l increment j decrement j as long
+as it's greater.
+
+49
+00:03:27,504 --> 00:03:32,779
+Stop at e those two elements are out of
+position so exchange them.
+
+50
+00:03:32,779 --> 00:03:38,408
+Now increment i, stop at the l which is
+greater than k decrement j stop at the e
+
+51
+00:03:38,408 --> 00:03:44,804
+which is less than k and now at this point
+the partitioning process is complete,
+
+52
+00:03:44,804 --> 00:03:50,618
+coomplete cause the pointers have crossed
+and we have looked at everything in the
+
+53
+00:03:50,618 --> 00:03:51,828
+array.
+In fact.
+
+54
+00:03:51,828 --> 00:03:58,654
+J points to the, rightmost element in the
+left subfiles, everything that's not
+
+55
+00:03:58,654 --> 00:04:02,531
+greater than K.
+So we can just exchange J with our
+
+56
+00:04:02,531 --> 00:04:06,488
+partitioning element.
+And now we've achieved the goal of
+
+57
+00:04:06,488 --> 00:04:10,740
+partitioning the array.
+So that A of J is in its position.
+
+58
+00:04:10,740 --> 00:04:16,254
+Nobody to the left is greater.
+Nobody to the right is less.
+
+59
+00:04:16,254 --> 00:04:22,380
+Now, the code for partitioning is straight
+forward to implement.
+
+60
+00:04:22,380 --> 00:04:26,965
+Down below.
+Shows the state of the array before
+
+61
+00:04:26,965 --> 00:04:29,758
+partitioning.
+During and after partitioning.
+
+62
+00:04:29,758 --> 00:04:34,777
+So in the end, the J pointer is pointing
+to the partitioning element V, which was
+
+63
+00:04:34,777 --> 00:04:39,002
+in position V in the first place.
+In the, all during the partitioning
+
+64
+00:04:39,002 --> 00:04:41,836
+process, the code is maintaining this
+invariant.
+
+65
+00:04:41,836 --> 00:04:45,982
+Where everything to the left of I is less
+than or equal to V.
+
+66
+00:04:45,982 --> 00:04:49,096
+Everything to the right of J is greater
+than or equal to V.
+
+67
+00:04:49,096 --> 00:04:51,576
+And we haven't looked at things in
+between.
+
+68
+00:04:51,576 --> 00:04:55,896
+So, finding, incrementing I, as long as
+it's less is a simple while loop.
+
+69
+00:04:55,896 --> 00:05:00,781
+And then we put a test to make sure we
+don't run off the right end of the array.
+
+70
+00:05:00,781 --> 00:05:03,927
+And decrementing J.
+As long as it's pointing to a bigger
+
+71
+00:05:03,927 --> 00:05:08,743
+element that's similarly just a wide loop
+we put in to test to make sure we don't
+
+72
+00:05:08,743 --> 00:05:12,831
+run off the left end of the array.
+Then there's a test to see if the pointers
+
+73
+00:05:12,831 --> 00:05:15,644
+cross.
+Swap the elements of I and j.
+
+74
+00:05:15,644 --> 00:05:20,014
+When we get to the pointers cross we break
+out of the loop and exchange the
+
+75
+00:05:20,014 --> 00:05:26,038
+partitioning element into position.
+So that's a quick implementation of the
+
+76
+00:05:26,038 --> 00:05:31,751
+Quicksort partitioning method.
+Now, Quicksort itself then is going to be
+
+77
+00:05:31,751 --> 00:05:35,478
+a recursive program that uses that
+partitioning method.
+
+78
+00:05:35,478 --> 00:05:41,324
+First thing we do is the public sort
+method that takes the array of comparable
+
+79
+00:05:41,324 --> 00:05:44,661
+items as its argument.
+It's gonna to do a shuffle.
+
+80
+00:05:44,661 --> 00:05:49,933
+And that shuffle is needed to make sure
+that we can guarantee that the performance
+
+81
+00:05:49,933 --> 00:05:53,486
+is gonna be good.
+And then it calls the recursive method
+
+82
+00:05:53,486 --> 00:05:58,481
+that takes as arguments the limits of the
+subarray that's gonna be sorted.
+
+83
+00:05:58,481 --> 00:06:01,879
+So then partitioning.
+Simply does the partitioning.
+
+84
+00:06:01,879 --> 00:06:06,937
+Tells us where, which element is in
+position, and then recursively sorts the
+
+85
+00:06:06,937 --> 00:06:11,762
+last part that's loaded, J -one.
+And then the right part, that's J + one to
+
+86
+00:06:11,762 --> 00:06:15,178
+high.
+That's a complete implementation of
+
+87
+00:06:15,178 --> 00:06:19,231
+Quicksort.
+Again, as with Mergesort, studying a
+
+88
+00:06:19,231 --> 00:06:25,241
+recursive trace is instructive.
+And this one is kind of upside down as
+
+89
+00:06:25,241 --> 00:06:29,879
+compared to Mergesort.
+The first line shows the partitioning
+
+90
+00:06:29,879 --> 00:06:34,992
+where k is put into position.
+Then the method calls the sort for the
+
+91
+00:06:34,992 --> 00:06:41,132
+left subfile first, and then that's gonna
+be partitioned on this e, and so forth.
+
+92
+00:06:41,132 --> 00:06:46,874
+And eventually we get down to small
+subfiles, actually our code doesn't do
+
+93
+00:06:46,874 --> 00:06:53,085
+anything at all for subarrays of size one,
+so we just leave those in gray, and then
+
+94
+00:06:53,085 --> 00:06:58,842
+it does the right subfile, and so forth.
+Again, studying this, a, a trace like
+
+95
+00:06:58,842 --> 00:07:05,961
+this, gives a, a good feeling for exactly
+what's going on in the recursive program.
+
+96
+00:07:05,961 --> 00:07:11,003
+Let's look at an animation of Quicksort in
+operation.
+
+97
+00:07:11,003 --> 00:07:14,922
+There's the partition.
+Now it's working on the left.
+
+98
+00:07:14,922 --> 00:07:19,654
+Now it's partitioning the right.
+Now it's working on the left part of the
+
+99
+00:07:19,654 --> 00:07:22,251
+right.
+Now it's partitioning what's left.
+
+100
+00:07:22,251 --> 00:07:26,435
+Doing the left part of that.
+And working from left to right, by
+
+101
+00:07:26,435 --> 00:07:29,582
+dividing each sub-array in half as it
+goes.
+
+102
+00:07:29,582 --> 00:07:32,764
+So let's look.
+Consider some of the details in
+
+103
+00:07:32,764 --> 00:07:35,384
+implementation of partitioning with quick
+sort.
+
+104
+00:07:35,384 --> 00:07:38,086
+So first thing is the partition is in
+place.
+
+105
+00:07:38,086 --> 00:07:44,021
+You could use an extra array and the
+partitioning code would be a little bit
+
+106
+00:07:44,021 --> 00:07:47,029
+easier.
+But one of the big advantages of Quicksort
+
+107
+00:07:47,029 --> 00:07:51,031
+over Mergesort is that it doesn't take any
+extra space.
+
+108
+00:07:51,031 --> 00:07:56,034
+It gets the sort done in place.
+Now you have to be a little bit careful
+
+109
+00:07:56,034 --> 00:08:00,051
+with terminating the loop.
+When we give you working code it's not
+
+110
+00:08:00,051 --> 00:08:04,087
+hard to see why it works.
+And you might go trough the exercise of
+
+111
+00:08:04,087 --> 00:08:10,001
+trying to implement Quicksort without
+looking at our code, and you'll find that
+
+112
+00:08:10,001 --> 00:08:15,001
+testing when the pointers cross can be a
+little bit tricky, particulary in the
+
+113
+00:08:15,001 --> 00:08:18,075
+presence of duplicate keys.
+Also staying in bounds.
+
+114
+00:08:18,075 --> 00:08:24,729
+And I, actually, in our implementation the
+test of the J pointer running off the left
+
+115
+00:08:24,729 --> 00:08:27,338
+end is redundant.
+Why is it redundant?
+
+116
+00:08:27,338 --> 00:08:31,977
+Well, the partitioning element is sitting
+there and it'll stop when it hits the
+
+117
+00:08:31,977 --> 00:08:35,153
+partitioning element.
+But the other test is not in our
+
+118
+00:08:35,153 --> 00:08:40,039
+implementation.
+And the key thing, one key thing is that
+
+119
+00:08:40,039 --> 00:08:45,368
+the way that these implementations work.
+If the in-, the file is, the array is
+
+120
+00:08:45,368 --> 00:08:50,591
+randomly ordered, then the two sub-arrays
+after partitioning will also be randomly
+
+121
+00:08:50,591 --> 00:08:54,582
+ordered.
+Actually, some implementations of Quick
+
+122
+00:08:54,582 --> 00:08:59,391
+Sort out in the wild don't have this
+property, and they suffer a little bit in
+
+123
+00:08:59,391 --> 00:09:03,584
+performance.
+That random shuffle at the beginning is
+
+124
+00:09:03,584 --> 00:09:06,700
+important and needed for guaranteeing
+performance.
+
+125
+00:09:06,700 --> 00:09:12,071
+And the other thing I have referred to but
+not talked about in detail is the presence
+
+126
+00:09:12,071 --> 00:09:15,531
+of equal keys.
+You might think it would be better to
+
+127
+00:09:15,531 --> 00:09:19,886
+handle equal keys in some special way.
+We'll talk about that in a second.
+
+128
+00:09:19,886 --> 00:09:24,819
+But this general purpose implementation
+stops the pointers on keys equal to the
+
+129
+00:09:24,819 --> 00:09:30,098
+partitioning items key and we'll take a
+look at why that's important in a minute.
+
+130
+00:09:30,098 --> 00:09:36,016
+So now let's look at the running time
+estimates about why we care about
+
+131
+00:09:36,016 --> 00:09:40,073
+Quicksort vs Mergesort.
+This is extending the table we looked at
+
+132
+00:09:40,073 --> 00:09:46,033
+last time, and you can see over in the
+right column here, Quicksort is quite a
+
+133
+00:09:46,033 --> 00:09:51,087
+bit faster than Mergesort.
+And again, a good algorithm is much better
+
+134
+00:09:51,087 --> 00:09:58,073
+than having a super computer.
+Even on your PC you can sort huge array of
+
+135
+00:09:58,073 --> 00:10:05,026
+a million items in less then a second and
+a million items in only a few minutes.
+
+136
+00:10:05,051 --> 00:10:11,071
+So again this time, sort of timing is why
+Quicksort is so widely used.
+
+137
+00:10:11,071 --> 00:10:15,030
+Cuz it's simply just faster than
+Mergesort.
+
+138
+00:10:15,056 --> 00:10:21,098
+Well in the best case Quick Sort will
+divide everything exactly in half.
+
+139
+00:10:21,098 --> 00:10:27,037
+And that makes it kind of like Merge Sort.
+It's about analog in.
+
+140
+00:10:27,057 --> 00:10:33,027
+And in the worst case if the random
+shuffle winds up putting the items exactly
+
+141
+00:10:33,027 --> 00:10:38,071
+in order, then partitioning doesn't,
+doesn't really do anything except find the
+
+142
+00:10:38,071 --> 00:10:44,002
+smallest, peel off the smallest item.
+Kind of discover that everything to the
+
+143
+00:10:44,002 --> 00:10:46,057
+right is greater.
+That's a bad case.
+
+144
+00:10:46,057 --> 00:10:50,074
+But if we shuffled randomly, it's
+extremely unlikely to happen.
+
+145
+00:10:50,074 --> 00:10:57,007
+Most interesting thing about the study of
+Quicksort is the average case analysis.
+
+146
+00:10:57,007 --> 00:11:03,018
+This is a somewhat detailed mathematical
+derivation, but it is worthwhile going
+
+147
+00:11:03,018 --> 00:11:08,762
+through the steps, to really get a feeling
+for why it is that, Quicksort is quick.
+
+148
+00:11:08,762 --> 00:11:14,804
+So what we do is, as we did for Merge
+Sort, is write down a mathematical
+
+149
+00:11:14,804 --> 00:11:19,819
+recurrence relation that corresponds to
+what the program does.
+
+150
+00:11:19,819 --> 00:11:26,283
+In the case of Quick Sort, the number of
+comparisons taken to sort N items is N+1
+
+151
+00:11:26,283 --> 00:11:31,243
+for the partitioning.
+Plus what happens next depends on what the
+
+152
+00:11:31,243 --> 00:11:36,024
+partitioning element was.
+If the partitioning element is K.
+
+153
+00:11:36,024 --> 00:11:41,843
+Any particular value happens with
+probability one over n, and if it's k,
+
+154
+00:11:41,843 --> 00:11:47,694
+then the left subfile has k - one items in
+it, and the right subfile has n - k items
+
+155
+00:11:47,694 --> 00:11:52,040
+in it.
+So, for every value of k, if you add those
+
+156
+00:11:52,040 --> 00:11:57,900
+up the probability that the partitioning
+element is k, plus the cost for the two
+
+157
+00:11:57,900 --> 00:12:02,997
+subfiles, we get this equation.
+This looks like a fairly daunting
+
+158
+00:12:02,997 --> 00:12:07,310
+equation, but actually it's not too
+difficult to solve.
+
+159
+00:12:07,310 --> 00:12:11,941
+First thing we do is just multiply by N
+and collect terms.
+
+160
+00:12:11,941 --> 00:12:16,694
+So NCN N times N + one.
+And then these terms, every size appears
+
+161
+00:12:16,694 --> 00:12:20,701
+twice.
+So it's twice the sum of from C0 to CN -
+
+162
+00:12:20,701 --> 00:12:23,670
+one.
+It's a simpler equation already.
+
+163
+00:12:23,670 --> 00:12:30,245
+Now what we can do is get rid of that sum
+by subtracting the same equation for N
+
+164
+00:12:30,245 --> 00:12:37,079
+minus one.
+So NCN - N - one, CN - one then the N, N +
+
+165
+00:12:37,079 --> 00:12:43,088
+one - N - one N is just 2N.
+And then the sum collapses just leaving
+
+166
+00:12:43,088 --> 00:12:48,391
+the last term.
+This sum, minus the same sum for N - one,
+
+167
+00:12:48,391 --> 00:12:54,079
+just leaves the 2CN - one.
+Now that's looking like a much simpler
+
+168
+00:12:54,079 --> 00:12:58,509
+equation.
+Rearrange the terms, so we get n+1 cn-1
+
+169
+00:12:58,509 --> 00:13:04,069
+and then divided by n, n+1.
+That's a kind of a magic step, but we will
+
+170
+00:13:04,069 --> 00:13:10,009
+see that it makes possible to solve the
+equation easily.
+
+171
+00:13:10,009 --> 00:13:16,042
+Because that equation, with C over N plus
+one equals CN minus one over N, is an
+
+172
+00:13:16,042 --> 00:13:20,058
+equation that telescopes the first term at
+the right.
+
+173
+00:13:20,076 --> 00:13:25,069
+It's the same as the term on the left.
+So we can apply the same equation so its
+
+174
+00:13:25,069 --> 00:13:29,413
+two over n + one.
+We apply for n - one we get one less here
+
+175
+00:13:29,413 --> 00:13:34,473
+and we can throw out a lot two over n.
+And continue that way throwing out two
+
+176
+00:13:34,473 --> 00:13:39,376
+over decreasing numbers all the way down
+until we get down to two elements, c1
+
+177
+00:13:39,376 --> 00:13:43,104
+which is zero.
+Substitute the previous equation
+
+178
+00:13:43,104 --> 00:13:47,537
+telescope.
+And then that gives us an easy sum that we
+
+179
+00:13:47,537 --> 00:13:52,716
+can approximate by an integral.
+It's one over X from three to N+1.
+
+180
+00:13:52,716 --> 00:13:57,110
+And that's a pretty close approximation,
+in this case.
+
+181
+00:13:57,110 --> 00:14:03,683
+And that approximation gives us, it's
+about two M+1 natural log N comparisons
+
+182
+00:14:03,683 --> 00:14:06,297
+for Quicksort.
+About 1.39 N log N.
+
+183
+00:14:06,297 --> 00:14:11,995
+That's the average number of comparisons
+taken by Quicksort, and actually they for
+
+184
+00:14:11,995 --> 00:14:17,169
+a random permutation of the elements which
+is what we do with the shuffle.
+
+185
+00:14:17,169 --> 00:14:22,330
+They the expected number of comparisons is
+concentrated around this value.
+
+186
+00:14:22,330 --> 00:14:26,489
+It's very likely to be very near this
+value is then as large.
+
+187
+00:14:26,489 --> 00:14:31,633
+So the worst case quick sort is quadratic.
+So complexity's going to tell us that it's
+
+188
+00:14:31,633 --> 00:14:35,090
+a quadratic algorithm if that's what its
+worst case is.
+
+189
+00:14:35,090 --> 00:14:40,272
+But with random, the random shuffle it's
+more likely that this lecture will end,
+
+190
+00:14:40,272 --> 00:14:44,158
+because of a lightning strike.
+Or your computer will be struck by a
+
+191
+00:14:44,158 --> 00:14:46,624
+lightning bolt.
+So we can discount that.
+
+192
+00:14:46,624 --> 00:14:51,307
+The average case, which is extremely
+likely for any practical application, is
+
+193
+00:14:51,307 --> 00:14:55,733
+going to be about 1.39 n log n.
+So that's more compares than Mergesort
+
+194
+00:14:55,733 --> 00:14:58,643
+uses.
+But Quicksort is much faster, because it
+
+195
+00:14:58,643 --> 00:15:01,724
+doesn't do much corresponding to each
+compare.
+
+196
+00:15:01,724 --> 00:15:05,509
+It just does the compare and increment a
+pointer.
+
+197
+00:15:05,509 --> 00:15:10,832
+Whereas, Mergesort has to move the items
+into and out of the auxiliary array, which
+
+198
+00:15:10,832 --> 00:15:14,520
+is more expensive.
+So the random shuffle is a key for good
+
+199
+00:15:14,520 --> 00:15:18,560
+performance in Quicksort.
+It gives us the guarantee that the worst
+
+200
+00:15:18,560 --> 00:15:22,584
+case is not gonna happen.
+And also, it allows us to develop a math
+
+201
+00:15:22,584 --> 00:15:26,726
+model that we can go ahead and validate
+with experimentation.
+
+202
+00:15:26,726 --> 00:15:32,345
+You run Quick Sort and you count compares.
+If you did the random shuffle, it'll be
+
+203
+00:15:32,345 --> 00:15:36,725
+about 1.39 n log n compares.
+And its running time will be proportional
+
+204
+00:15:36,725 --> 00:15:41,311
+to n log n, and it'll be a fast sort.
+And that's what people do, and that's why
+
+205
+00:15:41,311 --> 00:15:45,143
+people use it.
+Now there are some things that you have to
+
+206
+00:15:45,143 --> 00:15:51,274
+watch out for with Quicksort because the
+implementation is a bit fragile and it's
+
+207
+00:15:51,274 --> 00:15:55,582
+easy to make mistakes.
+And you'll find textbook implementations
+
+208
+00:15:55,582 --> 00:16:00,717
+or implementations out on the web that
+wind up running in quadratic time in
+
+209
+00:16:00,717 --> 00:16:04,964
+certain situations.
+You have to be a little bit careful of
+
+210
+00:16:04,964 --> 00:16:10,856
+that and even if everything is randomized
+if there's lots of duplicates and the
+
+211
+00:16:10,856 --> 00:16:17,035
+implementation is not done quite right the
+quick sort might take quadratic time.
+
+212
+00:16:17,035 --> 00:16:21,286
+So, let's summarize the properties of
+Quicksort.
+
+213
+00:16:21,286 --> 00:16:25,915
+It's in place.
+It doesn't use any extra space.
+
+214
+00:16:25,915 --> 00:16:29,498
+The depth of recursion.
+So tha, that's.
+
+215
+00:16:29,498 --> 00:16:36,007
+Again, dependent on the random shuffling,
+is going to be logarithmic.
+
+216
+00:16:36,007 --> 00:16:41,700
+You can, limit the depth of recursion by
+always doing the smaller sub-array before
+
+217
+00:16:41,700 --> 00:16:45,517
+the larger sub-array.
+But that's not really necessary nowadays,
+
+218
+00:16:45,517 --> 00:16:51,229
+as long as you've done the, random shuffle
+Oh, and by the way, Quicksort is not
+
+219
+00:16:51,229 --> 00:16:58,530
+stable cuz partitioning does one of those
+long range exchanges that might put a, a
+
+220
+00:16:58,530 --> 00:17:04,073
+key with equal value over a key another
+key with the same value.
+
+221
+00:17:04,073 --> 00:17:10,542
+So it's a little more work to make
+Quicksort stable, maybe using extra space.
+
+222
+00:17:10,542 --> 00:17:16,567
+Un, so what about in actually in practice?
+This is our fastest sorting algorithm, and
+
+223
+00:17:16,567 --> 00:17:21,623
+there's a few ways to make it even faster.
+And these, we looked at some similar
+
+224
+00:17:21,623 --> 00:17:26,919
+things with for the Word, Mergesort.
+And it's definitely worthwhile taking
+
+225
+00:17:26,919 --> 00:17:31,650
+implementing for a Quicksort.
+First thing is small sub-arrays.
+
+226
+00:17:31,650 --> 00:17:37,607
+Even Quicksort has more overhead than you
+want for a tiny array, like one of size
+
+227
+00:17:37,607 --> 00:17:41,106
+two or three or four.
+So can implement it to cut off to
+
+228
+00:17:41,106 --> 00:17:46,340
+insertion sort for small arrays.
+And the exact number they use is not too,
+
+229
+00:17:46,340 --> 00:17:47,460
+critical.
+Okay.
+
+230
+00:17:47,460 --> 00:17:52,469
+Anywhere between ten and twenty will
+improve the running time by maybe twenty%.
+
+231
+00:17:52,470 --> 00:17:57,827
+Also you could just not do anything for
+small arrays, and then do the insertion
+
+232
+00:17:57,827 --> 00:18:02,084
+sorting in one pass at the end.
+So, that's a first improvement.
+
+233
+00:18:02,084 --> 00:18:07,047
+A second improvement is to, try to
+estimate the partitioning element to be
+
+234
+00:18:07,047 --> 00:18:11,008
+near the middle.
+Rather than just arbitrarily using the
+
+235
+00:18:11,008 --> 00:18:14,476
+first element.
+Which on average will be at the middle.
+
+236
+00:18:14,476 --> 00:18:19,578
+So one thing that we can do is sample the
+items, and then take a median of the
+
+237
+00:18:19,578 --> 00:18:23,621
+sample.
+And that's actually not worth the cost for
+
+238
+00:18:23,621 --> 00:18:28,155
+enlarged samples, not usually.
+But for three it's worthwhile.
+
+239
+00:18:28,155 --> 00:18:33,427
+Slightly reduces the number of compares.
+Increases the number of exchanges
+
+240
+00:18:33,427 --> 00:18:39,185
+paradoxically, cuz more exchanges are
+required when the partition is right in
+
+241
+00:18:39,185 --> 00:18:43,934
+the middle.
+So that'll also improve the running time
+
+242
+00:18:43,934 --> 00:18:48,380
+by maybe ten%.
+So this is a summary of the optimized
+
+243
+00:18:48,380 --> 00:18:54,655
+Quicksort with cut off the small subfiles
+in median-of-three partitioning.
+
+244
+00:18:54,655 --> 00:19:00,977
+So partition usually happens pretty close
+to the middle when you do that sample
+
+245
+00:19:00,977 --> 00:19:07,812
+median-of-three and then small subfiles
+can just be left unsorted to be picked up
+
+246
+00:19:07,812 --> 00:19:13,316
+with insertion sort right at the end.
+So this gives a feeling for the.
+
+247
+00:19:13,316 --> 00:19:17,539
+Number of items that have to be touched
+during quick sort.
+
+248
+00:19:17,539 --> 00:19:22,594
+And kind of an explanation for how it gets
+the sort done so quickly.
+
+249
+00:19:22,594 --> 00:19:28,098
+That's a summary of Quicksort, our best
+sorting algorithm that we've seen to date.

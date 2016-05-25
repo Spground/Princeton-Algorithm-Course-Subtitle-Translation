@@ -1,0 +1,373 @@
+1
+00:00:02,040 --> 00:00:06,642
+To get started, we're going to look at a
+general scheme for solving max-flow
+
+2
+00:00:06,642 --> 00:00:10,110
+min-cut problems, known as the
+Ford-Fulkerson algorithm,
+
+3
+00:00:10,110 --> 00:00:17,712
+Dates back to the 1950s.
+And the idea is to start with no flow
+
+4
+00:00:17,712 --> 00:00:22,232
+anywhere.
+So, we initialize all edges to have
+
+5
+00:00:22,232 --> 00:00:28,191
+capacity zero.
+And then find any path from s to t, so
+
+6
+00:00:28,191 --> 00:00:33,020
+that you can increase the flow along that
+path.
+
+7
+00:00:33,020 --> 00:00:38,714
+Now, the simplest case is when the edges
+all go in the same direction from source
+
+8
+00:00:38,714 --> 00:00:42,300
+to target.
+We'll look at the other case in a minute.
+
+9
+00:00:42,300 --> 00:00:48,721
+In that case, so there is a path, and this
+is the general algorithm that works for
+
+10
+00:00:48,721 --> 00:00:53,920
+any path and if there's a path from s to
+t, go ahead and find it.
+
+11
+00:00:53,920 --> 00:01:00,033
+And if there's capacity left in each one
+of the edges, if none of them were full,
+
+12
+00:01:00,033 --> 00:01:04,298
+then what we want to do is augment the
+flow along that path.
+
+13
+00:01:04,298 --> 00:01:07,924
+So we put as much flow as we can through
+that path.
+
+14
+00:01:07,924 --> 00:01:12,402
+In this case, we can put ten units of flow
+through each path.
+
+15
+00:01:12,615 --> 00:01:18,231
+Through each edge, there's room to put
+ten, and two of the edges fill up in that
+
+16
+00:01:18,231 --> 00:01:23,350
+case but we've increased the flow in the
+network by ten in that case.
+
+17
+00:01:23,350 --> 00:01:28,562
+And the algorithm is just, continuing that
+way, finding a path.
+
+18
+00:01:28,806 --> 00:01:33,856
+So here's another path.
+And this one also the edges all flow from
+
+19
+00:01:33,856 --> 00:01:37,736
+source to target.
+And in this case again, we can add ten
+
+20
+00:01:37,738 --> 00:01:42,041
+more units a flow cuz the last edge only
+has capacity ten.
+
+21
+00:01:42,043 --> 00:01:48,114
+So load up those edges with that flow, and
+now, we've got twenty units a flow in the
+
+22
+00:01:48,114 --> 00:01:51,502
+network.
+Notice, when we augment along in edge,
+
+23
+00:01:51,502 --> 00:01:57,501
+we're preserving the vertex equilibrium,
+local equilibrium at a vertex property.
+
+24
+00:01:57,501 --> 00:02:02,160
+We're putting some flow in and taking the
+same amount of flow out.
+
+25
+00:02:02,160 --> 00:02:09,228
+So, here's another augmenting path.
+Now, this one has what's called a backward
+
+26
+00:02:09,228 --> 00:02:13,496
+edge.
+So notice that if, the path going from s
+
+27
+00:02:13,496 --> 00:02:20,442
+to t goes backwards along that edge,
+And the idea is, that you can augment flow
+
+28
+00:02:20,442 --> 00:02:25,430
+through the whole network by removing flow
+in that path.
+
+29
+00:02:25,430 --> 00:02:31,105
+That is, if we add five units of flow from
+s to this vertex, and five units of flow
+
+30
+00:02:31,105 --> 00:02:36,780
+from s to this vertex, then what we can do
+is remove five units of flow along this
+
+31
+00:02:36,780 --> 00:02:39,963
+edge.
+That's to preserve the local equilibrium.
+
+32
+00:02:39,963 --> 00:02:44,600
+Essentially, that five units of flow gets
+transferred right through.
+
+33
+00:02:44,600 --> 00:02:48,820
+After we remove five units and we add five
+here.
+
+34
+00:02:48,820 --> 00:02:55,190
+That's five coming in,
+There's still ten going out.
+
+35
+00:02:55,190 --> 00:02:58,825
+And then for the forward edges, we add the
+flow.
+
+36
+00:02:58,825 --> 00:03:05,244
+That is, we can augment the flow along an
+augmenting path, by adding flow to forward
+
+37
+00:03:05,244 --> 00:03:08,880
+edges and subtracting flow from backward
+edges.
+
+38
+00:03:08,880 --> 00:03:14,184
+The maximum amount of flow that we can
+push through is the remaining capacity in
+
+39
+00:03:14,184 --> 00:03:17,785
+forward edges and the amount of flow in
+backward edges.
+
+40
+00:03:17,785 --> 00:03:23,090
+You can't remove more flow than is there.
+In this case, we can augment the flow in
+
+41
+00:03:23,090 --> 00:03:26,554
+the network by five.
+That, fills up the first edge.
+
+42
+00:03:26,554 --> 00:03:30,493
+And so now we've got 25 units of flow in
+the network.
+
+43
+00:03:30,493 --> 00:03:35,843
+And again, the idea of removing flow from
+a backward edge is very simple.
+
+44
+00:03:35,843 --> 00:03:41,713
+It's just a way to ensure that the local
+equilibrium conditions always remains
+
+45
+00:03:41,713 --> 00:03:48,657
+satisfied as we're moving along the path.
+In this case there's one more augmenting
+
+46
+00:03:48,657 --> 00:03:59,384
+path.
+Okay. And that's, forward, forward,
+
+47
+00:03:59,384 --> 00:04:04,374
+forward, forward, backwards along that one
+again and then forward, forward.
+
+48
+00:04:04,374 --> 00:04:09,925
+So, and then what's the maximum amount
+that we can push through in this case,
+
+49
+00:04:09,925 --> 00:04:16,180
+this one has got five in it and it's got a
+capacity of eight so we can put three more
+
+50
+00:04:16,180 --> 00:04:22,404
+units of flow through this network.
+And we get a now we have 28 units of flow
+
+51
+00:04:22,404 --> 00:04:28,665
+going through the network.
+And the algorithm terminates when there's
+
+52
+00:04:28,665 --> 00:04:32,841
+no way to find an augmenting path from s
+to t.
+
+53
+00:04:32,841 --> 00:04:38,731
+And what's that mean?
+That means that every augmenting path,
+
+54
+00:04:38,731 --> 00:04:46,030
+Every path from s to t contains either a
+full forward edge or an empty backwards
+
+55
+00:04:46,030 --> 00:04:50,176
+edge.
+We can't put more flow through a forward
+
+56
+00:04:50,176 --> 00:04:55,402
+edge and we can't remove flow from an
+empty backward edge.
+
+57
+00:04:55,402 --> 00:05:01,350
+So when there's no more augmenting paths,
+the algorithm terminates.
+
+58
+00:05:01,350 --> 00:05:05,282
+And so that's the algorithm.
+We start with no flow.
+
+59
+00:05:05,282 --> 00:05:11,161
+As long as there is an augmenting path,
+We, we find that path and look through the
+
+60
+00:05:11,161 --> 00:05:16,281
+path to find the amount, the, amount
+capacit left in the most full forward edge
+
+61
+00:05:16,281 --> 00:05:20,318
+and the amount of flow left in the most
+empty back edge.
+
+62
+00:05:20,318 --> 00:05:24,067
+And we increase the flow in the path by
+that amount.
+
+63
+00:05:24,067 --> 00:05:28,105
+And if we can't find an augmenting path,
+then we're done.
+
+64
+00:05:28,105 --> 00:05:33,801
+Now there's a few questions about this.
+So that solves the maximum flow problem.
+
+65
+00:05:33,801 --> 00:05:37,190
+We have to look at how to compute and
+min-cut.
+
+66
+00:05:37,640 --> 00:05:41,768
+We have to figure out a way to find an
+augmenting path.
+
+67
+00:05:41,993 --> 00:05:46,047
+That's not to hard.
+That's similar to many other graph
+
+68
+00:05:46,047 --> 00:05:49,650
+processing problems that we have already
+solved.
+
+69
+00:05:49,650 --> 00:05:54,904
+And we have to, ensure that or at least
+show that it always computes a max-flow.
+
+70
+00:05:56,316 --> 00:06:00,049
+and, there's even a question of does it
+actually terminate?
+
+71
+00:06:00,049 --> 00:06:06,132
+Maybe you could get stuck in some kind of
+situation where it removes flow on an edge
+
+72
+00:06:06,132 --> 00:06:12,076
+in one path and, adds it in another, and
+so, even analyzing how many times it does
+
+73
+00:06:12,076 --> 00:06:15,601
+augmentation, is actually not so
+straightforward.
+
+74
+00:06:15,601 --> 00:06:21,891
+So we'll take a look, at these questions.
+That's the Ford-Fulkerson algorithm, the
+
+75
+00:06:21,891 --> 00:06:24,380
+general scheme for solving nax-flow.

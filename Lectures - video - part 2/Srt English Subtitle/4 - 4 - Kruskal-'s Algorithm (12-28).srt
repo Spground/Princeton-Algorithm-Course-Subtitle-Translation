@@ -1,0 +1,693 @@
+1
+00:00:06,580 --> 00:00:12,635
+Now we will look a Kruskal's algorithm for
+computing the MST this is an old algorithm
+
+2
+00:00:12,635 --> 00:00:17,941
+that dates back over 50 years but it is an
+effective way to solve the problem.
+
+3
+00:00:17,941 --> 00:00:22,431
+The idea is very simple.
+We are going to take the edges and we are
+
+4
+00:00:22,431 --> 00:00:27,194
+going to sort them by weight.
+And we are going to consider ''em in order
+
+5
+00:00:27,194 --> 00:00:31,747
+of ascending weight.
+And the algorithm is simply add the next
+
+6
+00:00:31,747 --> 00:00:35,912
+edge to the tree.
+Unless that edge would create a cycle.
+
+7
+00:00:35,912 --> 00:00:40,030
+If it, if the edge creates cycle, ignore
+it and go on to the next one.
+
+8
+00:00:40,030 --> 00:00:43,791
+Let's look at a demo of Kruskal's
+algorithm.
+
+9
+00:00:43,791 --> 00:00:47,635
+Okay.
+So we have the edges sorted by weight and
+
+10
+00:00:47,635 --> 00:00:52,051
+we're going to take them in ascending
+order of weight.
+
+11
+00:00:52,296 --> 00:00:58,593
+The smallest edge is in the MST.
+And so we add that to the tree it doesn't
+
+12
+00:00:58,593 --> 00:01:02,919
+create a cycle.
+Next smallest edge is two, three.
+
+13
+00:01:02,927 --> 00:01:07,997
+That doesn't create a cycle.
+Next one is one, seven that's fine.
+
+14
+00:01:08,243 --> 00:01:10,848
+Next one is zero, two.
+Next one, five, seven.
+
+15
+00:01:10,860 --> 00:01:16,776
+Now when we get to one, three that one
+creates a cycle and the algorithm says,
+
+16
+00:01:16,776 --> 00:01:21,878
+creates a cycle just ignore it.
+Next one is one, five that one also
+
+17
+00:01:21,878 --> 00:01:25,724
+creates a cycle. one, five, seven.
+Again, just ignore it.
+
+18
+00:01:25,724 --> 00:01:31,788
+Two, seven creates a cycle not in the MST.
+Four, five that, the next smallest edge
+
+19
+00:01:32,010 --> 00:01:35,560
+does not create a cycle so we add it to
+the MST.
+
+20
+00:01:35,560 --> 00:01:39,759
+One, two creates a cycle.
+Four, seven creates a cycle.
+
+21
+00:01:39,759 --> 00:01:45,202
+Zero, four creates a cycle.
+And finally we get to six, two which does
+
+22
+00:01:45,202 --> 00:01:48,780
+not create a cycle, so we add that to the
+tree.
+
+23
+00:01:48,780 --> 00:01:54,622
+At this point we have an MST we could
+check that we have V - one edges and stop
+
+24
+00:01:54,622 --> 00:02:00,399
+or we can just keep going and see that the
+other edges in the graph create a cycle.
+
+25
+00:02:00,594 --> 00:02:05,788
+And when we're done considering all the
+edges then we have computed the minimum
+
+26
+00:02:05,788 --> 00:02:08,774
+spanning tree.
+That's with Kruskal's Algorithm.
+
+27
+00:02:08,774 --> 00:02:13,902
+Consider the edges in descending order of
+weight, add the next edge to T, unless
+
+28
+00:02:13,902 --> 00:02:18,577
+doing so would create a cycle.
+Now let's look at what Kruskal's algorithm
+
+29
+00:02:18,577 --> 00:02:23,410
+does on a very large graph.
+You get a good feeling for what it's
+
+30
+00:02:23,410 --> 00:02:27,037
+doing.
+It's taking the small edges and they
+
+31
+00:02:27,037 --> 00:02:34,123
+coalless together in little clusters and
+eventually the edges get longer and longer
+
+32
+00:02:34,376 --> 00:02:41,798
+and they connect together the clusters.
+Initially it is broken up into the very
+
+33
+00:02:41,798 --> 00:02:49,137
+small edges and after a while if you look
+at the larger clusters eventually an edge
+
+34
+00:02:49,137 --> 00:02:56,141
+will come that will connect them together.
+It's not going to be so easy to see how
+
+35
+00:02:56,141 --> 00:03:01,420
+the algorithm ends.
+Though there's some, long edge there.
+
+36
+00:03:01,679 --> 00:03:07,910
+That's the longest edge in the MST that'll
+finally connect the graph.
+
+37
+00:03:08,855 --> 00:03:15,454
+This simulation really gives a good
+feeling for Kruskal's algorithm.
+
+38
+00:03:15,454 --> 00:03:22,227
+In fact when we first had personal
+computers I was fortunate to be in Xerox
+
+39
+00:03:22,227 --> 00:03:25,812
+Park.
+And I remember very well in the late 70s,
+
+40
+00:03:25,812 --> 00:03:31,857
+This was one of the first algorithms that
+I wanted to see visualized on a personal
+
+41
+00:03:31,857 --> 00:03:35,653
+computer.
+And I, I wrote a program at that time that
+
+42
+00:03:35,653 --> 00:03:41,768
+produced pretty much this image it's a
+very interesting way to look at MST
+
+43
+00:03:41,768 --> 00:03:46,478
+algorithms.
+Alright, so it's easy to implement we have
+
+44
+00:03:46,478 --> 00:03:52,104
+to prove that it computes the MST of
+course I and we've done a lot of work
+
+45
+00:03:52,104 --> 00:03:53,894
+setting that up.
+And.
+
+46
+00:03:54,586 --> 00:04:01,240
+We do so just by proving that its a
+special case of the greedy MST algorithm.
+
+47
+00:04:01,500 --> 00:04:03,920
+So what does that mean?
+Well.
+
+48
+00:04:04,205 --> 00:04:11,356
+It, suppose that crosco's algorithm.
+Colors a given edge black.
+
+49
+00:04:11,356 --> 00:04:16,140
+So say it's VW.
+So we'll define a cut.
+
+50
+00:04:16,416 --> 00:04:21,491
+That, is the set of vertices that are
+connected to V.
+
+51
+00:04:21,491 --> 00:04:29,886
+So it might be just a V, but if theres any
+black edges connecting V to other vertices
+
+52
+00:04:30,163 --> 00:04:37,215
+we put all of those in the cut.
+So for that cut there's no black crossing
+
+53
+00:04:37,215 --> 00:04:40,773
+edge.
+Cuz it's a, it's a component.
+
+54
+00:04:41,054 --> 00:04:48,731
+And the other thing is that there's no
+crossing edge with lower weight than VW.
+
+55
+00:04:48,731 --> 00:04:52,830
+And why is that?
+Well we haven't examined any of those
+
+56
+00:04:52,830 --> 00:04:58,579
+edges yet, and they're all longer because
+we are considering the edges in increasing
+
+57
+00:04:58,579 --> 00:05:03,438
+order of their weight.
+So this new edge that connects V somewhere
+
+58
+00:05:03,438 --> 00:05:10,077
+else is a crossing edge of minimal weight.
+And so therefore the algorithm always
+
+59
+00:05:10,282 --> 00:05:15,894
+finds a cut and colors a crossing edge of
+minimal weight for that cut black.
+
+60
+00:05:16,100 --> 00:05:19,180
+And it's an instance of the Greedy
+Algorithm.
+
+61
+00:05:19,485 --> 00:05:28,152
+Now we still have a bit away from having
+an implementation of Kruskal's algorithm.
+
+62
+00:05:28,458 --> 00:05:35,725
+So the question is, how do we know whether
+adding a new edge to the tree will cause a
+
+63
+00:05:35,725 --> 00:05:38,872
+cycle?
+So, you might think about how difficult
+
+64
+00:05:38,872 --> 00:05:42,439
+that is.
+I've, I've got a tree, that's represented
+
+65
+00:05:42,649 --> 00:05:47,964
+as the set of edges or however.
+And I have a new edge, and I want to know
+
+66
+00:05:47,964 --> 00:05:52,790
+whether it creates a cycle or not.
+How, how difficult is that going to be?
+
+67
+00:05:52,790 --> 00:05:59,664
+Well, it turns out way back in the first
+lecture of algorithms part one we had a
+
+68
+00:05:59,664 --> 00:06:03,526
+way.
+What one thing we could do is just run DFS
+
+69
+00:06:03,526 --> 00:06:09,165
+to check if we can get to W from V.
+That'd take time proportional to V.
+
+70
+00:06:09,397 --> 00:06:16,040
+But the union find data structure that we
+did in the first lecture absolutely does
+
+71
+00:06:16,040 --> 00:06:19,902
+the job.
+It's just testing whether this edge
+
+72
+00:06:19,902 --> 00:06:26,792
+connects anybody in, in the equivalence
+class corresponding to V with anybody in
+
+73
+00:06:26,792 --> 00:06:32,190
+the equivalence class corresponding to Y,
+for to W and if it did, it creates a
+
+74
+00:06:32,190 --> 00:06:35,390
+cycle.
+So union find is exactly what we need.
+
+75
+00:06:36,640 --> 00:06:42,965
+So we're going to what we're going to do
+is maintain a set for each of the
+
+76
+00:06:42,965 --> 00:06:49,586
+connected components in the spanning tree,
+that we built up so far and so if the new
+
+77
+00:06:49,586 --> 00:06:55,691
+edge connects vertices that are in the
+same set, then that means it would create
+
+78
+00:06:55,691 --> 00:07:00,226
+a cycle.
+And otherwise we're going to be adding the
+
+79
+00:07:00,226 --> 00:07:04,780
+edge to the tree.
+So then we just do the union operation and
+
+80
+00:07:04,780 --> 00:07:08,803
+merge the set containing V with the set
+containing W.
+
+81
+00:07:08,803 --> 00:07:14,799
+Those are the two things that we need to
+do and those are the two things that union
+
+82
+00:07:14,799 --> 00:07:19,320
+find does for us.
+So this leads to a very compact
+
+83
+00:07:19,320 --> 00:07:25,556
+implementation of Kruskal's Algorithm.
+Now to consider the edges in order, we'll
+
+84
+00:07:25,556 --> 00:07:29,187
+use a, a priority queue, a modern data
+structure.
+
+85
+00:07:29,187 --> 00:07:35,597
+So let's take a look the, the every line
+of this implementation of Kruskal's
+
+86
+00:07:35,597 --> 00:07:39,537
+algorithm.
+We are going to have a queue of edges.
+
+87
+00:07:39,537 --> 00:07:43,012
+That's how we are going to represent the
+MST.
+
+88
+00:07:43,244 --> 00:07:47,570
+It could be a stack or bag, but, but we'll
+use a queue.
+
+89
+00:07:47,808 --> 00:07:52,259
+And then, the, Cruskill MST algorithm
+takes a graph.
+
+90
+00:07:52,498 --> 00:07:56,393
+And it's going to compute the MST in this
+MST.
+
+91
+00:07:56,393 --> 00:08:01,798
+And to do that, it's going to use a
+priority queue, a min priority queue.
+
+92
+00:08:02,037 --> 00:08:05,455
+A minimum oriented priority queue of
+edges.
+
+93
+00:08:05,693 --> 00:08:10,065
+So we'll build that minimum, priority
+queue.
+
+94
+00:08:10,065 --> 00:08:15,948
+Now edges are comparable.
+We had a compare to a method so our, our,
+
+95
+00:08:16,583 --> 00:08:20,320
+generic priority queue code is going to
+work fine.
+
+96
+00:08:20,548 --> 00:08:26,553
+And so, what we'll do is we'll put all the
+edges in the graph into the priority
+
+97
+00:08:26,553 --> 00:08:30,053
+queue.
+So that's building a priority queue.
+
+98
+00:08:30,210 --> 00:08:36,184
+Containing all the edges in the graph.
+Alternatively, we could put the edges in
+
+99
+00:08:36,184 --> 00:08:40,580
+an array and sort the array, but priority
+queues.
+
+100
+00:08:40,580 --> 00:08:48,367
+A more elegant way to express this, and is
+a way to look at more efficient algorithms
+
+101
+00:08:48,367 --> 00:08:52,175
+as well.
+Okay, so that's priority queue, so that's
+
+102
+00:08:52,175 --> 00:08:57,254
+the first data structure from part one
+that we're going to make use of.
+
+103
+00:08:57,254 --> 00:09:01,332
+And then the second one is the union find
+data structure.
+
+104
+00:09:01,332 --> 00:09:08,056
+So we're going to build a union find data
+structure with for vertices because the
+
+105
+00:09:08,056 --> 00:09:12,634
+spanning force divides the vertices into
+equivalence classes.
+
+106
+00:09:12,634 --> 00:09:18,467
+So then we go into the main loop.
+And the main loop stops in two conditions.
+
+107
+00:09:18,467 --> 00:09:23,390
+We run out of edges is one, where we'd
+have a minimum spinning force.
+
+108
+00:09:23,607 --> 00:09:28,530
+Or the other condition is we get to V -
+one edges in the MST.
+
+109
+00:09:28,773 --> 00:09:34,944
+So as long as neither one of those is
+true, then we've got an edge in the
+
+110
+00:09:35,187 --> 00:09:39,410
+priority queue, and we want to take the
+smallest one.
+
+111
+00:09:39,648 --> 00:09:44,105
+We want to get its vertices V and W either
+and other.
+
+112
+00:09:44,344 --> 00:09:51,030
+And then we want to check using the union
+find algorithm if they're connected.
+
+113
+00:09:51,498 --> 00:09:57,979
+If they're connected we don't want to do
+anything, if they're not connected then we
+
+114
+00:09:57,979 --> 00:10:01,883
+want to merge them, and put that edge onto
+the MST.
+
+115
+00:10:02,117 --> 00:10:06,204
+Thats it.
+And then when the that's the full
+
+116
+00:10:06,204 --> 00:10:13,365
+implementation and then we have the edges
+method for the client to return the MST.
+
+117
+00:10:13,365 --> 00:10:18,245
+It's quite a compact implementation of a
+classic algorithm.
+
+118
+00:10:18,481 --> 00:10:24,698
+Using the basic data structures that we
+built up in algorithm part one data
+
+119
+00:10:24,698 --> 00:10:27,846
+structures and algorithms of priority
+queue.
+
+120
+00:10:28,083 --> 00:10:34,930
+And union find gives a, a, really fine
+implementation of this MST algorithm.
+
+121
+00:10:35,151 --> 00:10:38,777
+So what about the running time of this
+algorithm?
+
+122
+00:10:38,999 --> 00:10:45,065
+Well it's not hard to see that it's going
+to compute the MST in time proportional to
+
+123
+00:10:45,065 --> 00:10:50,022
+e log e.
+It's linearithmic in the number of edges.
+
+124
+00:10:50,022 --> 00:10:53,500
+Which means that we can use it for huge
+graphs.
+
+125
+00:10:53,747 --> 00:10:59,697
+So this is just, this table is just a
+proof that, summarizes the costs.
+
+126
+00:10:59,944 --> 00:11:04,406
+We're going to first build the priority
+queue.
+
+127
+00:11:04,406 --> 00:11:11,182
+And, we can do that in linear time using
+bottom-up, construction method.
+
+128
+00:11:11,430 --> 00:11:15,741
+We have to, every edge comes off the
+priority Q.
+
+129
+00:11:15,741 --> 00:11:20,695
+So there's E of them, and it takes log E
+per operation.
+
+130
+00:11:20,695 --> 00:11:28,310
+Snd then union operations, every vertex is
+involved in one, and connected operations,
+
+131
+00:11:28,310 --> 00:11:34,732
+every edge is involved in one.
+So the total time is dominated by the E
+
+132
+00:11:34,732 --> 00:11:42,633
+log E for the priority queue operations.
+One thing to note is that, if the edges
+
+133
+00:11:42,633 --> 00:11:48,487
+come in, in sorted order, for some reason,
+it's almost linear.
+
+134
+00:11:48,487 --> 00:11:56,413
+The order of growth is E log star of E.
+And, actually we don't have to always,
+
+135
+00:11:56,683 --> 00:12:01,636
+sort'em.
+We can, in real life situations, we can
+
+136
+00:12:01,636 --> 00:12:09,106
+stop when we get the V-1 edges in the MST.
+When we have those v - one edges we can
+
+137
+00:12:09,106 --> 00:12:15,418
+stop and usually that's for practical
+situations that's way before we see all
+
+138
+00:12:15,418 --> 00:12:19,910
+the edges in the graph.
+So that's Kruskal's algorithm for
+
+139
+00:12:19,910 --> 00:12:21,380
+computing the MST.

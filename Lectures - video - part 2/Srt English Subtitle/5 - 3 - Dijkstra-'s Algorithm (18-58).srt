@@ -1,0 +1,1103 @@
+1
+00:00:03,580 --> 00:00:08,384
+Now we'll look for, at Dijkstra's
+algorithm for finding shortest paths in
+
+2
+00:00:08,384 --> 00:00:13,878
+graphs with non-negative edge weights.
+Dijsktra is a famous figure in computer
+
+3
+00:00:13,878 --> 00:00:17,810
+science.
+And you can amuse yourself by reading some
+
+4
+00:00:17,810 --> 00:00:23,126
+of the things that he wrote.
+He was a very prolific writer, and, kept
+
+5
+00:00:23,126 --> 00:00:27,422
+notebooks.
+And then here really some of his, famous
+
+6
+00:00:27,422 --> 00:00:30,917
+quotes.
+Now, you need to may know something about,
+
+7
+00:00:31,136 --> 00:00:37,107
+old languages to appreciate some of these.
+For example, COBOL was one of the first
+
+8
+00:00:37,107 --> 00:00:43,493
+business oriented languages, programming
+languages and it tried to, make it so that
+
+9
+00:00:43,493 --> 00:00:47,353
+programs kind of read like English
+language sentences.
+
+10
+00:00:47,568 --> 00:00:54,287
+But purists in computer science, such as
+Dijkstra really didn't like that language
+
+11
+00:00:54,287 --> 00:00:57,933
+as you can tell,
+The use of COBOL cripples the mind.
+
+12
+00:00:57,933 --> 00:01:02,580
+It's teaching should therefore be regarded
+as a criminal offense.
+
+13
+00:01:02,763 --> 00:01:07,773
+Actually, when I first came to Princeton
+and was setting up the department here,
+
+14
+00:01:07,956 --> 00:01:13,027
+One of, there was a big donor, who
+actually, wanted to have me fired and the
+
+15
+00:01:13,027 --> 00:01:16,448
+department closed down because we wouldn't
+teach COBOL.
+
+16
+00:01:16,632 --> 00:01:19,625
+I didn't know about Dijkstra's quote at
+that time,
+
+17
+00:01:19,625 --> 00:01:23,473
+I wish I had.
+And there's some other opinions that
+
+18
+00:01:23,473 --> 00:01:27,682
+Dijkstra had.
+You can amuse yourself on the web, reading
+
+19
+00:01:27,682 --> 00:01:32,386
+some of his writing,
+But he was, here's another one that's
+
+20
+00:01:32,386 --> 00:01:37,668
+actually pretty relevant today.
+Object-oriented programming is an
+
+21
+00:01:37,668 --> 00:01:43,362
+exceptionally bad idea that could only
+have originated in California.
+
+22
+00:01:43,362 --> 00:01:50,046
+Dijkstra worked in Texas, the University
+of Texas for a while, and of course, came
+
+23
+00:01:50,046 --> 00:01:52,450
+from the Netherlands.
+Okay.
+
+24
+00:01:52,450 --> 00:01:59,905
+But, Dijkstra, did, invent, a very, very
+important algorithm, that's very widely
+
+25
+00:01:59,905 --> 00:02:03,590
+used for solving the shortest paths
+problem.
+
+26
+00:02:03,590 --> 00:02:10,207
+It's the one that's in your maps app and
+in your, car, and many, many other
+
+27
+00:02:10,207 --> 00:02:15,149
+applications.
+So let's take a look at how that algorithm
+
+28
+00:02:15,149 --> 00:02:18,332
+works.
+It's a very simple algorithm.
+
+29
+00:02:18,584 --> 00:02:23,610
+We, consider, what we're going to do is
+consider the vertices
+
+30
+00:02:23,610 --> 00:02:27,390
+In increasing order of their distance from
+the source.
+
+31
+00:02:27,651 --> 00:02:34,620
+So and a way we're going to do that is
+take the next vertex, add it to the tree
+
+32
+00:02:34,620 --> 00:02:39,150
+and relax all the edges that point from
+that vertex.
+
+33
+00:02:39,150 --> 00:02:45,940
+So let's talk about it in terms of a demo
+and then we'll look at the code.
+
+34
+00:02:47,160 --> 00:02:53,348
+So our mandate is to consider vertices in
+increasing order of distance from the
+
+35
+00:02:53,348 --> 00:02:58,558
+source.
+So, our source is zero in this case so
+
+36
+00:02:58,857 --> 00:03:08,134
+what vertices are closest to the source?
+Well, we can look at the edges that point
+
+37
+00:03:08,134 --> 00:03:12,529
+from that vertex.
+Well, start out with vertex is zero, is
+
+38
+00:03:12,529 --> 00:03:15,689
+the distance zero from the source, so we
+pick it.
+
+39
+00:03:15,887 --> 00:03:21,023
+Then we add that vertex to the shortest
+paths tree, and relax all its edges.
+
+40
+00:03:21,023 --> 00:03:26,488
+And relaxing all the edges pointing from
+zero in this case is just going to uptake
+
+41
+00:03:26,488 --> 00:03:30,380
+the, this two and edgeTo entries for five,
+eight, nine.
+
+42
+00:03:30,380 --> 00:03:36,687
+So in this case, this says that the
+shortest path from zero to one is to go
+
+43
+00:03:36,687 --> 00:03:42,604
+along zero, one and that's distance five
+and from zero to four, it's to go along
+
+44
+00:03:42,604 --> 00:03:48,319
+zero, four and that's distance nine, And
+zero to seven, let's go take it zero,
+
+45
+00:03:48,319 --> 00:03:53,350
+seven that's distance eight.
+And the edge weights are positive.
+
+46
+00:03:53,586 --> 00:03:59,682
+We're not going to find a shorter path to
+anyone, of what,
+
+47
+00:03:59,682 --> 00:04:02,998
+Sorry.
+The edge weights are positive and those
+
+48
+00:04:02,998 --> 00:04:06,991
+are the shortest paths that we know so far
+to the vertices.
+
+49
+00:04:06,991 --> 00:04:11,390
+Now, the first key point of the algorithm
+is take the closest one.
+
+50
+00:04:11,390 --> 00:04:16,619
+If you take the closest one, in this case,
+it's one, Then we know we're not going to
+
+51
+00:04:16,619 --> 00:04:21,703
+find a shorter, shorter path to one.
+The only other way to go out of zero is to
+
+52
+00:04:21,703 --> 00:04:25,091
+take one of these other edges, and they're
+longer.
+
+53
+00:04:25,287 --> 00:04:30,435
+So, and all the edge weights are positive.
+So we're not going to find a shorter way
+
+54
+00:04:30,435 --> 00:04:33,433
+from zero to one, than to take the edge,
+0-1.
+
+55
+00:04:33,433 --> 00:04:37,148
+So that means that edge 0-1 is on the
+shortest path tree,
+
+56
+00:04:37,148 --> 00:04:41,514
+That's what the algorithm says.
+Take the next closest vertex to the
+
+57
+00:04:41,514 --> 00:04:44,577
+source. in this case, it's one.
+And then,
+
+58
+00:04:44,821 --> 00:04:48,894
+We're going to add that edge, that vertex
+to the tree.
+
+59
+00:04:48,894 --> 00:04:52,560
+And relax all the edges that point from
+that.
+
+60
+00:04:52,560 --> 00:04:56,976
+So now both zero and one are on the tree,
+so now let's look at the edges pointing to
+
+61
+00:04:56,976 --> 00:04:59,290
+that and we have to relax each one of
+those.
+
+62
+00:04:59,290 --> 00:05:08,300
+So in this case if you go from one to
+four, Then we look at four, we know a path
+
+63
+00:05:08,300 --> 00:05:12,222
+of length nine.
+And one to four doesn't give us a shorter
+
+64
+00:05:12,222 --> 00:05:17,658
+path, so we leave that edge alone.
+One to three gives us a shorter path to
+
+65
+00:05:17,658 --> 00:05:23,445
+three which is going to be twenty, cuz you
+went from zero to one, and then one to
+
+66
+00:05:23,445 --> 00:05:28,323
+three is of length twenty.
+And one to two, also, we didn't know a way
+
+67
+00:05:28,323 --> 00:05:33,273
+to two, But now we know now we know one,
+or better one is seventeen.
+
+68
+00:05:33,278 --> 00:05:38,658
+So that completes the relaxation of all
+the edges pointing from one.
+
+69
+00:05:38,660 --> 00:05:43,203
+So now we have zero and one on the tree,
+And.
+
+70
+00:05:44,266 --> 00:05:49,859
+We would, consider next,
+The next closest vertex to the source.
+
+71
+00:05:49,859 --> 00:05:55,449
+So what we have in this two is the
+shortest paths to all the vertex, vertices
+
+72
+00:05:55,449 --> 00:06:02,571
+that we've seen so far and this one says
+that the we've been to the zero and one so
+
+73
+00:06:02,571 --> 00:06:07,085
+the next closest one is seven, which is
+distance eight.
+
+74
+00:06:07,089 --> 00:06:13,444
+So we are going to choose vertex seven.
+And again, that's the shortest path we've
+
+75
+00:06:13,444 --> 00:06:19,086
+seen so far, we are not going to find a
+shorter one cuz to get to every other
+
+76
+00:06:19,086 --> 00:06:24,425
+vertex is longer. and so, we know it's on
+the shortest paths tree, and now we're
+
+77
+00:06:24,425 --> 00:06:27,776
+going to relax all the edges pointing from
+seven.
+
+78
+00:06:27,780 --> 00:06:32,777
+In this case, both of them, the one from
+seven to two, gives us a shorter way to
+
+79
+00:06:32,777 --> 00:06:38,459
+two than what we knew before, and the one
+from seven to five gives us a shorter way
+
+80
+00:06:38,459 --> 00:06:42,772
+to five than we knew before.
+Well, we hadn't been to five before.
+
+81
+00:06:42,772 --> 00:06:46,880
+So that relaxes seven, so now seven is on
+the shortest paths tree.
+
+82
+00:06:47,112 --> 00:06:51,461
+So now 4's the next closest path vertex to
+the source.
+
+83
+00:06:51,461 --> 00:06:54,720
+From the edge zero, four which is of
+length nine.
+
+84
+00:06:54,723 --> 00:06:59,460
+So that's the one that we're going to pick
+next for the tree.
+
+85
+00:06:59,460 --> 00:07:02,954
+We're not going to find a shorter path
+there,
+
+86
+00:07:02,954 --> 00:07:08,546
+And we relax, relax along all its edges.
+In this case, we find a shorter path to
+
+87
+00:07:08,546 --> 00:07:14,525
+five than we knew before and a shorter
+path to six, well, we visit six for the
+
+88
+00:07:14,525 --> 00:07:19,869
+first time.
+Okay, so that's four, so now we just have
+
+89
+00:07:19,869 --> 00:07:26,054
+to worry about two, three, five, and six,
+and five is the one over there, and so we
+
+90
+00:07:26,054 --> 00:07:33,212
+select vertex five, Relax along its edges.
+In this case those edges both give us
+
+91
+00:07:33,212 --> 00:07:39,265
+better paths than we knew before.
+So now we're left with three vertices, and
+
+92
+00:07:39,265 --> 00:07:43,695
+two is the winner.
+This is the two from the sources fourteen,
+
+93
+00:07:43,695 --> 00:07:50,820
+To three, it's twenty and to six, it's 26.
+Relax it's edges, and it gives us again,
+
+94
+00:07:50,820 --> 00:07:58,733
+new shorter paths to both three and six.
+And then the last, this next to last step
+
+95
+00:07:58,733 --> 00:08:07,010
+is to pick three and that does not give us
+a new way to six, and then finally we pick
+
+96
+00:08:07,010 --> 00:08:09,830
+six.
+And then we now know,
+
+97
+00:08:10,088 --> 00:08:15,413
+The shortest path to all the vertices from
+vertex zero.
+
+98
+00:08:15,415 --> 00:08:22,048
+If we just take the edgeTo edges,
+That's from one, to one you take zero, to
+
+99
+00:08:22,048 --> 00:08:28,578
+five you take two, And so forth you get
+the shortest paths tree and that gives the
+
+100
+00:08:28,578 --> 00:08:32,652
+shortest way to get from the source to
+every vertex.
+
+101
+00:08:32,652 --> 00:08:36,100
+That's a simulation of Dijkstra's
+algorithm.
+
+102
+00:08:36,780 --> 00:08:42,405
+Here's a demo of Dijsktra's algorithm
+running in a large digraph.
+
+103
+00:08:42,405 --> 00:08:49,499
+So the source is the protects the center
+with the open circle and you can see it
+
+104
+00:08:49,499 --> 00:08:55,940
+considers the vertices in the graph in
+order of their distance from the source.
+
+105
+00:08:55,940 --> 00:09:01,566
+Now you can see this is maybe like a lake
+in the middle of the graph,
+
+106
+00:09:01,811 --> 00:09:06,132
+And so it's not going to move on from
+those vertices.
+
+107
+00:09:06,132 --> 00:09:10,535
+It's going to take a little while to get
+around the lake.
+
+108
+00:09:10,780 --> 00:09:16,041
+And again, if, this visualization is
+produced by our code,
+
+109
+00:09:16,041 --> 00:09:22,518
+Then it, and it gives a very, natural
+feeling for the way that the algorithm
+
+110
+00:09:22,518 --> 00:09:26,565
+works,
+This, in principle. And I think, in fact,
+
+111
+00:09:26,808 --> 00:09:32,556
+in many cases, is what your, car does when
+you turn the map system on,
+
+112
+00:09:32,556 --> 00:09:36,118
+It computes the shortest path to
+everywhere,
+
+113
+00:09:36,118 --> 00:09:42,351
+And then it's all ready when you ask for a
+certain place, how to get there.
+
+114
+00:09:42,594 --> 00:09:47,453
+So here's just, starting from another
+point in the graph.
+
+115
+00:09:47,453 --> 00:09:53,718
+You have, if you happen to live at a
+corner of the Earth, then it's going to be
+
+116
+00:09:53,718 --> 00:09:57,310
+slightly longer to get to the other
+corner.
+
+117
+00:09:57,310 --> 00:10:02,490
+And, a nice feeling for how the algorithm
+gets its job done.
+
+118
+00:10:02,490 --> 00:10:09,006
+Again, when it gets into those blank
+areas, it takes a little while to get over
+
+119
+00:10:09,006 --> 00:10:14,018
+to the other side.
+And of course if we had islands, if we had
+
+120
+00:10:14,018 --> 00:10:18,780
+little roads in the middle there that were
+not connected,
+
+121
+00:10:18,780 --> 00:10:23,768
+Then we know where to get to them from the
+source and we wouldn't see them.
+
+122
+00:10:23,982 --> 00:10:27,616
+And that's fine for the way our algorithm
+works.
+
+123
+00:10:27,616 --> 00:10:34,172
+We just leave that out of the demo and the
+proof to avoid adding an extra comment
+
+124
+00:10:34,172 --> 00:10:39,445
+about that for every algorithm.
+That's a visualization of Dijkstra's
+
+125
+00:10:39,445 --> 00:10:44,077
+algorithm on a large graph.
+So, so how do we prove it's correct?
+
+126
+00:10:44,077 --> 00:10:49,707
+Well, essentially we've prove that it's an
+instance of the generic algorithm.
+
+127
+00:10:49,921 --> 00:10:55,560
+So, first thing is that every edge is
+relaxed exactly once.
+
+128
+00:10:55,560 --> 00:11:01,320
+Every time we, everytime we put a vertex
+onto the tree, we relax all the edges that
+
+129
+00:11:01,320 --> 00:11:06,080
+come from that vertex and we never
+reconsider the vertex.
+
+130
+00:11:06,080 --> 00:11:11,336
+And what does relaxation do?
+Relaxation ensures that after the
+
+131
+00:11:11,336 --> 00:11:17,805
+relaxation, either way there was before,
+afterwards, you have the distance to w is
+
+132
+00:11:17,805 --> 00:11:24,355
+less than or equal the distance to v plus
+e to the, e plus the way to the edge.
+
+133
+00:11:24,355 --> 00:11:31,714
+Either it's equal cuz we just made it that
+way, or it's less than it was before and
+
+134
+00:11:31,714 --> 00:11:37,374
+the edge was not relevant.
+And this inequality is going to hold for
+
+135
+00:11:37,374 --> 00:11:44,005
+every an, entry for every edge
+corresponding to every edge, for just two
+
+136
+00:11:44,005 --> 00:11:50,732
+entries corresponding to every edge
+because number one, the, these two values
+
+137
+00:11:50,732 --> 00:11:56,251
+are always increasing.
+We never I'm sorry, we're always
+
+138
+00:11:56,251 --> 00:12:00,303
+decreasing.
+The only thing we ever change, only reason
+
+139
+00:12:00,303 --> 00:12:03,705
+we ever change distTo w is to make it
+smaller.
+
+140
+00:12:03,922 --> 00:12:09,205
+If we, if we found an edge that would make
+it bigger we ignor that edge,
+
+141
+00:12:09,205 --> 00:12:14,054
+So it's always decreasing.
+So when we change distTo w, we're not
+
+142
+00:12:14,054 --> 00:12:18,758
+going to make that inequality holds.
+We're just going to make it better.
+
+143
+00:12:18,976 --> 00:12:22,450
+And this distTo v is not going to change
+at all.
+
+144
+00:12:22,680 --> 00:12:28,058
+Once we relax an edge from a vertex, we're
+done with that vertex.
+
+145
+00:12:28,058 --> 00:12:33,667
+We're not going to process that at all.
+So, then when we're done we have the
+
+146
+00:12:33,667 --> 00:12:39,352
+optimality conditions hold that exactly is
+the optimality condition.
+
+147
+00:12:39,352 --> 00:12:44,807
+And, not only that, we have a path from
+the source to every vertex.
+
+148
+00:12:45,038 --> 00:12:50,339
+So that's the correctness proof for
+Dijkstra's algorithm based on the
+
+149
+00:12:50,339 --> 00:12:53,549
+optimality conditions.
+Here's the code.
+
+150
+00:12:53,789 --> 00:12:57,547
+It's similar to code that we've seen
+before.
+
+151
+00:12:57,787 --> 00:13:04,745
+We're going to use the indexed priority
+queue that allows us to implement the
+
+152
+00:13:04,745 --> 00:13:10,503
+decreased key operation.
+And we have our edgeTo and distTo arrays
+
+153
+00:13:10,742 --> 00:13:17,140
+that are part of the shortest paths
+computation and the goal of the shortest
+
+154
+00:13:17,140 --> 00:13:21,778
+paths computation.
+So we initialized the constructor,
+
+155
+00:13:21,778 --> 00:13:26,895
+initializes those rays and including the
+Index
+
+156
+00:13:26,895 --> 00:13:33,451
+Minimum PQ. and we start out with all the
+distances infinity except for the distance
+
+157
+00:13:33,451 --> 00:13:39,426
+of the source is zero.
+We put the source on the priority Q and
+
+158
+00:13:39,426 --> 00:13:48,716
+then what we're going to do is take the,
+Edge that closest to the source off the
+
+159
+00:13:48,716 --> 00:13:52,484
+priority.
+That's on the priority queue off and then
+
+160
+00:13:52,484 --> 00:13:58,467
+relax all the edges that are adjacent to
+that, so I'm using our standard iterator
+
+161
+00:13:58,467 --> 00:14:04,303
+to get all the edges that emanate from
+that vertex and relax them. And then the
+
+162
+00:14:04,303 --> 00:14:10,435
+relax code is just like the code that was
+showed when describing relaxation, except
+
+163
+00:14:10,435 --> 00:14:16,849
+that it also updates the priority queue.
+If the, vertex, that, that edge goes to is
+
+164
+00:14:16,849 --> 00:14:21,277
+on the priority queue, it gives a new
+shorter way to get to that,
+
+165
+00:14:21,277 --> 00:14:25,151
+So we have to, decrease the key on the
+priority queue,
+
+166
+00:14:25,358 --> 00:14:29,025
+Cuz if it's not on the priority queue, we
+insert it,
+
+167
+00:14:29,233 --> 00:14:32,899
+And that's it.
+That's a complete implementation, of
+
+168
+00:14:32,899 --> 00:14:36,290
+Dijsktra's algorithm using modern data
+structures.
+
+169
+00:14:36,497 --> 00:14:41,884
+Now, this algorithm might seem very
+familiar than, if you've been paying
+
+170
+00:14:41,884 --> 00:14:45,269
+attention.
+It's essentially the same algorithm as
+
+171
+00:14:45,269 --> 00:14:49,413
+Prim's algorithm.
+The difference is that, in both cases,
+
+172
+00:14:49,413 --> 00:14:53,420
+we're building what's called a spanning
+tree of the graph.
+
+173
+00:14:53,609 --> 00:14:58,782
+But in Prim's algorithm, we take a vertex
+that, that's not on the tree using the
+
+174
+00:14:58,782 --> 00:15:03,703
+rule of let's take the vertex that's
+closest to the tree, anywhere on the tree,
+
+175
+00:15:03,703 --> 00:15:08,246
+Closest to some vertex on the tree.
+For Dijsktra's algorithm, we take next,
+
+176
+00:15:08,246 --> 00:15:13,377
+the vertex that's closest to the source
+through a path, they go through a tree and
+
+177
+00:15:13,377 --> 00:15:17,910
+then into a non-tree vertex.
+That's the difference and the differences
+
+178
+00:15:17,910 --> 00:15:22,939
+in the code have to do with the fact that
+Prim's algorithm is for an undirected
+
+179
+00:15:22,939 --> 00:15:25,858
+graph, Dijsktra's algorithm is for a
+directed graph,
+
+180
+00:15:25,858 --> 00:15:28,528
+But essentially, they're the same
+algorithm.
+
+181
+00:15:28,528 --> 00:15:33,495
+And actually, several of the algorithms
+that we've talked about are in this same
+
+182
+00:15:33,495 --> 00:15:36,036
+family.
+They compute a spanning tree.
+
+183
+00:15:36,036 --> 00:15:42,572
+I have, you, you have a tree that takes
+care of where that records where you've
+
+184
+00:15:42,572 --> 00:15:46,566
+been in the graph,
+From every vertex, back to where you
+
+185
+00:15:46,566 --> 00:15:50,372
+started.
+Then you used different rules for choosing
+
+186
+00:15:50,372 --> 00:15:55,147
+which vertex to add next.
+For breadth-first search, you use a Q, for
+
+187
+00:15:55,147 --> 00:16:01,341
+depth-first search, you use something like
+a stack and then you have to decide what
+
+188
+00:16:01,341 --> 00:16:05,744
+to do, if you encounter a vertex that
+you've been to before.
+
+189
+00:16:06,042 --> 00:16:09,550
+But many graph algorithms use this same
+basic idea.
+
+190
+00:16:09,758 --> 00:16:15,401
+So in particular, when we are talking
+about what the running time of Dijsktra's
+
+191
+00:16:15,401 --> 00:16:19,720
+algorithm, it depends on what priority Q
+the implementation we use,
+
+192
+00:16:19,929 --> 00:16:23,900
+And it's the same considerations as for
+Prim's algorithm.
+
+193
+00:16:23,900 --> 00:16:30,331
+We have V insert operations, every vertex
+goes on to the priority queue. V
+
+194
+00:16:30,331 --> 00:16:35,730
+delete-min, every vertex comes off the
+priority queue. and for every edge, in the
+
+195
+00:16:35,730 --> 00:16:39,700
+worst case, we could compute decrease-key
+operation.
+
+196
+00:16:39,700 --> 00:16:45,992
+So, the original implementations of
+Dijsktra's algorithm used an unordered
+
+197
+00:16:45,992 --> 00:16:50,043
+array,
+Which would mean that it would take time
+
+198
+00:16:50,043 --> 00:16:56,248
+proportional to V to find the minimum,
+To find the vertex closest to the source.
+
+199
+00:16:56,852 --> 00:17:02,110
+So the total running time would be
+proportional to V squared.
+
+200
+00:17:02,110 --> 00:17:08,272
+That's not adequate for the huge sparse
+graph that we see in practice today like
+
+201
+00:17:08,492 --> 00:17:13,483
+the map in your car.
+So, the binary heap data structure, makes
+
+202
+00:17:13,483 --> 00:17:17,581
+the,, makes it feasible to run this
+algorithm.
+
+203
+00:17:17,581 --> 00:17:23,153
+And that's where all the operations take
+time proportional to log V.
+
+204
+00:17:23,153 --> 00:17:29,381
+We have to use the indexing trick that we
+talked about last time to support
+
+205
+00:17:30,200 --> 00:17:33,888
+decrease-key.
+But still, we get a total running time of
+
+206
+00:17:33,888 --> 00:17:36,510
+E log V,
+Which makes it feasible.
+
+207
+00:17:36,510 --> 00:17:42,940
+And just as with Prim's algorithm, by
+using a implementation of the priority
+
+208
+00:17:42,940 --> 00:17:48,093
+queue that can do a faster decrease-key,
+you can get a faster algorithm.
+
+209
+00:17:48,311 --> 00:17:53,827
+And in, in practice something like a 4-way
+hit is going to give quite a fast
+
+210
+00:17:53,827 --> 00:17:57,601
+algorithm.
+And so, more expensive to insert and t-,
+
+211
+00:17:57,601 --> 00:18:02,319
+to insert but much faster to delete min in
+decrease key.
+
+212
+00:18:02,537 --> 00:18:08,126
+And again, there's a theoretical data
+structure that's not useful in practice.
+
+213
+00:18:08,126 --> 00:18:11,610
+It gets the running time down to E + V log
+V.
+
+214
+00:18:11,610 --> 00:18:17,292
+Of course, if your graph, graph is dense,
+And again, the examples I used, they're
+
+215
+00:18:17,292 --> 00:18:20,843
+not.
+The array implementation is optimal, we
+
+216
+00:18:20,843 --> 00:18:25,176
+can't do any better.
+We have to go through all the edges and
+
+217
+00:18:25,176 --> 00:18:28,798
+might as well find the minimum, at the
+same time.
+
+218
+00:18:29,011 --> 00:18:33,983
+But in, in, in practice, people use binary
+heaps, for sparse graphs.
+
+219
+00:18:33,983 --> 00:18:39,097
+I maybe going to four way,
+If, the performance is really critical.
+
+220
+00:18:39,310 --> 00:18:45,623
+The bottom line is, we have, extremely
+efficient implementations for the huge
+
+221
+00:18:45,623 --> 00:18:48,140
+graphs that arise in practice nowadays.

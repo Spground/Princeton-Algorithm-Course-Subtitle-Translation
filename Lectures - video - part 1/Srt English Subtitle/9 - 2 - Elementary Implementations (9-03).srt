@@ -1,0 +1,443 @@
+1
+00:00:01,048 --> 00:00:06,041
+Next, we'll look at some elementary symbol
+table implementations. These are so simple
+
+2
+00:00:06,041 --> 00:00:10,084
+that we won't go into much detail. But
+still, it's worthwhile to take a look at
+
+3
+00:00:10,084 --> 00:00:15,009
+them to set the stage for the more
+advanced implementations we'll consider
+
+4
+00:00:15,009 --> 00:00:21,041
+next. Well, one thing we could do is
+maintain a link list. We could keep it in
+
+5
+00:00:21,041 --> 00:00:25,906
+order or keep it unordered, this version
+keeps it unordered. So, we are going to
+
+6
+00:00:26,094 --> 00:00:32,034
+have nodes in the link list, that have key
+value pairs, they have every key in the
+
+7
+00:00:32,034 --> 00:00:36,742
+symbol table and a value associated to
+that key. For search, we have to, since
+
+8
+00:00:36,742 --> 00:00:42,539
+it's unordered, scan through the whole
+list to find a match, a key that's there.
+
+9
+00:00:42,756 --> 00:00:48,291
+For insert, I would also have to scan
+through all keys to find the place to
+
+10
+00:00:48,488 --> 00:00:54,050
+update a value, if it's a value that's
+already there. And if there's no match,
+
+11
+00:00:54,050 --> 00:01:00,797
+then we could add it to the front. So
+here's our simple client for traces. So if
+
+12
+00:01:00,797 --> 00:01:07,044
+we associate S with zero, we just had it
+that's our one node link, link list that's
+
+13
+00:01:07,044 --> 00:01:13,594
+got that information. Associate E with one
+that's not there, so we just add it to the
+
+14
+00:01:13,594 --> 00:01:19,465
+beginning of the list. A with two, R with
+three, C with four, H with five, and so
+
+15
+00:01:19,465 --> 00:01:24,716
+forth. So now, when we associate E with
+six, we have to search through the list to
+
+16
+00:01:24,716 --> 00:01:31,022
+see if there's an E. In this case there
+is, and then we update, just update that
+
+17
+00:01:31,022 --> 00:01:36,046
+value. That's the associative array
+abstraction. It's possible to implement
+
+18
+00:01:36,046 --> 00:01:41,076
+symbol tables that allow multiple values
+with the same key and so forth. And that
+
+19
+00:01:41,076 --> 00:01:46,082
+leads to different types of clients,
+different types of implementations. We're
+
+20
+00:01:46,082 --> 00:01:51,081
+going to stick to this associative array
+abstraction and no duplicate keys in the
+
+21
+00:01:51,081 --> 00:01:56,086
+symbol table because it both simplifies
+implementations and leads to simpler
+
+22
+00:01:56,086 --> 00:02:06,062
+client code. Okay, X7 is a new value A8 we
+found A in there and update the value
+
+23
+00:02:06,062 --> 00:02:14,050
+eight and then M9, P10, L11 are all out
+there, and they go at the beginning, and
+
+24
+00:02:14,050 --> 00:02:20,816
+then the last one changes the value at E
+again, twelve. So, this is a, a simple
+
+25
+00:02:22,003 --> 00:02:29,260
+implementing this as a example of link
+list processing. Slight modification of
+
+26
+00:02:29,260 --> 00:02:36,529
+our stack and queue code. And we will skip
+the details and just a note that what's
+
+27
+00:02:36,529 --> 00:02:43,546
+the cost of implementing this. Well if
+there's been if there are N things on the
+
+28
+00:02:43,546 --> 00:02:49,664
+symbol table, you have to, for both search
+and insert look all the way through. And
+
+29
+00:02:49,873 --> 00:02:55,896
+if everything's random then on average,
+you only have to look halfway through for
+
+30
+00:02:55,896 --> 00:03:02,087
+a successful search. And well, you still
+have to insert another issue is for many
+
+31
+00:03:02,087 --> 00:03:09,013
+clients if the keys are ordered it's nice
+to be able to iterate through the symbol
+
+32
+00:03:09,013 --> 00:03:15,040
+table in order and this one by definition
+doesn't provide that. And this one just
+
+33
+00:03:15,040 --> 00:03:23,037
+uses equals. So, the keys don't have to be
+comparable for this it just uses equals.
+
+34
+00:03:23,221 --> 00:03:27,759
+So our challenge is to look for methods
+that give us more efficient
+
+35
+00:03:27,759 --> 00:03:32,607
+implementations than search and insert
+searching operations. And we've already
+
+36
+00:03:32,607 --> 00:03:39,711
+looked at an algorithm that can do this
+and that's binary search. So for binary
+
+37
+00:03:39,711 --> 00:03:47,821
+search the now, what we're going to do is
+use an ordered array. And actually use
+
+38
+00:03:47,821 --> 00:03:54,044
+parallel arrays, one for the keys and one
+for the values. And the idea is to keep
+
+39
+00:03:54,044 --> 00:04:00,005
+the array of keys in sorted order. And
+then find the index associated with the
+
+40
+00:04:00,005 --> 00:04:05,882
+key that we're searching for using binary
+search and then use that index to get the
+
+41
+00:04:05,882 --> 00:04:11,184
+value that's associated with that key
+that's stored in the parallel array. And
+
+42
+00:04:11,184 --> 00:04:16,630
+we looked at the binary search algorithm
+earlier in the course. And so, for
+
+43
+00:04:16,630 --> 00:04:22,881
+example, if we're doing a, if these are
+the keys in our symbol table. And we're
+
+44
+00:04:22,881 --> 00:04:29,715
+doing a search for the index where P is
+stored. We look at the middle. P is bigger
+
+45
+00:04:29,715 --> 00:04:35,120
+than L, so we look to the right. Look in
+the middle of the right half. P is less
+
+46
+00:04:35,120 --> 00:04:41,359
+than R so we look to the left. Continue
+until we find P. When we find P, we return
+
+47
+00:04:41,359 --> 00:04:48,588
+its index, and we use that index to get us
+the value that we need or another way to
+
+48
+00:04:48,588 --> 00:04:54,613
+look at this is that implements the
+function, how many keys are there that are
+
+49
+00:04:54,613 --> 00:05:00,598
+less than K. So, for example, for queue
+that's unsuccessful search and you can
+
+50
+00:05:00,598 --> 00:05:06,760
+figure out from the last index when you
+don't find your the element that you're
+
+51
+00:05:06,760 --> 00:05:12,557
+seeking you can figure out the return
+value, which is the number of keys that
+
+52
+00:05:12,557 --> 00:05:17,731
+are less than it. So, that's a trace of
+implementing binary search to find the
+
+53
+00:05:17,731 --> 00:05:22,390
+rank of a key in an ordered array, and
+again, for successful, you can use that
+
+54
+00:05:22,390 --> 00:05:28,129
+rank to return the value and for if it is
+unsuccessful, you can use that rank to
+
+55
+00:05:28,129 --> 00:05:36,904
+figure out where to insert the new key.
+Alright. So, this is the code for the get
+
+56
+00:05:36,904 --> 00:05:44,725
+operation in this rank, which is binary
+search. So this is precisely the binary
+
+57
+00:05:44,725 --> 00:05:52,346
+search curve that we looked at before. So,
+let's look at again. So if the whole table
+
+58
+00:05:52,346 --> 00:05:59,018
+is empty, return null. Otherwise, we call
+rank and that could gives us the number of
+
+59
+00:05:59,018 --> 00:06:05,565
+keys less than the current key. And so,
+that is where we look to check to see if
+
+60
+00:06:05,565 --> 00:06:12,551
+that key is there. If it's there, then we
+return the value with the same index in
+
+61
+00:06:12,551 --> 00:06:19,175
+the parallel array. If it's not there,
+then we return null, saying the key's not
+
+62
+00:06:19,175 --> 00:06:26,409
+there. Now, the problem with minor
+searches well, not necessarily a problem
+
+63
+00:06:26,409 --> 00:06:32,719
+but the situation is that if when it's
+time to insert a new element, we have to
+
+64
+00:06:32,719 --> 00:06:38,699
+move everything larger over one position
+just like an insertion sort. So, if the
+
+65
+00:06:38,699 --> 00:06:44,072
+table has A, E, R, and S and we have to
+insert the value C, then we have to move
+
+66
+00:06:44,072 --> 00:06:49,889
+the E, R, and S over one position to put
+the C and then put the value associated
+
+67
+00:06:49,889 --> 00:06:55,381
+with C if they're the same thing in the
+values array. Move all the values
+
+68
+00:06:55,381 --> 00:07:00,560
+associated with those keys over one
+position and put the associated value in.
+
+69
+00:07:00,560 --> 00:07:05,351
+So, this is a trace of what would happen
+for our trace. And, and again, every
+
+70
+00:07:05,351 --> 00:07:11,072
+insertion involves, involves making a new
+position by moving all the larger keys
+
+71
+00:07:11,072 --> 00:07:18,541
+over one position do the same thing in the
+values array. And if it's changing the
+
+72
+00:07:18,541 --> 00:07:25,094
+value associated with a key that's already
+there, then it's just a matter of finding
+
+73
+00:07:25,289 --> 00:07:32,999
+where the key is and changing the value at
+that index. So, those from that trace is
+
+74
+00:07:32,999 --> 00:07:39,248
+pretty easy to see what's involve, what's
+involved for the code and we'll skip that
+
+75
+00:07:39,248 --> 00:07:44,231
+code. And just take a look at the
+comparison between this elementary
+
+76
+00:07:44,231 --> 00:07:49,534
+implementation for symbol tables with the
+sequential search in an unordered list.
+
+77
+00:07:49,716 --> 00:07:55,380
+So, one thing is we're using a different
+key interface. We're taking advantage of
+
+78
+00:07:55,380 --> 00:08:00,332
+the fact that the keys are comparable to
+give us an efficient search. Ah., we can
+
+79
+00:08:00,332 --> 00:08:06,331
+do search in worst case in average case,
+in time proportional to log N. That's what
+
+80
+00:08:06,331 --> 00:08:11,810
+binary search provides for us. And this is
+a fine data structure for symbol tables
+
+81
+00:08:11,810 --> 00:08:17,740
+where there's where, that are relatively
+static, where the values don't change
+
+82
+00:08:17,740 --> 00:08:23,236
+much, and most of the operations are
+search. It's hard to beat binary search.
+
+83
+00:08:23,236 --> 00:08:28,649
+On the other hand, in a dynamic situation
+where there are a lot of inserts. This
+
+84
+00:08:28,649 --> 00:08:33,457
+method is going to be problematic because
+the cost of its insert is linear and
+
+85
+00:08:33,457 --> 00:08:39,208
+proportional to N/2. If you have a huge
+number of operations and everyone who is
+
+86
+00:08:39,208 --> 00:08:44,864
+proportional to the symbol table size,
+then you're just not going to be able to
+
+87
+00:08:44,864 --> 00:08:50,742
+support huge numbers of keys. What we want
+is efficient implementations of both
+
+88
+00:08:50,742 --> 00:09:02,557
+search and insert. Those are elementary
+implementations. Next we'll look at more
+
+89
+00:09:02,557 --> 00:09:05,028
+advanced ones.

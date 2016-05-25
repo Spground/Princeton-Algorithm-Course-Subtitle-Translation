@@ -1,0 +1,789 @@
+1
+00:00:03,500 --> 00:00:08,156
+To introduce the algorithms for minimum
+spanning tree, we're going tp look at a
+
+2
+00:00:08,156 --> 00:00:10,853
+general algorithm called a greedy
+algorithm.
+
+3
+00:00:10,853 --> 00:00:15,816
+It's a good example of a general principle
+in algorithm design that will help us,
+
+4
+00:00:16,000 --> 00:00:20,473
+prove correctness of our algorithms.
+To begin we'll make some simplifying
+
+5
+00:00:20,473 --> 00:00:23,966
+assumptions.
+First we assume that the edge weights are
+
+6
+00:00:23,966 --> 00:00:26,907
+all distinct, and that the graph is
+connected.
+
+7
+00:00:27,091 --> 00:00:29,910
+And this is just to simplify the
+presentation.
+
+8
+00:00:30,105 --> 00:00:35,383
+As a consequence of these two exhumptions
+we know that the minimum spanning tree
+
+9
+00:00:35,383 --> 00:00:39,814
+exists and is unique.
+Our algorithms will still work when edge
+
+10
+00:00:39,814 --> 00:00:44,115
+winks are not distinct.
+And if the graph is not connected, it'll
+
+11
+00:00:44,115 --> 00:00:49,262
+find spanning trees or components.
+But these two assumptions simplify the
+
+12
+00:00:49,262 --> 00:00:53,410
+presentation.
+Now, to understand our algorithms we're
+
+13
+00:00:53,410 --> 00:00:58,470
+going to start with a general operation on
+graph called making a cut.
+
+14
+00:00:58,470 --> 00:01:03,470
+So a cut in a graph is a partition of its
+vertices into two non-empty sets,
+
+15
+00:01:03,470 --> 00:01:08,602
+And we'll indicate that just by coloring
+some of the vertices grey and others
+
+16
+00:01:08,602 --> 00:01:11,761
+white.
+So that's a partition of the two sets: the
+
+17
+00:01:11,761 --> 00:01:16,630
+grey vertices and the white vertices.
+Every vertex is either grey or white,
+
+18
+00:01:16,630 --> 00:01:21,498
+And there's at least one in each set.
+Now, given a cut, the crossing edge
+
+19
+00:01:21,498 --> 00:01:26,894
+connects a vertex in one set with a vertex
+in the other. So every edge that connects
+
+20
+00:01:26,894 --> 00:01:30,250
+a grey vertex to a white vertex is a
+crossing edge.
+
+21
+00:01:30,250 --> 00:01:35,377
+So that's, a second definition.
+That gives us a way to talk about, inches
+
+22
+00:01:35,377 --> 00:01:39,100
+and graphs when we compete them into a
+spanning tree.
+
+23
+00:01:39,100 --> 00:01:47,017
+So an important property that is relevant
+to MST algorithms is that, given any cut
+
+24
+00:01:47,017 --> 00:01:50,750
+at all,
+The cut defines a set of crossing edges.
+
+25
+00:01:50,750 --> 00:01:56,910
+The minimum weight crossing edge is in the
+MST. Remember no two edges have the same
+
+26
+00:01:56,910 --> 00:02:03,141
+weight so there's a single edge that has
+minimum weight from the edges in the edges
+
+27
+00:02:03,141 --> 00:02:07,152
+in the cut.
+So in this case the thick red edge is the
+
+28
+00:02:07,152 --> 00:02:12,739
+minimum weight, it's the shortest edge
+connecting a grey vertex to the white one
+
+29
+00:02:12,954 --> 00:02:17,500
+and that, that edge has to be in the MST.
+That's the cut property.
+
+30
+00:02:17,727 --> 00:02:21,600
+So here's a, just a quick proof of that
+property.
+
+31
+00:02:21,828 --> 00:02:26,460
+I'll hand wave a bit through the
+discussions of the proof.
+
+32
+00:02:26,688 --> 00:02:30,043
+It's a.
+Usually not appropriate to fully dimension
+
+33
+00:02:30,043 --> 00:02:34,509
+proofs in the lectures.
+So you should look at the book and the
+
+34
+00:02:34,509 --> 00:02:39,960
+underlined materials to be sure that you
+understand the proofs or, or re-read these
+
+35
+00:02:39,960 --> 00:02:43,112
+slides.
+But I'll try to give all the steps.
+
+36
+00:02:43,112 --> 00:02:46,068
+So, we're trying to prove the cut
+property.
+
+37
+00:02:46,068 --> 00:02:49,548
+Giving any cut the crossing edge in many
+ways to MST.
+
+38
+00:02:49,548 --> 00:02:55,328
+So let's suppose the contradiction.
+So suppose that we have a minimum-weight
+
+39
+00:02:55,328 --> 00:03:01,641
+crossing edge that's not in the MST.
+So, in this case, that edge E, suppose
+
+40
+00:03:01,641 --> 00:03:07,446
+it's not in the MST.
+So it means that some, one of the other
+
+41
+00:03:07,446 --> 00:03:14,323
+crossing edges has to be in the MST.
+Otherwise the MST wouldn't be connected.
+
+42
+00:03:14,584 --> 00:03:18,762
+Then if you add E to the MST you get a
+cycle.
+
+43
+00:03:18,762 --> 00:03:23,986
+And some other edge in that cycle has to
+be a crossing edge.
+
+44
+00:03:23,986 --> 00:03:30,366
+That's the way to think about it.
+Remember MST is a minimal way to connect
+
+45
+00:03:30,366 --> 00:03:34,721
+the graph.
+And if you add an edge to a, a tree you
+
+46
+00:03:34,721 --> 00:03:39,234
+get a cycle.
+And then some other edge that has to be a
+
+47
+00:03:39,234 --> 00:03:43,975
+crossing edge.
+But if you remove that edge and add e then
+
+48
+00:03:43,975 --> 00:03:49,830
+you're going to get a spanning tree.
+And that spanning tree is smaller than the
+
+49
+00:03:49,830 --> 00:03:54,068
+one that you had.
+So, that, supposition had to be a
+
+50
+00:03:54,068 --> 00:03:58,691
+contradiction.
+So, it has to be that the minimum weight
+
+51
+00:03:58,691 --> 00:04:03,160
+crossing edge is in the MST.
+So that's the, cut property.
+
+52
+00:04:03,426 --> 00:04:10,712
+So, and now given that property, we can
+develop what's called a greedy algorithm,
+
+53
+00:04:10,712 --> 00:04:15,510
+Which is the easiest algorithm, we can
+come up with.
+
+54
+00:04:15,777 --> 00:04:21,374
+So what we're going to do is start with,
+all edges colored grey.
+
+55
+00:04:21,374 --> 00:04:24,902
+Find any cut that has no black crossing
+edges.
+
+56
+00:04:24,902 --> 00:04:28,329
+The algorithm's going to color some of the
+edges black.
+
+57
+00:04:28,329 --> 00:04:33,931
+And color the minimum-weight edge of that
+cut black, and just repeat the algorithm.
+
+58
+00:04:33,931 --> 00:04:38,875
+Finding any cut with no black crossing
+edges, color the minimum-weight edge
+
+59
+00:04:38,875 --> 00:04:43,752
+black, and keep going until you have v
+minus one edges that are colored back.
+
+60
+00:04:43,752 --> 00:04:47,047
+And the claim is that that's going to
+compute an MST.
+
+61
+00:04:47,047 --> 00:04:52,583
+Let's look at a demo of that, just to make
+sure that we follow what's going on.
+
+62
+00:04:52,583 --> 00:04:58,185
+So we start with all edges colored gray.
+We're supposed to find a cut with no black
+
+63
+00:04:58,185 --> 00:05:01,216
+crossing edges and colors minimum weight
+edge black.
+
+64
+00:05:01,216 --> 00:05:05,987
+Well, that could be any cut.
+In this case, we'll take the cut that, has
+
+65
+00:05:05,987 --> 00:05:11,209
+three, two, and six on one side and, one,
+zero, zero, one, four, five, seven on the
+
+66
+00:05:11,209 --> 00:05:13,917
+other side.
+Look at all the crossing edges.
+
+67
+00:05:14,111 --> 00:05:19,527
+Minimum white crossing edge is the one
+from zero to two, so the, that's the one
+
+68
+00:05:19,527 --> 00:05:23,473
+that we'll color black.
+So now we have zero, two and the MST is
+
+69
+00:05:23,473 --> 00:05:26,758
+color black.
+So again, any cut that doesn't have a
+
+70
+00:05:26,758 --> 00:05:31,748
+black crossing edge, so in this case,
+let's do the cut that just has five on one
+
+71
+00:05:31,748 --> 00:05:36,738
+side and all the odds on the other side.
+In this case, there's three crossing
+
+72
+00:05:36,738 --> 00:05:39,960
+edges, the smallest one is five, seven,
+color that one black.
+
+73
+00:05:39,960 --> 00:05:43,090
+Again, any cut that has no black crossing
+edges.
+
+74
+00:05:43,090 --> 00:05:48,818
+So let's just take six the cut that has
+six on one side and all the others and the
+
+75
+00:05:48,818 --> 00:05:52,082
+other.
+Two, six is the minimum crossing edge so
+
+76
+00:05:52,082 --> 00:05:54,880
+six, two.
+And so we put that one on the MST.
+
+77
+00:05:55,063 --> 00:05:59,900
+As we get more and more black edges it's
+going to be harder to find a cut with no
+
+78
+00:05:59,900 --> 00:06:02,349
+black crossing edges.
+But we press on.
+
+79
+00:06:02,349 --> 00:06:07,431
+So now let's do the cut with zero, two,
+four, and six on one side colored white.
+
+80
+00:06:07,431 --> 00:06:10,064
+And one, three, five, and seven on the
+others.
+
+81
+00:06:10,248 --> 00:06:12,942
+So there's a lot of crossing edges that
+cut.
+
+82
+00:06:12,942 --> 00:06:17,901
+But the smallest one is the one between
+zero and seven, so that's the one that we
+
+83
+00:06:17,901 --> 00:06:22,827
+color black and add to the MST.
+So now we have four edges, and our next
+
+84
+00:06:22,827 --> 00:06:27,728
+cut now one and three on one side.
+A smallest edge in that, right, the
+
+85
+00:06:27,728 --> 00:06:31,479
+smallest crossing edge for that cut is
+two, three.
+
+86
+00:06:31,488 --> 00:06:38,041
+Now one more, now let's put one and four,
+now almost all the edges left are crossing
+
+87
+00:06:38,041 --> 00:06:41,927
+edges.
+So one and four are one side, all the rest
+
+88
+00:06:41,927 --> 00:06:46,498
+are in the other.
+And, the minimum weight crossing edge is
+
+89
+00:06:46,498 --> 00:06:51,318
+the one from one to seven.
+Now notice, in this case, we got the nodes
+
+90
+00:06:51,318 --> 00:06:56,996
+in the tree on one side of the kit, cut.
+And the nodes not in the tree on the other
+
+91
+00:06:56,996 --> 00:07:01,012
+side of the cut.
+One of our algorithms will always have
+
+92
+00:07:01,012 --> 00:07:03,783
+that property.
+So now, we add one to seven.
+
+93
+00:07:03,783 --> 00:07:07,729
+Seven in seven to that,
+And now the last thing, is to.
+
+94
+00:07:07,729 --> 00:07:13,615
+The only cut that, has no black edges is
+the one that puts four on one side, and
+
+95
+00:07:13,615 --> 00:07:18,254
+all the rest on the other.
+And the minimum way of crossing edge for
+
+96
+00:07:18,254 --> 00:07:24,593
+that one is, five, four.
+So now, we've got. eight vertices,
+
+97
+00:07:24,593 --> 00:07:31,192
+And seven vertices in the seven edges in
+the MST. so we found the MST.
+
+98
+00:07:31,192 --> 00:07:37,000
+We've got V minus one edge is color black
+and we found the MST.
+
+99
+00:07:37,260 --> 00:07:41,016
+So the greedy algorithm was a very general
+algorithm.
+
+100
+00:07:41,218 --> 00:07:46,316
+We're allow to find any cut at all that
+has no black cras crossing edges.
+
+101
+00:07:46,316 --> 00:07:51,079
+So let's do the correctness proof.
+And then we'll look at some specific
+
+102
+00:07:51,079 --> 00:07:54,300
+instances of the greedy algorithm.
+So.
+
+103
+00:07:54,581 --> 00:08:02,471
+First of all since we took the minimum
+crossing edge of a cut always to color
+
+104
+00:08:02,471 --> 00:08:08,295
+black any black edge is in the MST.
+That's the cut property.
+
+105
+00:08:08,295 --> 00:08:15,246
+Do a cut no black crossing edges you can
+color black, that's in the MST.
+
+106
+00:08:15,246 --> 00:08:20,600
+So that's first observation.
+Now when we have.
+
+107
+00:08:20,600 --> 00:08:26,478
+Fewer than v minus one black edges.
+There has to be a cut that has no black
+
+108
+00:08:26,478 --> 00:08:30,623
+crossing edges.
+That is the algorithm doesn't get stuck.
+
+109
+00:08:30,849 --> 00:08:37,556
+And so the way to think about that is just
+take the verticies in one of the connected
+
+110
+00:08:37,556 --> 00:08:42,941
+components, and make that the cut.
+Then there's gonna be, since that's a
+
+111
+00:08:42,941 --> 00:08:49,219
+connected component there's gonna be no
+black edges in the crossing edges for, for
+
+112
+00:08:49,219 --> 00:08:52,158
+that cut.
+So the algorithm doesn't get stuck.
+
+113
+00:08:52,158 --> 00:08:57,234
+If the, if you don't have an MST yet,
+there's going to be some cut with no black
+
+114
+00:08:57,234 --> 00:08:59,171
+crossing edges.
+And that's it.
+
+115
+00:08:59,171 --> 00:09:04,738
+The greedy algorithm computes the MST.
+Any edge colored black is in the MST,
+
+116
+00:09:04,778 --> 00:09:08,133
+And you can always add to the set of black
+edges.
+
+117
+00:09:08,133 --> 00:09:14,002
+Now if you don't have v minus one once you
+have v minus one you've got v minus one
+
+118
+00:09:14,002 --> 00:09:20,014
+edges that are in the MST. The MST has v
+minus one edges greedy algorithm computes
+
+119
+00:09:20,014 --> 00:09:22,347
+mst.
+So now what we want to do is
+
+120
+00:09:22,560 --> 00:09:28,217
+implementations of the greedy algorithm
+or, or specializations of it really that
+
+121
+00:09:28,429 --> 00:09:32,390
+differ first of all in the way that they
+choose the cut.
+
+122
+00:09:32,598 --> 00:09:37,457
+Which cut are we going to use?
+And also, the way in which they find the
+
+123
+00:09:37,457 --> 00:09:42,963
+minimum weight edge in the cut.
+Again, those could both be, expensive
+
+124
+00:09:42,963 --> 00:09:46,763
+operations.
+And prohibitively, prohibitively expense,
+
+125
+00:09:46,763 --> 00:09:51,532
+expensive for huge graphs.
+What we're going to look at is, two
+
+126
+00:09:51,532 --> 00:09:56,897
+classic implementations called Kruskal's
+Algorithm and Prim's Algorithm.
+
+127
+00:09:57,120 --> 00:10:03,081
+Although, in both cases, we use modern
+data structures to make them efficient for
+
+128
+00:10:03,081 --> 00:10:07,328
+huge graphs.
+And there's another interesting algorithm
+
+129
+00:10:07,328 --> 00:10:12,544
+called Boruvka's Algorithm, that, that
+kind of combines the two briefly
+
+130
+00:10:12,544 --> 00:10:17,857
+mentioned.
+Now before getting to those, what about
+
+131
+00:10:17,857 --> 00:10:26,136
+removing the two simplifying assumptions?
+So what happens if you have, a situation
+
+132
+00:10:26,136 --> 00:10:30,323
+where the edge weights are not all
+distinct?
+
+133
+00:10:30,609 --> 00:10:36,731
+So in this, case, 1-2 and 2-4.
+Both have the same edge weight.
+
+134
+00:10:36,731 --> 00:10:44,117
+Well so also do one three and three four.
+And so it means there's multiple MSTs.
+
+135
+00:10:44,369 --> 00:10:48,818
+So in this case the, there's two different
+MSTs.
+
+136
+00:10:49,070 --> 00:10:54,384
+So the greedy algorithm is still correct,
+it turns out, our correctness proof
+
+137
+00:10:54,384 --> 00:10:58,859
+doesn't quite work, but that can be fixed
+with a little bit of work.
+
+138
+00:10:58,859 --> 00:11:03,963
+So the fact is it's still correct.
+And if the graph is not connected, as I
+
+139
+00:11:03,963 --> 00:11:09,697
+mentioned, then what we'll get is what's
+called a minimum spanning forest, which is
+
+140
+00:11:09,697 --> 00:11:14,032
+the MST of each component.
+Essentially it's like independently
+
+141
+00:11:14,032 --> 00:11:18,480
+computing the MSTs of the components.
+But.
+
+142
+00:11:19,160 --> 00:11:25,993
+Basically what the greedy algorithm gives
+us is an easy way to prove correctness for
+
+143
+00:11:26,226 --> 00:11:30,575
+specific algorithms.
+All we have to show is that they're
+
+144
+00:11:30,808 --> 00:11:36,011
+finding a cut and taking a minimum weight
+edge from that cut.
+
+145
+00:11:36,244 --> 00:11:41,370
+And then we can prove correctness of a
+more complicated algorithm.
+
+146
+00:11:41,573 --> 00:11:47,060
+In general, in algorithm design this is
+proven to be affective in all kinds of
+
+147
+00:11:47,263 --> 00:11:50,718
+domains.
+Trying to come up with a general algorithm
+
+148
+00:11:50,718 --> 00:11:56,611
+that you can prove works efficiently and
+then using that to help design specific
+
+149
+00:11:56,611 --> 00:12:00,674
+ones.
+The point is, ladies and gentlemen, that
+
+150
+00:12:00,674 --> 00:12:05,927
+greed, for lack of a better word, is good.
+Greed is right.
+
+151
+00:12:05,927 --> 00:12:11,084
+Greed works.
+Greed clarifies, cuts through and captures
+
+152
+00:12:11,084 --> 00:12:17,388
+the essence of the evolutionary spirit.
+Greed in all of it's forms.
+
+153
+00:12:17,388 --> 00:12:24,551
+Greed for life, for money, for love,
+knowledge, has marked the upward surge of
+
+154
+00:12:24,551 --> 00:12:28,848
+mankind.
+And greed, you mark my words, will not
+
+155
+00:12:28,848 --> 00:12:39,871
+only save Teldar Paper,
+But that other malfunctioning corporation
+
+156
+00:12:39,871 --> 00:12:45,349
+called the USA.
+Thank you very much.
+
+157
+00:12:45,349 --> 00:12:48,949
+.
+Great, great.
+
+158
+00:12:48,949 --> 00:12:52,080
+Fly me to the moon, and let me play among
+the stars. .

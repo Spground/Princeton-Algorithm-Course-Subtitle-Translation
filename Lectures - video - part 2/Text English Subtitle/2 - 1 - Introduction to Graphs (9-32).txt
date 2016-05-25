@@ -1,0 +1,222 @@
+Welcome back.
+Our topic today is algorithms for
+processing undirected graphs which are a
+model that are widely used for many, many
+applications.
+We'll see plenty of examples and then
+we'll look at three fundamental algorithms
+for processing undirected graphs and
+consider some of the challenges of
+developing algorithms for, for this kind
+of structure.
+So as introduction we'll take a look at
+the basic ideas behind undirected graphs
+and applications.
+What is an undirected draft?
+It's the, the definition is very simple.
+It's a set a verticies connected pairwise
+by edges.
+So this is an example of an undirected
+graph that describes the Paris Metro.
+You've got stations and if there's a rail
+line between the stations there's an edge.
+So why do we study graphs and graph
+algorithms?
+Well there are literally thousands of
+practical applications where graphs are an
+appropriate models and we'll take a look
+at a few others in just a minute.
+Because there are so many applications,
+there's literally hundreds of graph
+algorithms known and these are sometimes
+quite sophisticated, as we'll see and also
+very important in understanding what's
+going on in an application.
+Even without the applications a graph is
+really an interesting and broadly useful
+abstraction to try and understand that's
+so simple to describe, but leads to quite
+complex and difficult to understand
+structures.
+In a general graph theory and graph
+algorithms is a very challenging branch of
+computer science and discreet math that
+we're just introducing now.
+So here's an example of a graph,
+In, in genetics or in genomics,
+Where if the network where the nodes are
+proteins and the edges are interactions
+among the proteins.
+And genomicists are trying to understand
+how these biological processes work.
+Need to understand the nature of
+connections like this.
+Here's another example, the internet
+itself, where, every node is a computer
+and every edge is or, or a node, every, a
+computer or a communications device, and
+every edge is connections.
+And of course, the Internet is driven by
+loops and bounds, so this is a huge craft,
+in this lot of needs, lot of interest
+understanding, properties of this craft.
+This is a, social graph having to do the
+way science is carried out.
+So it's the, the nodes are and scientist
+websites and the edges or, clicks
+connecting one to another.
+This one shows how scientists in different
+fields are interacting.
+And again interesting and important to
+understand properties of this graph.
+You're certainly familiar with Facebook.
+That's one of the hugest one of the
+biggest graphs.
+It's absolutely huge,
+And it's always changing.
+It's very dynamic and people want to
+understand its property.
+This is an example of a graph, that was
+used, in litigation,
+Where people were trying to understand,
+exactly, precisely, the communications
+patterns, in a particular corporate
+culture, that was of great interest to
+many people.
+Another similar example, this is people
+lobbying the FCC and how are they
+connected.
+So from the breadth and variety of these
+examples, you can see that number one.
+Graphs are very general model, and number
+two, graphs can be huge.
+This is another one showing the Framingham
+heart study and connections among people
+in the study and how it relates to
+obesity.
+So those examples in this list shows that
+it's graphs are very flexible and very
+dynamic model and that the graphs involved
+can be huge they could have complex
+properties. And so our challenge is to try
+to figure out efficient algorithms that
+can give us some insight into the
+structure of graphs like this.
+That's what we're going to be talking
+about for the rest of this lecture.
+So now back to a starting point which is
+we need some simple and clear and specific
+definitions about basic terms that we're
+talking about.
+And then we'll look at algorithms that
+work for a small example but also the same
+algorithms do what we need for big graphs
+of the type we just considered.
+So this is the terminology for that we'll
+use for graph processing.
+So we have a vertex which is a black dot
+in this graph and an edge which is black
+line connecting two vertices.
+And then a few more concepts that are
+important in many applications.
+So one is the idea of the path.
+That's just a sequence of vertices
+connected by edges.
+And the idea of a cycle,
+Which is a path who's first and last
+vertices are the same.
+So over on the left, you can see a cycle
+of length five, that connects these five
+vertices.
+And wherever you start, you go back to the
+same place.
+So we say the two vertices are connected
+if there's a path between them.
+And then that definition leads us to the
+idea of a graph dividing up into
+connective components,
+Which is subsets of the graph where each
+pair of vertices is connected.
+And, so one of the algorithms that we're
+going to look at today is one for
+identifying connected components in, in a
+graph.
+So that's just one example.
+Here's some examples of problems that
+might arise in graph processing that are
+easily understood just given these basic
+definitions.
+So the very first one is given two
+vertices, is there a path connecting those
+two vertices?
+Like in the Internet graph, you want to
+know, can I get from where I am to where I
+want to get?
+Or maybe you want the shortest path,
+The most efficient way to get between two
+vertices.
+You might want to know is there a cycle on
+the graph?
+If the graph maybe represents electrical
+kind activity a cycle might represent a
+short circuit,
+You would want to check for that.
+Or maybe you want to systematically go
+everywhere in the graph,
+So there's two related problems called the
+Euler tour and the Hamilton tour.
+Euler tour is, is there a cycle that uses
+each edge exactly once?
+Can I go look around the graph and touch
+every edge in it?
+And the one called the Hamilton tour,
+which says well I'm really just interested
+in getting to the vertices.
+Is there a cycle that uses each vertex
+exactly once?
+Or basic connectivity problems.
+So you want to know, is there some way to
+connect all the vertices?
+Is there a path between each pair of
+vertices in the graph or not?
+Or you might want to know what's called
+the minimal spanning tree, which is the
+shortest set of edges, or the best way to
+connect all of the vertices.
+And then various processing issues related
+to connectivity.
+For example, is there a vertex whose
+removal disconnects the graph?
+Drawing the graph.
+Can you draw the graph in the plane with
+no edges crossing?
+Some of the graph with nodes are
+correspond to places in the plan or cities
+on the Earth or whatever,
+But some of the other graphs are very
+abstract, may have nothing to do with
+geometry.
+You might want to know can you draw with
+no crossing edges or you might have two
+graphs, and a vertex named different to
+represent the same graph.
+So one of the biggest challenges in graph
+processing that we'll address today in
+this lecture somewhat is just to decide
+how difficult are these problems.
+Some of them are very easy, some of them
+are very difficult and some of them,
+actually, is unknown how difficult they
+are.
+There's such a broad variety of problems
+that are simply stated.
+One of the first things that we have to be
+aware of when doing graph processing is
+that we, we are entering into a forest of,
+of all different possibilities and, and we
+have to be careful that we're working on a
+problem that we can solve.
+And we'll try to give some insights into
+that during the lectures that we gave on
+graph-processing.
+So that's our introduction to

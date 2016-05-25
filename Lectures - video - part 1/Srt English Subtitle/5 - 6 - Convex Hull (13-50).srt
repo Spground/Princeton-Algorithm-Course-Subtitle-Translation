@@ -1,0 +1,704 @@
+1
+00:00:01,032 --> 00:00:08,185
+>> Now we'll look at an application of
+sorting from the field of computational
+
+2
+00:00:08,185 --> 00:00:14,375
+geometry for an interesting computation.
+If you have a set of N points in a
+
+3
+00:00:14,375 --> 00:00:20,476
+plane. There's a geometric object called
+the Convex Hull which is the smallest
+
+4
+00:00:20,476 --> 00:00:27,411
+polygon that encloses all the points.
+There's the Convex Hull for that set of
+
+5
+00:00:27,411 --> 00:00:31,769
+points. [cough] There's a lot of
+equivalent definitions of this. Some of
+
+6
+00:00:31,769 --> 00:00:36,312
+them very mathematical, that extend the
+higher dimensions. It's the smallest
+
+7
+00:00:36,312 --> 00:00:41,196
+convex set that contain all the points,
+the smallest area of convex polygon
+
+8
+00:00:41,196 --> 00:00:45,839
+enclosing the points. It's a convex
+polygon that encloses the points whose
+
+9
+00:00:45,839 --> 00:00:50,863
+vertices points in the set and those are
+all equivalent definitions. And what we
+
+10
+00:00:50,863 --> 00:00:57,059
+want to do is given the set of points,
+we're going to have a program that can
+
+11
+00:00:57,059 --> 00:01:03,304
+give us the convex hull. Now, which should
+the output of such a program, such a
+
+12
+00:01:03,304 --> 00:01:09,737
+method be? Well, in order to be able to
+work with the result, it should be a
+
+13
+00:01:09,737 --> 00:01:16,959
+sequence of vertices that gives us that
+polygon if we follow it. If we've got some
+
+14
+00:01:16,959 --> 00:01:23,977
+points that are on the boundary but aren't
+really vertices they shouldn't be
+
+15
+00:01:23,977 --> 00:01:30,406
+included. This points out examples of how
+difficult computational geometry can
+
+16
+00:01:32,984 --> 00:01:35,561
+sometimes be because degenerate cases
+like these are difficult to deal with in
+
+17
+00:01:35,561 --> 00:01:40,748
+code. We're not going to spend a lot of
+time on this, in this lecture. But it's
+
+18
+00:01:40,748 --> 00:01:46,214
+something always to be aware of when
+trying to [cough] apply simple algorithms
+
+19
+00:01:46,214 --> 00:01:51,691
+in situations like these that turn out to
+be maybe more sophisticated than we might
+
+20
+00:01:51,691 --> 00:01:56,970
+think.
+>> [inaudible] the large screen.
+
+21
+00:01:56,970 --> 00:02:05,247
+>> Oh yeah, got you. Mm-hm. Well, there's
+actually a way to compute the convex hull
+
+22
+00:02:05,247 --> 00:02:10,311
+just mechanically if you put the nails
+around the points and put a rubber band
+
+23
+00:02:10,311 --> 00:02:15,542
+around it, that gives you the convex hull.
+Now, we're not going to be able to really
+
+24
+00:02:15,738 --> 00:02:21,808
+implement that in a computer program but
+it's surprising how well we can do. Here's
+
+25
+00:02:21,808 --> 00:02:27,055
+an application where people want to
+compute the convex hull. Suppose you have
+
+26
+00:02:27,055 --> 00:02:33,396
+a robot that wants to get from s to t and
+there's an obstacle that's defined by some
+
+27
+00:02:33,396 --> 00:02:39,271
+polygon. You wanted be able to go around
+the obstacle and it turns out that the
+
+28
+00:02:39,271 --> 00:02:44,441
+shortest path, either it's a straight line
+from s to t or it's part of the convex
+
+29
+00:02:44,441 --> 00:02:49,435
+hull and is not hard to see why that might
+be true. And there's plenty of other
+
+30
+00:02:49,435 --> 00:02:55,005
+applications where people want to be able
+to compute the convex hull. Here's another
+
+31
+00:02:55,005 --> 00:03:00,193
+application. If you want to find the pair
+of points that are the farthest apart in
+
+32
+00:03:00,193 --> 00:03:04,913
+the set of points in the plane, this is
+sometimes important in statistical
+
+33
+00:03:04,913 --> 00:03:10,816
+calculation or other applications. They're
+on the convex hull. If you have the convex
+
+34
+00:03:10,816 --> 00:03:15,625
+hull, this computation is easy. [cough]
+They're, they're going to be extreme
+
+35
+00:03:15,625 --> 00:03:21,961
+points on the convex hull. So, there's a
+lot of geometric properties of the convex
+
+36
+00:03:21,961 --> 00:03:26,780
+hull that we can take advantage of to
+develop an algorithm. In here two
+
+37
+00:03:26,780 --> 00:03:32,446
+properties. Now, these are the things that
+have to be proven and we're not going to
+
+38
+00:03:32,446 --> 00:03:38,582
+get into the details of geometric proof
+but they're intuitive and certainly have
+
+39
+00:03:38,582 --> 00:03:44,434
+no trouble accepting that these things are
+true. One thing is, that you can traverse
+
+40
+00:03:44,434 --> 00:03:49,629
+the convex hull by making only counter
+clockwise turns or left turns if you're
+
+41
+00:03:49,629 --> 00:03:55,326
+looking at the screen here. And the other
+thing is that, so if we travel from p to
+
+42
+00:03:55,326 --> 00:04:00,841
+point 1 then we make a left turn to go
+to point 5 or counterclockwise turn and
+
+43
+00:04:00,841 --> 00:04:06,450
+then from there, we go to point 9 and
+12 and then we eventually get back to
+
+44
+00:04:06,450 --> 00:04:12,905
+the start point. The other thing is, if
+you take the point with the lowest y
+
+45
+00:04:12,905 --> 00:04:19,813
+coordinate. And then if you look at the
+polar angle with respect for every other
+
+46
+00:04:19,813 --> 00:04:27,705
+point with the respect to that one, so the
+angle you get from of the x-axis through p up to
+
+47
+00:04:27,705 --> 00:04:33,898
+the point, then the vertices appear in
+increasing order of that angle. And again,
+
+48
+00:04:33,898 --> 00:04:39,391
+that's not, not difficult to see that
+that's a fact. And the algorithm that
+
+49
+00:04:39,391 --> 00:04:45,487
+we're going to look at, called the Graham
+scan is based on those two facts. It's,
+
+50
+00:04:45,487 --> 00:04:50,967
+the idea is to start with point p, the
+one with the smallest y coordinate. Sort
+
+51
+00:04:50,967 --> 00:04:56,931
+the points by polar angle with p where
+that is we're just going to consider in
+
+52
+00:04:56,931 --> 00:05:02,704
+that order. And then we'll just throw away
+the ones that do not create a
+
+53
+00:05:02,704 --> 00:05:09,510
+counterclockwise turn and you'll see how
+that works when we look at the demo. So we
+
+54
+00:05:09,510 --> 00:05:16,744
+start at point p. Sort the points by polar
+angle with p so that is if we take a, a
+
+55
+00:05:16,744 --> 00:05:21,873
+vertical line and sweep it in a
+counterclockwise direction, what order
+
+56
+00:05:21,873 --> 00:05:27,293
+that we hit the points? The first thing we
+hit is 0, 1, and then we sweep
+
+57
+00:05:27,293 --> 00:05:32,849
+counterclockwise, we get the 2 and then
+3 and 4 and so forth. So, that's
+
+58
+00:05:32,849 --> 00:05:38,627
+the ordering of those points. And so now
+we'll just consider those points in order
+
+59
+00:05:38,848 --> 00:05:45,959
+and then take them for the convex hull. At
+the beginning, 0->1 is a line that's
+
+60
+00:05:45,959 --> 00:05:51,282
+on the convex hull. So, the point with the
+lowest y coordinates on the convex hull
+
+61
+00:05:51,282 --> 00:05:57,208
+and shows the one that is the smallest
+polar angle that creates with the x-axis.
+
+62
+00:05:57,208 --> 00:06:04,024
+So now what about this one - 2? Is that on
+the convex hull? Well, as far as we know
+
+63
+00:06:04,024 --> 00:06:08,931
+at this point, it could be, it could be
+that the thing is a triangle and 0 is
+
+64
+00:06:08,931 --> 00:06:14,588
+the last point in which case it would be.
+But in same with 3. As far as we know,
+
+65
+00:06:14,588 --> 00:06:21,049
+that one could be on the convex hull. But
+as soon as we go out to 4 that's not a
+
+66
+00:06:21,049 --> 00:06:27,702
+counterclockwise turn. It's going the
+wrong way and essentially what this means
+
+67
+00:06:27,702 --> 00:06:34,453
+is a point 4 is evidence that point,
+there is no way the point 3 can be on
+
+68
+00:06:34,453 --> 00:06:40,928
+the convex hull. You can [cough] convince
+yourself with that quite easily. So we
+
+69
+00:06:40,928 --> 00:06:47,054
+just throw a point 3 out. It's not on
+the convex hull so, and what about the
+
+70
+00:06:47,054 --> 00:06:52,397
+angle from 1 to 2 to 4? That's not
+counterclockwise either. It's turning the
+
+71
+00:06:52,397 --> 00:06:57,114
+wrong way and it's turning to the right. So
+point 2 can't be on the convex hull
+
+72
+00:06:57,114 --> 00:07:02,248
+either. And indeed if you just draw the
+line from 1 to 4, you can see the 2
+
+73
+00:07:02,248 --> 00:07:07,235
+inside so there is no way it could be in
+the convex hull. Now that's essentially
+
+74
+00:07:07,412 --> 00:07:11,665
+the proof that you have to have a
+counterclockwise turn. So now, we go on to
+
+75
+00:07:11,665 --> 00:07:16,713
+5 - turning the wrong way. So, point 4
+can't be on the convex hull. So now we go
+
+76
+00:07:16,713 --> 00:07:21,889
+to 6. As far as we know, it could be, but
+as soon as we hit 7, we know that it
+
+77
+00:07:21,889 --> 00:07:27,032
+can't be cuz that's a right turn. So 6 is
+not there. Go to 8, nope. 7 can't
+
+78
+00:07:27,032 --> 00:07:32,880
+be on the convex hull. Go to 9. 8 can't
+be on the convex hull. Now we go to
+
+79
+00:07:32,880 --> 00:07:37,822
+10 and 11. As far as we know they
+could be. If 12 weren't there, they
+
+80
+00:07:37,822 --> 00:07:43,368
+would be. As soon as we hit 12 we see
+that 11 can't be on the convex hull
+
+81
+00:07:43,368 --> 00:07:49,404
+and 10 can't be on the convex hull and
+that completes the computation of the
+
+82
+00:07:49,404 --> 00:07:54,405
+convex hull with the Graham Scan. Okay.
+So, there are number of implementation
+
+83
+00:07:54,405 --> 00:07:59,091
+challenges for the Graham Scan and we're
+not going to go into detail on this
+
+84
+00:07:59,272 --> 00:08:03,667
+because this is a lecture on sorting
+algorithms not computational geometry but
+
+85
+00:08:03,667 --> 00:08:09,344
+it is indicative of how, even if we have a
+good sort, we might have to do some extra
+
+86
+00:08:09,344 --> 00:08:14,715
+work to actually solve our problem in an
+application. So, how do we find the point
+
+87
+00:08:14,715 --> 00:08:21,543
+with the smallest y coordinate? Well you
+could, you could sort, you could define an
+
+88
+00:08:21,543 --> 00:08:26,593
+order and compare the points by y
+coordinate so essentially sorting is the
+
+89
+00:08:26,593 --> 00:08:33,057
+[cough] answer to that question. And we'll
+look at the next lecture of what it means
+
+90
+00:08:33,057 --> 00:08:39,893
+the divine ordering among objects, little
+more general than what we do for sorting.
+
+91
+00:08:40,126 --> 00:08:46,039
+How to sort the points by polar angle?
+Well again we need to define what we mean
+
+92
+00:08:46,039 --> 00:08:50,447
+when we're comparing points. And then the
+next lecture again we'll look at ways to
+
+93
+00:08:50,447 --> 00:08:55,375
+define different orderings among points
+and Graham scan is a perfect example. We
+
+94
+00:08:55,375 --> 00:09:00,564
+don't want to just be able to sort things,
+we don't want to just be able to sort them
+
+95
+00:09:00,564 --> 00:09:05,156
+by defining and compared to. We're going
+to be able to sort the same things in
+
+96
+00:09:05,156 --> 00:09:10,475
+different way sometimes and this example
+is a fine motivation of that. Figuring out
+
+97
+00:09:10,475 --> 00:09:16,029
+whether what we have is a counter
+clockwise turn that's a little exercise in
+
+98
+00:09:16,029 --> 00:09:21,729
+geometry and we'll just talk about that
+briefly in the next couple of slides. And
+
+99
+00:09:21,729 --> 00:09:26,866
+then wow, what are we getting the sort
+efficient, done efficiently? Well, we
+
+100
+00:09:26,866 --> 00:09:32,549
+could use Shellsort but actually in the
+next couple of lectures and we'll look at
+
+101
+00:09:32,549 --> 00:09:38,409
+classical sorts - Mergesort and Quicksort -
+that we could use. The idea though is that
+
+102
+00:09:38,596 --> 00:09:43,885
+this example illustrates that good sorting
+algorithm gives us a good convex hull
+
+103
+00:09:43,885 --> 00:09:48,563
+algorithm. That's an extremely important
+principle in designing good algorithms.
+
+104
+00:09:48,563 --> 00:09:52,607
+Once we have a good algorithm, if we have
+another problem we can say to ourselves,
+
+105
+00:09:52,607 --> 00:09:56,886
+well, we've got a good solution to this
+algorithm, can we use that solution to
+
+106
+00:09:56,886 --> 00:10:02,259
+solve our new problem? Convex hull, when
+we have a good sorting algorithm, it gives
+
+107
+00:10:02,259 --> 00:10:07,722
+us a good convex hull algorithm. Because
+the main, the most work in convex hull is
+
+108
+00:10:07,722 --> 00:10:14,078
+the sort. And then again there's all, all
+kinds of difficulties in implementing
+
+109
+00:10:14,078 --> 00:10:20,484
+convex hull in real world situations
+because of various degeneracies. And these
+
+110
+00:10:20,484 --> 00:10:26,619
+things are covered on the book site. So
+the main part of computation that we
+
+111
+00:10:26,619 --> 00:10:32,458
+haven't really talked about and we'll
+cover briefly is if we have three points,
+
+112
+00:10:32,458 --> 00:10:38,931
+a, b and c, and you go from a to b to c,
+are you making a counterclockwise turn or
+
+113
+00:10:38,931 --> 00:10:44,664
+not? So, in the example at the left, a to
+b to c is counterclockwise. Example at the
+
+114
+00:10:44,664 --> 00:10:50,295
+right, a to b to c is not counter
+clockwise. Going from a to b you turn left
+
+115
+00:10:50,295 --> 00:10:55,568
+to get to c in the first case and you go
+right to get to c in the second case and
+
+116
+00:10:55,568 --> 00:11:00,949
+we want to do a computation that
+distinguishes this. Now, this computation
+
+117
+00:11:00,949 --> 00:11:06,650
+will be pretty easy except for the
+degeneracies. What do you want to count if
+
+118
+00:11:06,650 --> 00:11:11,734
+they're all on the same line. Or if the
+slope is infinity. So, you have to just be
+
+119
+00:11:11,734 --> 00:11:17,081
+aware that these situations have to be
+dealt with. So, the code isn't quite as
+
+120
+00:11:17,081 --> 00:11:22,810
+simple as you might come up within the
+first instance that you try. So, there's
+
+121
+00:11:22,810 --> 00:11:28,753
+degeneracies to deal with and floating
+point precision but people, researchers in
+
+122
+00:11:28,753 --> 00:11:34,797
+computational geometry have worked this
+out and actually there's not that much
+
+123
+00:11:34,797 --> 00:11:41,622
+code at all in the end involved. The and
+this is the slide that, that gives the
+
+124
+00:11:41,622 --> 00:11:48,254
+math and I won't talk through this math.
+If you're interested in implementing this,
+
+125
+00:11:48,254 --> 00:11:54,659
+you can come back to the slide. And it's
+essentially based on the idea of computing
+
+126
+00:11:54,659 --> 00:12:00,543
+the slopes of the lines between a and b,
+between a and c and comparing them to
+
+127
+00:12:00,728 --> 00:12:06,592
+decide whether you're turning counter
+clockwise or clockwise. And this is the
+
+128
+00:12:06,592 --> 00:12:13,942
+specific math that gets that implemented.
+So [cough] this is if we implement a point
+
+129
+00:12:13,942 --> 00:12:22,060
+data type for computational geometry, you
+can have a method ccw() that just with this
+
+130
+00:12:22,364 --> 00:12:30,013
+little math calculation (b.x - a.x)(c.y - a.y)
+minus (b.y - a.y)(c.x - a.x) and we
+
+131
+00:12:30,013 --> 00:12:36,047
+see that calculation here gives you
+immediately whether it's counter
+
+132
+00:12:36,047 --> 00:12:44,400
+clockwise, clockwise or co-linear. Not
+much code at all. And that method is the
+
+133
+00:12:44,400 --> 00:12:53,087
+basis for the Graham Scan. The Graham Scan
+uses a sort where we give two different
+
+134
+00:12:53,087 --> 00:12:59,350
+ways to sort the points. And that uses a
+push down stack for the hull, it puts the
+
+135
+00:12:59,350 --> 00:13:05,727
+points on the hull in it goes ahead and
+for every point considering I'm in the
+
+136
+00:13:05,727 --> 00:13:12,481
+order of the polar sort it'll compare
+whether the top two points on the hull and
+
+137
+00:13:12,481 --> 00:13:19,229
+the new point implement a CCW turn or not.
+And if it's not a CCW turn, it pops and
+
+138
+00:13:19,229 --> 00:13:25,799
+then continues going. Very little code to
+implement the convex hull given that you
+
+139
+00:13:25,799 --> 00:13:32,179
+have a sort and that's our main point for
+this lecture - there is many natural
+
+140
+00:13:32,179 --> 00:13:38,033
+applications of sorting but also will be
+able to develop new algorithms that use
+
+141
+00:13:38,033 --> 00:13:51,019
+sort that gain efficiency because of the
+efficiency of sorting.

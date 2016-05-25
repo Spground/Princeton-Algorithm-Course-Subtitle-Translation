@@ -1,0 +1,1275 @@
+1
+00:00:04,450 --> 00:00:07,984
+Next we're going to look at Ternary 
+search tries, which is another data 
+
+2
+00:00:07,984 --> 00:00:12,076
+structure that new data structure, that 
+responds to the problem of too much 
+
+3
+00:00:12,076 --> 00:00:19,043
+memory space used by our way tries. 
+this is a very easy to describe and 
+
+4
+00:00:19,043 --> 00:00:25,297
+implement data structure. 
+And it came out of the same paper that 
+
+5
+00:00:25,297 --> 00:00:30,906
+Jon Bentley and I wrote in the 1990s when 
+we developed the three way Ternary 
+
+6
+00:00:30,906 --> 00:00:37,538
+quicksort. 
+the idea is now we're going to actually 
+
+7
+00:00:37,538 --> 00:00:45,974
+store characters in nodes in values. 
+but, we're not going to store whole keys 
+
+8
+00:00:45,974 --> 00:00:49,999
+in there, just characters. 
+but we're not going to use this idea of a 
+
+9
+00:00:49,999 --> 00:00:53,416
+big array, where a nominal link is an 
+implicit value of a character, actually 
+
+10
+00:00:53,416 --> 00:00:59,497
+going to store the characters. 
+but what we're going to do is, make each 
+
+11
+00:00:59,497 --> 00:01:05,080
+node have three children not two, like in 
+a binary search tree. 
+
+12
+00:01:05,080 --> 00:01:09,976
+And not r, like in a Nr way trie, but 
+exactly three and the three children are 
+
+13
+00:01:09,976 --> 00:01:14,550
+for the trie corresponding to smaller 
+keys. 
+
+14
+00:01:14,550 --> 00:01:18,970
+The trie corresponding to trees that 
+start with the same, character in the tri 
+
+15
+00:01:18,970 --> 00:01:23,270
+corresponding to larger trees. 
+And just given this, this des, 
+
+16
+00:01:23,270 --> 00:01:26,754
+description and experience with many of 
+the data structures that now, we've 
+
+17
+00:01:26,754 --> 00:01:32,472
+talked about already in this course. 
+many of you could go off and implement 
+
+18
+00:01:32,472 --> 00:01:37,010
+this data structure, and we'll see how 
+simple the implementations are. 
+
+19
+00:01:39,300 --> 00:01:44,469
+but still let's work through precisely 
+what the data structure looks like. 
+
+20
+00:01:44,469 --> 00:01:48,345
+'cuz sometimes the recursive code looks 
+almost too simple and kind of mass 
+
+21
+00:01:48,345 --> 00:01:54,666
+understanding. 
+So this is the representation of trie's, 
+
+22
+00:01:54,666 --> 00:02:00,807
+that we started with. 
+and all we do with Ternary search trees 
+
+23
+00:02:00,807 --> 00:02:06,549
+is it's, it's almost like having a binary 
+search tree representation of the 
+
+24
+00:02:06,549 --> 00:02:15,436
+non-null links for every node. 
+so, in this case we're going to have an 
+
+25
+00:02:15,436 --> 00:02:22,384
+ad, an s at the root, and that depends on 
+where your keys are inserted. 
+
+26
+00:02:22,384 --> 00:02:28,398
+and the key idea is, the middle link 
+coming off the root node, is a link to 
+
+27
+00:02:28,398 --> 00:02:37,119
+the TSTs that have all the keys that 
+start with S, with S stripped off. 
+
+28
+00:02:38,620 --> 00:02:43,380
+now, but for the left and right links 
+those are for keys that start with some 
+
+29
+00:02:43,380 --> 00:02:50,530
+letter that appears before S on the left, 
+and after S on the right. 
+
+30
+00:02:50,530 --> 00:02:54,861
+and then say, on the left, the node for B 
+is, if you go down this link, it's all 
+
+31
+00:02:54,861 --> 00:02:59,927
+the keys that start with B. 
+Otherwise the B is just to divide the 
+
+32
+00:02:59,927 --> 00:03:04,823
+ones that are less, from the ones that 
+are bigger, and so forth. 
+
+33
+00:03:04,823 --> 00:03:11,215
+and again, if you [COUGH] search for a 
+key by say, look search for SHE, so 
+
+34
+00:03:11,215 --> 00:03:18,008
+that's going down middle links and 
+matching keys. 
+
+35
+00:03:18,008 --> 00:03:23,174
+Then some nodes will have values 
+associated with them, that's the value 
+
+36
+00:03:23,174 --> 00:03:30,165
+associated with the last letter, last 
+character in the search key. 
+
+37
+00:03:30,165 --> 00:03:34,550
+So, that's what the data structure looks 
+like. 
+
+38
+00:03:34,550 --> 00:03:39,854
+and I'd begin to describe the search 
+algorithm, it's quite simple given the 
+
+39
+00:03:39,854 --> 00:03:45,434
+definition of the data structure. 
+Again, we follow links corresponding to 
+
+40
+00:03:45,434 --> 00:03:50,214
+each character of a key. 
+If we have a character that's less than 
+
+41
+00:03:50,214 --> 00:03:53,778
+the character in the node, we go left, if 
+we have one that's greater, we can go 
+
+42
+00:03:53,778 --> 00:03:57,678
+right. 
+and if it's equal we move to the next 
+
+43
+00:03:57,678 --> 00:04:03,581
+character, and take the middle link. 
+so this is an example of a search for a 
+
+44
+00:04:03,581 --> 00:04:07,845
+SEA. 
+Start with S, that's a match, we take the 
+
+45
+00:04:07,845 --> 00:04:11,318
+middle link. 
+Now the next character is E that's a 
+
+46
+00:04:11,318 --> 00:04:15,279
+mismatch and E is less than 8, so we go 
+to the left. 
+
+47
+00:04:16,330 --> 00:04:20,746
+now we find a note that has E, and we 
+didn't update our pointer into the key 
+
+48
+00:04:20,746 --> 00:04:25,350
+character, because we didn't find a 
+match. 
+
+49
+00:04:25,350 --> 00:04:28,241
+So, we're still looking at the E, and 
+now, now we can match that E, so we go 
+
+50
+00:04:28,241 --> 00:04:32,322
+down the middle link. 
+Now we're looking at the A in the search 
+
+51
+00:04:32,322 --> 00:04:37,020
+key, and that's less than L, so we go to 
+the left. 
+
+52
+00:04:37,020 --> 00:04:41,046
+now we're still looking at the A in the 
+search key, and that's a match and it's 
+
+53
+00:04:41,046 --> 00:04:45,072
+the last character in key, so, we return, 
+the value associated with the last 
+
+54
+00:04:45,072 --> 00:04:50,769
+character in the key. 
+So, it's the same basic algorithm, that 
+
+55
+00:04:50,769 --> 00:04:55,389
+we used for trie's except, we just have a 
+different way to decide whether we match 
+
+56
+00:04:55,389 --> 00:05:00,310
+the character. 
+We explicitly store characters in nodes. 
+
+57
+00:05:00,310 --> 00:05:05,226
+We follow middle link on a match, and 
+update the pointer in our key character. 
+
+58
+00:05:05,226 --> 00:05:09,120
+Otherwise, we, we follow the left or 
+right link, because we know that the key 
+
+59
+00:05:09,120 --> 00:05:13,900
+is going to be found in the left or right 
+sub-tree. 
+
+60
+00:05:13,900 --> 00:05:21,440
+And each node has exactly three links. 
+So here's a example of search in a TST, 
+
+61
+00:05:21,440 --> 00:05:29,000
+again this is the example I just talked 
+about in a dynamic form, form. 
+
+62
+00:05:29,000 --> 00:05:32,721
+So, if S is the first character in the 
+key, matches the S in the first node of 
+
+63
+00:05:32,721 --> 00:05:36,442
+tree, so we take the middle link, and 
+move on to the second character in the 
+
+64
+00:05:36,442 --> 00:05:42,400
+key which is e. 
+Compare that against h, it's not a match 
+
+65
+00:05:42,400 --> 00:05:46,927
+in fact it's less, so we go left. 
+So, now we're still looking at e and c, 
+
+66
+00:05:46,927 --> 00:05:52,090
+and it's a match with the character in 
+the node that we're currently processing. 
+
+67
+00:05:52,090 --> 00:05:56,250
+So, we take the middle, and now we move 
+to the next character in the key which is 
+
+68
+00:05:56,250 --> 00:06:00,424
+a. 
+And now we take a compared to l, and a is 
+
+69
+00:06:00,424 --> 00:06:04,846
+less, so we go left, we're still looking 
+at the a, didn't updated it, 'cuz it's 
+
+70
+00:06:04,846 --> 00:06:11,916
+not a match, and now it is a match. 
+and it's the last character in the key, 
+
+71
+00:06:11,916 --> 00:06:17,030
+so we look at the value, and that's the 
+value we return. 
+
+72
+00:06:17,030 --> 00:06:22,250
+what about unsuccessful search? 
+well, let's see how that works. 
+
+73
+00:06:22,250 --> 00:06:26,045
+So, for shelter, it starts with an S, so 
+we take the middle link, second, and move 
+
+74
+00:06:26,045 --> 00:06:31,106
+to the second character. 
+Second character's an h, and that's a 
+
+75
+00:06:31,106 --> 00:06:33,894
+match. 
+So, we take the middle link, and move to 
+
+76
+00:06:33,894 --> 00:06:37,471
+the next character. 
+Third character's an e and third 
+
+77
+00:06:37,471 --> 00:06:41,624
+character, and that, that's also a match. 
+So again, we take the middle link, and 
+
+78
+00:06:41,624 --> 00:06:46,694
+move to the next character. 
+the fourth character's an l, that's also 
+
+79
+00:06:46,694 --> 00:06:49,454
+a match. 
+So, again, we take the middle link, and 
+
+80
+00:06:49,454 --> 00:06:53,821
+move to the next character. 
+Now the next character is a t, which is 
+
+81
+00:06:53,821 --> 00:06:58,649
+not a match, so we want to move to the 
+right but moving to the right takes us to 
+
+82
+00:06:58,649 --> 00:07:04,397
+a null link. 
+So that means that shelter is not in the 
+
+83
+00:07:04,397 --> 00:07:10,332
+TST and, and so we return null. 
+Again, in every, in every step what we do 
+
+84
+00:07:10,332 --> 00:07:15,910
+is completely well-defined. 
+and any search for a key that in the TST, 
+
+85
+00:07:15,910 --> 00:07:20,720
+it's going to return it's associated 
+value. 
+
+86
+00:07:20,720 --> 00:07:25,335
+Any search for any other key, is either 
+going to, go out on a null link, or end 
+
+87
+00:07:25,335 --> 00:07:33,494
+on a node that involves a mismatch. 
+so, with that basic idea, let's take a 
+
+88
+00:07:33,494 --> 00:07:39,065
+more detailed look in the demo, of how 
+the tree gets constructed. 
+
+89
+00:07:39,065 --> 00:07:43,949
+and following through this demo, will 
+give you a pretty good feeling for how 
+
+90
+00:07:43,949 --> 00:07:49,960
+these trees are constructed. 
+So, we're going to associate the value 0 
+
+91
+00:07:49,960 --> 00:07:55,416
+with a string, SHE. 
+so, again every time we move to a new 
+
+92
+00:07:55,416 --> 00:08:02,328
+letter, we have to create a new node, 
+until we get to the end of the key. 
+
+93
+00:08:02,328 --> 00:08:07,428
+And at which case, we put the, associated 
+the value with the node that contains the 
+
+94
+00:08:07,428 --> 00:08:13,020
+last character in the key. 
+so, that's the starting point. 
+
+95
+00:08:13,020 --> 00:08:17,871
+key is a sequence of characters down the 
+middle links that [COUGH] goes to from 
+
+96
+00:08:17,871 --> 00:08:22,487
+the root to some node. 
+And the value is in the node that 
+
+97
+00:08:22,487 --> 00:08:30,222
+corresponds to the last character. 
+so, how do we put a new one in this tree 
+
+98
+00:08:30,222 --> 00:08:37,573
+so the in this Ternary search trie. 
+Our first character is S, so we go down 
+
+99
+00:08:37,573 --> 00:08:41,939
+the middle. 
+Our next character is not a match so 
+
+100
+00:08:41,939 --> 00:08:46,419
+[COUGH] we go to the left, and it's a 
+null link but we have a node that we want 
+
+101
+00:08:46,419 --> 00:08:51,470
+to put there. 
+That's the one corresponding to the 
+
+102
+00:08:51,470 --> 00:08:55,610
+second letter, in sell's so we do that, 
+and then we make nodes with middle links, 
+
+103
+00:08:55,610 --> 00:09:00,170
+going until we get to the last character 
+in sell's, and we associate that with the 
+
+104
+00:09:00,170 --> 00:09:07,538
+value 1. 
+So, what about SEA, let's see how that 
+
+105
+00:09:07,538 --> 00:09:11,864
+one works. 
+so, first character is S, so I take the 
+
+106
+00:09:11,864 --> 00:09:18,178
+middle link, second character is e which 
+is less than h and not a match so we move 
+
+107
+00:09:18,178 --> 00:09:25,680
+to the left and continue looking for the 
+e. 
+
+108
+00:09:25,680 --> 00:09:30,780
+now this node we find the e, so we take a 
+middle link, and move to the next node 
+
+109
+00:09:30,780 --> 00:09:36,640
+[COUGH] next character which is a, a is 
+less than l. 
+
+110
+00:09:36,640 --> 00:09:41,799
+it's not a match so we go to the left, 
+that's a null linl, and that's where we 
+
+111
+00:09:41,799 --> 00:09:47,160
+put our a, and we associate it with the 
+value 2. 
+
+112
+00:09:47,160 --> 00:09:51,710
+OK, here's sh, shells so we have a match 
+at s, go to the middle link, and go to 
+
+113
+00:09:51,710 --> 00:09:56,745
+the next letter, match h middle link next 
+letter. 
+
+114
+00:09:56,745 --> 00:10:00,430
+and then we go down and add the three 
+nodes corresponding to the last three 
+
+115
+00:10:00,430 --> 00:10:05,450
+letters and put a three at the node 
+corresponding to the last letter. 
+
+116
+00:10:05,450 --> 00:10:10,382
+OK? 
+now B Y we look at S not a match it's 
+
+117
+00:10:10,382 --> 00:10:15,420
+less, so we're going to go to the left, 
+that's a null link. 
+
+118
+00:10:15,420 --> 00:10:20,019
+That's where we put our first character, 
+and then we go down the middle link to 
+
+119
+00:10:20,019 --> 00:10:26,144
+add the node for the last character,and 
+then ah,associate the value for there. 
+
+120
+00:10:26,144 --> 00:10:29,220
+and then B is a similar thing on the 
+right. 
+
+121
+00:10:29,220 --> 00:10:33,810
+And then go for the t and h and e, and 
+that gets our share with the value 5. 
+
+122
+00:10:37,050 --> 00:10:42,480
+SEA again, it's associative, so we do the 
+search, so S is a match. 
+
+123
+00:10:42,480 --> 00:10:44,840
+So we go down the middle link, and move 
+to the next letter. 
+
+124
+00:10:44,840 --> 00:10:51,580
+E is less than h so we go to left, and 
+keep looking for e. 
+
+125
+00:10:51,580 --> 00:10:54,412
+Now we find e is a match, so we go down 
+the middle link, and move to the next 
+
+126
+00:10:54,412 --> 00:10:58,296
+letter. 
+that's a, which is less than l, so we go 
+
+127
+00:10:58,296 --> 00:11:02,050
+to the left to look for the a, and there 
+we find it. 
+
+128
+00:11:02,050 --> 00:11:08,130
+and we're [COUGH] building an associate 
+symbol table, so we update and overwrite 
+
+129
+00:11:08,130 --> 00:11:15,290
+the old value with the new value, 6. 
+S, H, O, R, E. 
+
+130
+00:11:15,290 --> 00:11:21,338
+we match the S, match the h, now we're on 
+O, that does not match e, so we go to the 
+
+131
+00:11:21,338 --> 00:11:28,242
+right, and keep looking for O. 
+Now, we don't find it, so we create a new 
+
+132
+00:11:28,242 --> 00:11:32,786
+node for O, R, E, and then put the value 
+7 in the values associated with the last 
+
+133
+00:11:32,786 --> 00:11:40,375
+character in that key. 
+so, that's the construction of a Ternary 
+
+134
+00:11:40,375 --> 00:11:46,306
+search tree containing eight keys. 
+Let's take a look at a slightly bigger 
+
+135
+00:11:46,306 --> 00:11:50,477
+Ternary search trie. 
+so here's our example with three letter 
+
+136
+00:11:50,477 --> 00:11:54,663
+words. 
+now for that example, we didn't show all 
+
+137
+00:11:54,663 --> 00:11:59,286
+the null links, but there's lots of null 
+links, 26 null links in each leaf for 
+
+138
+00:11:59,286 --> 00:12:04,818
+this 26 way trie. 
+And there's other null links higher in 
+
+139
+00:12:04,818 --> 00:12:09,702
+the tree, and actually counting up 
+there's over a thousand null links in 
+
+140
+00:12:09,702 --> 00:12:15,464
+this tiny 26 way trie. 
+But in a TST, it's got about the same 
+
+141
+00:12:15,464 --> 00:12:19,340
+number of nodes it's actually got more 
+nodes, because it's got one for each 
+
+142
+00:12:19,340 --> 00:12:23,468
+character. 
+And the other ones correspond to links, 
+
+143
+00:12:23,468 --> 00:12:28,252
+but not that many more nodes. 
+But the key thing is, it has many fewer 
+
+144
+00:12:28,252 --> 00:12:33,410
+null links, because there's only three 
+links per node. 
+
+145
+00:12:33,410 --> 00:12:39,290
+And this effect is obviously going to be 
+much more dramatic when R is much bigger. 
+
+146
+00:12:39,290 --> 00:12:47,580
+like a 256 way trie or even a unicode 
+65,000 way trie. 
+
+147
+00:12:47,580 --> 00:12:53,280
+that's the key benefit of TSTs, that and 
+they're much more space-efficient, then 
+
+148
+00:12:53,280 --> 00:12:59,776
+our way trie's for large R. 
+so, let's take a look at the 
+
+149
+00:12:59,776 --> 00:13:03,538
+implementation in Java, and then we'll 
+look at the code, and then we'll talk 
+
+150
+00:13:03,538 --> 00:13:10,100
+some more about performance. 
+oh, the representation in Java is very 
+
+151
+00:13:10,100 --> 00:13:13,740
+straightforward, as I said many of you 
+could code this up, just from the 
+
+152
+00:13:13,740 --> 00:13:18,150
+description. 
+what does a node have to have? 
+
+153
+00:13:18,150 --> 00:13:20,580
+It's going to have a value, it's going to 
+have a character. 
+
+154
+00:13:20,580 --> 00:13:26,650
+it's going to have references to left, 
+middle, and right TSTs. 
+
+155
+00:13:26,650 --> 00:13:31,636
+and that's what it's built from. 
+so whereas the standard trie 
+
+156
+00:13:31,636 --> 00:13:38,063
+representation has a ray of links with 
+characters implicit. 
+
+157
+00:13:38,063 --> 00:13:45,466
+TST has explicit characters with only 
+three links per node. 
+
+158
+00:13:45,466 --> 00:13:52,174
+so that's TST representation and then 
+given the representation the code is 
+
+159
+00:13:52,174 --> 00:13:58,908
+follows almost immediately. 
+with our standard setup if we're supposed 
+
+160
+00:13:58,908 --> 00:14:02,156
+to, now we use, we call a recursive 
+routine, giving the root as first 
+
+161
+00:14:02,156 --> 00:14:06,009
+argument. 
+And give the tree returned going to give 
+
+162
+00:14:06,009 --> 00:14:10,939
+a reference that back to the root. 
+so our recursive routine takes a node and 
+
+163
+00:14:10,939 --> 00:14:16,176
+returns a node and for most of the time, 
+it, it doesn't do much. 
+
+164
+00:14:16,176 --> 00:14:21,558
+But when it can do node, is created this 
+this code is effective, because any link 
+
+165
+00:14:21,558 --> 00:14:28,520
+we go down, we replace with a link that 
+we got back, our standard setup. 
+
+166
+00:14:28,520 --> 00:14:33,910
+so, the recursive port routine if we're 
+that character d, we pull out the d 
+
+167
+00:14:33,910 --> 00:14:39,682
+character. 
+if once we've done that, if our node is 
+
+168
+00:14:39,682 --> 00:14:45,880
+null, we create a new node and give it 
+that character. 
+
+169
+00:14:47,650 --> 00:14:53,425
+and now we test our character in our 
+search key, against the character in the 
+
+170
+00:14:53,425 --> 00:14:57,145
+given node. 
+Either the one we just created, or the 
+
+171
+00:14:57,145 --> 00:15:02,252
+one we happen to be on. 
+if if it's equal, it will fall through to 
+
+172
+00:15:02,252 --> 00:15:08,587
+test if we are on the last key. 
+If we're not, if, if we're on the last 
+
+173
+00:15:08,587 --> 00:15:12,956
+character in the key we just reset the 
+value. 
+
+174
+00:15:12,956 --> 00:15:15,498
+if its equal and we're not on the last 
+character in the key, we go down the 
+
+175
+00:15:15,498 --> 00:15:19,274
+middle link. 
+and we replace that link with what we get 
+
+176
+00:15:19,274 --> 00:15:24,080
+by going down the middle link by moving 
+to the next character in the key. 
+
+177
+00:15:25,270 --> 00:15:29,932
+otherwise, we go either down the left or 
+right link under the same circumstances, 
+
+178
+00:15:29,932 --> 00:15:35,100
+without moving to the next character in 
+the key. 
+
+179
+00:15:35,100 --> 00:15:41,934
+so that's extremely straightforward code 
+for put in Ternary search trie's. 
+
+180
+00:15:41,934 --> 00:15:47,854
+and again, get is even simpler. 
+it's a similar set up that we've used 
+
+181
+00:15:47,854 --> 00:15:51,874
+several times before. 
+Use a recursive routine that returns a 
+
+182
+00:15:51,874 --> 00:15:55,580
+node, and we pull our value out of that 
+node. 
+
+183
+00:15:55,580 --> 00:15:58,823
+we don't have to cast in this case, cause 
+we're not running arrays, and our nodes 
+
+184
+00:15:58,823 --> 00:16:03,522
+just has the value type in it. 
+and if we get a null node back, yea, we 
+
+185
+00:16:03,522 --> 00:16:08,480
+return null that its not there, the 
+recursive routine will pull out the 
+
+186
+00:16:08,480 --> 00:16:13,586
+character if its less than our if our 
+search character is less we go to the 
+
+187
+00:16:13,586 --> 00:16:19,720
+left. 
+And if its greater we go to the right, 
+
+188
+00:16:19,720 --> 00:16:24,690
+and if its equal we and we're not at the 
+end of the key, we go down to the middle 
+
+189
+00:16:24,690 --> 00:16:31,328
+and we move to the end of the key. 
+If its equal and we are at the end of the 
+
+190
+00:16:31,328 --> 00:16:35,442
+key, we return the node. 
+And even that node, is going to contain a 
+
+191
+00:16:35,442 --> 00:16:38,545
+value or it's not, but that's what we'e 
+return. 
+
+192
+00:16:38,545 --> 00:16:44,121
+so, extremely straightforward 
+implementation of both get and put for 
+
+193
+00:16:44,121 --> 00:16:50,064
+Ternary search drives. 
+so this, adds this line to our table, 
+
+194
+00:16:50,064 --> 00:16:56,028
+where, the amount of space taken for 
+Ternary search trie's is just three 
+
+195
+00:16:56,028 --> 00:17:03,140
+lengths you know, plus the value 
+character in each node. 
+
+196
+00:17:03,140 --> 00:17:12,869
+so similar to what red-black BST and 
+hashes would use, so no space 
+
+197
+00:17:12,869 --> 00:17:20,001
+disadvantage. 
+the determining the cost of search hits 
+
+198
+00:17:20,001 --> 00:17:24,831
+and search miss, these values are given 
+for random keys, and they're the subject 
+
+199
+00:17:24,831 --> 00:17:31,240
+of deep analysis. 
+but it's not too many. 
+
+200
+00:17:31,240 --> 00:17:35,832
+Le, Let's, let's put it that way. 
+And our experimental results bear that 
+
+201
+00:17:35,832 --> 00:17:38,723
+out. 
+So, for, for a search miss in a Ternary 
+
+202
+00:17:38,723 --> 00:17:42,712
+search trie, you don't have to look at 
+the whole key. 
+
+203
+00:17:42,712 --> 00:17:46,555
+Usually, you look at maybe fewer 
+characters than than the whole key, and 
+
+204
+00:17:46,555 --> 00:17:51,044
+actually these results are, are for 
+typical, or random. 
+
+205
+00:17:51,044 --> 00:17:56,360
+but actually TSD's really shine, in the 
+case where data is not random. 
+
+206
+00:17:56,360 --> 00:18:01,596
+they very well adapt to the data. 
+like text written in English language, is 
+
+207
+00:18:01,596 --> 00:18:08,960
+not really language really random. 
+And you can see that Ternary search trees 
+
+208
+00:18:08,960 --> 00:18:16,041
+actually out perform both hashing and red 
+black BSTs for our benchmark, which is 
+
+209
+00:18:16,041 --> 00:18:25,419
+deduping these big text files. 
+[COUGH] now you, you can go ahead and try 
+
+210
+00:18:25,419 --> 00:18:33,205
+to get worst case guarantees. 
+By using rotations to balance the the the 
+
+211
+00:18:33,205 --> 00:18:38,785
+internal binary search tree's 
+corresponding to each character in, in 
+
+212
+00:18:38,785 --> 00:18:44,793
+TSTs. 
+although that's probably normally not 
+
+213
+00:18:44,793 --> 00:18:50,228
+worth the trouble. 
+but the bottom line is that TST is at 
+
+214
+00:18:50,228 --> 00:18:56,696
+least it's as fast as hashing for string 
+keys and it's it's space efficient for 
+
+215
+00:18:56,696 --> 00:19:04,090
+sure. 
+And it's pretty easy to speed it up. 
+
+216
+00:19:04,090 --> 00:19:09,784
+the idea is to speed it up, that works 
+extremely well in practice is to, use our 
+
+217
+00:19:09,784 --> 00:19:15,640
+way of branching, at the be, at the top 
+of the TST. 
+
+218
+00:19:15,640 --> 00:19:22,226
+so rather than fool around with the 
+first, couple of characters, simply do a 
+
+219
+00:19:22,226 --> 00:19:29,065
+big branching at the root. 
+You can do r way branching at the root of 
+
+220
+00:19:29,065 --> 00:19:34,411
+26, but in practice, it's pr, proven it 
+works fine to do, let's say, r squared 
+
+221
+00:19:34,411 --> 00:19:41,738
+way branching at the root. 
+and immediately take care of the first 
+
+222
+00:19:41,738 --> 00:19:47,984
+two characters, which is the common case, 
+and then get down to small TSTs. 
+
+223
+00:19:47,984 --> 00:19:52,607
+and there's variations of this, that you 
+might imagine, but this is a really 
+
+224
+00:19:52,607 --> 00:19:59,173
+simple one that almost always works. 
+you have to deal especially with one and 
+
+225
+00:19:59,173 --> 00:20:04,930
+two letter words. 
+and we'll leave that for exercise. 
+
+226
+00:20:04,930 --> 00:20:11,090
+but with that change now we get a, an 
+algorithm that's is definitely faster 
+
+227
+00:20:11,090 --> 00:20:17,460
+than hashing in red-black BSTs for our 
+benchmarks. 
+
+228
+00:20:17,460 --> 00:20:22,270
+and that'll turn out to be the case, for 
+many applications. 
+
+229
+00:20:22,270 --> 00:20:27,070
+So, just to summarize what are the trade 
+offs between TSTs and hashing? 
+
+230
+00:20:27,070 --> 00:20:30,905
+for hashing you have to examine the 
+entire key, in order to compute the hash 
+
+231
+00:20:30,905 --> 00:20:34,544
+function. 
+we talked about examples, where people 
+
+232
+00:20:34,544 --> 00:20:38,730
+try to skip doing that, and wind up with 
+performance problems. 
+
+233
+00:20:38,730 --> 00:20:43,280
+Not much difference between a hit and a 
+miss in a hashing, and there's a lot of, 
+
+234
+00:20:43,280 --> 00:20:47,895
+of reliance and maybe difficulty of 
+implementation ah,depending on the hash 
+
+235
+00:20:47,895 --> 00:20:53,990
+function. 
+and also, hashing is really only good for 
+
+236
+00:20:53,990 --> 00:20:58,826
+search and insert. 
+the other kinds of operations that we'd 
+
+237
+00:20:58,826 --> 00:21:01,953
+like to perform in symbol table when 
+there's order in the keys is not 
+
+238
+00:21:01,953 --> 00:21:07,532
+supported by hashing. 
+with TSTs, it only works for strings or 
+
+239
+00:21:07,532 --> 00:21:12,120
+if you have keys that are numbers, then 
+you can rework them into strings, or 
+
+240
+00:21:12,120 --> 00:21:18,370
+string like things. 
+And that's that's a restriction but does 
+
+241
+00:21:18,370 --> 00:21:23,772
+cover a huge number of applications. 
+it, it only examines the key characters 
+
+242
+00:21:23,772 --> 00:21:27,740
+that it needs to, and in particular, a 
+search miss might involve only a few 
+
+243
+00:21:27,740 --> 00:21:33,360
+characters. 
+So, in typical applications you'll get 
+
+244
+00:21:33,360 --> 00:21:38,270
+sub-linear performance in TSTs. 
+You can get searches done without looking 
+
+245
+00:21:38,270 --> 00:21:42,694
+at the whole key. 
+the other thing is there's other, the 
+
+246
+00:21:42,694 --> 00:21:48,413
+ordered symbol table operations you can, 
+you know easily support with TSTs. 
+
+247
+00:21:48,413 --> 00:21:52,360
+just by extending, what we did for binary 
+search tree. 
+
+248
+00:21:52,360 --> 00:21:57,750
+and even more important there's other 
+interesting operations that we can add 
+
+249
+00:21:57,750 --> 00:22:02,775
+for string keys. 
+that are very useful, and we'll see 
+
+250
+00:22:02,775 --> 00:22:08,540
+applications, and implementations of 
+these, in just a minute. 
+
+251
+00:22:08,540 --> 00:22:13,940
+so the bottom line is that this data, is 
+a relatively new data structure. 
+
+252
+00:22:13,940 --> 00:22:20,024
+but, its better than the classic ones for 
+important applications. 
+
+253
+00:22:20,024 --> 00:22:24,555
+Its faster than hashing particular for 
+search misses. 
+
+254
+00:22:24,555 --> 00:22:33,607
+and its got more flexibility even than 
+red black BSTs, and that's what we will 
+
+255
+00:22:33,607 --> 00:22:42,329
+talk about soon, but that's an 
+introduction to TSTs. 
+

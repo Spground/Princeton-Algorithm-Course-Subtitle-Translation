@@ -1,0 +1,453 @@
+Next, we'll look at Huffman encoding. this
+is a classic algorithm that is still
+widely-used and effectively used today.
+it's definitely on the list of algorithms
+that everyone should know cuz it's quite
+ingenious. so we start out with the idea
+of variable length codes. so far, we've
+talked about codes where every character
+is represented with the same number of
+bits. But there's no reason to do that.
+For example, look at Morse code. the idea
+in a way that we assign dots and dashes to
+letters is that frequently, you'll use
+letters should have smaller number of
+characters. so for example, an E is only
+one dot and so forth. And letters that are
+used less frequently, like Q are going to
+be longer. More dashes and more
+characters. So with this we can, it's an
+idea, a compression idea, of let's use
+fewer characters for frequent fewer bits
+or fewer code characters for frequently
+used characters. now, there's an issue
+with this and that is that it can be
+ambiguous. So, this message everybody
+knows, looks like SOS, three dots followed
+by three dashes, followed by three dots.
+but actually it could be it's any one of
+these others. Like V is dot, dot, dot,
+dash. Thats good. and then, seven is dash,
+dash, dot, dot, dot, so it could be V7. Or
+it could be either of these two. There's
+lots of different things that this thing
+could be. So, Morse code is actually, it's
+not just dots and dashes it actually has
+they have a little space between the code
+words to avoid this problem that there's
+an ambiguity caused by the fact that one
+code word can be prefix of another and
+there's no way to tell that it's not
+without separating the code words. so now
+that's the way it's solved in Morse code
+and that's not necessarily the most
+efficient way to solve it, and that's what
+Huffman codes addresses. Also, a problem
+with Morse code is don't be trying to
+transmit a lot of numbers with Morse code,
+because the codes for those are pretty
+long and, and you'll have much longer
+representations for codes that involve a
+lot of messages and involve a lot of
+numbers. But there's a really elegant way
+to avoid ambiguity. And that is to just
+adopt a rule that no code word is going to
+be a prefix of another one. so fixed
+length codes do that. If every code is the
+same number of bits and every character
+encode different bits, then no code word's
+a prefix of another. They're just all
+different. another thing you can do is
+have a, a special stop character like,
+like the space in Morse Code to end to
+each code word. That's really what it's
+doing. so the code words are all
+different. And they end with a character
+that's special. And so, none can be a
+prefix of another one. but there's also
+just an easy way to just make sure that
+you use a code that has this prefix free
+property. so, for example, this code here
+no code word is a prefix of another. And
+it means when you have bits there's a
+unique way to decode. So here, the
+compressed bitstream starts with zero, the
+only way that can happen is if the first
+letter is A. Then, when you're done with
+the A you've got four ones and that means
+it's got to be a B. and then, you get rid
+of the B, and so forth. And it's three
+ones and a zero, it's got to be an R, and
+so forth. Since no code word is a prefix
+of another you can just read off the code
+from the bit string without having any
+special stop character or any efficiency,
+inefficiency caused by that. all we have
+is the bits and we are able to uniquely
+decode it. And there is numerous
+prefix-free codes. For example here's
+another prefix-free code that for the same
+five characters and it actually uses fewer
+bits. So, the idea of Huffman encoding
+within these rules where we must have a
+prefix-free, free code. And we've got a
+particular message. what's amazing about
+Huffman encoding is, that it finds the
+code that uses the fewest bits for that
+message. and that's why, you know, it's so
+effective. So the interesting thing one
+interesting thing about prefix-free code
+is that they're really easy to represent
+with trie. and, and the idea is very
+simple. We put characters in the leaves
+and we imagine that every, this is binary
+trie, so we imagine that there's only two
+links per node. And we imagine that every
+left link is labeled zero and every right
+link is labeled one. and then, just
+following the path from the root to a
+leaf, so say we go right, so it's one,
+zero, zero, that's D. Those bits are not
+stored in the trie, we just keep, we just
+implicitly keep track of them. if we go
+left we keep zero, if we go right we keep
+one. And so a try for prefix-free code
+uniquely determines the code. and that
+means that just working with the trie we
+can decompress a bit string just by
+starting at the root, reading the bits
+take them where they take us, and when we
+get to a leaf, we've got a character. so
+that's the trie corresponding to that
+code, that's the trie corresponding to
+that code. this one starts out with one,
+one, so starting at the root, we go one,
+one, and the first letter is A. And then,
+the next letters are zero, zero, and so we
+go zero, zero, and we come to B, and so
+forth. a simple representation of a
+prefix-free code that is that makes for
+easy decoding, given the bit, bit string
+in the trie, it's pretty easy to decode.
+you could also keep a symbol table of
+pairs but sorry, for compression, how do
+we do compression that was in expansion?
+so, for compression, we can just keep the
+table and use it. you could also use the
+trie to figure out the code by following
+the path h, up to the root. and for
+expansion, as I just said, you start out
+at the root I go left at zero, right of
+one and it's very easy. so for among comp,
+expansion, so we will look at the code for
+both of these. The question is how to
+construct, the first question is how to
+construct the trie. so let's start with
+the data type. so this is similar to other
+tree structures that we've built before
+where we have a character that we don't
+use for internal nodes, just for leaves.
+we've got the frequency that we use while
+we're building the tribe, not when we're
+expanding and then every node has a left
+and a right. and th is, is the
+constructor, you just fill in all the
+fields. we need a method to tells us if
+the current node is a leaf. And that's
+when so that's if both its links are null.
+and we need to compare it to, to compare
+nodes by frequency. And we'll see why
+that's needed later on. so that's the data
+type for the nodes that we're going to use
+to build the tries. and so now, let's look
+at expansion. So, this is in code what I
+just talked about. so, we're going to have
+a method that reads in some of the bit
+string, and converts it to a trie. Now,
+that's one clever part of the algorithm.
+and then the first thing is the number of
+characters in the code in the message, you
+know, we also get that. So, we get the
+trie, and then, we get the number of
+characters. and then we simply for do a
+for loop for the number of characters and
+start at the root. if we're not at a leaf
+we read a bit. And if it's zero, we go
+left, and if it's one, we go right. and
+that's it. if as soon as we get to a leaf,
+we just write out the character that we
+get and then, go back to the root and keep
+going. We're not in a leaf if we read a
+bit, we have zero, go to the left, one, go
+to the right. And when we get to a leaf,
+we write out the character extremely
+compact code for expanding. given a bit
+string, the first thing is to trie. We
+have to talk about how to get the trie in
+from a bit string number of characters.
+and then, the simple loop that expands
+according to the trie representation. so
+that's networks for any prefix-free code,
+not just the Cuffman, Huffman code. in the
+running your time, it's obviously linear
+in the number of bits cuz for it's just a
+loop that chews up a bit every time in the
+loop. Okay. So, so again, for any
+prefix-free, free code, how are we
+actually going to write the trie? well
+it's a little, little clever but by this
+time, you should be ready for this kind of
+algorithm. what you can do is traverse the
+trie in pre-order and when you and then
+come to an internal node you write a zero.
+when you come to a leaf, you write a one f
+ollowed by the 8-bit character at that
+leaf. so it's a simple pre-order
+traversal. if this is a recursive program
+to write out in trie if you're at a leaf,
+you write a one followed by the 8-bit
+characters at the leaf and you're done.
+and if you're not at the leaf, you simply
+write a zero. and then recursively, do the
+two sub-tries. and that gives a unique
+representation of the trie that can be
+used to construct the trie from that bit
+string. so and the idea is that typically,
+we're talking about a, a very long message
+the trie itself is just basically
+encodings of all the possible characters
+in a message. and that's going to tend to
+be small compared to the length of the
+message. so for say, a genomic sequence
+there would be only four characters and
+the ones that used most frequently,
+hopefully would be encoded with not that
+many bits. of course, but anyways, the
+size of the trie itself is going to be
+much smaller than the length of the
+message. so reading in the trie and this
+requires a little bit of thought, but and
+we see the code, the code is extremely
+simple. We justreconstructed from the
+pre-order traversal to trie. So, this is
+the readTrie method that we needed, that
+reads the bits from binary standard in and
+produces the trie, and it's also
+recursive. and if the bit that you read is
+zero that sorry, if the bit that you read
+is one that means you have to create a
+leaf otherwise, you recursively read the
+left and read the right. and make a new
+node that has a subtree that, that denotes
+to the left and the right. And it doesn't
+it doesn't use the character in the second
+one, the frequency we initialize to zero.
+so, in internal nodes, we don't use the
+character. So if you look at what would
+this code do for this bit string so the
+first bit is zero. so it's going to
+recursively call itself to read the trie
+on the left. and so, the next bit is a
+one. so, it's going to read the next eight
+bits to get the A. And it's going to
+return a new node with that character in
+it that's a leaf. so, that's going to be
+the left subtree of the initial trie, the
+first recursive call. and then, it'll read
+the right subtree, which is an internal
+node, another internal node. It takes a
+little thinking to convince yourself this,
+this works. but it does. And it's very
+compact and easy code. And again, works
+for an prefix code. you encode the trie
+with the prefix traversal. And with a very
+small amount of code, you can reconstruct
+the trie and transmit a bitstream. And so,
+this is a compression of a trie structure.
+so now, the question is, how do we,
+there's a lot of prefix pre-codes, how we
+will find the best one? well, and there's
+an idea called the Shannon-Fano Algorithm
+which says the, the, the key idea is that
+you've got characters that appear with
+different frequency. And you want to get
+the ones that appear very frequent to use
+fewer bits. and so, it's of interest to
+find the ones that are very frequent, and
+so the Shannon-Fano algorithm says, just
+divide all the symbols in, into two
+roughly equal frequency and start the ones
+in the first one with zero and the ones in
+the second one with one, it's kind of a
+balanced code. and then, and then kind of
+re, recur. so if you have A appearing five
+times, and you C appearing one time at six
+for those and then you get six for all of
+those. And then you try to encode those
+with and try to use zeroes for roughly
+half the character. And one for roughly
+half the character. so in order to deal
+with that, you have to figure out how to
+divide up the symbols. And you can imagine
+an algorithm for doing that. but the real
+problem with this method is that it's not
+optimal. and so that's the kind of
+situation that Huffman was faced with way
+back when coming up with the algorithm.
+and the best way to explain the Huffman
+algorithm is through a demo. And so,
+that's what we'll do next. So, here's a, a
+demo of the Huffman algorithm. So, the
+first thing that we do is count the
+frequency of each character in the input.
+and so that's what the algorithm is based
+on. So, in this case, there's five As, two
+Bs, o ne C, one D, and so forth. So our
+goal is to use fewer bits to encode A and
+more bits to encode C, D, and exclamation
+point ,!,, for example and we want to
+prefix-free code. so it's kind of a bottom
+up method. So what we do is we build one
+node for each character and we keep in the
+node corresponding to each character, a
+weight that's equal to the frequency. and
+then we imagine keeping them in a sorted
+order. so that's how the method starts
+out. Now remember, our node representation
+had an instance variable that allowed for
+storing these frequencies. And then the
+idea is to given these are sub-tries of
+size one, the idea is to combine two of
+them and merge them into a single tribe
+with a cumulative weight. And so we're
+going to find the ones that are, the two
+that have the smallest weight and create a
+new internal node for them. And the weight
+of that node is going to be the sum of the
+two weights. So, that's the frequency of
+all the code characters below it. and
+then, just put that into the mix. so now
+we have five sub-tries to deal with and
+that's the algorithm. Select the two tries
+with minimum weight. in this case, it's,
+since we're keeping them sorted so it's
+going to be the ones on the left. combine
+them and add their two weights. So, make a
+parent node. It doesn't matter which goes
+in left which goes right, really. and
+then, add the weights to the frequency of
+the parent node and then put it into the
+list. Now, if you look up at the table at
+the right what we're doing when we're
+doing this combination is building up the
+code corresponding to the characters
+moving from left to right. So, so far, we
+know that the code for D is going to end
+in zero and the code for C is going to end
+in one, one. and so for exclamation is
+going to end in one zero. so that now
+continue the rule. Now the B and R are get
+combined. And again we're figuring out how
+those code words end. and so now, we have
+just three to choose from. Now, we're
+going to combine the two big ones and now,
+we have new prefix bits for all of them.
+and notice that our letter that appear
+with highest frequency gets added in late,
+which means, it's going to be nearer the
+root. so now, we have just the two and we
+finish the algorithm. there's only two
+left now, so we combine them. I merge into
+a single try. And that corresponds to
+prepending a one to the codes for all the
+other letters and just having a one bit
+code for A. And that now winds up with a
+single try. that's a demo of Huffman's
+algorithm in operation. So, the Huffman
+Code is an answer to the question of how
+to find the best prefix code that's really
+very simple to describe. Count a frequency
+for each character in the input. And you
+start with one node corresponding to each
+character with weight given by its
+frequency. And just, until you have a
+single trie, you select the two with the
+minimum weight and merge them into a
+single trie by creating a new node with a
+weight sequel or the sum of the
+frequencies. this algorithm is used in
+many different and familiar compression
+applications from PDFs to GZIP to MP3s to
+JPEG. and it's pretty simple to code up in
+Java given the tools that algorithmic
+tools that we've built up. so what we're
+going to do is this is the F of the
+frequencies have been computed. And we're
+going to build a try given the
+frequencies. and we're going to use a
+priority Q in our generic priority Q, we
+might as well put nodes on it. we
+implemented a compare-to method. all we
+need is the compare-to to be able to build
+a priority Q from data of that type. So,
+we have a priority Q of nodes and for all
+the possible character values, if they,
+and if they appear in the message, they
+have a nonzero frequency we'll just put in
+a new node with the given frequency that's
+a leaf onto the priority Q. And then the
+Huffman algorithm is just as long as
+there's more than one node in the priority
+Q. we pull off the smallest two nodes, we
+create a new node, that's apparent. it's
+character value is not used. we compute
+the total frequency, the sum of the two
+children and we make those children of
+that nod e, and then we put that back onto
+the priority Q. And that's it. Take two
+off, put one on. it reduces in size by
+one. So, this while loop is eventually
+going to terminate. when it's done,
+there's only one node on the priority Q
+and that's the root of the trie. extremely
+simple implementation of Huffman's
+algorithm using our generic priority Q.
+you can also implement it by presorting
+the of the nodes as well. but this is a
+particularly nice way to do it. now you do
+have to prove that it produces an optimal
+code. That's in the sense that no code
+produces, produce, uses fewer bits. and
+that proof is in the book. it's, it's not
+terribly difficult but we're not going to
+do it in the lecture. the, and that's,
+Huffman proved that it in the 1950s. So,
+there's no point looking for a better
+prefix-free code. and prefix-free codes
+are so convenient cuz you don't need to
+worry about the ambiguity it's a fine
+method that's pretty easy to do. So now
+what we have to do, one disadvantage of
+Huffman and some other methods don't have
+is, we have to have two passes through the
+data. we have to go through and read all
+the character frequencies and then build
+the trie and then we have to go back
+through the data and encode the file,
+either traversing the trie from bottom up
+or using just a symbol table for to look
+up the code for each symbol in the
+message. and the running time is pretty
+clear from the use of the trie, the trie,
+the number of characters in the number of
+nodes in the trie is just the alphabet
+size. and so it's going to be alphabet
+size log R because there's trie operation
+that might involve depth of log for using
+heap implementation. and then you have to
+be the for each character, you have to do
+some kind of lookup to encode. and
+actually a question is, can we do better
+in terms of running time? and well, stay
+tuned, we'll look at a different method.
+That's Huffman compression.

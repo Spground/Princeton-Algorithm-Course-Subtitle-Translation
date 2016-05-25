@@ -1,0 +1,260 @@
+Today we're going to talk about shortest
+path algorithm.
+This was another problem on graph that's
+very easy to, to state.
+We use, again, a slightly different graph
+model.
+Last time, we had edge-weighted graphs for
+computing minimum spanning trees.
+Now, we're going to have edge-weighted
+directed graphs.
+So now the edges are directed, but they're
+weighted.
+And the problem that we're going to be
+looking at is to find the shortest path
+from one vertex to another.
+So in this example, we've got a directed
+graph with a variety of edges, the
+directed edges.
+And our goal is to find given two
+vertices, say zero to six, what's the
+shortest path that takes us from zero to
+six.
+Where the length of the path is the sum of
+it's weights.
+And in this case, the shortest distance
+from zero to two, two to seven, seven to
+three, and three to six.
+Now, the algorithms that we're going to
+look at for this are classic algorithms
+and this is an example where years ago we
+would teach these algorithms,
+Algorithms and say, well, they will be
+important someday,
+When people have devices, with maps on
+them and will want to get around.
+Nowadays, of course, everyone's familiar
+with these kinds of devices.
+When you have a map and you want to get
+from one place to another or you have, a
+device, in your car that gives you
+directions to get from one place to
+another.
+These devices are implementing the classic
+algorithms that we're going to talk about
+today.
+Not only that and even more important,
+shortest path is a really interesting and
+important problem solving model. There's
+all kinds of important practical problems
+that can be recast as shortest paths
+problems.
+And because we have efficient solutions to
+the shortest path, efficient algorithms
+for finding shortest paths, we have
+efficient solutions to all these kinds of
+problems,
+All around us.
+From texture mapping, to network routing
+protocols, to pipelining, to trucks, to
+traffic planning, we find shortest path
+applications and we'll look at a couple
+surprising examples later on today.
+So one thing to think about is, let's
+specify really what the problem's all
+about a this all different variance,
+similar to many other problems we've
+studied.
+So one thing is, what vertices are we
+talking about?
+So, of course, the most familiar is
+so-called source-sink.
+What's the shortest path from one vertex
+to another?
+But actually, more useful often is
+so-called single source shortest path,
+which is all the paths from one vertex to
+every other.
+And this is the one for example that the
+navigation system in your car might use.
+The source is where you are and it'll
+compute the shortest paths to every place
+else.
+And then when you ask for some place it'll
+just pick the one that you want in a
+manner very similar to the API that we're
+going to talk about.
+Another thing that you might do if you
+didn't have that many vertices is compute
+all pairs of shortest paths.
+So, precompute the path between all pairs
+of vertices.
+And then immediately be able to direct
+answer a client query.
+This is the type of thing that was used on
+the old map, for example.
+Another thing is the edge-weights.
+Usually, we think of it in terms of
+positive edge-weights cuz the maps are
+geometric and so the length of an edge is
+proportional to it's distance in the
+plane.
+But, actually for many problems there may
+be much more arbitrary and actually one of
+the big issues that we'll see is whether
+the eggs, edge-weights are positive or
+negative.
+And those types of restrictions are going
+to give rise to different types of
+algorithms.
+Another issue that arises and is
+particular important in the presence of
+negative weights that we'll see at the
+end,
+Is weather or not the graph, graph has
+directive cycles.
+In particular whether the total length of
+a cycle is negative or not and we'll get
+to that at the end.
+So, and also, just to reduce some clutter
+in our code in the slides, we'll
+throughout the lecture, make the
+simplifying assumption that there are
+paths from the source to every vertex.
+We won't worry about driving to islands
+and other such issue.
+To get started, we have to develop our
+APIs.
+And this'll be straightforward after cuz
+this is the fourth variation of a graph
+API that we've done.
+We started with, regular undirected
+graphs,
+Then we did digraphs,
+Then we did weighted, graphs,
+And, now, we're doing weighted digraphs.
+So to begin, we're going to need a API for
+processing edges.
+And this is actually simpler for digraphs
+than it was for undirected graphs,
+Cuz we have this concept of one of the
+vertices is, where the edge goes from and
+the other vertex is where, is where it
+goes to.
+So we have our constructor that builds an
+edge from,
+The vertex that's given it's first
+argument to the vertex that's given it's
+second argument and there's a double list
+of weight.
+And then, the client can ask for the from
+vertex or the to vertex or the weight or
+string representation.
+And always in our code we'll use the idiom
+at the bottom of the slide for processing
+an edge.
+We'll pick out v which is e.from and w
+which is e.2 and then our code will
+process v and w.
+The implementation of a weighted directed
+edge is very similar to the one for
+undirected graphs, but simpler,
+Because, the, constructor, simply sets the
+instance variables from its argument,
+And from and to are simply getter methods
+as is weight.
+So that's implementation of directed edge
+for directed weighted graphs.
+So now what about the graph itself?
+So, edge-weighted digraph.
+So, as usual, we have a constructor, that
+gives, that takes the number of vertices
+in the graph,
+So we can build data structures that are
+vertex, vertex index arrays.
+Or we can reterminate the input stream.
+And then the key methods are add edge,
+which takes in directed edge and adds it
+to the graph.
+And then the Iterable per adjacency list,
+which returns an Iterable of all the edges
+that point from a given vertex.
+So since we're processing edges, we can
+have self loops and parallel edges and
+most of our code will simply use adj
+method to iterate through the edges
+adjacent to vertices.
+Representation, is very similar to the
+other representations, that we've seen,
+except simpler,
+Because it's only one representation of
+each edge.
+So, there's a, the, instance variable for
+the adjacency list is a vertex index
+array.
+Each entry is a bag of directed edges,
+actually, references to directed edges.
+So, the, all the code for, building and
+processing this is very straightforward
+version of code that we've seen before.
+Here's the implementation, for,
+edge-weighted digraphs.
+It's the, the same as our edge-weighted
+graph, except, we just replace graph with
+digraph, everywhere.
+And, when we add an edge, we only add it
+to the from vertices adjacency list.
+So v is e.from, adj v equals add, add the
+edge to that.
+And then to get all the vertices adjacent
+to a given vertex we just re-used the
+vertex array just to get its adjacency
+list and return that bag which is
+Iterable,
+So that the client can iterate through all
+those vertices.
+A very straightforward version of what we
+did for edge-weighted graphs.
+Okay,
+So now, our client for that program is,
+our single source shortest paths, API.
+And so, it works in a manner very similar
+to others that we've done and we'll call
+it SP.
+The constructor takes a graph and a source
+vertex and it'll go ahead and build the
+data structures.
+It'll find the shortest path from the
+short, from s vertext to every other
+vertex in the graph and build the data
+structures, so that it can efficiently
+answer client queries of, first, what's
+the length of the shortest path from s to
+a given vertex? And second, what's the
+path,
+Give, an, an iterable that gives the path
+from the source vertex, from the source
+vertex to the given vertex?
+So this test client here will print out
+all the shortest paths from the given
+vertex s to every other vertex in the
+graph. Go through all the vertices.
+For every vertex,
+You print s to v and the distance from s
+to v.
+And then for every edge in the path, you
+simply print out the edge,
+So it'll print for every vertex, the
+distance from s to that vertex followed by
+the path.
+So, for example for the sample graph that
+we gave with vertex zero as the source
+it'll print out the path from zero to
+every vertex in the graph.
+So that's a test client that we'll use to
+make sure to check and learn the operation
+of our algorithms.
+And this API is going to be effective even
+for huge graphs.
+So that's and introduction to our shortest
+paths API.

@@ -1,0 +1,1214 @@
+1
+00:00:00,098 --> 00:00:05,055
+Now we're going to look at binary heaps
+which is an ingenious and very simple data
+
+2
+00:00:05,055 --> 00:00:08,525
+structure that's going to help us
+implement all the priority queue
+
+3
+00:00:08,525 --> 00:00:14,619
+operations quickly. So, the idea of a
+binary heap is based on the idea of a
+
+4
+00:00:14,619 --> 00:00:19,247
+complete binary tree. So, a complete
+binary tree, well first of all, a binary
+
+5
+00:00:19,247 --> 00:00:24,405
+tree is either empty or it's a node with
+links to left and right binary trees so
+
+6
+00:00:24,405 --> 00:00:29,326
+that's an example of a binary tree. A
+complete binary tree is one that's
+
+7
+00:00:29,326 --> 00:00:34,473
+perfectly balanced, except possibly for
+the bottom level. So there might be a few
+
+8
+00:00:34,473 --> 00:00:39,440
+nodes on the, on the bottom level and one
+level lower than the bottom level. But
+
+9
+00:00:39,440 --> 00:00:44,522
+otherwise, all the levels are full. We'll
+see how that looks in just a second. The
+
+10
+00:00:44,522 --> 00:00:50,222
+property of complete tree is that the
+height of a complete tree with n nodes is
+
+11
+00:00:50,222 --> 00:00:56,319
+the biggest integer less than log base two
+of N, and that's really easy to convince
+
+12
+00:00:56,319 --> 00:01:01,170
+yourself that that's true because the
+height, if you add nodes one at a time
+
+13
+00:01:01,357 --> 00:01:06,897
+going from left to right on the bottom
+level say, the height only increases when
+
+14
+00:01:06,897 --> 00:01:14,343
+n is a power of two. Complete binary trees
+actually happen in nature. Here's an
+
+15
+00:01:14,343 --> 00:01:23,230
+example of one that goes one, two, three,
+four levels at least, so sixteen pushes at
+
+16
+00:01:23,230 --> 00:01:30,196
+the end there. Alright. Now, the way we're
+going to use complete binary trees to
+
+17
+00:01:30,196 --> 00:01:36,386
+implement priority queues is to first of
+all, associate information with each node.
+
+18
+00:01:36,593 --> 00:01:42,813
+We'll put our keys in the nodes, and also
+we're going to represent it with an array.
+
+19
+00:01:42,813 --> 00:01:48,670
+So, [cough] when we start putting the keys
+in the nodes we're going to impose one
+
+20
+00:01:48,670 --> 00:01:52,756
+more condition that's called Heap
+Ordering. And the idea is that the
+
+21
+00:01:52,756 --> 00:01:58,078
+parent's key is going to be no smaller
+than its children's key for, and that's
+
+22
+00:01:58,078 --> 00:02:03,497
+true for every node in the tree. The array
+representation, all we do is, we put we
+
+23
+00:02:03,497 --> 00:02:08,636
+start with indices at one, it's a little
+less calculation. That way we leave a(0)
+
+24
+00:02:08,636 --> 00:02:13,777
+empty and then we just take the nodes in
+level order. So first, we put the root.
+
+25
+00:02:13,777 --> 00:02:18,642
+Then, we put the two nodes on the fi rst
+level going left from right. And then, all
+
+26
+00:02:18,642 --> 00:02:23,396
+the nodes on the third level, going from
+left to right and so forth. This is
+
+27
+00:02:23,396 --> 00:02:28,296
+interesting because we can draw the tree
+to get more intuition about what's
+
+28
+00:02:28,296 --> 00:02:32,792
+happening. But in the actual data
+structure representation, we don't need
+
+29
+00:02:32,792 --> 00:02:38,016
+any links at all. It's just an array. The
+way that we move around the tree is by
+
+30
+00:02:38,016 --> 00:02:43,775
+doing arithmetic on the indices. So let's
+look at a few properties of binary heaps.
+
+31
+00:02:43,775 --> 00:02:49,076
+So that's complete binary trees
+represented in array with keys in the
+
+32
+00:02:49,076 --> 00:02:54,558
+nodes satisfying the heap order property.
+Well, first thing is that a(1) is the
+
+33
+00:02:54,558 --> 00:03:01,100
+largest key. It's larger than the keys and
+its two children and they're larger than
+
+34
+00:03:01,100 --> 00:03:07,359
+theirs and so forth so it's the largest
+key in the data structure. The other thing
+
+35
+00:03:07,359 --> 00:03:13,080
+is, as I just mentioned, you can use the
+array in the seeds to move through the
+
+36
+00:03:13,080 --> 00:03:19,016
+tree. For example, if the node is at
+position K, index K in the array, then
+
+37
+00:03:19,016 --> 00:03:25,685
+it's parent is a K over two and that's
+integer divide. So the parents of say H
+
+38
+00:03:25,685 --> 00:03:31,971
+and G are both N. H is ten, G is at
+eleven, N's at five so both of those are
+
+39
+00:03:32,196 --> 00:03:38,377
+ten over two, eleven over two, integer
+divide is five. And going the other way
+
+40
+00:03:38,377 --> 00:03:45,153
+it's easy to see that the children of the
+node at K are 2k and 2k + one. So we don't
+
+41
+00:03:45,153 --> 00:03:50,078
+need explicit lengths at all to represent
+these data structures. We can just use
+
+42
+00:03:50,078 --> 00:03:56,619
+array indices. So [cough] that's the basic
+setup or the invariant that we're going to
+
+43
+00:03:56,619 --> 00:04:02,192
+maintain in this data structure. And now,
+what we're going to do is take a look at
+
+44
+00:04:02,374 --> 00:04:08,322
+just a couple of different scenarios that
+where we violate that invariant
+
+45
+00:04:08,322 --> 00:04:14,371
+temporarily and then fix it. And that's
+going to give us the flexibility that we
+
+46
+00:04:14,371 --> 00:04:19,943
+need to implement priority queue
+operations. So one scenario shown here, is
+
+47
+00:04:20,157 --> 00:04:25,830
+if for whatever reason a child's key
+becomes larger than its parent's key. So
+
+48
+00:04:25,830 --> 00:04:32,355
+in this case, we have an example where T,
+the node T here, its value changes and it
+
+49
+00:04:32,355 --> 00:04:39,257
+becomes larger than its parent key P. So,
+the heap order condition is satisfied
+
+50
+00:04:39,257 --> 00:04:45,042
+everywhere, except at this node. Well,
+it's easy to fix this one. All we do is
+
+51
+00:04:45,042 --> 00:04:50,648
+exchange the key in the child with the key
+in the parent. After that exchange, then,
+
+52
+00:04:50,831 --> 00:04:56,523
+that would have T up here and P down here
+then the heap order condition is satisfied
+
+53
+00:04:56,523 --> 00:05:01,685
+at that node because the parent was
+smaller, so that one's smaller. And so
+
+54
+00:05:01,685 --> 00:05:07,689
+that one is still smaller so T is after
+its exchanged up here will be bigger than
+
+55
+00:05:07,689 --> 00:05:13,405
+both its children. But the heap condition
+will be violated cuz T is still smaller
+
+56
+00:05:13,405 --> 00:05:17,943
+than S. So we have do it again, exchange
+it with S. So we move up the tree,
+
+57
+00:05:17,943 --> 00:05:23,185
+exchanging the larger key with its smaller
+parent, until we get to a point where its
+
+58
+00:05:23,185 --> 00:05:29,011
+larger than both its children. That's
+restoring the heap order along the path
+
+59
+00:05:29,011 --> 00:05:35,050
+from the place where it's violated to the
+root. You can think of that as kind of
+
+60
+00:05:35,050 --> 00:05:41,085
+like the well known Peter Principle where
+a node gets promoted to a level where it
+
+61
+00:05:41,085 --> 00:05:46,452
+finally can't be better than, than it's
+boss. It's a level of it's maximum
+
+62
+00:05:46,452 --> 00:05:53,058
+incompetence. And implementing that in
+code is really easy. We call that the swim
+
+63
+00:05:53,058 --> 00:06:00,044
+operation, it swims up to the top. And if
+we have a node at index K and we know the
+
+64
+00:06:00,044 --> 00:06:07,261
+heap condition is violated there, as long
+as we're not at the root and K's parent, K
+
+65
+00:06:07,261 --> 00:06:14,695
+over two is less than A of K. Then, we
+just exchange it with its parent, and move
+
+66
+00:06:14,695 --> 00:06:22,333
+up. That's the swim operation to eliminate
+a violation when a key value increases.
+
+67
+00:06:22,333 --> 00:06:28,468
+[cough] So for example, this gives us a
+way to insert a new element into a heap.
+
+68
+00:06:28,468 --> 00:06:33,486
+What we do is, we add a new node at the
+end of the heap, so this one position
+
+69
+00:06:33,486 --> 00:06:38,725
+over. The thing is, remember represented
+in array, one, two, three And so forth. So
+
+70
+00:06:38,725 --> 00:06:44,196
+the [cough] next empty position in the
+array there's a place to put a new node.
+
+71
+00:06:44,196 --> 00:06:49,684
+And then we just declare that, that's part
+of the heap and that node, well if it's
+
+72
+00:06:49,684 --> 00:06:55,401
+less than its parent, we're fine. But in
+general, we have to check whether the heap
+
+73
+00:06:55,401 --> 00:07:00,468
+condition is violated and exchange it with
+its par ent as long as it's smaller and
+
+74
+00:07:00,468 --> 00:07:05,317
+that's just perform the swim operation. So
+if N is the number of items in the heap,
+
+75
+00:07:05,317 --> 00:07:11,507
+defined to be in the heap we're going to
+increment it, store a new key there, there
+
+76
+00:07:11,507 --> 00:07:16,804
+and then perform the swim operation. So
+that's a quick implementation of the
+
+77
+00:07:16,804 --> 00:07:21,984
+insert operation. And notice since it's
+just going from bottom to top in the heap
+
+78
+00:07:21,984 --> 00:07:28,362
+it takes at most one plus log base two of
+N compares. [cough] Now there's another
+
+79
+00:07:28,362 --> 00:07:34,542
+scenario where a key becomes smaller. For
+whatever reason, a parent becomes key
+
+80
+00:07:34,542 --> 00:07:40,638
+decreases, it might become smaller than
+one or both of its children. In this case,
+
+81
+00:07:40,864 --> 00:07:48,056
+the value at position two has changed to H
+for whatever reason and that's smaller, in
+
+82
+00:07:48,056 --> 00:07:54,041
+this case, than both its children. So how
+do we fix that violation? Well, that one's
+
+83
+00:07:54,041 --> 00:07:59,058
+also easy. We figure out which of the
+children is larger. In this case, it's the
+
+84
+00:07:59,058 --> 00:08:04,069
+S, and we exchange our exchange that one
+with the one that's violating the
+
+85
+00:08:04,069 --> 00:08:10,006
+condition. So that's moving the smaller
+key down. After that exchange, then S is
+
+86
+00:08:10,006 --> 00:08:15,043
+in position two, and it's bigger than both
+P and H. And the heap condition is only
+
+87
+00:08:15,043 --> 00:08:20,067
+violated again where H is sitting. And
+again, we keep going until getting to the
+
+88
+00:08:20,067 --> 00:08:26,086
+bottom, or getting to a place where both
+children are smaller. And that's maybe a
+
+89
+00:08:26,086 --> 00:08:32,095
+little bit what happens when a, a new boss
+is hired from the outside and then the two
+
+90
+00:08:32,095 --> 00:08:38,062
+subordinates struggle to take over that
+position and then the bros, boss would get
+
+91
+00:08:38,062 --> 00:08:44,040
+demoted to it's level of competence. And
+again, that level of flexibility. Here's
+
+92
+00:08:44,040 --> 00:08:49,681
+the implementation of it. And again, it's
+quite straightforward using the [cough]
+
+93
+00:08:49,681 --> 00:08:56,012
+index arithmetic to move around in the
+heap. If we're, and that's called the sink
+
+94
+00:08:56,012 --> 00:09:01,427
+operation, cuz we're going down the heap.
+If were at position K, then what we need
+
+95
+00:09:01,427 --> 00:09:06,861
+to worry about it is the nodes at 2k and
+2k + one. And the first thing to check is
+
+96
+00:09:07,088 --> 00:09:12,807
+find out which one's bigger. It's either
+2k or 2k + one and so set j accordingly.
+
+97
+00:09:12,807 --> 00:09:17,708
+So that's j now, is, after this st atement
+is the larger of the two children. And
+
+98
+00:09:17,708 --> 00:09:25,037
+don't forget to check that we're going off
+the end of the heap. And then if, [cough]
+
+99
+00:09:25,037 --> 00:09:30,085
+the K is not less than either one of
+those, then we're done. If it is, then we
+
+100
+00:09:30,085 --> 00:09:35,092
+exchange with the larger of the two
+children and move down the heap. Again,
+
+101
+00:09:35,092 --> 00:09:42,092
+just a few lines of code to eliminate the
+violation when a key value in a heap
+
+102
+00:09:42,092 --> 00:09:48,089
+decreases. And that one we're going to use
+to implement delete the maximum in a heap.
+
+103
+00:09:48,089 --> 00:09:54,041
+So delete the maximum, we have to do two
+things, one thing is the size of the heap
+
+104
+00:09:54,041 --> 00:09:59,796
+has got to go down by one. The other thing
+is return the maximum. Well, we know that
+
+105
+00:10:00,055 --> 00:10:05,468
+[cough] one that we want to return is the
+one at the root. So we'll save that value
+
+106
+00:10:05,468 --> 00:10:11,942
+away to return to the client. And then,
+since it has to go down by one the place
+
+107
+00:10:11,942 --> 00:10:17,816
+to get the to remove the element from the
+heap is at the end of the array cuz it's
+
+108
+00:10:17,816 --> 00:10:23,179
+now going to have to not occupy that
+position, so we take that element and
+
+109
+00:10:23,179 --> 00:10:29,679
+replace the root with it. So I move the H
+up and actually, put the root value there
+
+110
+00:10:29,679 --> 00:10:35,714
+just exchange them but it's not longer in
+the heap. Now, that element which went
+
+111
+00:10:35,714 --> 00:10:41,395
+from the bottom to the top is most likely
+going to violate the heap order. It's
+
+112
+00:10:41,395 --> 00:10:47,311
+going to be smaller than one of its, both
+of its children. So, we do a sink. [cough]
+
+113
+00:10:47,311 --> 00:10:54,264
+now in this case to implement the lead max
+we save away that value at the root in max
+
+114
+00:10:54,515 --> 00:11:02,070
+and we eliminate loitering by nulling out
+that vacated position then return the max
+
+115
+00:11:02,070 --> 00:11:07,071
+value. So that's an implement,
+implementation of the delete max operation
+
+116
+00:11:07,279 --> 00:11:14,319
+for heap using sink where a key value that
+decreases, go down, goes down in the heap.
+
+117
+00:11:14,557 --> 00:11:22,021
+So let's just take a look at what happens
+with a, a real heap with the demo when we
+
+118
+00:11:22,021 --> 00:11:29,215
+do these things. And you'll have a good
+feeling for how this data structure works.
+
+119
+00:11:29,449 --> 00:11:37,126
+So, we're starting at some point where we
+have these ten keys in heap and it's heap
+
+120
+00:11:37,126 --> 00:11:43,018
+order. So we've drawn the data structure
+with the links, so we have an intuition
+
+121
+00:11:43,232 --> 00:11:48,296
+for what's going on. But all the program
+sees is the array and grey at the bottom
+
+122
+00:11:48,296 --> 00:11:53,801
+where T's in position one, P and R are
+position two and three, and so forth. So
+
+123
+00:11:53,801 --> 00:11:59,386
+now, suppose that we're supposed to add S.
+So to add it to the heap, that's going to
+
+124
+00:11:59,386 --> 00:12:04,159
+go in the position at the end. Then now
+we've added it to the heap just by
+
+125
+00:12:04,159 --> 00:12:09,981
+incrementing N, putting it in there but
+now we have to bring the heap order back
+
+126
+00:12:09,981 --> 00:12:14,332
+into condition. And so that's going to,
+now that key is larger than its parent so
+
+127
+00:12:14,332 --> 00:12:20,249
+we're going to swim it up exchange it with
+its parent as long as it's smaller than
+
+128
+00:12:20,249 --> 00:12:25,224
+its parent. So, first thing it goes up
+exchange with the S, it's still bigger
+
+129
+00:12:25,224 --> 00:12:31,029
+than P. So we exchange it with the T and
+now we're done because S in not bigger
+
+130
+00:12:31,029 --> 00:12:36,533
+than T and the heap order condition is now
+satisfied everywhere in the heap. So, with
+
+131
+00:12:36,533 --> 00:12:42,142
+just two exchanges we insert that new
+element in the heap in this case. I now
+
+132
+00:12:42,142 --> 00:12:47,044
+suppose the next operation is remove the
+maximum. So, we're going to take T and
+
+133
+00:12:47,044 --> 00:12:52,996
+exchange it with the last element and then
+declare that to be no longer part of the
+
+134
+00:12:52,996 --> 00:12:59,056
+heap. So now [cough] we have to bring the
+heap order back because it might be
+
+135
+00:12:59,056 --> 00:13:04,989
+violated at the root so now we invoke the
+sink where we exchange that node with the
+
+136
+00:13:04,989 --> 00:13:10,203
+larger of its two children until we find a
+place where its larger than both its
+
+137
+00:13:10,203 --> 00:13:15,588
+children. So S is the larger of the two
+children R and S and now H is still
+
+138
+00:13:15,588 --> 00:13:21,351
+smaller than both it's children so we
+promote the larger, which is P. Now H has
+
+139
+00:13:21,351 --> 00:13:27,238
+no right child, just a left child and it's
+larger than that one, so we're finished
+
+140
+00:13:27,238 --> 00:13:32,404
+with that operation. We've removed the
+maximum and we still have our data
+
+141
+00:13:32,404 --> 00:13:37,880
+structure heap ordered and our n keys
+stored in first n positions in the array.
+
+142
+00:13:38,089 --> 00:13:44,421
+Let's remove the maximum again. Again we
+take it out by exchanging this time G with
+
+143
+00:13:44,421 --> 00:13:50,199
+the root and then [cough] decrease the
+size of the heap by one. Just take that
+
+144
+00:13:50,199 --> 00:13:55,477
+out. Now, t he node of the root violates
+the heap border so we have to exchange it
+
+145
+00:13:55,477 --> 00:14:01,333
+with the largest of it's two children, in
+this case that's R. Again, G is not larger
+
+146
+00:14:01,333 --> 00:14:06,603
+than it's two children so we have to
+exchange it with the larger of the two,
+
+147
+00:14:06,603 --> 00:14:12,281
+that's O and now we are done, we've
+removed the largest again. Now suppose we
+
+148
+00:14:12,281 --> 00:14:19,106
+insert S back into the heap. So [cough]
+that's adding it at the end, violates the
+
+149
+00:14:19,106 --> 00:14:25,685
+heap order exchange it with the parent
+smaller and keep doing until we get to a
+
+150
+00:14:25,685 --> 00:14:30,944
+place where it's larger than its two
+children. In this case, S goes all the way
+
+151
+00:14:30,944 --> 00:14:36,429
+up to the root. And it's all heap ordered
+again. So that's a little survey of some
+
+152
+00:14:36,429 --> 00:14:42,123
+operations on a heap and you can see how
+every operation is done with just a few
+
+153
+00:14:42,123 --> 00:14:47,416
+exchanges along the path from the bottom
+to the top or the top to the bottom. Okay,
+
+154
+00:14:47,416 --> 00:14:52,777
+here's the complete Java implementation of
+a priority queue using the binary heap
+
+155
+00:14:52,777 --> 00:14:57,725
+data structure. [cough] it's actually not
+so different from the elementary
+
+156
+00:14:57,725 --> 00:15:02,541
+implementations that we looked at in the
+last section. Our representation is an
+
+157
+00:15:02,541 --> 00:15:08,003
+array of keys and a size, that's the
+number of items in the heap. [cough] for
+
+158
+00:15:08,003 --> 00:15:13,566
+simplicity, we'll show the code where the
+client gives the capacity of the heap. We
+
+159
+00:15:13,566 --> 00:15:19,163
+can use resizing array, in industrial
+strength implementation, the same that, we
+
+160
+00:15:19,163 --> 00:15:25,229
+did for stacks and other data structures
+where we use arrays. So we'll build a new
+
+161
+00:15:25,229 --> 00:15:30,702
+array of keys and we have to use an ugly,
+ugly cast because we can't have generic
+
+162
+00:15:30,702 --> 00:15:35,609
+arrays in Java. And that, so it's
+comparable and, and we need one more than
+
+163
+00:15:35,609 --> 00:15:41,535
+the capacity to handle this thing where,
+we don't use position zero. So the
+
+164
+00:15:41,535 --> 00:15:47,347
+priority queue operations, is the insert
+and del max that we showed in the previous
+
+165
+00:15:47,347 --> 00:15:53,095
+slides, is empty, is just checking whether
+n is equal to zero. We have the swim and
+
+166
+00:15:53,095 --> 00:15:58,808
+sink functions that we showed earlier. And
+then we have helper functions less and
+
+167
+00:15:58,808 --> 00:16:04,888
+exchange, that access the array directly
+so that the co de doesn't have to access
+
+168
+00:16:04,888 --> 00:16:11,433
+directly. That's a complete implementation
+of priority queues in Java. And this is,
+
+169
+00:16:11,433 --> 00:16:18,347
+this implementation by itself is extremely
+significant because, it's really very
+
+170
+00:16:18,347 --> 00:16:24,371
+simple, optimal representation of the
+data. And only a little arithmetic with
+
+171
+00:16:24,371 --> 00:16:29,900
+array indices. But as you can see by
+looking at this table, it gives us a way
+
+172
+00:16:29,900 --> 00:16:35,962
+to implement priority queues where, both
+operations are guaranteed to happen in log
+
+173
+00:16:35,962 --> 00:16:41,936
+N time. Now, experts have worked to come
+up with improvements on this and there are
+
+174
+00:16:42,138 --> 00:16:48,194
+slight improvements possible. We can make
+the heap d way rather than just two way
+
+175
+00:16:48,427 --> 00:16:53,940
+and depending on the frequency of
+execution of the uncertain del max
+
+176
+00:16:53,940 --> 00:17:00,238
+operations that might work out better.
+There's an advanced data structure called
+
+177
+00:17:00,238 --> 00:17:05,845
+a Fibonacci Heap, where inserts are done
+in constant time and delete max done in
+
+178
+00:17:06,052 --> 00:17:11,733
+log N time on an average over all the
+operations. That ones generally too
+
+179
+00:17:11,733 --> 00:17:17,644
+complicated to use in practice. But still
+again, using theory as a guide maybe
+
+180
+00:17:17,644 --> 00:17:23,418
+there's a way to, [cough] to decrease
+costs a little bit from binary heaps. And
+
+181
+00:17:23,418 --> 00:17:27,845
+of course, we cannot get down to having
+constant time for all operations. Why?
+
+182
+00:17:27,845 --> 00:17:32,565
+Well, we can sort with a heap by inserting
+all the elements and then deleting the
+
+183
+00:17:32,565 --> 00:17:37,875
+maximum of getting a sort done and that
+would be in linear time if we had this
+
+184
+00:17:37,875 --> 00:17:43,241
+kind of variation. If, if we have constant
+time operations for both insert and del
+
+185
+00:17:43,241 --> 00:17:48,538
+max. But for certain applications, we can
+get close to constant time for one or the
+
+186
+00:17:48,538 --> 00:17:54,082
+other operations and that'll be useful in
+different implementations. Now, there's an
+
+187
+00:17:54,082 --> 00:17:59,399
+important consideration, that, in, that we
+have to bring up related to the
+
+188
+00:17:59,399 --> 00:18:06,153
+programming language and [cough] this is,
+a more general consideration than usually
+
+189
+00:18:06,153 --> 00:18:12,473
+we bring into focus in algorithms but it's
+worthwhile mentioning. We're assuming that
+
+190
+00:18:12,473 --> 00:18:18,338
+the client doesn't get to change the keys
+while they're on the priority queue. And
+
+191
+00:18:18,338 --> 00:18:23,350
+it's better not to ass ume that it's
+better to arrange for that in our
+
+192
+00:18:23,350 --> 00:18:28,282
+implementations by using keys that are
+immutable, who's values don't change.
+
+193
+00:18:28,471 --> 00:18:33,449
+There's many reasons that immu, immutable
+keys are [cough] that programming
+
+194
+00:18:33,449 --> 00:18:38,715
+languages provide the capability to build
+immutable keys and, and this is a fine
+
+195
+00:18:38,715 --> 00:18:44,429
+example of one. So and we'll talk more
+about that in a minute. The other things
+
+196
+00:18:44,429 --> 00:18:50,335
+that, that, we didn't talk about in the
+implementation should throw in, exception.
+
+197
+00:18:50,335 --> 00:18:55,729
+If the client tries to delete from an
+empty priority queue and we should have a
+
+198
+00:18:55,729 --> 00:19:01,694
+no argument constructor, and use a
+resizing array, to, account for gradual
+
+199
+00:19:01,694 --> 00:19:07,067
+growth and shrinkage in an industrial
+strength implementation. Usually we
+
+200
+00:19:07,067 --> 00:19:12,941
+provide two implementations, one that's
+max oriented, one t hat's min oriented so
+
+201
+00:19:12,941 --> 00:19:19,072
+that nobody get's confused and they're the
+same except the less and greater switch.
+
+202
+00:19:19,277 --> 00:19:25,601
+And we'll see later on, there's times when
+we want to add, expand the API and provide
+
+203
+00:19:25,601 --> 00:19:31,471
+other operations like removing an
+arbitrary item from the priority queue, or
+
+204
+00:19:31,471 --> 00:19:37,881
+give the client in the API the capability
+of changing the priority of an item. Our
+
+205
+00:19:37,881 --> 00:19:44,235
+sink and swim methods are good for making
+this happen, but we'll, delay these
+
+206
+00:19:44,235 --> 00:19:49,892
+implementations until we need them in a
+more complicated algorithm. So what about
+
+207
+00:19:49,892 --> 00:19:56,695
+mutability? So in every thing in Java is
+implemented as a data type, a set of
+
+208
+00:19:56,695 --> 00:20:03,499
+values and operations on those values and
+the idea of immutable data type, is you
+
+209
+00:20:03,499 --> 00:20:10,531
+can't change the value once it's created.
+So that's kind of like, when you [cough]
+
+210
+00:20:10,531 --> 00:20:16,609
+when you, when you create a literal value
+to be assigned to an integer, it has that
+
+211
+00:20:16,609 --> 00:20:24,101
+value. So here, here's an example say
+using the data type for vectors might be a
+
+212
+00:20:24,101 --> 00:20:30,992
+way to implement vectors. So we put the
+word final to means that instance methods
+
+213
+00:20:30,992 --> 00:20:37,431
+can't be overridden. And not only that,
+instance variables are private, they can't
+
+214
+00:20:37,431 --> 00:20:43,266
+be seen from the outside and they don't
+change. And so a constructor for an
+
+215
+00:20:43,266 --> 00:20:49,265
+immutable vector data type, it might take
+an array [cough] as it's argument, and
+
+216
+00:20:49,265 --> 00:20:55,028
+that array has got values stored in it,
+say doubles, and those are, those can
+
+217
+00:20:55,028 --> 00:21:03,181
+change but what immutable implementation
+would do would be to copy those values
+
+218
+00:21:03,181 --> 00:21:09,528
+into the local [cough] data array instance
+variable and then those values are not
+
+219
+00:21:09,528 --> 00:21:14,505
+going to change. And the instance methods
+won't change them and the client can't
+
+220
+00:21:14,505 --> 00:21:21,029
+change them. So that value stays the same.
+Lots of, implementations, data-type
+
+221
+00:21:21,029 --> 00:21:27,002
+implementations in Java are immutable,
+like string is immutable. When you create
+
+222
+00:21:27,002 --> 00:21:32,300
+a string that value doesn't change.
+[cough] if you want a new string, you have
+
+223
+00:21:32,300 --> 00:21:37,684
+to create a new string, using
+concatenation or some other operation. And
+
+224
+00:21:37,684 --> 00:21:43,127
+the same with the wrapper types, like
+integer and double, or color, and, what
+
+225
+00:21:43,127 --> 00:21:49,486
+lots of things. Whereas on the other hand,
+sometimes, the whole purpose, of a data
+
+226
+00:21:49,486 --> 00:21:55,116
+type is to maintain a changing value like
+a good example is like a counter, or a
+
+227
+00:21:55,116 --> 00:22:00,769
+stack. So you wouldn't put those things on
+a priority queue cuz the value is changing
+
+228
+00:22:00,769 --> 00:22:05,987
+but the other ones you would. So the
+advantages of immutability and again,
+
+229
+00:22:05,987 --> 00:22:11,868
+maybe this isn't the place to really sell
+those advantages more for a programming
+
+230
+00:22:11,868 --> 00:22:16,946
+language course is that it, it really
+simplifies debugging. We can be have more
+
+231
+00:22:16,946 --> 00:22:21,620
+confidence that our priority queue
+operations are going to work correctly if
+
+232
+00:22:21,620 --> 00:22:26,541
+we know that the type of data that's on
+the priority queue is immutable. If the
+
+233
+00:22:26,541 --> 00:22:31,691
+client could change the values, how do we
+know that the heap border operation is
+
+234
+00:22:31,691 --> 00:22:36,450
+preserved? If we want the client to be
+able to change values, we're going to
+
+235
+00:22:36,450 --> 00:22:42,665
+provide methods for that purpose as I just
+mentioned. And there's many other reasons
+
+236
+00:22:42,665 --> 00:22:48,234
+that people use immutable data types.
+There is a disadvantage that you have to
+
+237
+00:22:48,234 --> 00:22:54,007
+create a new object for every data type
+value but for a lot of applications that
+
+238
+00:22:54,007 --> 00:22:59,213
+disadvan tage is not viewed to be
+significant compared to the advantages.
+
+239
+00:22:59,434 --> 00:23:05,092
+Here's a quote from a one of Java's
+architect, Josh Black. Classes should be
+
+240
+00:23:05,092 --> 00:23:10,110
+immutable unless there's a very good
+reason to make them mutable. If a class
+
+241
+00:23:10,110 --> 00:23:15,456
+cannot be made immutable, you should still
+limit its immutability as much as
+
+242
+00:23:15,456 --> 00:23:21,975
+possible. And many programmers live by
+that kind of precept. So that's a basic
+
+243
+00:23:22,226 --> 00:23:35,836
+implementation of priority queues using
+the heap data structure represented as an

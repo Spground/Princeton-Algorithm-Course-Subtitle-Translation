@@ -1,0 +1,1324 @@
+1
+00:00:02,014 --> 00:00:08,087
+Now we're going to look at KD trees, which
+is an extension of BSTs that allow us to
+
+2
+00:00:08,087 --> 00:00:16,057
+do efficient processing of sets of points
+in space and it's very flexible and very
+
+3
+00:00:16,057 --> 00:00:24,003
+useful in lots of applications. So now
+we're going to extend the API to talk
+
+4
+00:00:24,003 --> 00:00:29,077
+about two dimensional keys. So that's
+just, you can think of two dimensional
+
+5
+00:00:29,077 --> 00:00:35,044
+keys as, points in the two dimensional
+geometric space. So we're going to talk
+
+6
+00:00:35,044 --> 00:00:41,089
+about insertion, and search. We won't talk
+about deletion and then range search and
+
+7
+00:00:41,089 --> 00:00:47,057
+range count. So, we want to be able to
+insert and delete, points. You can think
+
+8
+00:00:47,057 --> 00:00:53,318
+of a two dimensional key as a point in two
+dimensional space. And we want to be able
+
+9
+00:00:53,318 --> 00:00:58,227
+to find all keys that lie within a two
+dimensional range. That's a rectangle. As
+
+10
+00:00:58,227 --> 00:01:03,042
+I mentioned at the beginning or count the
+number of keys that lie in a two
+
+11
+00:01:03,042 --> 00:01:08,075
+dimensional range. So again, the geometric
+interpretation is the keys or points in
+
+12
+00:01:08,075 --> 00:01:14,002
+the plane. And we have a, a, a range, 2D
+range is a, a rectangle, or is oriented,
+
+13
+00:01:14,021 --> 00:01:20,675
+to align with the horizontal, vertical
+axes. And we want to be able to find or
+
+14
+00:01:20,675 --> 00:01:27,230
+count the points in a given rectangle. In
+this one has many, many applications and
+
+15
+00:01:27,230 --> 00:01:33,162
+we'll talk about some of them later on.
+And even if it's not points in the plane,
+
+16
+00:01:33,162 --> 00:01:40,042
+just databases you might ask for all the
+people with incomes between 1,000,000 and
+
+17
+00:01:40,042 --> 00:01:45,988
+10,000,000 who are between 40 and 50 years
+of age. And this kind of algorithm and
+
+18
+00:01:45,988 --> 00:01:51,961
+data structure would be useful for that
+kind of situation too. So how are we going
+
+19
+00:01:51,961 --> 00:01:57,935
+to solve this problem, implement this API?
+We build a data structure containing
+
+20
+00:01:57,935 --> 00:02:03,740
+points that can efficiently support range
+searching and range counting. Well one
+
+21
+00:02:03,740 --> 00:02:09,999
+easy way to do it is to just think about
+dividing space into a grid of squares. So
+
+22
+00:02:09,999 --> 00:02:16,949
+we'll pick a parameter M and divide space
+into an M by M grid of squares and then
+
+23
+00:02:16,949 --> 00:02:23,312
+process all the points and make a list of
+points that are contained in each square.
+
+24
+00:02:23,312 --> 00:02:30,073
+We can use a two dimensional array to
+directly index, relevant squares. And for
+
+25
+00:02:30,073 --> 00:02:36,277
+insert, you just, take X, Y. Figure out
+which square it belongs to. Simply divide
+
+26
+00:02:36,277 --> 00:02:42,290
+by, both coor dinates by N, and look into
+the two dimensional array. And just add
+
+27
+00:02:42,290 --> 00:02:47,049
+the point to the list for the
+corresponding square. And then range
+
+28
+00:02:47,049 --> 00:02:52,144
+searches, only find the squares that
+intersect the query, and process the
+
+29
+00:02:52,144 --> 00:02:59,830
+points, in that square. And depending on
+the value of the parameter M, you have a
+
+30
+00:02:59,830 --> 00:03:06,914
+space/time tradeoff. The amount of space
+required is M^2 for the grid + N. You have
+
+31
+00:03:06,914 --> 00:03:14,527
+to have a linked list element, or whatever
+for each point. And then the time, though,
+
+32
+00:03:14,527 --> 00:03:20,336
+gets divided by M^2. Your number of points
+and were spread out over the N squared,
+
+33
+00:03:20,336 --> 00:03:26,668
+different squares. And so on average you
+examine N over M^2 points per square. So
+
+34
+00:03:26,668 --> 00:03:33,451
+you don't want to make M too big that
+would be too much space, you don't want to
+
+35
+00:03:33,451 --> 00:03:39,219
+make M too small that would be too much
+time. So what we want to choose is the
+
+36
+00:03:39,219 --> 00:03:45,427
+square size that would best balance these
+two needs and then it is easy to see that
+
+37
+00:03:45,427 --> 00:03:51,898
+what you should choose is M to be about n
+square root of N. So then your space is
+
+38
+00:03:51,898 --> 00:03:58,321
+within a constant factor of N and your
+time is constant. So if the points are
+
+39
+00:03:58,321 --> 00:04:04,675
+randomly distributed, then this is ideal.
+It takes us, linear time to initialize the
+
+40
+00:04:04,675 --> 00:04:11,069
+data structure. And to insert and search,
+it take constant time per point in the
+
+41
+00:04:11,069 --> 00:04:17,094
+range. And this is absolutely a fine
+method that, is not that difficult to
+
+42
+00:04:17,094 --> 00:04:23,388
+implement, in the case that the points are
+evenly distributed. Unfortunately, it's
+
+43
+00:04:23,388 --> 00:04:28,812
+usually the case that, in geometric data,
+that the points are not evenly
+
+44
+00:04:28,812 --> 00:04:34,289
+distributed. There's a well known
+phenomenon known as clustering that says
+
+45
+00:04:34,289 --> 00:04:39,203
+that, the, the points aren't going to be
+evenly distributed all over the whole
+
+46
+00:04:39,203 --> 00:04:44,827
+thing. In the case of the, the grid
+implementation, they might all fall on the
+
+47
+00:04:44,827 --> 00:04:49,694
+same square. And so, the average list
+length is short. This is like what we
+
+48
+00:04:49,694 --> 00:04:56,022
+encountered with hashing. If you take, all
+the points in one square, and zero and all
+
+49
+00:04:56,022 --> 00:05:01,986
+the rest of them. Your average is still, N
+over M squared. But. They are all in that
+
+50
+00:05:01,986 --> 00:05:08,138
+long list and you're going to have a slow
+algorithm if it's, if it's based on this.
+
+51
+00:05:08,138 --> 00:05:14,442
+So we need a data structure that more
+gracefully adapts to the distribution of
+
+52
+00:05:14,442 --> 00:05:21,640
+the data. And again it, it's well known
+that most geometric data has this kind of
+
+53
+00:05:21,640 --> 00:05:28,779
+problem. So for example here's some data
+which cities in the US. It's got 13,000
+
+54
+00:05:28,779 --> 00:05:34,924
+points, but if you try to use the grid
+implementation for this, you'd find that
+
+55
+00:05:34,924 --> 00:05:41,883
+half the squares would be empty. And half
+the points are in just ten percent of the
+
+56
+00:05:41,883 --> 00:05:47,426
+squares. So, the clustering in the data is
+going to make the implementation
+
+57
+00:05:47,426 --> 00:05:52,875
+inefficient. We need to adapt to the data.
+And this is very, very typical, in
+
+58
+00:05:52,875 --> 00:05:58,491
+geometric data. Particularly, in higher
+dimensional data, as we'll see in a
+
+59
+00:05:58,491 --> 00:06:05,027
+minute. So, people have developed all
+different kinds of, methods for, adapting
+
+60
+00:06:05,027 --> 00:06:11,027
+in this way. And what we're going to look
+at is one of the most widely used. Which
+
+61
+00:06:11,027 --> 00:06:17,050
+is basically to use a tree to represent a
+recursive subdivision of the plane, of two
+
+62
+00:06:17,050 --> 00:06:22,451
+dimensional space. It's going to be
+recursive. It's going to be based on the
+
+63
+00:06:22,451 --> 00:06:30,322
+points the way in which we divide into
+half planes. And its one of many different
+
+64
+00:06:30,322 --> 00:06:36,856
+algorithms that, have been, studied for
+this, but again its a simple one and
+
+65
+00:06:36,856 --> 00:06:44,803
+widely used. So, for example if you played
+the game Doom or use the flight simulator,
+
+66
+00:06:44,803 --> 00:06:51,380
+that, these types of graphical simulations
+and animations are made possible only
+
+67
+00:06:51,380 --> 00:06:58,422
+through the use of space partitioning
+trees, like 2d trees and quad trees and
+
+68
+00:06:58,422 --> 00:07:05,689
+also in all different types of scientific
+data processing these things are extremely
+
+69
+00:07:05,689 --> 00:07:11,061
+important whenever you're processing.
+Geometric data, doing some kind of
+
+70
+00:07:11,061 --> 00:07:17,058
+geometric search. Where is the closest
+thing? How am I going to find the closest
+
+71
+00:07:17,058 --> 00:07:23,315
+thing efficiently? What things are nearby,
+and so forth? So, rest assured, these
+
+72
+00:07:23,315 --> 00:07:29,660
+types of algorithms, lie at the heart of,
+any program that you use that, is
+
+73
+00:07:29,660 --> 00:07:35,550
+involving a lot of geometric data. So,
+those are just, two examples. So let's
+
+74
+00:07:35,550 --> 00:07:41,091
+look at how it looks now. So, a 2D tree,
+is, again, it's going to be a data
+
+75
+00:07:41,091 --> 00:07:47,070
+structure based on a bunch of points
+that's going to facilitate, efficient data
+
+76
+00:07:47,070 --> 00:07:53,093
+processing of these points. So, just as we
+do for, symbol tables, where we take,
+
+77
+00:07:54,015 --> 00:07:59,065
+keys. Now we're going to ta ke points, and
+we're going to build a data structure
+
+78
+00:07:59,065 --> 00:08:05,030
+based on these points. And the idea is to,
+build a tree that corresponds to
+
+79
+00:08:05,030 --> 00:08:10,079
+recursively partitioning the plane. So
+arbitrarily our first point we're going to
+
+80
+00:08:11,000 --> 00:08:16,084
+divide the plane into two parts based on a
+vertical line through that point. So now,
+
+81
+00:08:17,004 --> 00:08:22,063
+in the tree on the right there, all the
+points that fall to the left of the first
+
+82
+00:08:22,063 --> 00:08:27,099
+point are going to be on the left, and all
+the points that fall to the right. That
+
+83
+00:08:27,099 --> 00:08:32,094
+first point, you're going to be on the
+right. But then we get to the next point,
+
+84
+00:08:32,094 --> 00:08:38,048
+we'll switch and we'll partition on a
+horizontal line. So now, our second point,
+
+85
+00:08:38,071 --> 00:08:45,035
+in the tree, the left sub-tree corresponds
+to everybody below that horizontal line,
+
+86
+00:08:45,035 --> 00:08:52,022
+and the right sub-tree corresponds to
+everybody above it. Similar if our third
+
+87
+00:08:52,022 --> 00:08:58,083
+point comes on the left again we'll
+partition according to the horizontal line
+
+88
+00:08:58,083 --> 00:09:05,060
+through that point on the left. So if we
+go left and then left that means all the
+
+89
+00:09:05,060 --> 00:09:12,029
+points to the left of one and above three,
+so the square in the upper left is
+
+90
+00:09:12,029 --> 00:09:18,025
+represented. By, that node in the tree.
+And, again. Now, when we go one level
+
+91
+00:09:18,025 --> 00:09:23,052
+below, we switch again to vertical.
+Alternate between horizontal and vertical
+
+92
+00:09:23,052 --> 00:09:29,001
+partitioning, of the plane. So it's a
+regular binary search tree. But it's got
+
+93
+00:09:29,001 --> 00:09:34,084
+this interpretation based on the geometric
+data, where we switch which key we use
+
+94
+00:09:34,084 --> 00:09:40,073
+for, the comparison, the X coordinate or
+the Y coordinate, at each level. And that
+
+95
+00:09:40,073 --> 00:09:45,092
+corresponds to this partitioning of the
+plane. So now five comes in, that's to the
+
+96
+00:09:45,092 --> 00:09:50,055
+left of four because it was partitioned at
+a vertical and five's going to partion on
+
+97
+00:09:50,055 --> 00:09:59,083
+a horizontal. This is simple, and
+completely well defined partion of the
+
+98
+00:09:59,083 --> 00:10:08,041
+plane corresponding to a binary tree. Now
+the ninth point well it's to the left of
+
+99
+00:10:08,041 --> 00:10:13,085
+eight, above to and to the left of eight
+and then corresponds to horizontal
+
+100
+00:10:13,085 --> 00:10:19,066
+partitioning, tenth point is to the right
+of one, it's below two and we go to the
+
+101
+00:10:19,066 --> 00:10:28,088
+left and it's to the right of seven so we
+go to the right. So that's a way to build
+
+102
+00:10:28,088 --> 00:10:33,463
+a Binary tree corresponding to a
+partitioning of the pla ne. And it's
+
+103
+00:10:33,463 --> 00:10:38,171
+really the same as the binary search tree.
+It's just that we alternate which
+
+104
+00:10:38,171 --> 00:10:42,593
+coordinate we use as the key. At the even
+levels, we think of a vertical line. And
+
+105
+00:10:42,593 --> 00:10:47,614
+the left subtree is all the points to the
+left, and the right subtree is all the
+
+106
+00:10:47,614 --> 00:10:52,765
+points to the right. On odd levels, we use
+a horizontal line, in the left subtrees
+
+107
+00:10:52,765 --> 00:10:57,762
+all points below. In the right subtrees,
+all points above. And the, and the code
+
+108
+00:10:57,762 --> 00:11:03,037
+for this is, you know, the same as for
+binary search trees. It's simply, which,
+
+109
+00:11:03,057 --> 00:11:08,078
+coordinate we use for the comparison.
+That's the only difference. So that's 2D
+
+110
+00:11:08,078 --> 00:11:14,032
+tree implementation. So now what about
+solving a problem like this rain search
+
+111
+00:11:14,032 --> 00:11:20,001
+problem for a 2D tree. So now we have a
+query like this green rectangle and what
+
+112
+00:11:20,001 --> 00:11:25,055
+we want to find is all the points in the
+data structure that fall within that
+
+113
+00:11:25,055 --> 00:11:31,016
+rectangle. Well, we're going to use, the
+2D tree represents our points and we are
+
+114
+00:11:31,016 --> 00:11:37,035
+going to use the structure and definition
+of that tree, to go ahead and help us find
+
+115
+00:11:37,035 --> 00:11:43,091
+the points that are in the rectangle. If,
+if the root node lies in the rectangle
+
+116
+00:11:43,091 --> 00:11:51,301
+then we're done. We can return that, that
+point but we have to look on both sides to
+
+117
+00:11:51,301 --> 00:11:57,419
+look for more, but if the rectangle lies
+to the left of the root node then we have
+
+118
+00:11:57,419 --> 00:12:06,248
+to look at the left and so forth. So let's
+look at how this works in the demo. All
+
+119
+00:12:06,248 --> 00:12:11,088
+right, so, we're going to try to find all
+the points that are contained in that
+
+120
+00:12:11,088 --> 00:12:17,098
+green query rectangle. So first thing is,
+to check if our rectangle contains the
+
+121
+00:12:17,098 --> 00:12:23,051
+node of the root. In this case it doesn't.
+So since, it's to the left of the
+
+122
+00:12:23,051 --> 00:12:29,033
+splitting line of the root we only have to
+search in the left sub-tree. Now, we
+
+123
+00:12:29,033 --> 00:12:34,078
+search the left sub-tree and we're going
+to check if it contains.3. It does not
+
+124
+00:12:34,078 --> 00:12:42,041
+contain.3, but now which, sub-trees do we
+search? In this case, now the rectangle
+
+125
+00:12:42,041 --> 00:12:48,055
+intersects a splitting line, so we have to
+search both subtrees, both above and
+
+126
+00:12:48,055 --> 00:12:55,024
+below. So, first we search the left
+subtree that's the one below does it
+
+127
+00:12:55,024 --> 00:13:01,014
+contain .4? No. It's to the left so we're
+going to have to search the left sub-tree
+
+128
+00:13:01,014 --> 00:13:07,650
+of .4. And so we search the left sub-tree
+and we check if it contains point five and
+
+129
+00:13:07,650 --> 00:13:12,830
+it does, that's the one that we return.
+It, it also intersects the splitting
+
+130
+00:13:12,830 --> 00:13:18,026
+lines, we have to search both the
+sub-trees, in this case they're both
+
+131
+00:13:18,026 --> 00:13:24,022
+empty. So we're done with that but now we
+have to go back and we have to search the
+
+132
+00:13:24,022 --> 00:13:30,464
+other sub-tree of point three and that's
+the above, so now we check this .6 in the
+
+133
+00:13:30,464 --> 00:13:35,527
+rectangle. In this case, it's not. And
+it's still a left sway if it's to search
+
+134
+00:13:35,527 --> 00:13:41,126
+the left sub tree a .6 and that one's
+empty and now we return and we're done. So
+
+135
+00:13:41,126 --> 00:13:47,110
+we don't always go down just one branch if
+our splitting line hits a rectangle we
+
+136
+00:13:47,110 --> 00:13:52,348
+have to go down both branches but still
+this is a very efficient algorithm,
+
+137
+00:13:52,348 --> 00:13:57,401
+particularly think about the rectangle
+being small, it's going to be not that
+
+138
+00:13:57,401 --> 00:14:04,620
+different than a regular search in a
+binary search tree. Alright. So what about
+
+139
+00:14:04,620 --> 00:14:10,025
+the analysis of how long is this going to
+take? Well again, a typical case. A
+
+140
+00:14:10,025 --> 00:14:15,582
+rectangle's small that we're only going to
+examine, really, a path of the three,
+
+141
+00:14:15,582 --> 00:14:21,639
+maybe a couple of other nodes along the
+path. And the running time will be
+
+142
+00:14:21,639 --> 00:14:27,444
+proportional to the number of points
+returned plus lg N. With geometric data
+
+143
+00:14:27,444 --> 00:14:33,650
+the worst case can be bad. So, like all
+the points could be arranged in a circle.
+
+144
+00:14:33,650 --> 00:14:40,158
+All, all different types of problems that
+might occur in, with some difficulties.
+
+145
+00:14:40,158 --> 00:14:46,963
+It's possible to prove, that even if the
+tree is balanced, you can get a worst case
+
+146
+00:14:46,963 --> 00:14:53,456
+proportional to square root of that. So
+analysis of 2D trees that the under scope.
+
+147
+00:14:53,456 --> 00:14:59,987
+But, for many practical applications they
+are easily implement and worth using.
+
+148
+00:14:59,987 --> 00:15:06,241
+Let's look at another using 2D trees to
+solve another problem, a so called nearest
+
+149
+00:15:06,241 --> 00:15:12,046
+neighbor search. So now, instead of a
+rectangle, we have a query point. And our
+
+150
+00:15:12,046 --> 00:15:17,956
+goal is to find the closest point to that
+point. So in this case our query point is,
+
+151
+00:15:17,956 --> 00:15:23,231
+over here in green. And our algorithm's
+going to want to return to 0.5. That's the
+
+152
+00:15:23,231 --> 00:15:30,263
+closest one to the query point. So let's
+see how that looks in a demo. So again, we
+
+153
+00:15:30,263 --> 00:15:38,969
+start at the root. And wh at do we want to
+do? Well, we're going to check. And I,
+
+154
+00:15:38,969 --> 00:15:44,074
+whenever we're at a node, it represents a
+point so we're going to check that point
+
+155
+00:15:44,074 --> 00:15:50,053
+and we'll compute the distance from that
+point to our query point. And, if that
+
+156
+00:15:50,053 --> 00:15:56,074
+distance is less than the best found so
+far, then we'll keep that as the champion.
+
+157
+00:15:56,074 --> 00:16:02,080
+So the first point, that's the closest
+we've found so far to the query point. So
+
+158
+00:16:02,080 --> 00:16:09,015
+we'll say, number one is the distance. And
+we'll only worry about the possibility of
+
+159
+00:16:09,015 --> 00:16:15,043
+finding something closer, than that. And
+so just using that distance we recursively
+
+160
+00:16:15,043 --> 00:16:23,050
+search, any part of the tree that could
+contain a closer point. And so that's well
+
+161
+00:16:23,050 --> 00:16:28,092
+it continued to do so in this case the
+query point is to the left of the
+
+162
+00:16:28,092 --> 00:16:34,090
+splitting line and will always go towards
+the query point first and so in this case
+
+163
+00:16:35,011 --> 00:16:40,068
+we have to search both to see if there
+might possibly be a closer point than one
+
+164
+00:16:40,088 --> 00:16:46,004
+over on the right if you come like
+straight across, there might be a closer
+
+165
+00:16:46,004 --> 00:16:51,005
+point. We're going to have a look at both
+as far as we know now but we'll go
+
+166
+00:16:51,005 --> 00:16:57,013
+towards. The query point and see if we can
+find something closer. So in that case now
+
+167
+00:16:57,013 --> 00:17:03,613
+we go to .3. Compute the distance of that
+point to the query point. It's closer so
+
+168
+00:17:03,613 --> 00:17:09,891
+we update three to be our new champion. So
+now we are going to look in parts of the
+
+169
+00:17:09,891 --> 00:17:16,502
+tree that could give us a point that is
+closer to our query point then three. So
+
+170
+00:17:16,502 --> 00:17:22,613
+already that would mean when we search the
+point one we wont search the right sub
+
+171
+00:17:22,613 --> 00:17:28,571
+tree because there could be no point on
+the right sub-tree right of the splitting
+
+172
+00:17:28,571 --> 00:17:34,113
+line. So lets closer to query point than
+three and so that idea getting closer and
+
+173
+00:17:34,113 --> 00:17:39,551
+closer to the query point is going to cut
+out different parts of the tree as we
+
+174
+00:17:39,551 --> 00:17:44,947
+process so, but anyway starting at point
+three as far as we know that we may have
+
+175
+00:17:44,947 --> 00:17:50,545
+to look at both sub trees, so sometimes
+when we look at both sub-trees but as we
+
+176
+00:17:50,545 --> 00:17:55,826
+get closer and closer we only look at one
+so lets look at point three now. So,
+
+177
+00:17:55,826 --> 00:18:02,911
+again, go towards the query point. So
+we'll, go to the top first, and that takes
+
+178
+00:18:02,911 --> 00:18:10,018
+us to six. Six is not any closer than
+three was. So that's not going to, update
+
+179
+00:18:10,018 --> 00:18:17,624
+our champion. And so we'll search 6's left
+sub-tree which is empty which is right
+
+180
+00:18:17,624 --> 00:18:23,307
+sub-tree and the nearest neighbor can't,
+we don't have to go down the right
+
+181
+00:18:23,307 --> 00:18:29,296
+sub-tree of six because you can't have a
+point in that rectangle that's closer to
+
+182
+00:18:29,296 --> 00:18:35,482
+the query point than three. So now we can
+return from that, And now we have to look
+
+183
+00:18:35,482 --> 00:18:41,264
+at the bottom sub tree associated with
+three. And so that takes us to four, And
+
+184
+00:18:41,264 --> 00:18:47,577
+that one is, not closer. So we still have
+three as our current champion. So now,
+
+185
+00:18:47,577 --> 00:18:54,208
+we'll search the left subtree of four
+first because that query point is to the
+
+186
+00:18:54,208 --> 00:18:59,742
+left of that splitting line. And that
+takes us to five and five is our new
+
+187
+00:18:59,742 --> 00:19:06,529
+champion. So that's the closest point that
+we know about. Could there be a node
+
+188
+00:19:06,529 --> 00:19:13,766
+that's closer to five, to our right query
+point than five in the right subtree of
+
+189
+00:19:13,766 --> 00:19:19,303
+four? Oh. We have to go above. Sorry to
+look at the top sub-tree associated with
+
+190
+00:19:19,303 --> 00:19:25,649
+five, and we find that it's empty. And now
+we're back at four. Do we have to search
+
+191
+00:19:25,649 --> 00:19:32,281
+the right sub-tree of four? No, because
+there can't be a closer point, than five
+
+192
+00:19:32,281 --> 00:19:38,745
+in the right sub-tree of four. So we're
+done with four, and we return to, come to
+
+193
+00:19:38,745 --> 00:19:45,508
+three, and now we search the, suppose to
+search and return from there we are now at
+
+194
+00:19:45,508 --> 00:19:50,504
+one, suppose to search the right subtree
+one next but we can term that nearest
+
+195
+00:19:50,504 --> 00:19:56,489
+neighbor couldn't be in there. So, then we
+are done and we found that the nearest
+
+196
+00:19:56,489 --> 00:20:01,419
+neighbor, is five. And this is going to
+be, very efficient because as we get
+
+197
+00:20:01,419 --> 00:20:07,057
+closer and closer, the query point, we are
+cutting out all the subtrees that are
+
+198
+00:20:07,057 --> 00:20:12,098
+away, and again in practice, the running
+time of this algorithm, is going to be
+
+199
+00:20:12,098 --> 00:20:17,970
+close to logarithmic. So in, in typical
+cases that the running time of nearest
+
+200
+00:20:17,970 --> 00:20:23,376
+neighbor search in a 2D tree is going to
+be proportion to logarithmic. It is
+
+201
+00:20:23,376 --> 00:20:29,073
+possible to concoct cases where you are
+going to have to examine all the points
+
+202
+00:20:29,274 --> 00:20:35,059
+for example if they're all arranged in a
+circle and your query points to the center
+
+203
+00:20:35,059 --> 00:20:40,757
+or something of that sort. But for typical
+data it's very efficient. Now we're going
+
+204
+00:20:40,757 --> 00:20:46,598
+to look at an application where we
+simulate a phenomenon in nature. And this
+
+205
+00:20:46,598 --> 00:20:52,910
+is what kind of patterns do things like
+starlings and geese or cranes or, or fish
+
+206
+00:20:52,910 --> 00:21:02,461
+or fireflies? How do they flock together.
+And we'll look at a simulation that
+
+207
+00:21:02,461 --> 00:21:52,239
+corresponds to that. And then, when the
+moment is right, they behave in a way,
+
+208
+00:21:52,239 --> 00:22:48,657
+that should be impossible. [music] And it
+happens everyday, right through the
+
+209
+00:22:48,657 --> 00:22:57,639
+winter. Just a couple of miles from my
+doorstep. Help you desire. >> So to,
+
+210
+00:22:57,639 --> 00:23:05,159
+there's a simple model developed by Craig
+Reynolds awhile ago for simulating this
+
+211
+00:23:05,159 --> 00:23:10,722
+situation called the boid. And the idea is
+to use three simple rules to you get
+
+212
+00:23:10,722 --> 00:23:15,397
+something very close to this complex
+flocking behavior. So, you have col,
+
+213
+00:23:15,397 --> 00:23:21,500
+collision avoidance where you always try
+to point away from the K nearest boids.
+
+214
+00:23:21,500 --> 00:23:27,615
+You have centering where you try to point
+near the center of mass of the K nearest
+
+215
+00:23:27,615 --> 00:23:33,372
+boids, and velocity matching where you
+update your. Philosophy to the average of
+
+216
+00:23:33,372 --> 00:23:42,004
+the k nearest boids. And that algorithm
+works like this. So as that example shows,
+
+217
+00:23:42,004 --> 00:23:47,020
+2D trees are extremely effective in
+quickly processing huge amounts of
+
+218
+00:23:47,020 --> 00:23:52,071
+geometric data, and what's more, it
+expands to more dimensions. With a very
+
+219
+00:23:52,071 --> 00:23:59,002
+simple modification we can take it to D
+tree and created data structure known as a
+
+220
+00:23:59,002 --> 00:24:04,088
+KD tree, which even works for K dimensions
+and the idea is even if there is K
+
+221
+00:24:04,088 --> 00:24:11,004
+dimension, what we will do is recursively
+partition one dimension at a time, so
+
+222
+00:24:11,004 --> 00:24:17,043
+that's called a KD tree and we use the
+same ideas for two D trees, but instead of
+
+223
+00:24:17,043 --> 00:24:23,878
+cycling through just horizontal vertical,
+we cycled through, however many dimensions
+
+224
+00:24:23,878 --> 00:24:30,076
+there are, so its where in three space, we
+use a plane and do above and below and
+
+225
+00:24:30,076 --> 00:24:35,884
+then simply cycle through the dimensions.
+At level I, we put on the left points
+
+226
+00:24:35,884 --> 00:24:41,749
+whose I-th coordinates are less than P and
+on the right, we put the points to whose
+
+227
+00:24:41,749 --> 00:24:48,252
+I-th coordinates are greater than P and at
+level in cycle three of the dimensions at
+
+228
+00:24:48,252 --> 00:24:54,019
+the level I might k we just use that
+dimension of the point to do the
+
+229
+00:24:54,019 --> 00:24:59,075
+comparison. The implementation is simple,
+ex cept for the comparison. And we get the
+
+230
+00:24:59,075 --> 00:25:05,044
+same kind of partitioning for three
+dimensional data, so we could do boids in
+
+231
+00:25:05,044 --> 00:25:11,026
+three dimensions or for databases with
+large number of dimensions. You could do
+
+232
+00:25:11,046 --> 00:25:16,095
+even much higher dimensional data. And
+find nearest neighbors and do range
+
+233
+00:25:16,095 --> 00:25:23,048
+searching extremely efficiently. It's a
+very efficient and simple data structure
+
+234
+00:25:23,048 --> 00:25:29,592
+for processing K dimensional data that's
+very widely used and the whole idea is
+
+235
+00:25:29,592 --> 00:25:35,069
+that data clusters, particularly, in high
+dimensions. And also one point to make for
+
+236
+00:25:35,069 --> 00:25:41,023
+this class is that, this algorithm was
+discovered by an undergraduate in an
+
+237
+00:25:41,023 --> 00:25:47,055
+algorithms class, so that's, John Bentley,
+who discovered this while an undergraduate
+
+238
+00:25:47,055 --> 00:25:53,030
+at Stanford. And, so it's a simple idea
+that, but, experts scientists where
+
+239
+00:25:53,030 --> 00:25:59,061
+struggling with, dealing with huge amounts
+of geometric data, and, Bentley found this
+
+240
+00:25:59,061 --> 00:26:05,070
+way, to process it efficiently that's been
+widely used ever since. And in, in
+
+241
+00:26:05,070 --> 00:26:12,078
+particular just as another example
+consider the idea of N body simulation
+
+242
+00:26:13,005 --> 00:26:20,057
+which is a classic problem in physics.
+Where you've got N particles mutually
+
+243
+00:26:20,057 --> 00:26:28,063
+affected by gravity and basically the
+computation is based on computing the
+
+244
+00:26:28,063 --> 00:26:36,007
+interacting force for each pair of
+particles. And so then there'd be mutual
+
+245
+00:26:36,007 --> 00:26:43,031
+gravitational pull. [inaudible] and this
+is what happens with a large number of
+
+246
+00:26:43,031 --> 00:26:49,085
+particles in a certain simulation and
+people understand properties in the
+
+247
+00:26:49,085 --> 00:26:56,065
+universe by coming up with, doing these
+kinds of calculations and comparing
+
+248
+00:26:56,065 --> 00:27:03,081
+against what's observed in space. Now but
+the thing is for each pair of particles,
+
+249
+00:27:03,081 --> 00:27:11,312
+so if you have M particles and you have to
+do it for each pair, that's M^2 so the
+
+250
+00:27:11,312 --> 00:27:17,447
+progress of scientific investigation is
+going to be affected by how quickly, you
+
+251
+00:27:17,447 --> 00:27:24,723
+can do this calculation for a large number
+of particles. There's a lot of particles
+
+252
+00:27:24,723 --> 00:27:32,005
+out in the universe. And, you can't do a
+quadratic calculation for large N. So,
+
+253
+00:27:32,005 --> 00:27:38,986
+another, undergraduate in an algorithms
+class discovered, this idea, for N body
+
+254
+00:27:38,986 --> 00:27:45,699
+simulation. And that's, Andrew Appel. And
+his idea was that if some part. Particle
+
+255
+00:27:45,699 --> 00:27:51,039
+is way away from som e cluster of
+particles, we can treat that cluster as a
+
+256
+00:27:51,039 --> 00:27:57,042
+single aggregate particle. And not do the
+individual force calculation between our
+
+257
+00:27:57,042 --> 00:28:03,052
+particle and every one of those in the
+aggregate. But use the center of mass. And
+
+258
+00:28:03,052 --> 00:28:10,048
+you get a very accurate approximation to
+the N body doing that. And the algorithm
+
+259
+00:28:10,048 --> 00:28:16,037
+that he used is based on 3D trees. With
+the N particles as nodes and storing the
+
+260
+00:28:16,037 --> 00:28:23,581
+center of a mass of a sub-tree in each
+node. And then to compute the total force,
+
+261
+00:28:23,581 --> 00:28:31,045
+traversing the tree of all the information
+that you need, to, complete the N body
+
+262
+00:28:31,045 --> 00:28:38,283
+calculation. But in time, much closer to N
+lg N than to N^2. And that, idea that, you
+
+263
+00:28:38,283 --> 00:28:45,000
+didn't need to take time proportional to
+N^2 but with a, a geometric algorithm,
+
+264
+00:28:45,000 --> 00:28:52,692
+like a 3D tree, you could get the time to
+N lg N. That enabled, all sorts of new
+
+265
+00:28:52,692 --> 00:29:00,296
+scientific investigation in this example
+of the use of algorithms to enable new

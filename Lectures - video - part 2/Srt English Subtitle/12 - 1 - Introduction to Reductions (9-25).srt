@@ -1,0 +1,514 @@
+1
+00:00:03,260 --> 00:00:07,104
+Today we're going to talk about
+reductions. this is something that we've
+
+2
+00:00:07,104 --> 00:00:11,321
+done several times throughout the course,
+but we're going to want to take a little
+
+3
+00:00:11,321 --> 00:00:15,326
+bit more formal look at it, because it
+plays a critical role in some of the
+
+4
+00:00:15,326 --> 00:00:19,597
+advance, advanced topics that we're going
+to want to consider next. Just a quick
+
+5
+00:00:19,597 --> 00:00:24,487
+overview of the next few lectures. These
+are advanced topics related to algorithms
+
+6
+00:00:24,660 --> 00:00:29,320
+and you can take more advance courses that
+go into all these things in depth. But
+
+7
+00:00:29,320 --> 00:00:33,807
+it's important to talk about them in
+context of the algorithm so that we seem
+
+8
+00:00:33,807 --> 00:00:38,697
+to put everything into, into perspective
+So what we're going to talk about in this
+
+9
+00:00:38,697 --> 00:00:43,300
+lecture is called reduction and it's a
+technique that we use t take the good
+
+10
+00:00:43,300 --> 00:00:47,614
+algorithms that we know and use them
+effectively to build more complicated
+
+11
+00:00:47,614 --> 00:00:52,332
+algorithms. And as I said, we've done that
+before but it brings up some interesting
+
+12
+00:00:52,504 --> 00:00:57,814
+ideas. that are bigger than any particular
+algorithm. And one idea that we've talked
+
+13
+00:00:57,814 --> 00:01:02,374
+about is the idea of a problem-solving
+model. We saw that we could use shortest
+
+14
+00:01:02,374 --> 00:01:07,108
+paths and max flow to solve problems that
+didn't seem to be related at all. and
+
+15
+00:01:07,108 --> 00:01:11,091
+there's a particularly important
+problem-solving model called linear
+
+16
+00:01:11,091 --> 00:01:15,824
+programming that we'll talk about in the
+next lecture. but then there's a limit,
+
+17
+00:01:15,824 --> 00:01:20,153
+and that brings us to the topic of
+intractability that we'll talk about in
+
+18
+00:01:20,153 --> 00:01:25,002
+the last lecture. So we're shifting gears
+from individual problems to thinking about
+
+19
+00:01:25,002 --> 00:01:29,514
+problem-solving models that are more
+general than a particular individual
+
+20
+00:01:29,514 --> 00:01:34,526
+problem. And also, as part of this, we're
+moving into problems that are much more
+
+21
+00:01:34,526 --> 00:01:39,601
+difficult to solve. And not just linear
+and quadratic fast algorithms, but a just
+
+22
+00:01:39,601 --> 00:01:44,605
+a different scale. And we'll talk about
+that in the next couple of lectures. And
+
+23
+00:01:44,605 --> 00:01:49,576
+then we're not going to really be talking
+that much about code for awhile. It's more
+
+24
+00:01:49,760 --> 00:01:54,853
+about the conceptual framework and where
+the problems that you really want to work
+
+25
+00:01:54,853 --> 00:02:00,070
+on fit into the big picture. So the, our
+goals are we've looked at some terrific,
+
+26
+00:02:00,070 --> 00:02:04,708
+fantastic, very useful classical
+algorithms. But they fit into a larger
+
+27
+00:02:04,708 --> 00:02:09,611
+context. we're going to encounter new
+problems. you want to have all those
+
+28
+00:02:09,611 --> 00:02:14,933
+algorithms in the tool box, but you also
+under. Want to understand where they fit
+
+29
+00:02:14,933 --> 00:02:20,616
+in to the big picture. there's some very
+interesting, important and essential ideas
+
+30
+00:02:20,616 --> 00:02:27,166
+that have been developed at in great depth
+over the past several decades. and it's
+
+31
+00:02:27,166 --> 00:02:33,595
+important for every practitioner to, have
+a good feeling for, for those ideas and,
+
+32
+00:02:33,595 --> 00:02:39,156
+and what they imply. and really, by
+thinking about these big ideas, in
+
+33
+00:02:39,156 --> 00:02:45,151
+addition to particular algorithms for
+particular problems, most people find that
+
+34
+00:02:45,151 --> 00:02:51,225
+they're inspired to learn much more about
+algorithms. So by way of introduction
+
+35
+00:02:51,225 --> 00:02:58,046
+let's talk about what a reduction is. So
+this is just a big bird's eye view. The
+
+36
+00:02:58,046 --> 00:03:04,919
+idea is that what we would really like to
+do is if we, if we have a new problem that
+
+37
+00:03:04,919 --> 00:03:10,886
+we have solve, we'd like to be able to
+classify the problem according to the cost
+
+38
+00:03:10,886 --> 00:03:16,373
+that it's going to take to solve it.
+what's, what's an order of growth of a, of
+
+39
+00:03:16,373 --> 00:03:21,723
+an algorithm, a good algorithm or any
+algorithm to solve the problem. And we've
+
+40
+00:03:21,723 --> 00:03:28,102
+already touched on this a little bit when
+we talked about sorting algorithms. not
+
+41
+00:03:28,102 --> 00:03:34,001
+only did we have a, a good algorithm for
+solving sorting several good algorithms
+
+42
+00:03:34,001 --> 00:03:39,908
+but we also developed a lower bound that
+said that no algorithm can do better. And
+
+43
+00:03:39,908 --> 00:03:44,973
+so we can think of the sorting problem as
+classified as being order-of-growth,
+
+44
+00:03:44,973 --> 00:03:50,289
+linearithmic or N log N. And then we saw
+plenty of linear time algorithms that we
+
+45
+00:03:50,289 --> 00:03:55,668
+just examine all the data and we can get
+it solved. And we like to have more things
+
+46
+00:03:55,668 --> 00:04:01,234
+like this other algorithms that we need
+quadratic time to solve and so forth. So
+
+47
+00:04:01,234 --> 00:04:06,237
+we're going to think about how difficult
+are problems to solve, that's the first
+
+48
+00:04:06,237 --> 00:04:11,820
+idea. Now there's really frustrating news
+on this front that we'll be talking about
+
+49
+00:04:11,820 --> 00:04:16,787
+over the next couple of lectures. And the
+frustrating news is there are a large
+
+50
+00:04:16,787 --> 00:04:21,755
+number of practical problems that we'd
+like to solve that we don't really know
+
+51
+00:04:21,755 --> 00:04:26,846
+how hard they are to solve. And that's a
+profound idea that we'll get to soon. so,
+
+52
+00:04:27,059 --> 00:04:32,885
+but what we want to talk about in this
+lecture is one of the most important tools
+
+53
+00:04:32,885 --> 00:04:39,137
+that we use to try to classify problems.
+and it's actually been very successful, in
+
+54
+00:04:39,137 --> 00:04:45,097
+lots of instances. And so if we know that
+we could solve some problem efficiently we
+
+55
+00:04:45,097 --> 00:04:50,647
+want to use that knowledge to figure out
+what else we could or could not solve
+
+56
+00:04:50,647 --> 00:04:56,400
+efficiently. And that's what reduction is
+all about. It's just a single tool and
+
+57
+00:04:56,604 --> 00:05:02,154
+maybe kind of gets to this Archimedes
+quote, give me a lever long and a fulcrum
+
+58
+00:05:02,154 --> 00:05:07,840
+on which to place it and I will move the
+world. that's what reduction does for us.
+
+59
+00:05:07,840 --> 00:05:16,148
+So here's the basic idea. we say that a
+problem X reduces to a problem Y. If you
+
+60
+00:05:16,148 --> 00:05:24,038
+can use a problem that solves Y to help
+solve X. so, what does that mean? This
+
+61
+00:05:24,038 --> 00:05:31,174
+schematic diagram gives an idea of what we
+are talking about. so, in the middle, we,
+
+62
+00:05:31,174 --> 00:05:37,572
+we assume that we have a, in the middle
+box there, labeled in blue. And so, we
+
+63
+00:05:37,572 --> 00:05:44,215
+have an algorithm for solving problem y
+in, it's not really relevant what that,
+
+64
+00:05:44,215 --> 00:05:51,351
+algorithm is? It just knows that if you
+have any instance of problem y you can
+
+65
+00:05:51,351 --> 00:05:58,711
+solve it. And the idea behind reduction is
+that we take an instance of problem X and
+
+66
+00:05:58,711 --> 00:06:05,598
+we transform it into an instance of
+problem Y. Then use the algorithm for Y to
+
+67
+00:06:05,598 --> 00:06:11,690
+solve that instance of Y and then
+transform the solution back to the
+
+68
+00:06:11,690 --> 00:06:17,903
+solution to be the instance of problem X.
+So we take that transformation into an
+
+69
+00:06:17,903 --> 00:06:23,291
+instance of problem y. The transformation,
+the solution back to a solution 2x. Then
+
+70
+00:06:23,490 --> 00:06:28,744
+that whole thing enclosed in the box on
+the dotted line is an algorithm for
+
+71
+00:06:28,744 --> 00:06:34,402
+problem X. And what's the cost? The cost
+of solving problem X is the cost of
+
+72
+00:06:34,402 --> 00:06:38,897
+solving Y. Plus the cost of reduction.
+It's like pre-processing and
+
+73
+00:06:38,897 --> 00:06:43,956
+post-processing for, problem Y. Then we
+see a number of calls to Y, in a
+
+74
+00:06:43,956 --> 00:06:48,949
+reduction. And the pre-processing and
+post-processing might be, expensive.
+
+75
+00:06:48,949 --> 00:06:54,474
+Again, we've seen some specific examples
+of this, and we'll go over it, in a
+
+76
+00:06:54,474 --> 00:07:02,033
+minute. so here's a really simple example.
+finding the median, reduces to sorting. So
+
+77
+00:07:02,033 --> 00:07:07,515
+in this case problem Y is sorting and so
+we assume that we have a sorting
+
+78
+00:07:07,515 --> 00:07:13,781
+algorithm. If you need to find a median,
+then we take the items that's the instance
+
+79
+00:07:13,781 --> 00:07:19,263
+of X in this case there's no
+transformation just sort and then once
+
+80
+00:07:19,263 --> 00:07:24,959
+they're sorted, you take that sorted
+solution and just pick the middle, middle
+
+81
+00:07:24,959 --> 00:07:30,940
+item and return it so the transformation
+of solution is also easy. so the cost of.
+
+82
+00:07:30,940 --> 00:07:36,252
+Solving, finding the median is the cost of
+sorting which is N log N plus the cost of
+
+83
+00:07:36,252 --> 00:07:41,697
+the reduction which is just constant time.
+If you can sort you can find the median.
+
+84
+00:07:41,697 --> 00:07:47,447
+So finding the median reduces to sorting
+so here's a, a second, simple example.
+
+85
+00:07:47,626 --> 00:07:52,143
+suppose problem X is the element
+distinctness problem and so that one is,
+
+86
+00:07:52,143 --> 00:07:57,254
+you have a bunch of elements. And you want
+to know if they're all different. an easy
+
+87
+00:07:57,254 --> 00:08:01,831
+way to solve that, that we looked at back
+in the coding lecture, is, again, just
+
+88
+00:08:01,831 --> 00:08:06,526
+sort. We assume that we have a sorting
+algorithm. And then we take that instance
+
+89
+00:08:06,526 --> 00:08:11,460
+of, the element, the distinctness problem,
+and just all the elements, and sort them.
+
+90
+00:08:11,460 --> 00:08:16,349
+And then after you sort'em, then you can
+just go through, and, any items that are
+
+91
+00:08:16,349 --> 00:08:21,000
+equal are going to be adjacent to each
+other. So, simply make a path through, in
+
+92
+00:08:21,000 --> 00:08:25,471
+this post processing phrase, and check,
+adjacent pairs for equality, 'cause
+
+93
+00:08:25,471 --> 00:08:30,182
+anything equal's going to be right next to
+one other. And that gives a solution to
+
+94
+00:08:30,182 --> 00:08:34,915
+the element distinctness problem. So
+again, element distinctness reduces to
+
+95
+00:08:34,915 --> 00:08:40,579
+sorting, because you use sorting to solve
+it. And in this case the cost of solving
+
+96
+00:08:40,579 --> 00:08:45,772
+element distinctness is the cost of
+sorting and log N, plus cost of reduction,
+
+97
+00:08:45,772 --> 00:08:50,965
+this time you have to make a path through
+it. So this means that we can solve
+
+98
+00:08:50,965 --> 00:08:56,562
+element distinctness in time proportional
+to N log N. it could be that you could
+
+99
+00:08:56,562 --> 00:09:02,227
+find, a algorithm that doesn't use sorting
+to solve element distinctness. But that
+
+100
+00:09:02,227 --> 00:09:07,689
+might be a bit of a challenge. by
+reduction. maybe the hard work is done by
+
+101
+00:09:07,689 --> 00:09:13,726
+the sorting. and we get an algorithm for
+this other problem. that's the basic idea.
+
+102
+00:09:13,726 --> 00:09:19,694
+As long as these cluster reductions not
+too much, that's the basic idea, of being
+
+103
+00:09:19,694 --> 00:09:24,000
+able to use red uctions.
+To design new algorithms.

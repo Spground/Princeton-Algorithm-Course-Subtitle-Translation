@@ -1,0 +1,322 @@
+.
+As we'll see, in little bit later in the
+lecture the way that we're going to set up
+our graph processing algorithms, is to
+develop an API to cover our representation
+of the graph and provide simple set of
+methods for clients to call to process the
+graph.
+So, let's take a look at that in detail.
+So, the idea is we have to represent, a,
+graph within the computer.
+One of the first things, to remember is
+that, you can, draw a graph, that maybe,
+that provides some kind of intuition,
+about the structure, an, but you could
+have two drawings that represent,
+represent the same graph that look pretty
+different.
+And so one of the things to remember in
+any graph representation is, it can give
+you some intuition.
+But that intuition may be misleading.
+And we'll just remember that as we look at
+different representations.
+So first thing is how to represent the
+vertices.
+So what we're going to do in this lecture
+is just use integers between zero and V
+minus one.
+The reason we do that is it allows us, to
+use vertex indexed arrays, within the
+graph representation.
+And we understand, from earlier
+algorithms, lectures, that we can use a
+symbol table to convert names to integers,
+with a symbol table.
+And so, we'll, leave that part as a symbol
+table application.
+And, just work with graphs with vertex
+names between zero and V minus one where v
+is the number of vertices.
+Now we have to remember when we're doing
+representation we can have various
+anomalies in the graph.
+So we can we draw edges, but actually, in
+real data we might have multiple edges or
+we might have a self loop.
+And we'll take that into account when we
+look at the representation, graph
+representation.
+So here is the API that we're going to
+use.
+So again our graph processing algorithms
+are going to be clients of this API.
+The idea is that will use this to build
+graphs.
+And then our processing programs will be
+client at this program,
+In this, of this API.
+And the idea is most of them have a very
+simple operations that they need to do,
+and those are the one's that we put in the
+API.
+So we have two constructors.
+One that creates an empty graph would be
+vertices.
+Another one that creates a graph from an
+input stream.
+Then the basic operation for building a
+graph is just add edge, so that adds an
+edge connecting two vertices, V and W.
+The basic operations for processing our
+graph, well there's V and E that gives a
+number of edges and vertices.
+But then there's an iterator that takes
+the vertex's argument,
+Then iterates through the vertices
+adjacent to that vertex.
+All of our graph processing can be cast in
+terms of this iterator.
+So down here is an example of a client
+program that prints out every edge in the
+graph.
+So we created an input stream, maybe with
+a given final name, create a graph from
+that input stream,
+And we'll look at the code for that.
+And then the client program for every
+vertex,
+So remember the vertices are numbered
+between zero and G dot the number of
+vertices minus one.
+So for every vertex, we iterate through
+all the vertices adjacent to that vertex
+and print out an edge, if, if there's an
+edge connecting v and w we print out v and
+then a little dash to indicate an edge and
+then w.
+This actually prints out every edge twice
+and in an undirected graph because if the
+v and w are connected by an edge then w
+appears in v's adjacency list and v
+appears in w's adjacency list.
+So heres an example of a running that
+client, if, if we have a file tinyG.txt,
+our standard is we have a number of
+vertices as an integer in the first is the
+first integer in the file.
+Number of edges is the second integer in
+the file and then pairs of vertex names.
+And so.
+The constructor will read those two things
+and then call that edge for all of these
+pairs of things and that enables this
+client, to, if we run it for that graph,
+to print out all the edges.
+So everybody adjacent to zero, 61 and
+five, everybody adjacent to one is just
+zero, So you notice the edge 0-1 appears
+twice in the list.
+So that's the sample client of our basic
+graph in API.
+And so here's some typical and simpicle,
+simple graph processing code that uses the
+API.
+So you can write a static method that
+takes a graph and a vertex as argument.
+And returns the degree, the number of
+edges that are connect, number of vertices
+that are connected by an edge to V.
+So all it does is set a local variable
+degree to zero, And then iterate through
+all the vertices adjacent to V and
+increment that and return it.
+Similarly, you can compute the maximum
+degree of a vertex in a graph.
+And that's for every vertex, compute the
+degree and find the biggest one or the
+average degree.
+Well, the average degree, if you think
+about it, it's just twice the number of
+edges divided by the vertex or you could
+go through all the way through every
+vertex and edge and compute the total and
+divide, but this is probably a much more
+efficient way to do it or say number of
+self loops. and so that involves going
+through the whole graph of every vertex
+for every edge adjacent to that vertex you
+check whether it's v and we've got a self
+loop.
+And if it does then your return the number
+of self loops that divided by two because
+every edge is counted twice.
+So those are examples of static methods
+that a client might use.
+In just example of the use of the ATI.
+So now how we going to implement that?
+That's our usual standard of lets look at
+some clients and now let's talk about a
+representation that we can use to
+implement the graph API.
+So one possible representation is, set of
+edges representation, where, for every
+edge, we just maintain a list, maybe an
+array of edges or a linked list, of edges.
+So for every edge in the graph, there's, a
+representation of it.
+And that one is a possible representation,
+but it leads to, inefficient,
+implementation, much less efficient, that
+would make it unusable for, the huge
+graphs that we see in practice.
+Another one is called the adjacency matrix
+representation,
+Here we maintain a 2-dimensional v x v
+array,
+It's a boolean array, 0-1 or true or
+false.
+And for every edge v-w in the graph you
+put true for row v in column w and for row
+w in column v.
+So it's actually two representations of
+each edge in an adjacency matrix graph
+representation.
+S, you can immediately, give a v and w
+test whether there's an edge connecting v
+and w.
+But that's one of the few operations
+that's efficient with this representation
+and it's not very widely used, because for
+a huge graph, say with billions of, of,
+vertices,
+You would have to have billion squared
+number of entries in this array, which is
+going to be too big for your computer,
+most likely.
+So this one actually isn't that widely
+used.
+A, The one that is most widely used in
+practice, and the one that we'll stick
+with, is called the adjacency list
+representation.
+And that's where we keep a vertex index
+array where, for every vertex, we maintain
+a list of the vertices that are adjacent
+to that.
+So, for example, vertex four, Has, five,
+is connected to five, six, and three, so
+its list has five, six, and three on it.
+Now, on lower level representations we've
+talk about using linked width or array for
+these,
+But actually in modern lingo with the
+background that we'd built with algorisms
+what we're going to use is an abstract
+data type.
+Our bag representation for this, which is
+implemented with a linked list, but we
+don't have to think about it when we're
+talking about graphs. we'd keep the
+vertices,
+Names of, numbers of the vertices that are
+adjacent to each given vertex in a bag.
+And we know that we can implement it, such
+that we can iterate through and time
+proportional to the number of entries and
+the space taken is also proportional to
+the number of entries,,
+And that's going to enable us to process
+huge graphs.
+So here's the full implementation of the
+Jason C,
+List graph representation.
+So, the private instance variables that
+we're gonna use area the number of
+vertices in the graph and then a array of
+nags of integers. so data the types and
+set of values, set operations on those
+values, so those are the sets of values
+for a graph.
+So here's the constructor of an empty
+graph with V vertices.
+We keep the value v in the instance
+variable as usual.
+Then we create.
+An array of size V.
+And, of bags of integers.
+And, store that array in, [inaudible] as
+the adjacency array of the graph.
+Adjacency lists array.
+And then, as usual.
+When we create, a, a, an array of objects.
+We go through.
+And for every entry in the array, we
+initialize with, a, empty object.
+So, after this code, we have the empty
+bags.
+And so that's the constructor and then the
+other main engine and building graphs is
+at edge and so, to add an edge between V
+and W, we add W to V's bag, and we add V
+to W's bag.
+That's it.
+And to iterate through all the vertices
+adjacent to a given vertex we simply
+return the bag which is iterable.
+This is a nice example, illustrating the
+power of abstraction.
+Because we did the low level processing,
+for, that, that's involved, with our bag
+implementation in one of the early,
+lectures.
+And now we, we get to use that to give a
+very compact implementation, and efficient
+implementation, of the, graph data
+structure.
+So it's really important to understand
+this code.
+And you should make sure, that you study
+it.
+So, as I mentioned in practice.
+We're gonna be using this adjacency list
+representation.
+Because all the algorithms are based on
+iterating over the vertices adjacent to V.
+And this gets that done in time
+proportional to the number of such
+vertices.
+So that's number one and number two, in
+the real world, the graphs have lots of
+num, lots of vertices,
+But a pretty small vertex degre. so number
+one, we can afford to represent, represent
+the graph when we use the adjacency list
+representation because basically our space
+is proportional to the number of edges.
+And number two, we can afford to process
+it because our time taken is proportional
+to the number of edges that, that we
+examined, with the ray of edges
+representation in the adjacency matrix
+representation it gets very slow for some
+very simple task,
+But, mostly, it's very slow for iterating
+over the vertices given to, adjacent to a
+given vertex.
+Which is the key operation.
+A list of edges, you have to go through
+all the edges to find the ones adjacent to
+a given vertex.
+Adjacency matrix, you have to go through,
+all possible, vertices adjacent and that's
+just going to be much too slow in
+practice,
+Because adjacency list gets it done, in
+time proportional degree of v, which is
+much smaller, for the huge graph that we
+see in the real world.
+So that's our basic API.
+Next, we'll look at some algorithms that
+are clients of this API.

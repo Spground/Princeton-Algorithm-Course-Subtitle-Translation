@@ -1,0 +1,228 @@
+1
+00:00:00,000 --> 00:00:09,689
+. To develop. Digraph processing
+Algorithms, we're going to need an A.P.I.
+
+2
+00:00:09,689 --> 00:00:15,617
+We'll use the same design pattern that we
+use for undirected graphs, where we
+
+3
+00:00:15,617 --> 00:00:21,930
+develop an A.P.I. for building graphs that
+can serve as a client for all our graph
+
+4
+00:00:21,930 --> 00:00:27,704
+processing algorithms. And it's very
+similar, it's not close to identical to
+
+5
+00:00:27,704 --> 00:00:33,555
+the undirected graph A.P.I., except the
+class is named digraph. And other than
+
+6
+00:00:33,555 --> 00:00:39,253
+that. It's got add edge, where we add a
+directed edge. But now, we're saying it's
+
+7
+00:00:39,253 --> 00:00:45,212
+an edge from V to W. and then an iterator.
+that gives the vertices that point from
+
+8
+00:00:45,212 --> 00:00:50,643
+the given vertex. So we're getting, those
+were the edges we can travel along to get
+
+9
+00:00:50,643 --> 00:00:56,207
+around the graph. We have V and E. and
+another new method that is not relevant
+
+10
+00:00:56,207 --> 00:01:01,906
+for undirected graphs is the reverse. So
+that's, a, a method that returns a
+
+11
+00:01:01,906 --> 00:01:07,873
+di-graph where all the edges are reversed.
+and we'll see that's an important method
+
+12
+00:01:07,873 --> 00:01:13,129
+to have for one of the algorithms that
+we'll talk about today. so here's a
+
+13
+00:01:13,129 --> 00:01:19,142
+typical client very similar to the one
+that we did for undirected graphs, where
+
+14
+00:01:19,142 --> 00:01:25,081
+we read the diagram from input stream, so
+that's pairs of edges, pairs of vertices
+
+15
+00:01:25,301 --> 00:01:32,267
+where, that represent an edge from or one
+vert, first vertex to the second one And
+
+16
+00:01:32,267 --> 00:01:38,456
+then for every vertex we'd print out. for
+every edge that you can get to from that
+
+17
+00:01:38,456 --> 00:01:44,154
+verte-, for every other vertex you get to
+from that vertex, we put out a,, print out
+
+18
+00:01:44,154 --> 00:01:50,124
+a little graphical representation of the
+edge V2W, where the little arrow we use a
+
+19
+00:01:50,124 --> 00:01:57,890
+minus sign and a greater than. So for
+example with the input file tinyDG.txt for
+
+20
+00:01:57,890 --> 00:02:04,590
+directograph, the one's got thirteen
+vertices, 22 edges. It's got an edge from
+
+21
+00:02:04,590 --> 00:02:11,819
+four to two, from to two to three, three
+to two and so forth and if we execute this
+
+22
+00:02:11,819 --> 00:02:18,199
+sample client, we get the edges printed
+out. it builds the graph and then prints
+
+23
+00:02:18,199 --> 00:02:23,502
+out the edges. By the way, the order in
+which they come out is in order of vertex
+
+24
+00:02:23,502 --> 00:02:28,990
+and order in which the judge comes out
+depends on the representation just these
+
+25
+00:02:28,990 --> 00:02:35,665
+four graphs. we'll skip through the
+possibilities of keeping a list of edges,
+
+26
+00:02:35,665 --> 00:02:42,617
+or using a matrix for, diagr aphs, cause
+again. impractical problems, the graphs
+
+27
+00:02:42,617 --> 00:02:50,248
+are huge and sparse, so the average vertex
+degree in-degree and out-degree is low. We
+
+28
+00:02:50,248 --> 00:02:57,710
+can't afford, to, keep space proportional
+to the number of possible vertices, that a
+
+29
+00:02:57,710 --> 00:03:05,811
+vertex can connect to for each vertex. so,
+it's very similar to or exactly the same,
+
+30
+00:03:05,811 --> 00:03:10,765
+really, to the one that we use for
+undirected graphs. We keep a vertex
+
+31
+00:03:10,765 --> 00:03:16,651
+indexed array. Where, for each vertex, we
+can keep a bag of all the vertices that
+
+32
+00:03:16,651 --> 00:03:22,825
+you can get to from that vertex. So vertex
+six, has out degree four. And there's four
+
+33
+00:03:22,825 --> 00:03:28,280
+vertices on its list. Nine, four, eight,
+and zero. And when we process the graph,
+
+34
+00:03:28,280 --> 00:03:35,932
+we're gonna visit those vertices, in that
+order. Which is just determined by the
+
+35
+00:03:35,932 --> 00:03:41,850
+order in which they appeared in the input.
+So here's the implementation that we used
+
+36
+00:03:41,850 --> 00:03:48,809
+for un-directed graphs last time. and
+you'll see that the only difference for
+
+37
+00:03:48,809 --> 00:03:55,443
+die graphs is we change graph to die graph
+and we only have one representation of
+
+38
+00:03:55,443 --> 00:04:01,430
+each edge, V goes to W. for undirected
+graphs we had W goes to V as well,
+
+39
+00:04:01,430 --> 00:04:08,227
+otherwise the code's exactly the same, we
+have an iterator for the vertices adjacent
+
+40
+00:04:08,227 --> 00:04:13,840
+to V but that. It's the difference between
+directed graphs and undirected graphs. so
+
+41
+00:04:14,080 --> 00:04:21,605
+again the reason we do that is that we can
+get basic graph processing processed in a
+
+42
+00:04:21,605 --> 00:04:28,409
+reasonable amount of time. Where every
+time we deal with a vertex we can get to
+
+43
+00:04:28,649 --> 00:04:35,214
+its neighbors are the places you can get
+to from that vertex in time proportional
+
+44
+00:04:35,214 --> 00:04:41,217
+to the number of vertices. You simply
+can't afford to do that with other
+
+45
+00:04:41,217 --> 00:04:47,763
+representations. So that's the digraph
+API. Which is virtually identical to the
+
+46
+00:04:47,763 --> 00:04:48,580
+graph API.

@@ -1,0 +1,741 @@
+Today we're going to talk about tries,
+which is a data structure for searching
+with string keys that is remarkable
+effective in enabling us to deal with huge
+amounts of data that we have to process
+nowadays.
+Just as a motivation, when we left off
+talking about searching algorithms, or the
+symbol table implementations here's where
+we were.
+The best algorithms that we examined were
+balanced red, black, binary search trees,
+in hash tables.
+And With respect to the basic search,
+insert and delete operations.
+Red black BSTs we're able to guarantee
+that we can get those done in logorithmic
+time, actually, pretty efficiently.
+And for hashing, we'd get'em done in
+constant time under certain assumptions.
+That we could have a uniform, hash
+function.
+And also, for hashing, what we need to
+compute a hash, code for binary search
+trees, we use, a compare to function.
+And another difference is, binary search
+trees, we can support more operations.
+Than we can support with hashing ordered
+operations.
+For example, getting the rank of a key in
+the tree, and other things.
+And those are terrific algorithms.
+And we looked at plenty of go, good
+applications of those algorithms.
+But still there's the question could we do
+better?
+And the answer is that yes, we can do
+better.
+As with string sorting, we can avoid
+examining the entire key.
+Which is going to give us algorithms that
+can compete and even beat these classic
+algorithms.
+So to get started we are going to
+articulate in API for symbol tables that
+specialize for the case when the keys are
+strings.
+So simply, we just add the modifier string
+to our standard symbol table EPI.
+And we can take a generic value just put
+the keys or strings.
+And then we take all the methods that we
+articulated before.
+And for key type, instead of generic, we
+use string.
+And this is going to allow us to develop
+efficient algorithms that take advantage
+of properties of strings.
+Our goal is to get, some algorithms that
+are even faster than hashing.
+And maybe, more flexible than BSTs.
+And we're going to be able to achieve both
+those goals.
+So, this again is the summary of the
+running times for when, in the case that
+the keys are strings for red black BSTs
+and for hashing.
+And let's take a look at those so if L is
+the length of the string.
+And n is the number of strings and then
+also the rate x is r is going to be a
+factor later on but its not going to be
+for these two.
+Then for hashing for every operation we
+have to compute a hash function, which
+basically means looking at every character
+in the string.
+Actually in Java string hash functions are
+cached, so sometimes there's efficiencies
+cuz you only have to comp, and they're
+mutable, so you only have to compute the
+hash function once.
+And then this is roughly the amount of
+space that takes into account the table
+and the string size for red black BSTs,
+the analysis is a bit more complicated.
+For a search hit, you have to look at the
+entire string.
+Given a entire key to check that every
+character's the same and then the
+comparison's depending on the nature of
+the keys for a typical case though its
+something like log squared N. we had log N
+comparison's but usually you have to look
+at something like a log N characters in
+the key in order to get down the tree.
+For a search miss you might be able to
+find out before you get to the end of the
+tree and sing a for an insert so the
+running times are something like this.
+Then here's some experimental evidence
+that, that we, we can use to test out
+these analytic hypothesis.
+And we'll just look at two examples one is
+the entire text of Melville's Moby Dick
+which we've used before and that's about a
+million characters.
+And maybe 200,000 strings.
+And add to this 200,000 strings, about
+32,000 are distinct.
+And then this,
+There's another file of actors from the
+Internet movie database that's much bigger
+maybe tourism magnitude bigger.
+And it's got maybe about a million
+different words.
+So we'll want our algorithms to do better
+than, or at least as well as red black
+BSTs in hashing on these data sets.
+I think, you know, our test is to dedupe
+these data sets.
+So that's our challenge.
+Efficient performance for string keys and
+try to come up with algorithms that can
+compete with the best classic algorithms.
+Now in order to do that we're going to
+look at R way tries.
+That's a particular data structure, that
+was, invented actually really quite a
+while ago.
+This data structure, dates back, to the
+60s.
+And, the first thing to know about it is
+that, the name is based a little bit, on a
+pun.
+It actually is the middle letters of the
+word retrieval, but we don't pronounce it
+tree because then we couldn't distinguish
+it from binary search trees, so we
+pronounce it try.
+And this is a confusing fact of life that
+we've been living with for many decades
+now with this data structure.
+And let's look at what a try is and we'll
+look at some, examples before we get to
+the code.
+So, for now, we're going to think of a try
+as some nodes.
+A tree structure with nodes where we store
+characters in the nodes,
+Not keys.
+And the other thing is that each node has
+R children, where R is the rate, it's the
+number of possible characters.
+And there's g-, the possibility of a child
+for each possible character.
+Now in the standard implementation, this
+is going to involve on all links.
+We have to have a placeholder for each
+possible character.
+So there's a lot of null links and tries.
+And we'll get back to that in a minute.
+But to get the concept, we'll use this
+graphical representation, where we have
+characters and nodes and we don't show any
+null length.
+And the other thing is, remember a symbol
+table is associating a key with a value,
+so this try is built for this set of key
+value pairs.
+And what we do is we.
+Store values in nodes that correspond to
+the last characters in keys.
+And we'll look, that's what these numbers
+here are.
+And we'll look at a little more in detail,
+on how this try is built in just a second.
+So that's the basic idea.
+We're going to have string keys.
+We're going to associate values, and we're
+going to use this tree-like, tree data
+structure but we're not going to draw the
+imply null links for now.
+So, for example, in this trie so the root
+re-, represents all strings.
+And, coming out of the root is one length
+for each possible letter.
+In particular in this try, the middle link
+is the link to the, to a sub try that
+contains all the keys that start with S.
+Then we go further down.
+Each time we go by a node, we pick off a
+letter so that this length, for example,
+goes to the try for all keys that start
+with s followed by h followed by e.
+And so forth.
+So now all, out of all the keys that start
+with SHE, actually one of them, the one
+that just has the letters in then ends,
+has a value associated with it.
+So when the node corresponding to the last
+letter, the E, we put the value zero.
+And so that's, how the try is going to
+look.
+So just given that definition, then let's
+look at, how to do search, in a try.
+All we do is use the characters and the
+key to guide our search down the data
+structure.
+So, let's say we're looking for the key
+shells.
+So we start at the root, and we go down
+the S link, since we started with an S.
+Now our second letter is H, so we look to
+see if there's a non-null link that,
+corresponding to H, and in this case there
+is.
+Now our next letter is E, so we look for
+an E.
+Now.
+No need to examine the value here because
+well we haven't looked at all the letters
+in our key yet.
+So now we look for L now we look for
+another L and then finally we find the S
+and when we find the S we look to see if
+there's a value there.
+In this case there is a value and so
+that's what we return the value associated
+with the last key character.
+So that's a typical search hit in a tri.
+Another way is...
+So, that node was down at the bottom but
+if you had.
+We're doing a search for SHE, you follow
+the same path.
+But now when you get to the E, that's the
+last character of that key and so we just
+know how to return that, value associated
+with that node.
+That is, the search doesn't have to go all
+the way to the bottom.
+It might terminate at an intermediate
+node.
+And we just return the value associated
+with the node corresponding to the last
+character in the key.
+What about a search miss?
+Well, there's two cases.
+It's for a search miss.
+So one of them is we've followed down the
+tree picking off the letters in the key
+one letter at a time as, as before.
+And then when we get to the end of the key
+we take a look to see if there is a value.
+In this case there's no value associated
+with the last key character that mean
+there's no key in the data structure
+that's been associated with a value.
+So we just return no.
+Or, the other thing that can happen is, we
+can, reach a null link.
+So, our key now is S, starts with S, and
+then H, and then E, and then L, and now
+our next letter is T, so we look to see if
+there's a non null link coming from this
+node associated with T.
+And in this case, there's no such link, so
+we return null.
+That's evidence that, that string, there's
+no key associated with that string in our
+data structure.
+So that's a search miss.
+Iii.
+Now, what about insertion?
+Well insertion is also pretty simple.
+So we follow two, two rules.
+One is again, we go down links
+corresponding each character in the key.
+If we come out on a link, we create a new
+node that's associated with the character
+that we're on.
+And just keep doing that until we get to
+the last character of the key, in which
+case, we put the value.
+So if in this try, we're supposed to
+associate the value seven with
+[inaudible].
+We follow, our path from the root to s,
+'cause our first letter is s, and then
+h.'Cause our next letter is h.
+And then a O, we had an, [inaudible] kinda
+ran into a null link.
+So we have to put, a node there, with the
+character, associated with the character
+O.
+So in later searches for this key, we'll
+be able to find it by passing through that
+node.
+And now we move to the next letter, and
+there's no node again.
+In the next letter, there's still no node.
+Iii.
+When we get to the end, then that's the
+last character in the key, and we put our
+value seven.
+And now we've modified the data structure,
+adding the nodes that are necessary for a
+later search to go through, character by
+character and find the value associated
+with that key.
+So that's an insertion into a try.
+Just to cement all these ideas let's do a
+demo of how that tree was constructed from
+scratch.
+So we have a null try.
+So we're going to start by putting the,
+associating the value zero with the string
+SHE.
+So we start at the root node, which, and
+I'll try, it just has that one node.
+Create a new node for S, create a new node
+for H, create a new node for E.
+Associate zero.
+So the key is the sequence of characters
+from the root to the value, and the value
+is in the node corresponding to the last
+character.
+This try represents the symbol table that
+contains just on string SHE, and
+associated with zero.
+Every other string, if you search for any
+other string in this try you'll either end
+in a node that doesn't have a value or
+you'll end at a null link.
+All right, so now, let's say we put in the
+key S, E, L, L, S and you can kinda tell
+where it's going, we made room for it in
+the try.
+So we go for S, and now the second letter,
+E, corresponds to a null link, so we
+create a new node.
+And similarly we go through and create new
+nodes for each of the remaining characters
+in the key and then associate the value
+one at the end.
+So now we have a try that has two keys in
+it, SHE and SELLS.
+Now our next is to insert SEA.
+So now we have S, we already have a node
+corresponding to E.
+And so now we just have to create one new
+node, the one corresponding to A.
+And put our value two there.
+And now, we're going to put SHELLS in.
+So we already have the S, already have the
+H, already have the E, so now we have to
+add nodes for the last three letters in
+that string.
+And associate the value three with it.
+Now we're going to put finally a key that
+doesn't start with S.
+So that means we create a new node
+corresponding to the first letter of that
+string, I, N to the other letter two.
+And then associate the value four.
+And here's another one that doesn't start
+with s.
+So we create new nodes corresponding to
+each one of its characters, and associate
+the value five with the last one.
+Now here's SEA.
+So this is, remember, our symbol table API
+is associative, which means that if we get
+a new value for a key that's already in
+the table, we overwrite.
+The old value with the new value.
+That's the way, the convention that we've
+chosen for symbol tables.
+So that is easily done with tries as well.
+Now here's one more key, S, H.
+And now we have to add a new node because
+there's no node that's a child of H that
+corresponds letter O.
+So we have to create new nodes for O, R,
+and E, and associate the value seven with
+it.
+So that's a tri that has precisely eight
+keys.
+If you look for any one of those eight
+keys you'll get the value.
+If you look for any other string you'll
+either come to a node that has a null
+value or go out on a null link and so the
+search would be unsuccessful.
+That's is a demo of tri construction.
+Now that you have a basic idea of how,
+what tris are and how they work, let's
+take a look at what's needed to implement
+them in Java.
+The key idea in the tri representation for
+implementation in Java or any computer
+language is that. Instead of representing
+a node as a character in the node, what we
+do is represent the links as an indexed
+array with one entry for each possible
+character.
+And the idea is the characters are
+actually.
+Implicitly defined by link indeces.
+So just for example, we have this small
+try that we built over here.
+In this case, the root has only one node
+below it.
+That's for all the keys that start with S.
+The way that's represented in real
+representation, and this is for
+efficiency.
+And it's the way that tries get their
+efficiency.
+Is we have one link corresponding to each
+possible letter.
+And the only one that is un-null is S.
+So the character S is defined implicitly
+by the fact that, that link that
+[inaudible] that, that corresponds to S is
+not null.
+Over here there's from e to a there's two
+links coming out of E.
+And the only way that we represent A is by
+having the first link be not null.
+If the link corresponding to a letter is
+not null, then it corresponds to having
+that letter in the node that it points to.
+So in this case we have E connected to A
+and L.
+So we have the entries corresponding to A
+and L filled with non null values.
+So you can see immediately the
+correspondence between this tri the way
+we've been drawing it and the job
+representation of it.
+Where each node contains 200, or r links
+if there's r different letters.
+And letters are implicitly represented by
+non [inaudible] links.
+Now, you just go in the node.
+So for example, I, in this try, S, E, A,
+but which is easy to follow down through
+the try.
+We're looking for an S.
+And S is the twentieth letter in the
+alphabet.
+Or so.
+We index into the twentieth position and
+that takes us right to S.
+And E's the fifth letter, we take the
+fifth link.
+Then A's the first letter, we take the
+first link.
+So we can use the character as index into
+the array of links.
+To quickly travel down the tree.
+Then when we get to the last character, we
+can check the value at that node that's
+stored in the node.
+One slight complication in the
+implementation that we encountered before
+with hashing algorithms and other things.
+We're going to need arrays of nodes.
+That's what our lengths are.
+So we can't have any generics with nodes,
+even though I would like to.
+So we have to declare the value to be a
+type object, and then we'll have to cast
+it back to whatever type it should be,
+when we return it.
+And we'll see that in code.
+Other than that little complication.
+This is quite straightforward
+representation of tries.
+And it leads to a very easy
+implementation.
+So the keys and the characters are not
+explicitly stored.
+They're, they're implicitly, because of
+the links.
+And that's a, a very important point to
+think about when it comes to, implementing
+using tries.
+Given that representation, this code for
+implementing try, simple table in Java
+almost writes itself.
+So it's a [inaudible] implementation in
+this slide has the implementation of put
+using the same recursive scheme that was
+used many other times in building trees
+the what are the instance variables?
+Well we declare artery 256 as usual in our
+string implementations where working with
+extended asking and then we have one
+instance variable that matters and that is
+the root of the [inaudible].
+So tries begin with, start, all tries
+start with a null node.
+So first thing we do is create a new node
+and put a reference to that node in root.
+So our empty trie consists of a node
+that's got a.
+Remember, when you create a new node we
+Build an array of R links to nodes.
+And at the beginning those'll all be empty
+links.
+Or all null links.
+So the root points to a node that has 256
+null lengths.
+Now to put.
+Or to associate a key with the value in a
+trie.
+We use this instance method that calls
+recursive method.
+Again, the same way that we've done for
+other tree construction schemes before.
+So we take the recursive method, takes a
+node as argument and returns a node.
+So it takes a reference to a trie and
+returns to, a reference to the trie that
+it constructs.
+After a associating the key with a value.
+Just to get started suppose that our first
+key has just one character.
+So in that case, we would call.
+Another recursive put for the root, with
+our one character.
+And so our one character key.
+And call the recursive routine.
+Now our node is not null.
+It's the root node.
+So and our key is length one.
+And we, called it starting at zero.
+So the first thing that we do is pick out
+the [inaudible] character of our, Yeah key
+so zero of character which is our one
+character and I guess its an index
+whatever letter might happen to B.
+Say its B then C would be two that's sort
+of thing and then all we do is recursively
+are follow that link in ser.
+Our, associate our key value in the try
+pointed to by that link.
+And then take the link that we get and put
+it back into that link out of the root
+node.
+So the next call there's nothing in the
+word dot next it's a, it's null so the
+next call we get null so we create a new
+node.
+And then that new node this point we've
+called with D plus one moving to the next
+character.
+So now we have D equals one which is equal
+to our key dot length.
+So we associate the value in that node
+with our node and we return it.
+So that return one level up will set the
+length of the new node in the appropriate
+entry corresponding to the root.
+Again once you've learned our normal
+recursive way of structuring building tree
+structures this code is very natural.
+So for a longer key I'm again thinking
+recursively we find the if we're suppose
+to insert the key associate the key with a
+value, and we're working on the
+[inaudible] character.
+We pick out the, The character at the deep
+position.
+We use that to index and to be in link
+array of the current node and then that's
+the link that we set when we do a put of
+the new node.
+So when we start with a longer string and
+a perfectly empty tree we create new nodes
+all the way down and then put their links
+to their parents all the way up.
+In this recursive structure.
+And it's a very simple and natural
+recursive code.
+So that's the put.
+Now that takes a little study but not so
+much once you're use to our standard
+recursive way of producing tree
+structures.
+And get is even simpler.
+So contains and gets.
+So our scenario's standard convention is
+to return null if we have a key that's not
+there or that contains and the get
+function is a again recursive.
+Procedure that will return in reference to
+the node, and if that's null, we return
+null.
+Otherwise, we can get the value out of the
+node return by the recursive procedure.
+And then remember we had the omega value
+in nodes of type objects.
+So we have to cast that back to the type
+value.
+And the recursive get is very simple.
+To find the node that contains the value
+associated with a given key.
+And we're working on the deep character.
+And we're currently on, node x.
+We just, return null.
+Effects happens to be null.
+That means it's not there.
+If we're, at the last character in the
+key, we return our current node.
+Otherwise, we get that [inaudible]
+character.
+And we use that to index into the next
+array of the current, node.
+And recursively called the get routine,
+for, that node moving, one down the tree.
+And incrementing our key pointer by one.
+Extremely simple, recursive code to do the
+tri implementation.
+So what about the performance?
+Well in a cert chip we simply go down the
+tried examining all L characters just
+using each one to index into an x-array at
+some note.
+And then go down to the end to, to see if
+there's a value there.
+Search miss we might have to go all the
+way down to the last character.
+But we could also just have a miss match
+on the first character and find a null
+link right away.
+And actually.
+Typically, in a try.
+In typical applications, we only examine a
+few characters.
+So right away, you can see, by thinking
+about a search miss, that try algorithms
+can be sublinear.
+We can find out that a key's not in the
+tree, by only examining a few characters.
+If we don't have any.
+Strings in our try that begin with the
+same few characters as our search key,
+then, it's not there.
+That's a typical case.
+Now the downside of tri performance in
+lots of applications is the amount of
+space used.
+There is the problem that every node's got
+R lengths in it.
+And particularly, down at the bottom, the
+leaf nodes that correspond to the last
+characters and keys and, the prefix in the
+key in the try that's going to be null
+lengths.
+Now it is possible in a huge try with lots
+of strings that are short and sharing
+common prefixes to actually much less
+space then this but be ardenal links at
+each leaf is a real problem in some
+applications so we're going to take a look
+on how to deal with that.
+So the bottom line is for symbol tables
+with relatively small numbers of string
+keys where the amount of space used by the
+[UNKNOWN] is not a problem.
+Then we get very fast, search hit.
+And even faster search miss but we burn up
+some space.
+That's the bottom line about try
+performance.
+And, just a typical application.
+Maybe you get a job interview question
+about, what data structure you use for
+spell checking And then, so, and this is
+just an example, to show, how effective
+tries can be for such an application.
+Where all the words are three letters.
+And the solution is, build a 26 way try.
+So spell checking, usually, there'll be
+pre-processing to strip out everything but
+the lowercase letters that make up the
+word.
+So you can build a 26 way try that, will
+immediately tell you whether you have a
+misspelled word or not.
+Another interesting thing about prize is
+that, deletion is, very easy, what do we
+do to delete a key value pair, well you
+find, the node corresponding to key and,
+set the value there corresponding to null,
+.
+So that's, easily done, so we want to
+delete shelves we cross out the, value
+there, and now, there's two cases.
+One case is this one where that node, now
+we set its' value to null and its got all
+null links.
+Now there's no reason for its existence.
+So it wouldn't have been created except
+for the fact that we inserted shells.
+So if the node has got null links, just
+remove it.
+And then, just delete it.
+And then when you go back up the tree,
+which you do because you got down there.
+Every node that you touch you check if
+it's got a no value and all no links, just
+delete it.
+And you keep going until you find one that
+has either a value or a downhill link and
+then that's when you can stop the leading
+node.
+So it's pretty easy to delete a key value
+pair in an R-way tri.
+And that's unusual for other search
+structures that we saw in the deletion was
+a significant challenge to implement
+often.
+So our challenge is to find a way to use,
+less memory.
+Be, particularly because, nowadays, many
+strings are built with Unicode.
+And the number of null links in a tri
+would be truly huge.
+Again we talked about this, with rated
+sorting.
+A lot a programs broke when this.
+Switch went from ASCII to Unicode.
+In any program that use this reposession,
+representation for Tries, certainly broke.
+So that's an introduction to Tries with
+R-way Tries.

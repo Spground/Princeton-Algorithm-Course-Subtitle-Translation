@@ -1,0 +1,274 @@
+To put our, all our algorithms into
+context and better understand them. What
+we'll do now is go through some basic
+properties. Of shortest paths in, edge
+weighted directed graphs. So, what kind of
+data structures are gonna need, first of
+all? Our goal is to find the shortest path
+from s to every other vertex. so, the
+first observation is that there's gonna be
+a shortest paths tree solution. well if no
+two paths have the same length, then
+certainly, it's gonna be, such a solution
+and there's a number of ways to convince
+yourself, that there's gonna be a tree. if
+you've got two paths to the same vertex,
+you can delete the last edge in one of
+them and keep going until all that's left
+is a tree, for example. So what we wanna
+do is compute a tree. now, we've done
+that, in several algorithms before. And a
+reasonable way to represent the shortest
+path's tree is to use two vertex indexed
+arrays. the first one is for every vertex.
+Compute the length of the shortest path
+from s to that vertex. So in this case, we
+have this shortest pastry, and we'll keep
+the length from the shortest path from the
+source, zero to each vertex. So zero two,
+two, the length of that shortest path is
+26. 027 two, seven, it's 0.60 and like
+that. And so, because you go from zero to
+2.36 and from two to 7.34 you get 60., and
+so forth. And the other thing is, we've
+done before is use parent link
+representation, where edge 2V is gonna be
+the last edge that takes us to V. And by
+following back through that array, we can
+get the path, as we have done several
+times before. If we want the path from
+zero to six, we go to edge 26 and says
+well, the last thing we do is three to six
+then we go to three and say the way we got
+to three is from seven We go to seven say
+the way we got to seven is from two We go
+to two and say that's the way we got to
+zero And if we put all those things on a
+stack, then we can return them as an
+noterable to the client and that gives the
+edges on the shortest path. So that's the
+data structures that we're going to use
+for shortest paths. this is, actually the
+code that does, what I just said. The
+client query give me the distance, it
+just, returns, uses v to index into the
+instance array and returns the distance.
+and if the client asks for the path, then
+we make a stack and then, its variable e
+is a directed edge, and we started edge
+2v. And as long as it's not null, we push
+it onto the path and then go to the edge
+two entry for the vertex that we came from
+and that gives the vertex that we came
+from to get to that vertex and keep going
+until we run out of vertices which happens
+at the source. Then return to path and
+that's iterable that gives the client the
+path. So that's the implementation of the
+two query method. So, now what we're want,
+we're going to want to talk about for the
+rest of the lecture is the algorithms that
+build these data structures. Now, all of
+the algorithms that we look at are based
+on a concept called relaxation or edge
+relaxation. So, now recall that our data
+structure. So we're gonna talk about
+relaxing an edge from v to w and we have
+an example here, from v to w. and at the
+point that we're gonna relax this edge.
+we'll , have our data structures in
+process in this too. We haven't seen all
+edges. We haven't seen all passes, paths
+in the intermediate part of some
+algorithm. So, but we'll try to make sure
+that this 2v for every vertex is the
+length of the shortest known path to that
+vertex. And that's gonna be the same for
+W. So, these are all the edges that are in
+Edge two that we know pass from some S to
+some vertex. so this 2v and this 2w will
+contain its shortest known path. Now, if
+we in also Edge 2wv is the. Edge 2w is the
+last edge in the shortest known path from
+s to w. and the same way with extra v of
+course. Now, so to relax along the edge
+from v to w, essentially that means, let's
+update the data structures to take that
+edge to an, into account. And what happens
+in this case is that the edge gives a
+better way to get to w so that's what
+relaxing is. that edge gives us a new
+shortest pass so we want to include it in
+the data structure. So since it has a
+shorte r path, we have to update both,
+disc 2w and edge 2Ww That is, we have a
+new way to get to W. So we have to throw
+away, throw away that old edge that came
+to w and we have, a new shorter distance.
+Instead of 7.2 that came that old way, we
+have 4.4 that gets us, a new way. So edge
+relaxation, is a very natural operation.
+When we consider a new edge, does it give
+a new shortest path to that vertex or not?
+If it doesn't, we ignore it. If it does we
+update the data structures to include that
+edge and forget about the old edge that to
+took us, took us to that vertex. That's
+edge relaxation. And this is, easy
+implementation of edge relaxation in code.
+So to relax and edge. we pull out its
+front and two vertices in VNW according to
+our standard idiom, and then we just see
+if the distance to w that's, what's the
+shortest path before, is bigger than the
+distance to v plus the weight of the edge
+that would take us from v to w if it's
+bigger, that means we've found a new path.
+If it's less than or equal we ignore it.
+And if we found a new path we have to
+update the distance to w to be the new
+distance. Distance to v plus follow VW.
+And then we have to update edge 2w and
+throw away the old version and say that
+our new edge from v to w is the best path
+to w as far as we know. So that's easy
+code for edge relaxation. Now we're gonna
+use edge relaxation in a really
+fundamental way to compute shortest paths,
+but there's one other important idea which
+is called optimality conditions, and this
+is a way to know that we have shortest
+paths, and we have computed all the
+shortest paths, so the shortest path,
+optimality conditions, are is embodied in
+the, in this proposition, so we have an
+edge way to diagraph. and we have the this
+two array. Let's just talk about the
+distances and path go with the distances.
+But the key point is that this two array
+represents the shortest path distances
+from the given source s, if and only if
+these two conditions hold. So the first
+thing is, if its the length for every
+vertex, this 2v is the length of some path
+from s to the vertex, and our algorithm
+always try to ensure, will, always ensures
+that. And then, the second thing is for
+every edge, vw We have this condition
+that, that this 2w that we, have stored is
+less than or equal to this 2v, plus the
+weight at the edge from v to w. That's the
+shortest path optimality conditions. if,
+they're equal, So sometimes, they'll be
+equal. for example, if vw is the last edge
+on the shortest path. and sometimes, it
+would be great if it, it, never been
+smaller, and never be way to get the W
+that we haven't found. That's the shortest
+path, optimality conditions. and again,
+just a quick proof although best way to
+understand proof is that we've been slowly
+now listen to them, spoken quickly, but
+I'll quickly outline them. so here is the,
+the necessary suppose that so, so we wanna
+prove that if, if this is true then we
+have shortest paths. So to do that we
+assume the contrary. Suppose that the
+distance to w is bigger than the distance
+to b + e that way for some edge. Then that
+path is gonna give a path to w that's
+shorter than distance w cause v is the
+path and the wait's shorter. in that is a
+contradiction to the idea that you have
+shortest paths so there can't be any, such
+edge where that condition holds. so that's
+necessary and then sufficient. Suppose
+that we have shortest path from s to w.
+then Now we're assuming these conditions
+all hold. then, For every edge on the path
+this has to all hold. so, so, for, it
+starts at the end. so, the distance to the
+last edge goes from VK - one to VK. So
+distance to VK is less than or equal to
+the distance to VK - one plus the weight
+of the Kth edge. and so just continuing
+down that way then from the source to the
+first edge, but it's a source plus the
+weight of the first edge is greater or
+equal distance to the first vertex after
+the source, and all those conditions have
+to old. And then, what we can do is just
+add up all those weights. and simplify it.
+But and then that shows that the distance
+to w is equal to the length of the
+shortest path. an d so it's gotta be the
+weight of the shortest path. Because it's
+the weight of some path and it's got that
+weight, it's gotta be the weight of the
+shortest path. so if those conditions hold
+we have shortest paths. So our the, the
+point of this proof, it's a slightly
+complicated proof, but it's not too bad,
+it's quite natural is that all we have to
+know to w-, check that we have computed
+shortest path. These are these optimality
+conditions hold, to prove that an
+algorithm computes shortest paths. We just
+have to prove that it ends up with the
+optimality conditions and force, and
+that's what we'll be doing. And the
+optimality condition, really, it's just
+saying that there's no edge there that we
+missed. Okay so with that idea, in fact
+there's a very simple, easy to state,
+generic algorithm that is going to compute
+shortest paths. and it's very simple. We
+start with the distance to the source
+being zero And the distance to every other
+vertex infinity. And all we do is repeat
+until the optimality conditions are
+satisfied, relax any edge. Just go ahead
+and relax edges until the optimality
+conditions are satisfied. So, That's a
+very general algorithm. We don't say how
+to decide which edge to, relax or how to
+know the optimality conditions are
+satisfied. But still, it's, quite an
+amazingly simple generic algorithm. so,
+how do we know, how can we show that it
+computes the SBT? Well it's pretty simple.
+throughout the algorithm. We're making
+sure that because of the way that we do
+relax edges the distance to V is the
+length of a simple path from S to V, and
+edge s to v is the length of a simple path
+from s to v and edge to v is the last edge
+on that path That's what relaxation does
+for any vertex that we touch. and not only
+that, every relaxation that succeeds
+decreases the distances. and we've assumed
+that there's a way to get to every, every
+vertex. and there's only a finite number
+for paths. So it can decrease, at most, a
+finite number of times. So it's going to,
+the algorithm's gonna terminate. It's as
+simple as that. A gain, this is a little
+bit of a mind blowing concept. But we'll
+leave that for more careful study and just
+for now realize that all we have to do is
+relax along edges. And what we're going to
+do now is look at. Different ways of
+figuring out how to choose which edge to
+relax. The first algorithm that we'll look
+at is a classic algorithm known as
+Dijkstra's algorithm one of the most
+famous of all algorithms. and that is
+effective when the weights are non
+negative. then we'll look at an algorithm
+that works even with negative weights as
+long as there aren't any directed cycles.
+and then we'll look at an even older
+algorithm than Dykstra's, the Bellman-Ford
+algorithm. that can, solve the shortest
+path, problem and graphs with negative
+weights, as long as there's, no negative

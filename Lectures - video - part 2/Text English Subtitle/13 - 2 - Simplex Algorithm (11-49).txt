@@ -1,0 +1,204 @@
+Now, we'll look at an algorithm for
+solving the linear programming problem and
+leaves the brewer's problem as an example.
+this algorithm was developed by George
+Dantzig right after World War II. and it,
+it was in response to a very important
+practical problem which was the logistics
+of the Berlin airlift. and again, scarce
+resources and particular constraints and
+you want to maximize an objective
+function. and this algorithm that was
+developed by Dantzig again, is very, very
+widely used today and certainly one of the
+top ten scientific algorithms ever, I'd
+say. so, it's a very simple generic idea.
+we're going to start at some extreme
+point. And then, we're going to perform
+this operation called pivoting that moves
+us from one extreme point to an ad, an
+adjacent one that at least doesn't
+increase the object, doesn't decrease the
+objective function. And we just keep going
+until we get stuck where there's an
+extreme point that is not better than any
+of its adjacent ones. and then we have an
+optimal solution. so, in our brewer's
+problem we start at the origin and just,
+you know, simply move from one extreme
+point to the other until we find an
+optimal solution. and what's remarkable is
+that really Linear Algebra sets us up to
+do this solution. if you're familiar with
+solving simultaneous equations this uses
+the same basic idea. the difference is
+that we've got many more unknowns and
+equations usually certainly not an equal
+number and so we have to take care of that
+situation and also, we have the objective
+function playing a role. so but still, the
+basic idea is to get it down to solving
+simultaneous equations. so, there's first
+the idea of a basis, that's just a subset
+of the variables. and, so, we pick a
+subset of the variables. and then we're
+always going to be working with something
+called a basic feasible solution. so the
+idea is you have a subset of the
+variables. so let's say, that's M in this
+case. there's three variables in the
+basis. and the idea is that you set the
+other variables to zero. so now, you've
+got M equations and M unknowns cuz you,
+you just set M minus N to zero. and so,
+that gives you values for your basis. and
+the idea is that a basic feasible solution
+corresponds to an extreme point on the
+simplex. so, for example, if all the
+flacks, slack variables are in the basis
+and that, we set the others to zero, we
+set A and B to zero. then, that's what
+that says, that's the value of A and B
+when the slack variables are all in the
+basis. if B is in the basis and, and HS
+and HM are in the basis then B is zero and
+then, if you solve for the three
+equations, you get that A is 32 and so
+forth. So basic feasible solution is if
+you have M constraints it's a subset of
+size M, so that you have an M by M system
+equation to solve assuming the others to
+be zero. and for the algorithm so it's
+called the simplex algorithm, because this
+thing that's the intersection of the half
+plane, it's just called a simplex And it's
+going to move along the simplex with, it's
+basic feasible solutions, are extreme
+points on the simplex. And the simplex
+algorithm is going to move along from one
+point to another. now, there's some
+solutions that are infeasible that are not
+on the simplex. if it's, it says, if it's
+unique and feasible, it's a basic feasible
+solution. It could be like if you pit A,
+B, and S sub H to be in your basis, you
+set the other ones to zero it's, it's not
+feasible, it's outside of the simplex. So,
+we won't even consider those. okay. So,
+so, so to get things started what we need
+to do is initialize. And I'll initialize
+in that case, at the origin, when A and B
+are equal to zero. and these three slack
+variables are the basis. and then the
+solution is really easy in that case.
+here's our equations. we set A and B to
+zero, so that cancels out all of that
+stuff. So, that tells us the values of SC,
+SH and SM in, in that case. so, that's
+easy to solve in that case. so one basic
+variable per row this started as the basis
+at and since they are non-basic variables
+to zero to solve three equations to get
+the answer, you don 't have to do any work
+for that. So, that's how we initialize
+things from that. you can initialize right
+from the constraints of the problem. All
+that's in here is our recipe for ale and
+our recipe for beer and our profit margins
+for the two different drinks. okay. So now
+it starts to get interesting. And we're
+going to perform an operation called a
+pivot. and we'll talk about how to choose
+the pivot in a minute. So right now, let's
+say, we're going to choose to pivot on
+this entry right here. What that means is,
+what we're going to do just as you do in
+Gaussian elimination you're going to pick
+this element and then you're going to
+solve for that variable. and then
+substitute that solution into all the
+other equations so that these entries
+become zero. So, we solve for B equals,
+you take 480 minus five, A minus SC divide
+by fifteen.
+This equation says that's what B is.
+Substitute it in these other equations and
+that puts B into the basis and takes some
+other variable out. and at the start, you
+just might think about how do you figure
+out which variable it replaces. if we do
+the math here here's what the system of
+equation looks like. so that's just
+substituting B into the other equations,
+including the objective function. and now
+our basis is B, SH, and SM. A and FC are,
+are zero and our objective function says,
+that Z equals 36, 736. So, that's called a
+pivot. it picked a variable substitute
+into the other equations puts it into the
+basis and makes the other entries in this
+column zero. so, why choose that
+particular variable? well look at the
+objective function and its coefficient is
+positive, so if we B is sitting at zero.
+And if we increase it to some positive
+number, we're going to increase our
+objective function. so, as long as the
+coefficient objective function is
+positive, that tells us the column. We can
+also do it on A in this case and then Y,
+that row. well you have to make sure that
+the right-hand side always stays bigger
+than zero. and so, what uses to choose the
+row is the minimum ratio rule. So, if you
+ta ke the right-hand side over the
+coefficient, you want the one that's
+smallest because when you do the
+substitution that will make sure that the
+right-hand side is positive. so that's the
+choice of the pivots. So now, we're in
+this situation and we just do the same
+thing. So we want to look for something
+that's got a positive coefficient in the
+objective function. And then, we want to
+do the minimum ratio rule. and that turns
+out to be that we pivot on column one row
+two. and we just that's 32 plus 450 SC
+minus SH divided by eight thirds is three
+eighths. substitute that into everything
+and that's going to eliminate A everywhere
+else and it will put see, since we're
+substituting for A, A comes out of the
+basis in the objective function and
+something else will go in. And again,
+think about what it is that goes in. and
+then we wind up in this situation here. so
+that's again, just doing the math. Now,
+what's interesting about having done the
+math here now we don't have any positive
+coefficients in the exec, in objective
+function. so, these two variables are zero
+now but if we take them out of the basis
+and get a bigger value that's going to be
+no good. so we'll stuck. And that's the
+same as, same as the time that we stop
+pivoting. if we to go in any direction
+from where we are we're not going to do as
+well. and that is optimal because first of
+all any solution is going to satisfy the
+current system of equations. so in
+particular whatever values you give SC and
+SA, it's got to satisfy this equation but
+that's going to since they're positive,
+you can't do better than 800. so you might
+as well just be happy when they're zero
+which is where they are. so it's as simple
+as that, you know? So, the current value
+has 800, so it's optimal, you're not going
+to do better. and so that's a, a sketch of
+a simplex algorithm. It's simply a matter
+of choosing a pivot element and then
+pivoting and then keep going until you
+can't choose a pivot element. it's really
+remarkably simple when you think about it.
+That's the simplex algor ithm for linear

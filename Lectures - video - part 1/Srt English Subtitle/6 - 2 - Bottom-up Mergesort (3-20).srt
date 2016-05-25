@@ -1,0 +1,164 @@
+1
+00:00:01,076 --> 00:00:06,044
+Next, we're going to look at a bottom-up
+version of Mergesort. Well, Mergesort is
+
+2
+00:00:06,044 --> 00:00:11,006
+easy to understand as a recursive program.
+This bottom-up version that has no
+
+3
+00:00:11,006 --> 00:00:16,814
+recursion, it's also quite simple to
+understand and to code up. The basic idea
+
+4
+00:00:16,814 --> 00:00:23,057
+is to think of the array as being a little
+at the begining a set of little sorted sub
+
+5
+00:00:23,057 --> 00:00:28,065
+arrays of size one. And then what this
+method will do is go through and merge
+
+6
+00:00:28,065 --> 00:00:33,048
+those little subarrays of size one
+together in pairs to get subarrays of size
+
+7
+00:00:33,048 --> 00:00:38,038
+two. Then, the whole array consists
+of sorted subarrays to size two, and
+
+8
+00:00:38,038 --> 00:00:43,059
+then we make another pass through to get
+size four, and then size eight, and so
+
+9
+00:00:43,059 --> 00:00:49,036
+forth. So, as you can see in this example
+we start out by merging the first two sub
+
+10
+00:00:49,036 --> 00:00:55,360
+arrays of size one to make a array of size
+two - E, M - that's sorted, and then do the same
+
+11
+00:00:55,360 --> 00:01:01,001
+thing for the next two elements and the
+next two and so forth until eventually
+
+12
+00:01:01,001 --> 00:01:06,088
+instead of sixteen individual elements we
+have eight sorted subarrays of size two.
+
+13
+00:01:06,090 --> 00:01:12,012
+Then on another pass through, we can take
+the E, M and the G, R and merge them
+
+14
+00:01:12,012 --> 00:01:17,735
+together to make EGMR, and the E, S and the
+O, R merge those together to make EORS, and
+
+15
+00:01:17,735 --> 00:01:22,744
+so forth. And we have four subarrays of
+size four. One more pass makes two
+
+16
+00:01:22,745 --> 00:01:29,304
+subarrays of size eight, and the last pass
+is just a sorted array. The bottom line in
+
+17
+00:01:29,304 --> 00:01:34,943
+this is sequence of passes through the
+whole array and there's no recursion
+
+18
+00:01:34,943 --> 00:01:41,338
+needed at all. It's extremely easy to code
+up as you can see from this code. We use
+
+19
+00:01:41,338 --> 00:01:47,442
+the same merge code as before and we take
+a nested for loop. The first one is the
+
+20
+00:01:47,442 --> 00:01:53,373
+size of the subarray and this loop gets
+executed on a log N times because each time
+
+21
+00:01:53,373 --> 00:02:00,162
+we double the size of the subarray until
+we get to N. And then we pass through
+
+22
+00:02:00,449 --> 00:02:07,553
+picking out from low to low+size-1,
+and then the next part is low+size+size-1
+
+23
+00:02:07,553 --> 00:02:13,307
+until we run to the end of the array
+where we might not have a full
+
+24
+00:02:13,307 --> 00:02:19,397
+subarray of size sz. That is a fully
+complete industrial strength code for
+
+25
+00:02:19,397 --> 00:02:25,756
+sorting. The only downsize as would
+regular Mergesort is that it uses extra
+
+26
+00:02:25,756 --> 00:02:31,956
+space proportional to the size of the
+array. But otherwise, that's a fine method
+
+27
+00:02:31,956 --> 00:02:39,857
+for merging. That's a bottom-up Mergesort.
+If you look at this visual trace you can
+
+28
+00:02:39,857 --> 00:02:45,477
+see how it works. The thing is totally
+unsorted, then it gets sorted until
+
+29
+00:02:45,477 --> 00:02:49,712
+subarrays to size four, then eight,
+sixteen, and 32. Now in this case the
+
+30
+00:02:49,712 --> 00:02:55,320
+second subarray to be sorted is smaller
+but the merge routine doesn't really care
+
+31
+00:02:55,320 --> 00:03:01,225
+about that so much. You can merge things
+that are not equal in size. And then we get
+
+32
+00:03:01,225 --> 00:03:07,106
+a final sorted array. Whatever the size,
+bottom of Mergesort gets the job done in
+
+33
+00:03:07,106 --> 00:03:13,833
+log N passes. Each pass using about N
+compares for a total cost of about N log N.

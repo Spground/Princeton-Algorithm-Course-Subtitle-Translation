@@ -1,0 +1,444 @@
+1
+00:00:02,000 --> 00:00:07,036
+Welcome back. Today we're going to do some
+math and some science. Not a lot, but we
+
+2
+00:00:07,036 --> 00:00:11,055
+need to have a scientific basis for
+understanding the performance of our
+
+3
+00:00:11,055 --> 00:00:15,075
+algorithms to properly deploy them in
+practise. So today we're going to talk,
+
+4
+00:00:15,275 --> 00:00:20,040
+about how to, observe performance
+characteristics of algorithms. We're going
+
+5
+00:00:20,040 --> 00:00:25,022
+to look at how to make mathematical models
+and how to classify algorithms according
+
+6
+00:00:25,022 --> 00:00:30,010
+to the order of growth of their running
+time. We'll talk a bit about the theory of
+
+7
+00:00:30,010 --> 00:00:35,790
+algorithms and also how to analyze memory
+usage. So to put this all in perspective,
+
+8
+00:00:35,790 --> 00:00:42,206
+we're going to think about these issues
+from the point of view of different types
+
+9
+00:00:42,206 --> 00:00:48,139
+of characters. So the first one is the
+programmer who needs to solve a problem
+
+10
+00:00:48,139 --> 00:00:54,270
+and get it working and get it deployed.
+Second one is the client who wants to use
+
+11
+00:00:54,270 --> 00:01:00,167
+the whatever program did to get the job
+done. Third one is the theoretician,
+
+12
+00:01:00,167 --> 00:01:06,424
+that's somebody who really wants to
+understand what's going on. And, and the
+
+13
+00:01:06,424 --> 00:01:10,724
+last one is kind of a team, this basic
+blocking and tackling sometimes necessary
+
+14
+00:01:10,724 --> 00:01:15,790
+to get, you know, all these things done.
+So, there's a little bit of each one of
+
+15
+00:01:15,790 --> 00:01:21,110
+these in today's lecture. And actually
+when you're a student you have to think
+
+16
+00:01:21,110 --> 00:01:26,753
+that you might be playing any or all of
+these roles some day. So, it's pretty
+
+17
+00:01:26,753 --> 00:01:31,522
+important to understand the different
+points of view. So, the key that we'll
+
+18
+00:01:31,522 --> 00:01:38,205
+focus on is running time. And actually the
+idea of understanding the running time of
+
+19
+00:01:38,205 --> 00:01:44,017
+a computation goes way back even to
+Babbage and probably before. And here's a
+
+20
+00:01:44,017 --> 00:01:48,083
+quote from Babbage, "As soon as an
+analytical engine exists, it will
+
+21
+00:01:48,083 --> 00:01:54,076
+necessarily guide the future course of the
+science. Whenever any result is sought by
+
+22
+00:01:54,076 --> 00:02:00,062
+its aid, the question will arise by what
+course of calculation can these results be
+
+23
+00:02:00,062 --> 00:02:06,072
+arrived at by the machine in the shortest
+time". If you look at Babbage's machine
+
+24
+00:02:06,072 --> 00:02:12,009
+called the analytic engine, it's got a
+crank on it. And literally the concern
+
+25
+00:02:12,009 --> 00:02:17,060
+that Babbage had in knowing how long a
+computation would take is, how m any times
+
+26
+00:02:17,060 --> 00:02:23,048
+do we have to turn the crank. It's, it's
+not that different, in today's world. The
+
+27
+00:02:23,048 --> 00:02:29,018
+crank may be something electronic that's
+happening a billion times a second. But
+
+28
+00:02:29,018 --> 00:02:34,041
+still, we're looking for, how many times
+does some discreet operation have to be
+
+29
+00:02:34,041 --> 00:02:39,093
+performed in order to get a computation
+done. So, there are lot of reasons to
+
+30
+00:02:39,093 --> 00:02:45,032
+analyse algorithms. In the context of this
+course we are mainly interested in
+
+31
+00:02:45,032 --> 00:02:50,051
+performance prediction. And we also want
+to compare the performance of different
+
+32
+00:02:50,051 --> 00:02:54,768
+algorithms for the same task, and to be
+able to provide some guarantees on how
+
+33
+00:02:54,768 --> 00:03:00,058
+well they perform. Along with this, is
+understanding some theoretical basis for
+
+34
+00:03:00,077 --> 00:03:05,780
+how algorithms perform. But primarily, the
+practical reason that we want to be
+
+35
+00:03:06,024 --> 00:03:11,098
+analyzing algorithms and understanding
+them is to avoid performance bugs. We want
+
+36
+00:03:11,098 --> 00:03:16,050
+to have some confidence that our
+algorithms going to complete the job in
+
+37
+00:03:16,050 --> 00:03:21,084
+the amount of time, that, that we think it
+will. And it's very, very frequent to see,
+
+38
+00:03:21,084 --> 00:03:26,080
+in today's computational infrastructure, a
+situation where the client gets bad
+
+39
+00:03:26,080 --> 00:03:31,026
+performance, because the programmer did
+not understand the performance
+
+40
+00:03:31,026 --> 00:03:36,086
+characteristics of the algorithm. And
+today's lecture is about trying to avoid
+
+41
+00:03:36,086 --> 00:03:42,087
+that. Now, we're going to focus on
+performance and comparing algorithms in
+
+42
+00:03:42,087 --> 00:03:48,064
+this course. There's later courses in
+typical computer science curricula that
+
+43
+00:03:48,064 --> 00:03:53,093
+have more information about the
+theoretical basis of algorithms and I'll
+
+44
+00:03:53,093 --> 00:03:59,090
+mention a little bit about that later on.
+But our focus is on being able to predict
+
+45
+00:03:59,090 --> 00:04:07,007
+performance and comparing algorithms. Now
+there's a long list of success stories in
+
+46
+00:04:07,030 --> 00:04:12,081
+designing algorithm with better
+performance in, in enabling the solution
+
+47
+00:04:12,081 --> 00:04:19,025
+of problems that would otherwise not be
+solved. And I'll just give a couple of
+
+48
+00:04:19,025 --> 00:04:25,346
+examples. One of the first and most famous
+is the so called FFT algorithm. That's an
+
+49
+00:04:25,346 --> 00:04:32,057
+algorithm for breaking down the wave form
+of n samples of a signal into periodic
+
+50
+00:04:32,057 --> 00:04:38,431
+components. And that's at the basis for
+dvds and jpegs and, and many other appl
+
+51
+00:04:38,431 --> 00:04:44,296
+ications. There's an easy way to do it
+that takes time proportional to N^2. But
+
+52
+00:04:44,296 --> 00:04:49,080
+the FFT algorithm, takes only N log N
+steps. And the difference between N log N
+
+53
+00:04:49,080 --> 00:04:55,002
+and N^2 is, is the difference between
+being able to solve a large problem and
+
+54
+00:04:55,002 --> 00:04:59,078
+not being able to solve it. A lot of the
+digital technology, digital media
+
+55
+00:04:59,078 --> 00:05:04,822
+technology that we have today is enabled
+by that fast algorithm. Another example
+
+56
+00:05:05,051 --> 00:05:11,232
+was actually developed by Andrew Appel,
+who's now the chair of computer science
+
+57
+00:05:11,232 --> 00:05:16,582
+here at Princeton. And it was developed
+when he was an undergraduate for his
+
+58
+00:05:16,582 --> 00:05:22,725
+senior thesis. It's a fast algorithm for
+the N body simulation problem. The easy
+
+59
+00:05:22,725 --> 00:05:28,548
+algorithm takes time proportional to N^2,
+but Appel's algorithm was an N log N
+
+60
+00:05:28,548 --> 00:05:33,452
+algorithm that again, meant that
+scientists can do N body simulation for
+
+61
+00:05:33,452 --> 00:05:41,478
+huge values of N. And that enables new
+research. S0, o the challenge is that we
+
+62
+00:05:41,478 --> 00:05:47,677
+usually face is, will my program be able
+to solve a large practical input? And, and
+
+63
+00:05:47,677 --> 00:05:52,024
+actually, the working programmer is
+actually faced with that all the time.
+
+64
+00:05:52,024 --> 00:05:58,001
+Why, why is my program running so slowly?
+Why does it run out of memory? And that's
+
+65
+00:05:58,001 --> 00:06:05,000
+faced programmers for a really long time
+and the insight to address this. Deuter
+
+66
+00:06:05,000 --> 00:06:10,030
+Kanoof, in the 1970s, was that, we really
+can use the scientific method to
+
+67
+00:06:10,030 --> 00:06:16,062
+understand the performance of algorithms
+in operation. Maybe we're not unlocking
+
+68
+00:06:16,062 --> 00:06:23,010
+new secrets of the universe but, we can
+use the, scientific method, and treat the
+
+69
+00:06:23,010 --> 00:06:29,042
+computer, as something to be studied in
+that way and come to an understanding of
+
+70
+00:06:29,042 --> 00:06:34,008
+how our program are going to perform. And
+let's take a look at that in more detail.
+
+71
+00:06:34,209 --> 00:06:39,063
+So this just a quick summary of what we
+mean by the scientific method, which has,
+
+72
+00:06:39,268 --> 00:06:44,086
+been successful for a couple of centuries
+now. So, what we're going to do is,
+
+73
+00:06:44,086 --> 00:06:50,008
+observe from some feature of the natural
+world. In this case, it's going to be the
+
+74
+00:06:50,008 --> 00:06:54,857
+running time of our program on a computer.
+Then we're going to develop hypothesis
+
+75
+00:06:55,049 --> 00:06:59,079
+some model that's consistent with the
+observations, and we're going to hope
+
+76
+00:06:59,079 --> 00:07:04,040
+that, that hypothesis is good enough that
+it'll allow us to predict something.
+
+77
+00:07:04,040 --> 00:07:09,031
+Usually predict a running time for larger
+problem size, or on a different computer.
+
+78
+00:07:09,197 --> 00:07:13,097
+And then we'll verify the predictions by
+making more observations, and validate
+
+79
+00:07:13,097 --> 00:07:18,058
+until we're comfortable that our model
+hypothesis and observations all agree.
+
+80
+00:07:18,058 --> 00:07:22,077
+That's a way to get comfort that we
+understand the performance of our
+
+81
+00:07:22,077 --> 00:07:28,056
+programs. Now, the within the scientific
+method, there's some basic principles and
+
+82
+00:07:28,056 --> 00:07:33,082
+the, the first is that if you're going to
+run experiments, you should expect that
+
+83
+00:07:33,082 --> 00:07:39,021
+somebody else should be able to run
+experiments and get the same result. And
+
+84
+00:07:39,021 --> 00:07:44,067
+also the hypotheses have to have a
+specific property that the experiment can
+
+85
+00:07:44,067 --> 00:07:49,736
+show the hypothesis to be wrong. So, it
+has to be carefully crafted, and we'll be
+
+86
+00:07:49,736 --> 00:07:55,433
+sure to try to do that. So, and again the
+future of the natural world that we're
+
+87
+00:07:55,433 --> 00:08:00,822
+studying is some particular computer that
+exists in the natural world. It changes
+
+88
+00:08:00,822 --> 00:08:07,049
+the algorithm from an abstraction to a,
+some, some kind of actual physical thing
+
+89
+00:08:07,049 --> 00:08:11,083
+happening like electrons racing around
+inside the computer.

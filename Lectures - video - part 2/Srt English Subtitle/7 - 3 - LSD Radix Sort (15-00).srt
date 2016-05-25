@@ -1,0 +1,874 @@
+1
+00:00:02,680 --> 00:00:07,476
+My key index counter is a great algorithm
+but that's not the end of the story.
+
+2
+00:00:07,476 --> 00:00:12,089
+It's also useful for creating a more
+general purpose algorithm for strings.
+
+3
+00:00:12,089 --> 00:00:16,947
+The first one we'll look at is called LSD
+radix sort, Least Significant Digit for
+
+4
+00:00:16,947 --> 00:00:20,957
+string sorting.
+And the idea is a very simple one.
+
+5
+00:00:20,957 --> 00:00:28,301
+We have strings so we're gonna consider
+now a small example where the strings are
+
+6
+00:00:28,301 --> 00:00:33,700
+all the same length.
+And again that's often true in practical
+
+7
+00:00:33,700 --> 00:00:39,420
+applications account numbers and so forth.
+String that uses, sort these, may all be
+
+8
+00:00:39,420 --> 00:00:43,580
+the same length.
+And what we're gonna do is consider.
+
+9
+00:00:43,809 --> 00:00:49,173
+The character positions in the strings,
+and move from right to left.
+
+10
+00:00:49,402 --> 00:00:55,685
+The algorithm, is to just stably sort
+using key index counting, on, the chara-,
+
+11
+00:00:55,685 --> 00:01:02,504
+deed character of the key, where deed goes
+from the right end and decreases.
+
+12
+00:01:02,504 --> 00:01:08,207
+So, this is, a stable sort.
+Of those twelve keys, sorting on the
+
+13
+00:01:08,207 --> 00:01:14,531
+right-most character, the B's go before
+the D's go before the Es.
+
+14
+00:01:14,531 --> 00:01:22,256
+It's crucial that the sort be stable in
+this application, and that's why we
+
+15
+00:01:22,256 --> 00:01:26,820
+checked with key index counting to make
+sure that it was stable.
+
+16
+00:01:26,820 --> 00:01:31,070
+So it's a stable sort on, on the right
+most character.
+
+17
+00:01:31,311 --> 00:01:37,567
+And then all we do is move from right to
+left and do now the second character.
+
+18
+00:01:37,567 --> 00:01:43,421
+And this now is a stable sort of those
+same keys on the second character.
+
+19
+00:01:43,421 --> 00:01:49,677
+So now the ones with A in the second
+character come before the one with B and
+
+20
+00:01:49,677 --> 00:01:53,767
+so-forth.
+And not only that, it's stable, so their
+
+21
+00:01:53,767 --> 00:01:58,660
+relative order is maintained, BAB, CAB,
+FAD, BAD, and so-forth.
+
+22
+00:01:58,972 --> 00:02:01,782
+And then.
+To finish this.
+
+23
+00:02:02,094 --> 00:02:06,050
+Sort.
+Now we do it on the first key.
+
+24
+00:02:06,050 --> 00:02:13,141
+And the magic of LSD radix sorting is eh,
+once you do it on the first key then the
+
+25
+00:02:13,141 --> 00:02:17,740
+strings are all sorted.
+So, that's three passes, one for each
+
+26
+00:02:17,740 --> 00:02:22,727
+character in the string.
+Each taking linear time and we get a
+
+27
+00:02:22,727 --> 00:02:24,910
+string sort.
+That's LSD sort.
+
+28
+00:02:25,161 --> 00:02:32,192
+Now we need to prove that it works.
+And so this is a simple proof by induction
+
+29
+00:02:32,192 --> 00:02:37,047
+that it worked.
+After we have done I passes then we can
+
+30
+00:02:37,047 --> 00:02:43,157
+assume by induction that the strings are
+sorted on the last I characters.
+
+31
+00:02:43,408 --> 00:02:50,269
+So we are just showing that for two, after
+two passes. it sorted on the last two
+
+32
+00:02:50,272 --> 00:02:54,038
+characters thats we're assuming by
+induction.
+
+33
+00:02:54,038 --> 00:02:58,810
+So now what about the next character that
+we are sorting.
+
+34
+00:02:58,994 --> 00:03:04,219
+Well, there's two things that can happen.
+If two strings are different on the first
+
+35
+00:03:04,219 --> 00:03:07,416
+key, then, the key index sound is gonna do
+the job.
+
+36
+00:03:07,416 --> 00:03:12,396
+A string that starts with B is gonna come
+before one that starts with a D, and so
+
+37
+00:03:12,396 --> 00:03:15,223
+forth.
+So if they're different on the sort key,
+
+38
+00:03:15,223 --> 00:03:20,607
+the key index sort puts them in order.
+If they're the same on a sort key then
+
+39
+00:03:20,607 --> 00:03:25,179
+stability does the job.
+So all the ones with that stay on order
+
+40
+00:03:25,179 --> 00:03:31,129
+because we've insisted on a stable sort.
+That's a simple proof by induction that
+
+41
+00:03:31,129 --> 00:03:35,482
+LSD string sorts fixed length strings in a
+descending order.
+
+42
+00:03:35,482 --> 00:03:39,550
+And it's really easy to implement.
+This is a complete.
+
+43
+00:03:39,550 --> 00:03:46,580
+Java implementation of LSD string sort.
+So we're explicitly working with radix
+
+44
+00:03:46,580 --> 00:03:46,736
+r256.
+=
+
+45
+00:03:46,736 --> 00:03:53,766
+256 and where the radix comes in, the
+value of the radix comes in, is that's the
+
+46
+00:03:53,766 --> 00:03:58,765
+size of the array that we use for the,
+counts and the accumulants.
+
+47
+00:03:58,999 --> 00:04:04,780
+We need one for each character.
+For each possible character value, we're
+
+48
+00:04:04,780 --> 00:04:08,841
+gonna index into that array that has to be
+that big.
+
+49
+00:04:09,076 --> 00:04:13,060
+And all this is, is the code for key index
+counting.
+
+50
+00:04:13,310 --> 00:04:21,232
+And then all we do is take a variable t
+that goes down from this is the strings of
+
+51
+00:04:21,232 --> 00:04:27,570
+fixed width w And we start at the
+rightmost character and go down to the
+
+52
+00:04:27,570 --> 00:04:32,741
+first character.
+And instead of dealing with a-ah, our
+
+53
+00:04:32,741 --> 00:04:40,080
+string A of I2 we're just look at the deed
+character which is a character.
+
+54
+00:04:40,287 --> 00:04:46,431
+Otherwise just with that replacement and
+that replacement it's the same code as we
+
+55
+00:04:46,431 --> 00:04:52,404
+looked at for key index counting.
+So let's do key index counting on the deed
+
+56
+00:04:52,404 --> 00:04:57,303
+character going down from the width from
+right to left.
+
+57
+00:04:57,543 --> 00:05:04,048
+That's remarkably compact code.
+And that's gonna be the method of choice
+
+58
+00:05:04,048 --> 00:05:09,510
+for lots of situations with fixed length
+keys as the sort key.
+
+59
+00:05:09,798 --> 00:05:18,921
+And, and it gives us another look at the
+performance of sorting out algorithms.
+
+60
+00:05:19,210 --> 00:05:27,860
+That gives us another line in the table
+that we're requiring that, that be, they
+
+61
+00:05:27,860 --> 00:05:32,076
+be fixed length keys, there's ways to work
+around that.
+
+62
+00:05:32,076 --> 00:05:37,696
+And we'll consider another algorithm that
+deals with that in a minute.
+
+63
+00:05:37,918 --> 00:05:42,430
+But again it's often or typically the case
+that the.
+
+64
+00:05:42,430 --> 00:05:46,834
+Width of the keys is not that long.
+It's a small constant.
+
+65
+00:05:47,062 --> 00:05:50,555
+And therefore, we have a linear time
+algorithm.
+
+66
+00:05:50,783 --> 00:05:56,782
+This even works if the keys are binary
+numbers represented in a binary word.
+
+67
+00:05:57,010 --> 00:06:03,693
+We can break them up into groups of small
+number of bytes Say, 64 byte number can be
+
+68
+00:06:03,693 --> 00:06:09,085
+broken up into 88 eight bytes characters
+or four sixteen byte characters.
+
+69
+00:06:09,313 --> 00:06:15,920
+For sixteen byte characters, W would be
+four and you can get a huge array of that
+
+70
+00:06:15,920 --> 00:06:19,920
+kind of numbers sorted in just the four
+passes through the array.
+
+71
+00:06:20,079 --> 00:06:23,702
+If they don't have the same length we have
+to do some extra work.
+
+72
+00:06:23,702 --> 00:06:26,153
+It's an interesting problem to think
+about.
+
+73
+00:06:26,153 --> 00:06:29,190
+We're, we're gonna look at a different
+method in a minute.
+
+74
+00:06:29,510 --> 00:06:37,089
+So here's the type of question that
+somebody might could ask for a job
+
+75
+00:06:37,089 --> 00:06:42,213
+interview.
+Actually, a web services company, every
+
+76
+00:06:42,213 --> 00:06:50,646
+day, might be in the position of needing
+sort a million or a billion 32 bit or 64
+
+77
+00:06:50,646 --> 00:06:56,411
+byte integers.
+And an algorithm student, in interviewing,
+
+78
+00:06:56,411 --> 00:07:01,428
+might could ask what sorting method do you
+use?
+
+79
+00:07:01,748 --> 00:07:06,751
+Now, senator.
+You hear Google and I like to think of the
+
+80
+00:07:06,751 --> 00:07:12,810
+presidency as a job interview.
+Now it's hard to get a job. as president.
+
+81
+00:07:13,282 --> 00:07:15,749
+Right. And, and you're going through that
+obviously now.
+
+82
+00:07:15,749 --> 00:07:18,216
+It's also hard to get a job at Google.
+Right.
+
+83
+00:07:18,373 --> 00:07:22,100
+[laugh] We, we have questions.
+And we ask our candidates questions.
+
+84
+00:07:22,100 --> 00:07:25,372
+And this one is from Larry Schwimmer.
+Okay.
+
+85
+00:07:25,372 --> 00:07:29,275
+[laugh].
+You guys think I am kidding?
+
+86
+00:07:29,275 --> 00:07:35,914
+It's right here.
+What is the most efficient way to sort a
+
+87
+00:07:35,914 --> 00:07:43,271
+million 32 bit integers?
+Well I, no, no, no, no, no, I, I think the
+
+88
+00:07:43,271 --> 00:07:51,073
+bubble sort would be the wrong way to go.
+Come on, who told him this?
+
+89
+00:07:51,073 --> 00:07:55,755
+Okay.
+I didn't see computer science in the
+
+90
+00:07:55,755 --> 00:08:00,548
+background.
+We've got our spies in there.
+
+91
+00:08:00,882 --> 00:08:01,803
+Well.
+'Kay.
+
+92
+00:08:01,803 --> 00:08:04,868
+Let's ask, let's ask a different interview
+[laugh] question.
+
+93
+00:08:05,024 --> 00:08:08,757
+[laugh].
+So the bottom line is if you want a good
+
+94
+00:08:08,757 --> 00:08:12,560
+job maybe, you wanna know about LSD string
+sort.
+
+95
+00:08:12,786 --> 00:08:17,764
+Actually, this method has been around for,
+really a long time.
+
+96
+00:08:17,990 --> 00:08:21,309
+So we'll start with a little bit of a
+story.
+
+97
+00:08:21,535 --> 00:08:27,644
+So what did people do, in the nineteenth
+century when, they wanted to take a
+
+98
+00:08:27,644 --> 00:08:31,566
+census?
+And actually, the story is that, for the
+
+99
+00:08:31,566 --> 00:08:36,620
+1880 census, it was actually obsolete,
+before it was completed.
+
+100
+00:08:37,119 --> 00:08:42,529
+It took 1,500 people seven years to
+manually process the data.
+
+101
+00:08:42,779 --> 00:08:49,187
+So, during that time there was room for
+some invention, and a man named Herman
+
+102
+00:08:49,187 --> 00:08:57,979
+Hollerith developed an automated machine
+that could help do the census faster.
+
+103
+00:08:58,301 --> 00:09:04,540
+So what his idea was to use punch cards to
+record data.
+
+104
+00:09:04,774 --> 00:09:08,365
+The kind of data that was taken in the
+census.
+
+105
+00:09:08,600 --> 00:09:14,690
+And then the machine could tabulate the
+data by sorting one column at, at time.
+
+106
+00:09:14,909 --> 00:09:19,369
+And we'll look a byte at how it does that
+in just a minute.
+
+107
+00:09:19,588 --> 00:09:25,657
+And the idea was that the re-, result of
+that was that the next census finish
+
+108
+00:09:25,877 --> 00:09:32,019
+really much earlier and under budget,
+'cause this machine automated much of the
+
+109
+00:09:32,019 --> 00:09:36,186
+process.
+And that had a really a profound effect on
+
+110
+00:09:36,186 --> 00:09:42,621
+the development of computing 'cause punch
+cards, it turned out were useful not just
+
+111
+00:09:42,621 --> 00:09:45,765
+for census but for many other
+applications.
+
+112
+00:09:46,203 --> 00:09:52,610
+For accounting and for many other for
+business processes and for many decades,
+
+113
+00:09:52,610 --> 00:09:59,470
+punch cards were the primary medium that
+was used to store, enter, and process
+
+114
+00:09:59,470 --> 00:10:03,658
+data.
+And Hollerith's company for building this
+
+115
+00:10:03,658 --> 00:10:08,469
+machine later emerged with a bunch of
+other companies.
+
+116
+00:10:08,469 --> 00:10:12,479
+And in 1924 that company became known as
+IBM.
+
+117
+00:10:12,479 --> 00:10:19,250
+And actually, punch cards were used up
+into the 70's' And even in the 80's' in
+
+118
+00:10:19,250 --> 00:10:22,709
+some places.
+So, if, it's important.
+
+119
+00:10:22,709 --> 00:10:28,204
+Let's take a little break and talk about
+the role of LSD string sort.
+
+120
+00:10:28,443 --> 00:10:34,815
+For you know, a couple of decades people
+who wrote programs were working with
+
+121
+00:10:34,815 --> 00:10:39,434
+punched cards.
+And in courses at universities, if you
+
+122
+00:10:39,434 --> 00:10:46,101
+want to write a program, you wrote it by
+putting one line on each punched card.
+
+123
+00:10:46,101 --> 00:10:51,742
+In your program, therefore, was a deck, a
+long deck of punched cards.
+
+124
+00:10:51,742 --> 00:10:56,700
+If you had a 1000 line program, you had
+1000 punched cards.
+
+125
+00:10:56,700 --> 00:11:01,397
+They came in boxes that held 2,000, and
+people would carry around these boxes of
+
+126
+00:11:01,397 --> 00:11:03,863
+punch cards that, that were their
+programs.
+
+127
+00:11:03,863 --> 00:11:08,618
+To enter the program there was a thing
+called a card punch which had a, which had
+
+128
+00:11:08,618 --> 00:11:13,315
+a keyboard kind of like a typewriter, but
+all it did, you could see the cards, and
+
+129
+00:11:13,315 --> 00:11:16,780
+it'd actually punche holes in the card
+with what you typed.
+
+130
+00:11:16,780 --> 00:11:21,425
+Now there was a huge so then, you, you're
+program was punched cards.
+
+131
+00:11:21,425 --> 00:11:26,521
+And there was a machine called a card
+reader which would take the cards in and
+
+132
+00:11:26,521 --> 00:11:32,199
+convert those punches back into, into
+binary and characters that again, could be
+
+133
+00:11:32,199 --> 00:11:38,070
+processed on the computer and then you get
+your results printed out on paper in a
+
+134
+00:11:38,070 --> 00:11:41,747
+line printer.
+So for many, many years people programmed
+
+135
+00:11:41,747 --> 00:11:47,360
+by making decks of punched cards handing
+them to an operator who put them on a card
+
+136
+00:11:47,360 --> 00:11:51,416
+reader and then waiting for the printed
+output to come out.
+
+137
+00:11:51,416 --> 00:11:55,076
+There were other devices, but this was the
+main thing for a long time.
+
+138
+00:11:55,076 --> 00:11:57,570
+And lots of people learned to program this
+way.
+
+139
+00:11:57,570 --> 00:12:00,906
+Now, there was a huge flaw in the system
+though.
+
+140
+00:12:01,119 --> 00:12:06,799
+The flaw was, if you dropped the deck,
+then your program was completely scrambled
+
+141
+00:12:06,799 --> 00:12:10,064
+and out of order.
+And you had no program.
+
+142
+00:12:10,064 --> 00:12:15,815
+You had to go through the cards and find
+the first line and, then find the second
+
+143
+00:12:15,815 --> 00:12:19,152
+line.
+Well, people figured out to work around
+
+144
+00:12:19,365 --> 00:12:24,476
+for this really almost right from the
+beginning, cause this is clearly
+
+145
+00:12:25,186 --> 00:12:31,150
+intolerable, situation, and, the, along
+with the same room with the card punch,
+
+146
+00:12:31,435 --> 00:12:38,023
+There was a thing called a card sorter,
+And the card punch did one other thing
+
+147
+00:12:38,023 --> 00:12:41,240
+automatically. every time you punched a
+card.
+
+148
+00:12:41,461 --> 00:12:47,370
+It would go to the last six columns of the
+card and it would put in, a number.
+
+149
+00:12:47,563 --> 00:12:52,069
+Actually they skip by ten So, it would be.
+The first card would be card ten then
+
+150
+00:12:52,069 --> 00:12:57,734
+twenty, 30. And your cards would be
+numbered up to six digits, so you could
+
+151
+00:12:57,734 --> 00:13:03,051
+have thousands of cards sequentially.
+So when you typed in your program, you get
+
+152
+00:13:03,051 --> 00:13:07,318
+the cards numbered, in order.
+If you wanted to add a few lines to a
+
+153
+00:13:07,318 --> 00:13:12,265
+program, you had room to add a couple of
+numbers and, re-punch the numbers, but,
+
+154
+00:13:12,265 --> 00:13:16,902
+nuh, the whole point was, that all the
+time when you're holding on to a card
+
+155
+00:13:16,902 --> 00:13:21,169
+deck, the cards are in order, by number on
+the right hand column.
+
+156
+00:13:21,169 --> 00:13:24,570
+And if you dropped it, all you needed to
+do was sort it.
+
+157
+00:13:24,733 --> 00:13:29,325
+Or if the m-, machine operator dropped it,
+that was not viewed as a big deal for your
+
+158
+00:13:29,325 --> 00:13:33,752
+cards to get [laugh] out of order, because
+there was this machine that could sort
+
+159
+00:13:33,752 --> 00:13:38,232
+cards.
+And the way that it worked was, LSD Rate
+
+160
+00:13:38,232 --> 00:13:43,848
+exort, the LSD string sort on those
+characters that are the numbers that keep
+
+161
+00:13:43,848 --> 00:13:47,398
+the card in order.
+They would, you'ld start on the right
+
+162
+00:13:47,398 --> 00:13:50,287
+column.
+And there was a physical thing, you'd set
+
+163
+00:13:50,287 --> 00:13:55,882
+to a call and, it was gonna sort on, you
+put the deck in, and it'd distribute, the
+
+164
+00:13:55,882 --> 00:14:00,258
+ones with zero in the first bin, or ones
+with one in the second bin, all the way
+
+165
+00:14:00,258 --> 00:14:04,469
+up, it'd, and of all the cards it start
+with zero would come in, and it was
+
+166
+00:14:04,469 --> 00:14:08,790
+stable, whatever order the cards were in,
+that's the order they'd appear in the
+
+167
+00:14:08,790 --> 00:14:12,944
+pile, and then you'd pick them up, and
+you'd have a new deck, and it'd be all
+
+168
+00:14:12,944 --> 00:14:17,932
+sorted on the right-most column.
+Then you move over for one position from
+
+169
+00:14:17,932 --> 00:14:21,247
+right to left, and run the cards through
+again.
+
+170
+00:14:21,463 --> 00:14:27,589
+So if running the cards through the card
+sorter six times, you could get your deck
+
+171
+00:14:27,589 --> 00:14:31,192
+sorted.
+So, every programmer knew LSD radix sort.
+
+172
+00:14:31,625 --> 00:14:37,390
+For decades, it was not something that
+was, difficult to teach, 40 years ago.
+
+173
+00:14:37,606 --> 00:14:41,858
+And, these, this equipment, is now all
+pretty much gone.
+
+174
+00:14:42,075 --> 00:14:50,433
+But LSD radix sort, is still a good
+algorithm to know. Not related is
+
+175
+00:14:50,433 --> 00:14:54,780
+something else that was going on with
+those initials at that time.

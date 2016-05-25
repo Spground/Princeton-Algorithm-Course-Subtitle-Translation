@@ -1,0 +1,171 @@
+. So now we've got a general scheme for
+computing Max Flow's Min cuts and the
+proof that they are equivalent. Next what
+we need to do is look at an analysis of
+the, cost of computing things to try to
+figure out, specific, efficient ways to
+compute, augmenting paths. So we already
+saw how to compute a Min cuts So we'll
+just worry about doing the Max flow. To
+find an augmenting path. Well there's lots
+of ways to find an augmenting path. any
+graph search is gonna work. so let's just
+start with BFS for example. so if word
+focusing terminates, that means there's no
+augmenting path. Does it always compute
+our Max slow? Yes, we showed that. and
+well that's if it terminates. does it
+always terminate? Does it oscillate back
+and forth? Well, it's a little more work.
+to show that it does always terminate. if
+you have to, a few other conditions. So
+for simplicity, we assume that each
+capacities are integers or there's other
+things that can be done with a choice of
+augmenting paths and maybe we'll come back
+to that. But to figure out how many
+augmenting paths there are, that's the key
+that requires some clever analysis. and
+there's been a lot of different schemes
+studied to try to understand a way to
+first find the paths cheaply and then
+decide to try to see how, many, how we can
+limit the number of augmentations. so,
+let's look at a, at an important special
+case. And it's true in lots of
+applications. where the edge capacities
+are integers, between one and some, big
+maximum U. and, a lot of the things that
+we talk about work when edge capacities
+are, are, are real numbers. But let's just
+talk about this case. so one thing to
+notice in that case, is that our Ford
+focus and method always keeps an integer
+value of flow We never take half a flow
+unit and put it through an edge. So it's
+always integer valued, cause the flow on
+each edge of the integer, capacities are
+integers and so everything stays to be an
+integer. every, every augmentation either
+increases or decreases by the bottleneck
+capacity, which is always an integer. s o,
+one thing that's definitely true is you
+only augment if you're gonna increase the
+flow. you have to augment. You wouldn't
+augment if you couldn't augment by at most
+one. so it's definitely true that the
+number of augmentations is less than or
+equal to the value of the flow. . So
+there's what's called the integrality.
+Integrality theorem that is important for
+some applications and we'll come back to
+it, that says if there exists an integer
+valued Max flow and Ford focus finds so
+it's and waving a little bit to talk about
+that but we'll work with intergers and
+we'll be confident that we get to the
+answer and so the proof of the Integraliy
+theorem is that it terminates in the Max
+flow that it finds is integer valued and
+that's enough. So, but, just to get an
+idea for what goes on, let's look at this
+bad case. Even when the edge capacities
+are integers, you could have a lot of
+augmenting paths. And we want to avoid
+this case. So look at this network here,
+where we have S and T. And we've got two
+big capacity edges coming out of S and two
+big capacity edges coming into T. And then
+we have just a little edge of capacity one
+going between those two intermediate
+vertices. here's what could happen. so, in
+the first generation we could decide that
+we wanna push flow along the path that
+goes across the middle. Now we're gonna
+look in a lot of different schemes for,
+finding augmenting paths, so, maybe, a
+scheme says, if we have a choice, let's
+take, as longer path as we can find. And
+that, so, in this case, that's what it'd
+do. There's another augmenting path that
+just goes from S to the left vortex down
+to P, but the algorithm, say, chooses this
+one So we have an algorithm that chooses
+this one So that increases the flow by one
+but then the problem is, maybe the next
+time, we make that middle edge a backwards
+edge and so now we go through and increase
+the flow by one along that edge and now we
+have a total flow of two and then maybe we
+alternate between these two schemes.
+Increment by one in the left, increment by
+one in the right. and it 's gonna take 200
+iterations. to finally get to the Max
+flow. whereas a different algorithm might
+have gotten it done in two iterations and
+a hundred's not so bad, but maybe these
+weights are a billion or something. It
+would take a billion iterations. So that's
+bad news. Now that's too slow in
+algorithm. We want to try to avoid that.
+now there's an easy way to avoid that and
+that's to use the shortest path or in
+other ways to use the farthest path, the
+one you can push the most flow through.
+that's just an example of the kind of
+pitfall that you wanna avoid and try to
+come up with an algorithm for choosing
+augmenting paths in Ford Fulkerson Now the
+performance of the Ford Fulkerson in
+algorithm is gonna depend on the method
+used to choose the augmenting paths.
+here's listed four easy ways to pick
+augmenting paths and they're pretty easy
+to implement. They're very similar to
+Dijkstra's algorithm or Prim's algorithm
+and others that we've looked at. But they
+lead to a different number of augmenting
+paths, depending on the network. So for
+example, you could decide, let's use the
+shortest path. So that's just the
+augmenting path with the fewest number of
+edges. and that's just, breath for a
+search, essentially in the graph that
+ignores the full forward and empty
+backward edges. now it's been proven that,
+there's no network for which the algorithm
+uses more than one-half E times of E
+paths. so at least that's an upper bound
+that shows that it doesn't have this bad
+performance involving the capacity. I want
+to emphasize that this is a very
+conservative upper bound on the number of
+paths used. in an actual network it might
+not use anywhere near that number of
+augmentations. Another example is the
+fattest path. so that's the augmenting
+path, with maximum bottleneck capacity.
+And again, that one is pretty easy to
+implement. it's very similar to our
+implementations of Dijkstra and Prim's
+algorithm and we'll see in a minute. And
+again, it can serve of upper bound on the
+number of paths taken by that algorithm,
+is the number of e dges times the log of
+product of edges and capacity. but again,
+that's a very conservative upper bound,
+and in the real world it might only take a
+few, augmentations to computing max flow,
+using that method. Or you could use a
+random path which again is easy to
+implement, and randomized graph search. or
+depth-first search. now these conservative
+upper bounds are useful, but in real world
+networks, these algorithms are going to
+have running times that depend, really a
+lot on properties of the network. So
+people use diffent algorithms in different
+situations and the fact is that, often, we
+can get Max flow problems solved, even on
+huge networks with a relatively small
+number of augmenting paths.

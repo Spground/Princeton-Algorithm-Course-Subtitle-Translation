@@ -1,0 +1,538 @@
+1
+00:00:01,046 --> 00:00:07,047
+Now, we'll look at Shellsort which is a
+bit elementary on the face of it but it's
+
+2
+00:00:07,047 --> 00:00:16,450
+not at all elementary as you'll see. The
+idea of Shellsort is that Insertion Sort
+
+3
+00:00:16,450 --> 00:00:22,363
+is inefficient because elements really
+move only one position at the time even
+
+4
+00:00:22,363 --> 00:00:27,858
+when we're kind of know that they have a
+long way to go. The idea behind Shellsort
+
+5
+00:00:27,858 --> 00:00:33,447
+is that we'll move entries several
+positions at a time and the way we're
+
+6
+00:00:33,447 --> 00:00:38,411
+going to do it, it's called h-sorting the
+array. So, an h-sorted array is h
+
+7
+00:00:38,411 --> 00:00:43,088
+different inter leaves sorted
+sub-sequences so in this case with h=4
+
+8
+00:00:43,088 --> 00:00:49,781
+if we start at L and look at every
+fourth element - M, P, T - then it's sorted. If
+
+9
+00:00:49,781 --> 00:00:55,496
+we start in the second place at E and look
+at every fourth element, it's sorted. So
+
+10
+00:00:55,496 --> 00:01:01,567
+this is 4 interleave sequences, that's
+a 4-sorted array. And what we're going
+
+11
+00:01:01,567 --> 00:01:06,912
+to do is implement a sorting method that
+h-sort for decreasing sequences of values
+
+12
+00:01:06,912 --> 00:01:13,051
+of h. This is one of the oldest sorting
+methods invented by Shell in 1959. So, in
+
+13
+00:01:13,051 --> 00:01:19,410
+this case, it starts out with the input
+example shown and then the 13-sort -
+
+14
+00:01:19,410 --> 00:01:25,319
+a few items are moved, 4-sort - a few
+more are moved, and then finally, a 1-sort.
+
+15
+00:01:25,319 --> 00:01:31,034
+And the idea is that each of the
+sorts can be implemented with only a few
+
+16
+00:01:31,034 --> 00:01:37,550
+exchanges given that the previous ones
+happened. So first thing is how do we get an
+
+17
+00:01:37,550 --> 00:01:43,309
+array h-sorted? That's actually pretty
+easy. We just use Insertion Sort but
+
+18
+00:01:43,309 --> 00:01:49,416
+instead of going one back every time we
+come with a new item, we go h back. So for
+
+19
+00:01:49,416 --> 00:01:57,233
+example when we come to this A in the
+Insertion Sort, then it's, we look at the
+
+20
+00:01:57,233 --> 00:02:02,094
+array before that and then there was M and
+E in the positions three back so we
+
+21
+00:02:02,094 --> 00:02:07,149
+exchange the A with the larger one to its
+left, that's M and then the other larger
+
+22
+00:02:07,149 --> 00:02:12,241
+one to its left, that's E and then put it
+into position. So the code is the same as
+
+23
+00:02:12,241 --> 00:02:17,085
+insertion, as for Insertion Sort, except
+that when we go backwards through the
+
+24
+00:02:17,085 --> 00:02:23,040
+array we skip by h instead of just by one.
+That's how we h-sort an array. And the
+
+25
+00:02:23,040 --> 00:02:28,090
+idea is we're going to use Insertion Sort
+because of two reasons based on our
+
+26
+00:02:28,090 --> 00:02:34,090
+understanding of how Insertion Sort works.
+While the first thing is if the increments
+
+27
+00:02:34,090 --> 00:02:40,076
+are big then the size of the sub arrays
+that we're sorting are pretty small so any
+
+28
+00:02:40,076 --> 00:02:46,640
+sorting method including Insertion Sort is
+going to work well. But the other thing is
+
+29
+00:02:46,640 --> 00:02:52,278
+if the increments are small because we've
+done previous h-sorts for bigger
+
+30
+00:02:52,278 --> 00:02:58,679
+values of h, the array is partially sorted
+and so Insertions Sort is going to be
+
+31
+00:02:58,679 --> 00:03:04,408
+fast. You wouldn't work to use Shellsort
+as the basis for h-sorting because that
+
+32
+00:03:04,602 --> 00:03:11,188
+always takes quadratic time no matter what
+order there is in the array. So let's look
+
+33
+00:03:11,188 --> 00:03:16,678
+at example of Shellsort with increment
+7, 3, and 1. So, we start with
+
+34
+00:03:16,678 --> 00:03:23,989
+this sort example and then 7-sorting
+it - just involves doing insertion
+
+35
+00:03:23,989 --> 00:03:29,930
+sort but just reaching back
+7 each time. In this case, the 4
+
+36
+00:03:29,930 --> 00:03:36,605
+subfiles stretched out at seven each only
+have two elements in them. And then we
+
+37
+00:03:36,605 --> 00:03:43,370
+3-sort. Now, because it's 7-sorted
+and a 3-sort elements are either
+
+38
+00:03:43,370 --> 00:03:49,671
+already in placed or on a go back a few
+strides. On this case, it's only the A
+
+39
+00:03:49,671 --> 00:03:55,110
+that goes back two. And then we 1-sort
+and again because of the fact that it's
+
+40
+00:03:55,110 --> 00:04:00,687
+been 7-sorted and 3-sorted, the
+arrays are almost in order when it comes
+
+41
+00:04:00,687 --> 00:04:05,777
+time to do the 1-sort and most of the
+items only go back one or two positions.
+
+42
+00:04:05,974 --> 00:04:11,788
+So we have to do a few extra passes to do
+the higher sorts but the each element
+
+43
+00:04:11,788 --> 00:04:17,703
+moves only a little bit on each path and
+that's how Shellsort gains its efficiency.
+
+44
+00:04:17,924 --> 00:04:24,018
+So actually once you 1-sort, that's
+Insertion Sort so you're going to always
+
+45
+00:04:24,018 --> 00:04:30,201
+get a sorted result. The only difference
+is how efficient is that. Now the
+
+46
+00:04:30,201 --> 00:04:36,755
+intuition behind Shellsort and actually
+the mathematical fact is that if you've
+
+47
+00:04:36,755 --> 00:04:43,038
+got an array that's h-sorted and then you
+k-sort it for another value k different
+
+48
+00:04:43,038 --> 00:04:48,086
+from h, it's still h-sorted. This is one
+of those mathematical facts that seems
+
+49
+00:04:48,086 --> 00:04:54,337
+obvious but then if you try to prove that
+maybe it's a little more subtle than you
+
+50
+00:04:54,337 --> 00:05:00,165
+think. So, if you think of all this is,
+is, is trivial and easy, go ahead and try
+
+51
+00:05:00,165 --> 00:05:06,326
+to write down a proof that a g-sorted
+array remains g-sorted even after it's
+
+52
+00:05:06,326 --> 00:05:13,066
+h-sorted. But most people will accept that
+and it's a fact and that's how Shellsort
+
+53
+00:05:13,066 --> 00:05:18,220
+gains efficiency. Now there's another
+problem is what increment sequence should
+
+54
+00:05:18,220 --> 00:05:23,740
+we use for Shellsort. One of the first
+things you might think of is let's try
+
+55
+00:05:23,740 --> 00:05:30,360
+powers of two. Actually that one doesn't
+work at all, very well at all because it
+
+56
+00:05:30,360 --> 00:05:35,906
+winds up not comparing elements in even
+positions with elements in the odd
+
+57
+00:05:35,906 --> 00:05:42,156
+positions until the 1-sort which means
+performance can be bad. Shell's original
+
+58
+00:05:42,156 --> 00:05:49,059
+idea is to try powers to two minus one and
+that works okay. Knuth when he wrote his
+
+59
+00:05:49,059 --> 00:05:56,656
+books in the 60s proposed the increment
+sequence 3x + 1. We'll start with the
+
+60
+00:05:56,656 --> 00:06:01,826
+1, 4, 13, 40, 121, 364 like that
+and that's good because it's
+
+61
+00:06:01,826 --> 00:06:07,939
+easy to compute. When we're using in
+Shellsort of course, we find the largest
+
+62
+00:06:07,939 --> 00:06:14,261
+increment less than our file size and then
+do the sorts for decreasing values of that
+
+63
+00:06:14,261 --> 00:06:20,760
+increment. But finding the best increment
+sequence is a research problem that has
+
+64
+00:06:20,760 --> 00:06:26,228
+confounded people for quite a long time.
+Here's an increment sequence that I found
+
+65
+00:06:26,228 --> 00:06:32,261
+after maybe a year's work and it works
+well but nobody knows if that's the best
+
+66
+00:06:32,261 --> 00:06:39,585
+one. So here's the implementation in Java
+of Shellsort for Knuth's 3x + 1
+
+67
+00:06:39,585 --> 00:06:46,393
+increment sequence. We'll just go
+ahead and compute the increments that are
+
+68
+00:06:46,661 --> 00:06:53,535
+less than n, n / 3 and then starting
+at that increment whatever it is and say,
+
+69
+00:06:53,535 --> 00:06:59,462
+we started 364 then next time we need an
+increment, we'll just divide it by 3,
+
+70
+00:06:59,466 --> 00:07:06,180
+364 integer divide by 3, 364 integer /
+3 it gets 121, 40 and so forth. So,
+
+71
+00:07:06,180 --> 00:07:12,434
+this h = h / 3 gets us to the next
+increment. And then, the implementation is
+
+72
+00:07:12,434 --> 00:07:18,861
+just Insertion Sort. We just go through
+starting at h for i and when we do the
+
+73
+00:07:18,861 --> 00:07:24,732
+insertion, the j loop, we decrement j by h
+each time, otherwise the code is exactly
+
+74
+00:07:24,732 --> 00:07:31,037
+like Insertion Sort. So, just adding this
+extra loop for h-sorting and this extra
+
+75
+00:07:31,037 --> 00:07:36,042
+loop to compute the increments to
+Insertion Sort, we get a slightly more
+
+76
+00:07:36,042 --> 00:07:42,008
+complicated piece of code but its much,
+much more efficient. Here's what it looks
+
+77
+00:07:42,008 --> 00:07:48,018
+like for a bigger array. We start with the
+randomly ordered input and you can see
+
+78
+00:07:48,018 --> 00:07:53,082
+that it gets more and more in order on
+each time that we h-sort for the
+
+79
+00:07:53,082 --> 00:07:58,575
+decreasing values of h. Here's an
+animation. This animation does the whole
+
+80
+00:07:58,575 --> 00:08:04,994
+h-sort for each subarray. It's a
+little better feeling for what's going on.
+
+81
+00:08:04,994 --> 00:08:10,237
+And now to do the high ones pretty quickly
+and now it's doing the 1-sort and again
+
+82
+00:08:10,237 --> 00:08:16,786
+it steps through the array pretty quickly.
+If it's partially sorted it doesn't make
+
+83
+00:08:16,786 --> 00:08:23,989
+much difference - does the higher sorts a
+little bit faster. But that's simple to
+
+84
+00:08:23,989 --> 00:08:30,708
+implement and very efficient sorting
+algorithm. Now, the analysis of Shellsort
+
+85
+00:08:30,939 --> 00:08:37,306
+is still open. Now, there's a few things
+that we can say. For example we can say
+
+86
+00:08:37,306 --> 00:08:44,366
+that the number of comparison and the
+worst case is O(N3/2) for the 3x + 1
+
+87
+00:08:44,366 --> 00:08:52,051
+increments. But actually in practice it's
+much less than that. The problem is nobody
+
+88
+00:08:52,051 --> 00:08:58,050
+knows an accurate model for describing
+the number of compares taken by Shellsort
+
+89
+00:08:58,050 --> 00:09:03,424
+for any interesting increment sequence.
+This seems to be with a small value,
+
+90
+00:09:03,424 --> 00:09:09,201
+multiple of n times the number of increments
+used which is some multiple maybe of n log n
+
+91
+00:09:09,201 --> 00:09:14,335
+but nobody is been able to find an
+accurate model that proves that for any
+
+92
+00:09:14,335 --> 00:09:19,139
+interesting increment sequence for
+Shellsort. So, why we are interested in
+
+93
+00:09:19,139 --> 00:09:24,779
+this algorithm? Well, it's a simple idea
+that leads to substantial performance
+
+94
+00:09:24,779 --> 00:09:29,663
+gains. It's very useful in practice
+because it's pretty fast except for very
+
+95
+00:09:29,663 --> 00:09:35,328
+huge arrays. It's going to beat even the
+classical sophisticated methods for medium
+
+96
+00:09:35,328 --> 00:09:40,716
+sized arrays. And it doesn't take much
+code. It's often used in embedded systems
+
+97
+00:09:40,716 --> 00:09:45,821
+or in hardware sort type systems because
+there's so little code involved to
+
+98
+00:09:45,821 --> 00:09:51,674
+implement it. And it just leads to a lot
+of interesting questions. This gets to the
+
+99
+00:09:51,674 --> 00:09:56,499
+intellectual challenge of developing
+algorithms. If you think what we've been
+
+100
+00:09:56,499 --> 00:10:01,960
+studying so far is trivial, go ahead and
+find a better increment sequence. Try some
+
+101
+00:10:01,960 --> 00:10:06,567
+technique to discover one and try to say
+something about the average-case
+
+102
+00:10:06,567 --> 00:10:12,140
+performance of Shellsort. People have been
+trying to do that for 50 years without a
+
+103
+00:10:12,140 --> 00:10:17,502
+whole lot of success. So, the lesson is
+that we can develop good algorithms or
+
+104
+00:10:17,502 --> 00:10:22,342
+good implementations without much code but
+there are some out there that are still
+
+105
+00:10:22,342 --> 00:10:27,751
+waiting discovery. It could be that there are
+some increment sequence out there that
+
+106
+00:10:27,751 --> 00:10:33,147
+make Shellsort more efficient than any
+other method, any of the sorting method
+
+107
+00:10:33,147 --> 00:10:38,551
+that we know for pratical file size, no
+one can deny that. That's Shellsort or
+
+108
+00:10:38,551 --> 00:10:41,060
+first non-trivial sorting method.

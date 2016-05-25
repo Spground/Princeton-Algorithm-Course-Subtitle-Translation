@@ -1,0 +1,395 @@
+Today, we're going to talk about regular
+expressions. Now, this is another in the
+series of ingenious algorithms that we're
+looking at in the second half of this
+course. Now, this is really one of the
+most widely used and one of the coolest
+algorithms that we're going to cover. to
+get started, we have to talk about what is
+a regular expression. And just putting the
+problem in context we've always talked
+about before. in the last lecture, we
+talked about the substring search problem,
+which we're just trying to find one string
+in a text. Now, we'll talk about a more
+general problem, a pattern matching
+problem, where we find one of a specified
+set of strings in the decks. So, that's
+specified set. rather than talk about one
+string, we have to describe a set of
+strings. And that's what regular
+expressions are all about. here's an
+example from genomics, an actual example
+from a real life scientific data
+processing. So, there's a thing called
+Fragile X syndrome, which is a common
+cause of mental retardation. the human
+genome contains is a string that consists
+of Cs, Ts, As, and Gs, it's the way we've
+talked about before. and the, they
+naturally group themselves into groups of
+three. And there's a way to describe a
+correlation with the syndrome from a
+property of the text string or the genome
+string. the, the actual scientific data is
+shown over here on the right, but we'll
+just work with the text strings. In the in
+the English, the description is that
+you've got somewhere in your genome
+repeats of either CGG or AGG, that are
+bracketed by GCG at the beginning and CTG
+at the end. Now, the number of repeats
+inside is very well. So in this case,
+we've got GCJ that's the beginning thing
+and then we've got a CGG that's one, AGG
+that two, CGG that's three. So, we got
+three repeats on one of these two patterns
+and then we have CTG. now, a different
+genome might have many more of these
+triplet patterns inside the number of
+repeats is a variable but high, high
+repeat is correlated with Fragile X
+syndrome. So, clearly medical p
+rofessionals want to know, given a genome
+does it have a high number of repeats with
+this kind of pattern? then we if so then
+we want to look out for this Fragile X
+syndrome. And the specifying the problem
+in English is one thing, but specifying it
+in a way that is enable to writing a
+program to help us find these patterns is
+another. and this is the way that we
+specify the pattern. Now, this thing is
+called a regular expression. Let's take
+this CGG, and then either a CGG, GCG, and
+then either a CGG or an AGG any number of
+times followed by a CGG. that's specifying
+a set of strings and we might find that if
+the text had one of that specified set.
+here's another example where regular
+expressions appear in real life. there's a
+new source highlight program that we use
+to highlight syntax, highlight keywords in
+our, in our text, and, and also gray out
+comments, and so forth. and this is a very
+general program that works for many
+different kinds of languages and outputs
+to many different print formats. and
+that's all about identifying one of a
+specified set of strings in a text and
+doing something with it. It's an
+application of regular expressions in real
+life. in Google, you can search in public
+search code, it's public source code for
+regular expression search so you can
+search for code that contains any one of a
+specified set of strings. and that's
+available facility on the web. There's
+many, many other applications. Another one
+is PROSITE in Biology. there is a bunch of
+specified patterns that you can use to
+search for genome or processing ahm
+natural language, it's all about string
+processing and specifying sets of strings,
+programming languages themselves. and the
+other one we'll look at later on is
+validating when you are getting data entry
+from the web when you type in a credit
+card number, you are told whether it's
+legal or not and that's all done with
+regular expressions since the string you
+typed in one of the specified sets. so,
+this is very widely used and widely useful
+application. so we're going to look into
+the more general idea that this brings
+out, is the idea of parsing text files,
+and not only finding if the string matches
+a pattern, but finding if finding the
+structure of a string that we can use in
+some kind of beneficial way. And we'll
+come back to it more. so, we're looking at
+a basic capability that's widely useful,
+but it also extends to cover deep issues
+and processes in Computer Science. So,
+what is a regular expression? Well, it's
+simply a notation to specify a set of
+strings. the set could be infinite. we're
+going to specify it with a finite pattern
+but it, it could be infinite. And we make
+a regular expression up just from four
+simple operations. first one is called
+concatenation. so, that's we just take a
+bunch of letters and put them, one after
+the other and a regular expression made
+from concatenation matches exactly
+precisely the sequence of characters that
+are specified and it doesn't match
+anything else. So, that's a simple one by
+itself and that's what we use for
+substring search for example. then there's
+or. so that one, we give two different
+regular expressions and put a vertical bar
+between them. And that says we're
+specifying now a set of size two and we're
+happy to match either string in that set.
+there's no other string that we match. and
+then there's one called closure. And this
+is where an infinite comes in. so, when we
+put a star after a character, or a regular
+expression, as we'll see, that's
+specifying zero or more occurrences of
+that character. So, AA matches AB<i>A
+because that's zero occurrences of B in</i>
+between. Or A with eight Bs followed by an
+A matches, because that's got zero or more
+Bs in between two As. but if you don't
+have an A at the beginning and the end, or
+if you don't have all Bs inside, that
+doesn't match. And that's an infinite
+number of strings, zero on any number of
+occurrences of B. So, with just four
+characters were specifying an infinite set
+of strings. and then, the next operation
+to allow us to build regular expressions
+of arbitrary complexity is si mply
+parentheses. if you include regular
+expressions within a parentheses, then you
+can apply the star operator or
+concatenation to a, another regular
+expression. So, these are examples of
+regular expressions using parentheses. So,
+this says, A and then what's inside the
+parentheses, which is the regular
+expression that says either A or B and
+then followed by AAB. So, that matches
+precisely these two strings. either A
+followed by an A followed by AB or A
+followed by B followed by AAA and it
+doesn't match anything else. or if you put
+a more complicated regular expression
+inside parenthesis with a star, it still
+means zero or more occurrences. So, just A
+would be zero occurrences. and then, this
+is one, two, three, four occurrences of AB
+followed by A. And again, if it's not of
+that form, it doesn't match. this one
+doesn't have AB, and, and neither does
+this, it has one AB, but then the next one
+would have to be either AB or A. There's
+been a way to get one of these strings by
+including zero more occurrences of AB.
+these things here are, are precedence
+order when we're performing the
+operations. so the first thing is
+parenthesis, next thing is a star, next
+thing is concatenation and finally the or
+operation. In this table then completely
+specifies what we mean by regular
+expression. It's a sequence of characters.
+alphabet characters like A and B and
+metacharacters, like or and star and
+parenthesis that we use to describe a
+possibly infinite set of strings. Now in
+the real world it's often worthwhile and,
+and useful to add some additional
+operations for convenience. for example,
+the wild card operation needs to have a
+dot and another metacharacter that matches
+any letter at all. and that's shorthand
+for listing all the letters separated by
+or and then but that's a lot of characters
+and so, with one character, we can match
+the same regular expression. and so this
+one you can use like to solve a crossword
+puzzle, for example. this one matches all
+the words that will have alternating U
+with all the seven letter words that have
+alternating Us. and so there's a couple.
+but there's some other ones tha sort of
+have alternating use, but not quite. And
+they don't match, so it's a wild card
+character. and then, there's classes of
+character, so capital A-Z means any
+capital letter. and then a-z means any
+lower case letter. so any capitalized
+letter, any lower case letter followed by
+any number of lower case letters will
+match something like this but it won't
+match something like that, just classes of
+characters. And again, this is shorthand
+for typing all the characters and using or
+at least one. So, rather than star, which
+says, zero or more occurrences, plus means
+one or more occurrences. so that's another
+example of a convenient shorthand or
+exactly K putting in braces that I want to
+specify, this specifies I want exactly
+five digits, followed by a dash, followed
+by exactly four digits. So, that's a way
+to specify, you know, something like a
+legal plus for zip code. and it doesn't
+match other things. now in, in practice,
+in, in, in terms of practical clients
+these types of shorthands are extremely
+important in terms of the theory and the
+idea of processing regular expressions
+since we can specify them all with the
+basic operations we'll pretty much ignore
+them in our code. so, in every, in every
+case we could write [A-E] + if we wanted
+we could write this longhand of it, but of
+course users are going to write the
+shorthand. but still, if we have a
+mechanism for dealing with this, then we
+can certainly take care of the shorthand.
+so, just with those basic operations and,
+and also the shorthand is helpful and our
+notation is amazingly expressive. There's
+really a lot you can do with it. so, for
+example, you can do substring search with
+a regular expression. one way to express
+the substring search problem is to put
+your string preceded by dot star and put a
+dot star at the end, you know, and that's
+asking if your string is in the infinite
+language described by this regular
+expression, is equivalent to the substring
+search problem. It matches if and only, if
+that string is in there so, for example,
+in these two and not in that two so
+notation covers the substring search
+problem. But then also, it can specify
+easily useful sets of strings that, that,
+you know, that we often want to check. So
+this is similar to the zip plus four, the
+three digits followed by a dash followed
+by two digits, followed by a dash,
+followed by four digits. that's a good
+start towards knowing whether the string
+is a legal Social Security Number or not.
+Or is it a legal e-mail address or not.
+this is a simplified version but it
+basically says, you ought to have at least
+one letter followed by an @, followed by
+some letters, followed by a dot, followed
+by edu or com or of course to cover all
+e-mail addresses, you need to consider
+some more possibilities. but this is a, a
+quick and succinct way to specify a set of
+string or Java identifier, what's a legal
+Java identifier. so, this is one way to
+specify legal Java identifier. And indeed,
+programming languages like Java use
+regular expressions like this to define
+what they mean by a legal identifier, and
+then, the kinds of processes that we're
+going to talk about to actually check that
+what you typed is legal and echoes all the
+way up to the program itself. the, you
+know, is, is this a legal Java program?
+It's almost but not quite, as we'll see in
+regular expression pattern matching
+problem. Very, very expressive in a
+widely-used language. Now, what's, what's
+really interesting about this topic and
+we'll just I, I touch on it, even though
+it's extremely important to what we're
+going to do is that just from the
+standpoint of the theory of computation
+starting with the, the time of Turing and
+others in the 30s', our regular
+expressions play an important role in our
+understanding of the theory of computation
+and that understanding actually has led to
+that algorithm that we're going to talk
+about. That's a very interesting aspect of
+this. but still, even given that you know,
+regular expressions are just useful in
+everyday life. this is an example of
+someone that used the regular expression
+to screen a job candidate. and, and this
+is actually illegal to look for words like
+Enron, or Kerry, or Bush or Gore or
+Republican. to decide whether a, a, a job
+candidate's job application will get
+through. This one uses an exclamation
+point, which mean just end with anything.
+it's like dot star. so someone, a typical
+computer user can learn to regular
+expressions to with great effect. even
+Google supports, a regular Google search
+window supports a star as a full word wild
+card and or for union. Although not full
+regular expression pattern matching.
+although that day is surely coming. so
+people who just get into it just a little
+bit and start to see the utility of
+regular expressions certainly get excited
+about it. And you can find examples of
+this all through the web. this is an X,
+XKCD comic about it where there's a
+problem, you know, how can we search
+through 200 megabytes of emails looking
+for something formated like an address.
+And lawyers want to do this all the time
+nowadays, and it's hopeless. But now, I
+know regular expressions. and the regular
+expression super being swoops to the
+rescue and types a regular expression in
+Perl, which is a, a widely-used language
+that's based on regular expressions that
+we'll talk about briefly in a minute and
+swoops away. So, there is somewhat of a
+feeling what people don't know just a
+little bit that regular expressions can be
+used to solve any problem. that's not
+quite true as we know from the theory of
+computation and we'll also touch on that a
+little bit. so the, the question is, can
+the average programmer learn to use
+regular expressions effectively? And
+there's all kinds of evidence out there
+that lots of programmers use, use in
+extensively. But not to pour cold water on
+it but we have to take everything with
+some restraint. And here's an example of a
+regular expression that you can find out
+on the web. it's written in Perl, but it's
+a regular expression to check whether an
+-email address is va lid or not. now, that
+is quite a regular expression. and one
+might argue whether that's really an
+effective way to use regular expressions.
+Maybe there's a simpler and easier way to
+check for valid e-mail, e-mail addresses.
+but anyway, this one is out there and is
+used probably being used efficiently
+somewhere to the end, effectively
+somewhere today. but, but really for
+people who are educated in, in Computer
+Science, need to know that regular
+expressions are definitely powerful tools,
+but writing in regular expression really
+is like writing a program. you have, you
+have to understand the underlying
+programming model. It's so often even more
+so than many programming languages since
+there's so few rules, it's easier to write
+a regular expression than it is to read
+one. And if it's difficult to read, it
+means it's difficult to debug. and so, you
+can find a lot of flaming on the web about
+this. and this is a particular apt,
+particularly apt quote. Some people, when
+confronted with a problem I think I know,
+I'll use regular expressions. Now, they
+have two problems. And I think that's a
+good way to summarize the bottom line.
+That regular expressions are amazingly
+powerful and expressive. But you can, they
+can get very complex in real in real
+applications. still, there's plenty of
+real applications where they can be
+succinct and effective. And so, we're
+going to look next at regular expression
+pattern matching algorithms.

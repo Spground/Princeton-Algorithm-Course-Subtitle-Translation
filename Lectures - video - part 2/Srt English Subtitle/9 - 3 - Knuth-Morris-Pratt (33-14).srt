@@ -1,0 +1,1863 @@
+1
+00:00:04,120 --> 00:00:08,540
+So, the algorithm that we're going to look
+at for solving the substring search
+
+2
+00:00:08,540 --> 00:00:11,545
+problem is called the Knuth-Morris-Pratt
+algorithm.
+
+3
+00:00:11,545 --> 00:00:15,317
+It's got an interesting history that we'll
+get to at the end.
+
+4
+00:00:15,494 --> 00:00:20,444
+But I just want to start by saying that.
+This is one of the coolest algorithms that
+
+5
+00:00:20,444 --> 00:00:24,629
+we'll cover in this course.
+And it's not an algorithm that anyone
+
+6
+00:00:24,629 --> 00:00:27,281
+would come up with without a lot of lotta
+hard work.
+
+7
+00:00:27,457 --> 00:00:32,290
+But understanding this algorithm really
+gives somebody an appreciation for what's
+
+8
+00:00:32,290 --> 00:00:37,300
+possible with careful algorithmic thinking
+even for such a simple problem as this.
+
+9
+00:00:37,560 --> 00:00:42,821
+It's a quite ingenious method.
+So, here's the intuition behind the
+
+10
+00:00:42,821 --> 00:00:46,610
+algorithm.
+So, say, we're looking for the pattern.
+
+11
+00:00:46,837 --> 00:00:53,350
+B followed by a bunch of a's in the text.
+So we're going along and so ahm well,
+
+12
+00:00:53,350 --> 00:00:58,879
+we're trying to mismatch right away so
+we'll move over to first position.
+
+13
+00:00:59,106 --> 00:01:05,847
+And we'll go BAAAA, and then we find a
+mismatch at the end in this case.
+
+14
+00:01:05,847 --> 00:01:11,527
+So now, what the, brute force method is
+going to do is back up to move over one
+
+15
+00:01:11,527 --> 00:01:17,738
+position if b doesn't match the a, back up
+again if b doesn't match the a, and keep
+
+16
+00:01:17,738 --> 00:01:26,140
+going matching the first b against all
+these a's before getting to the next
+
+17
+00:01:26,140 --> 00:01:31,365
+character in the text.
+So, we've matched five characters and we
+
+18
+00:01:31,365 --> 00:01:36,424
+mismatched on the sixth.
+But the key point is that when we got that
+
+19
+00:01:36,424 --> 00:01:43,183
+mismatch all we have is A's and B's.
+We already matched BAAAA, four A's and we
+
+20
+00:01:43,183 --> 00:01:46,822
+got a mismatch so it's AB..
+So, at that point we know what the
+
+21
+00:01:46,822 --> 00:01:51,714
+previous characters in the text are, and
+we know that if we move over one position,
+
+22
+00:01:51,714 --> 00:01:54,279
+we're going to be trying to match B
+against A.
+
+23
+00:01:54,279 --> 00:01:59,290
+So we should be able to take advantage of
+that knowledge, that's the intuition on
+
+24
+00:01:59,290 --> 00:02:04,480
+the method of the Knuth-Morris-Pratt.
+We don't need to back up the text pointer
+
+25
+00:02:04,480 --> 00:02:07,762
+in this case.
+When we get the mismatch, we can just keep
+
+26
+00:02:07,762 --> 00:02:13,694
+going.
+We don't even have to match the first b we
+
+27
+00:02:13,694 --> 00:02:18,414
+know it's there So,
+We can just keep going in the text pointer
+
+28
+00:02:18,414 --> 00:02:24,873
+and start in the second pattern pointer.
+The Knuth-Morris-Pratt algorithm is a very
+
+29
+00:02:24,873 --> 00:02:30,439
+clever method that manages to always avoid
+backup no matter what the pattern is.
+
+30
+00:02:30,645 --> 00:02:36,485
+So, let's take a look at what's involved.
+It's based on the idea of building a
+
+31
+00:02:36,485 --> 00:02:40,540
+deterministic finite state machine for
+string searching.
+
+32
+00:02:40,540 --> 00:02:46,100
+Now, the deterministic finite state
+machine, if you're not familiar or don't
+
+33
+00:02:46,100 --> 00:02:50,829
+remember, it's a very simple thing.
+You've got a finite number of states.
+
+34
+00:02:51,021 --> 00:02:56,006
+It's always in one of the states.
+There's a start state and a, and a halt
+
+35
+00:02:56,006 --> 00:03:00,734
+state.
+And from every state, there's exactly one
+
+36
+00:03:00,734 --> 00:03:06,164
+transition for each possible character in
+the alphabet.
+
+37
+00:03:06,460 --> 00:03:14,843
+So we're, if we're in a state and we're
+reading a particular character we move to
+
+38
+00:03:14,843 --> 00:03:18,200
+the state that is indicated by that
+character.
+
+39
+00:03:18,200 --> 00:03:23,381
+So, if we're in state two and we're
+reading an A, we move to state three,
+
+40
+00:03:23,381 --> 00:03:29,291
+that's what this line in the table says.
+If we're in state two and we read A, that
+
+41
+00:03:29,291 --> 00:03:35,202
+happens to be the pattern character is a,
+and if we see and A, we move to state
+
+42
+00:03:35,202 --> 00:03:38,705
+three.
+If we see AB or AC,c we go back to state
+
+43
+00:03:38,705 --> 00:03:41,813
+zero.
+That's what this machine says. It says,
+
+44
+00:03:41,813 --> 00:03:46,144
+the tabular representation and the
+graphical representation.
+
+45
+00:03:46,144 --> 00:03:51,270
+If we get to stage six then we just say,
+except we found the pattern and you could
+
+46
+00:03:51,270 --> 00:03:56,973
+see how that is, the pattern and then if
+we match the pattern character, we move
+
+47
+00:03:56,973 --> 00:04:01,160
+right through this machine till we get to
+the halt state.
+
+48
+00:04:01,376 --> 00:04:07,007
+So, let's first take a look at exactly how
+the machine works to make sure that
+
+49
+00:04:07,007 --> 00:04:11,772
+everybody follows that.
+And then we'll look at how to rebuild this
+
+50
+00:04:11,772 --> 00:04:16,220
+machine.
+So that's our machine and that's our text
+
+51
+00:04:16,220 --> 00:04:20,220
+up at the top.
+So, we start at state zero we're reading
+
+52
+00:04:20,220 --> 00:04:23,157
+in a.
+What are we supposed to do if we're in
+
+53
+00:04:23,157 --> 00:04:27,830
+state zero and we're reading an A?
+This enter the table and says, we're
+
+54
+00:04:27,830 --> 00:04:33,340
+supposed to go to state one.
+So, we go to state one.
+
+55
+00:04:34,565 --> 00:04:38,170
+Every, at every step, we consume a text
+character.
+
+56
+00:04:43,053 --> 00:04:46,357
+A.
+And in the graphical representation, it
+
+57
+00:04:46,357 --> 00:04:50,939
+says, stay in state one.
+Or in this representation, it says, if
+
+58
+00:04:50,939 --> 00:04:55,070
+you're in state one and you see an a, stay
+in state one.
+
+59
+00:04:55,070 --> 00:05:00,253
+So that's what we'll do.
+We'll read the a and stay in state one.
+
+60
+00:05:00,253 --> 00:05:06,271
+Now, we're in state one and so you can say
+that in, in state one is reading a's and
+
+61
+00:05:06,271 --> 00:05:09,222
+in a way, looking for something that's not
+A,
+
+62
+00:05:09,222 --> 00:05:14,052
+No matter how many a's you have, you'll
+read them right here in state one.
+
+63
+00:05:14,254 --> 00:05:19,151
+So now, we're in state one and we're
+reading a B and it says, go to state two
+
+64
+00:05:19,151 --> 00:05:22,438
+in that case.
+So, that's where we'll go, read the B.
+
+65
+00:05:22,438 --> 00:05:27,737
+Now, we're in state two and reading an A,
+So we go to state three and read the A.
+
+66
+00:05:27,737 --> 00:05:33,815
+Now, we're in state three and see a C.
+In state three, when we see a C we're
+
+67
+00:05:33,815 --> 00:05:40,428
+supposed to go back to state zero.
+That's a mismatch our pattern sees not
+
+68
+00:05:40,428 --> 00:05:44,157
+until the end.
+So now, we have to start the search all
+
+69
+00:05:44,157 --> 00:05:47,546
+over again.
+Although in the final state machine does
+
+70
+00:05:47,546 --> 00:05:52,437
+not know that, it's just plotting along
+according to the state transitions they're
+
+71
+00:05:52,437 --> 00:05:55,455
+supposed to do.
+So, we read the C, C, now we're back in
+
+72
+00:05:55,455 --> 00:05:58,772
+state zero.
+So now, we're in state zero looking at an
+
+73
+00:05:58,772 --> 00:06:01,101
+a.
+And we move to one, and read the A.
+
+74
+00:06:01,101 --> 00:06:05,305
+And then we see another A so we stay in
+one and read the A.
+
+75
+00:06:05,305 --> 00:06:10,157
+And now we see a B, and we go to state
+two, and read the B. And then we go to
+
+76
+00:06:10,157 --> 00:06:13,650
+state three and read the A, state three
+and read the A.
+
+77
+00:06:13,650 --> 00:06:17,014
+State four and read the A.
+State five and read the C.
+
+78
+00:06:17,014 --> 00:06:21,090
+And now, we're in state six.
+And that means we found the pattern.
+
+79
+00:06:21,334 --> 00:06:27,528
+So, that's the simulation of what the
+deterministic finite state be. that is
+
+80
+00:06:27,528 --> 00:06:34,301
+corresponding to this pattern would do.
+And as we'll see the code for implementing
+
+81
+00:06:34,301 --> 00:06:40,744
+this simulation is quite simple.
+That's a demo of DFA simulation.
+
+82
+00:06:40,744 --> 00:06:47,676
+So let's just take a quick look at what
+the interpretation of what this DFA is.
+
+83
+00:06:47,676 --> 00:06:55,906
+So, what is it, what does it mean after we
+just read the ith character of the text?
+
+84
+00:06:56,134 --> 00:07:02,686
+Well the number of the state is the number
+of characters in the pattern that we've
+
+85
+00:07:02,686 --> 00:07:06,420
+matched up to the current point.
+So, that is it.
+
+86
+00:07:06,420 --> 00:07:11,147
+At state three, we've matched three
+characters in the pattern.
+
+87
+00:07:11,147 --> 00:07:17,425
+And what's happened is, that we've matched
+a prefix of a pattern, the first three
+
+88
+00:07:17,425 --> 00:07:22,152
+characters of the pattern.
+It's, and actually, it's the longest
+
+89
+00:07:22,152 --> 00:07:28,817
+prefix of the pattern that's also a suffix
+of the i, first i plus one characters from
+
+90
+00:07:28,817 --> 00:07:31,065
+the text,
+Text from zero to i.
+
+91
+00:07:31,065 --> 00:07:37,594
+That's the interpretation of what it is.
+So and if the DFA is in state three after
+
+92
+00:07:37,828 --> 00:07:44,539
+the first six characters of the text it's
+got ABA is the longest prefix of a
+
+93
+00:07:44,539 --> 00:07:47,816
+pattern.
+That's also a suffix of first six
+
+94
+00:07:47,816 --> 00:07:52,809
+characters of the text.
+So, another prefix of the pattern that
+
+95
+00:07:52,809 --> 00:07:59,675
+looks like it might work is ABABA but
+that's not a suffix of the text string
+
+96
+00:07:59,675 --> 00:08:04,669
+ending at character six.
+And third, interpretation is useful to
+
+97
+00:08:04,903 --> 00:08:11,981
+understanding what's going on.
+So given that we've constructed this DFA.
+
+98
+00:08:12,263 --> 00:08:20,893
+It's just the state transition table for
+the DFA is simply a two-dimensional array.
+
+99
+00:08:21,174 --> 00:08:29,335
+That's indexed by the pattern character.
+So, if, if you in a, a certain, if you're
+
+100
+00:08:29,335 --> 00:08:37,590
+reading a certain pattern character sorry,
+if you're reading a certain text character
+
+101
+00:08:37,872 --> 00:03:45,841
+then for each we reset the pattern pointer
+to be the entry given in the table that
+
+102
+00:08:47,447 --> 00:08:54,307
+corresponds to the current one.
+So let's go back to the table to be sure
+
+103
+00:08:54,307 --> 00:03:51,059
+about that.
+So when we're in a particular state like
+
+104
+00:08:59,622 --> 00:09:06,000
+two and we see an a we read, so this would
+be j we refer to that column.
+
+105
+00:09:06,228 --> 00:09:11,643
+And whatever text character we happen to
+see, that's how we update j.
+
+106
+00:09:11,872 --> 00:09:17,210
+So that's what this code does.
+And then, if we ever to get to the
+
+107
+00:09:17,210 --> 00:09:22,853
+transition state, the final state, we just
+return i minus m. Now, this is just like
+
+108
+00:09:22,853 --> 00:09:28,344
+that alternate implementation of the brute
+force method that we gave.
+
+109
+00:09:28,573 --> 00:09:33,950
+But the key idea is that,
+Notice that i never gets decremented.
+
+110
+00:09:33,950 --> 00:09:38,700
+All we're doing is incrementing i and
+changing j.
+
+111
+00:09:38,700 --> 00:09:45,777
+Either always just referring to the table.
+When we have a match, the table
+
+112
+00:09:45,777 --> 00:09:51,830
+automatically increments j.
+We have a mismatch, it figures out the
+
+113
+00:09:51,830 --> 00:09:57,417
+right state to go to.
+So, that's a very simple and economical
+
+114
+00:09:57,417 --> 00:10:01,608
+and fast implementation of substring
+search.
+
+115
+00:10:01,887 --> 00:10:09,058
+So the running time is clearly, all it
+does it look up an entry in the table for
+
+116
+00:10:09,058 --> 00:10:12,690
+every text character.
+So, that's linear time.
+
+117
+00:10:12,900 --> 00:10:16,680
+The key is, is.
+How do we build that table that drives the
+
+118
+00:10:16,680 --> 00:10:19,760
+algorithm?
+And that's the tricky algorithm.
+
+119
+00:10:19,760 --> 00:10:24,100
+So a warning.
+This is definitely the trickiest algorithm
+
+120
+00:10:24,100 --> 00:10:28,657
+we've looked at so far.
+And the idea, the importance, again, of no
+
+121
+00:10:28,657 --> 00:10:34,332
+backup is that since the text pointer
+never decrements, you could use the input
+
+122
+00:10:34,332 --> 00:10:40,595
+stream and just replace text [UNKNOWN]
+just read the next character in the next
+
+123
+00:10:40,595 --> 00:10:44,575
+input stream.
+And this algorithm is going to work fine,
+
+124
+00:10:44,575 --> 00:10:49,660
+no matter how big the input stream is.
+It will just go right, right through.
+
+125
+00:10:49,660 --> 00:10:55,113
+Its not no memory of what the text is.
+But its got some memory of what the
+
+126
+00:10:55,113 --> 00:11:00,871
+pattern is that's built into the DFA.
+So, this is the key that, you have a
+
+127
+00:11:00,871 --> 00:11:05,202
+pattern,
+You can spend some time building this DFA
+
+128
+00:11:05,202 --> 00:11:11,179
+table and doing pre-processing.
+But then, when you get the text, just,
+
+129
+00:11:11,179 --> 00:11:18,109
+just index into this table for every text
+character and you're doing this substring
+
+130
+00:11:18,109 --> 00:11:21,660
+search.
+So, you can build a machine that does
+
+131
+00:11:21,660 --> 00:11:22,960
+this.
+No backup.
+
+132
+00:11:23,197 --> 00:11:27,316
+Okay.
+So let's take a look at what it means to
+
+133
+00:11:27,316 --> 00:11:32,226
+construct this DFA.
+So it depends on the pattern instead of
+
+134
+00:11:32,226 --> 00:11:39,038
+with one character one state for each
+character in the pattern plus an extra at
+
+135
+00:11:39,038 --> 00:11:43,077
+substate.
+And let's look at what it means to build
+
+136
+00:11:43,077 --> 00:11:47,354
+the same.
+So first thing now we do to one character
+
+137
+00:11:47,592 --> 00:11:51,077
+one stage for each character in the
+pattern.
+
+138
+00:11:51,314 --> 00:11:56,836
+So the first thing we do is deal with the
+match transitions.
+
+139
+00:11:56,836 --> 00:12:00,628
+So, that's when the you've, you're in
+state j,
+
+140
+00:12:00,628 --> 00:12:05,469
+That means you've already matched j
+characters in a pattern.
+
+141
+00:12:05,711 --> 00:12:13,004
+Then if, if the next character matches.
+So that the character that you have is
+
+142
+00:12:13,253 --> 00:12:17,735
+the, the character that's supposed to
+match.
+
+143
+00:12:17,984 --> 00:12:23,794
+You're going to so it's, add that
+character j, that's just a j plus first
+
+144
+00:12:23,794 --> 00:12:27,944
+character,
+Then you know that you've matched j plus
+
+145
+00:12:27,944 --> 00:12:32,675
+one characters.
+So, all that means is we can put in the
+
+146
+00:12:32,675 --> 00:12:37,486
+match transitions.
+So, we have ABABAC, and these guys go
+
+147
+00:12:37,486 --> 00:12:44,119
+ABABAC if you're in state zero and you see
+an A you go to state one, if you're state
+
+148
+00:12:44,119 --> 00:12:48,047
+one and you see a B, you go to state two
+and so forth.
+
+149
+00:12:48,658 --> 00:12:55,466
+That's how we get the match transitions to
+get us all the way through the pattern to
+
+150
+00:12:55,466 --> 00:12:59,508
+the accept state.
+So that's the, the easy part.
+
+151
+00:12:59,756 --> 00:13:04,460
+And then the hard part is the mismatch
+transitions.
+
+152
+00:13:04,460 --> 00:13:11,228
+What are you supposed to do if you come
+against a text character that does not
+
+153
+00:13:11,228 --> 00:13:17,666
+match the current text character?
+So, for example, if you're in state zero,
+
+154
+00:13:17,666 --> 00:13:22,923
+the pattern starts with an A.
+If you didn't see if you don't see an A as
+
+155
+00:13:22,923 --> 00:13:27,340
+the first character in the text,
+If you see a B or a C, then obviously you
+
+156
+00:13:27,340 --> 00:13:31,240
+want to stay in state zero.
+So, you can think of state zero as,
+
+157
+00:13:31,240 --> 00:13:33,988
+scanning through the text looking for an
+A.
+
+158
+00:13:33,988 --> 00:13:38,974
+It's going to stay in, in state zero as
+long as it sees a B or C as soon as it
+
+159
+00:13:38,974 --> 00:13:43,577
+sees an A, it'll go to state one.
+That completes state zero, you know what
+
+160
+00:13:43,577 --> 00:13:47,860
+to do if you have a, an A, you know what
+to do if you have a B or a C.
+
+161
+00:13:47,860 --> 00:13:54,327
+What about state one?
+So, we know that if you're in state one,
+
+162
+00:13:54,327 --> 00:14:02,643
+you saw an A in the text, and you see a B
+in the text, what are you supposed to do?
+
+163
+00:14:03,156 --> 00:14:06,750
+Well there's two different cases.
+If you,
+
+164
+00:14:06,750 --> 00:14:14,020
+If you see a B going to state two if you
+see a C and that's not going to match the
+
+165
+00:14:14,020 --> 00:14:18,867
+first character A in the pattern.
+So, you go back to state zero.
+
+166
+00:14:19,101 --> 00:14:24,026
+But if you see an A, it's just as if you
+saw an A, a in state zero,
+
+167
+00:14:24,026 --> 00:14:30,409
+So, you might as well stay in state one.
+So, that's how we fill in the DFA for
+
+168
+00:14:30,409 --> 00:14:33,441
+state one,
+If you see a B going state two, you
+
+169
+00:14:33,441 --> 00:14:36,743
+matched.
+If you see an A, well that matches the
+
+170
+00:14:36,743 --> 00:14:39,236
+first character.
+So, stay in state one.
+
+171
+00:14:39,439 --> 00:14:43,280
+If you see a C, clearly you have to go
+back to state zero.
+
+172
+00:14:43,494 --> 00:14:48,931
+Okay, what about the next one?
+So if we're in state two and we see an A
+
+173
+00:14:49,146 --> 00:14:54,153
+we know that we go on to state three.
+And what about the mismatch pages?
+
+174
+00:14:54,153 --> 00:14:59,912
+Well, in that case, it's a B or C and
+again if you're sitting out a B or a c, C
+
+175
+00:15:00,091 --> 00:15:04,670
+you'd better go back to state zero to keep
+looking for an a.
+
+176
+00:15:04,906 --> 00:15:10,510
+This is state three, and well, now it gets
+to be a little more complicated.
+
+177
+00:15:10,723 --> 00:15:15,702
+C, you state three, see a B, you
+succeeded, if you see a C, you go back to
+
+178
+00:15:15,702 --> 00:15:19,472
+state zero.
+It's not so bad if you see an A, it's just
+
+179
+00:15:19,472 --> 00:15:23,028
+like before.
+That's going to be like the first one.
+
+180
+00:15:23,242 --> 00:15:26,158
+So seems like we're going along pretty
+fine.
+
+181
+00:15:26,443 --> 00:15:30,284
+And again if we're in state four, we seen
+A, you go to five.
+
+182
+00:15:30,284 --> 00:15:35,263
+If you see a B or a C, then you better go
+back and look for an A again.
+
+183
+00:15:35,618 --> 00:15:39,033
+This one, is the one that's a little more
+complicated.
+
+184
+00:15:39,246 --> 00:15:43,727
+If you're in state five and you see a B
+you, you go back to state four.
+
+185
+00:15:43,727 --> 00:15:48,662
+And that's it's a little more work to
+figure out why that's the case.
+
+186
+00:15:48,662 --> 00:15:52,691
+And then that last case is kind of the
+essence of the algorithm.
+
+187
+00:15:52,691 --> 00:15:57,960
+So we'll look at a systematic way to be
+able to figure out what you do on a
+
+188
+00:15:57,960 --> 00:16:02,491
+mismatch in each case.
+In this case, you only needed that, that
+
+189
+00:16:02,491 --> 00:16:06,537
+for that one state.
+Otherwise, it was elementary reasoning.
+
+190
+00:16:06,750 --> 00:16:12,429
+So that's a full DFA for KnuthMorrisPratt.
+A demo of at least thinking about how it's
+
+191
+00:16:12,429 --> 00:16:15,995
+going to be constructed.
+Okay, let's look a little more carefully
+
+192
+00:16:15,995 --> 00:16:20,790
+and systematically at the construction
+process for the KnuthMorrisPratt DFA.
+
+193
+00:16:21,102 --> 00:16:27,556
+So the, the start is clear.
+We're going to go through the pattern.
+
+194
+00:16:27,556 --> 00:16:31,999
+And for systematically fill in the match
+transitions.
+
+195
+00:16:32,250 --> 00:16:37,531
+If we're in state zero and we see an A, we
+want to go state one.
+
+196
+00:16:37,531 --> 00:16:43,315
+If we're in state one and we see a B,
+we're going to, we want to go to state
+
+197
+00:16:43,315 --> 00:16:46,668
+two.
+State two, so we look up the pattern
+
+198
+00:16:46,668 --> 00:16:52,284
+character and then, whatever that one is,
+we want to go to the next state.
+
+199
+00:16:52,284 --> 00:16:56,560
+So, we can fill in at least that much
+automatically.
+
+200
+00:16:56,932 --> 00:17:02,400
+Now the real key is the mismatch
+transition.
+
+201
+00:17:02,400 --> 00:17:06,984
+So, here is the idea of the mismatched
+transition.
+
+202
+00:17:07,249 --> 00:17:14,655
+So if you're in stage J and you get a
+mismatch, the next character in the text
+
+203
+00:17:14,655 --> 00:17:19,240
+does not match the jth character in the
+pattern.
+
+204
+00:17:19,463 --> 00:17:24,759
+So as pointed out at the beginning as
+motivation for KnuthMorrisPratt,
+
+205
+00:17:24,759 --> 00:17:28,040
+You know a lot about the text at that
+point.
+
+206
+00:17:28,040 --> 00:17:33,858
+And you know that the last j, j minus one
+characters of the text are if you lop off
+
+207
+00:17:33,858 --> 00:17:39,228
+the first character of the pattern, it's
+from one to j minus one. So, in this case
+
+208
+00:17:39,675 --> 00:17:45,120
+and then, it's followed by the text
+character that, that you're looking at.
+
+209
+00:17:45,120 --> 00:17:52,600
+So one thing that you could do, so what
+you want to do, so you know that.
+
+210
+00:17:52,865 --> 00:18:00,647
+And what you could do is simulate the DFA
+that you have built on that part of the
+
+211
+00:18:00,647 --> 00:18:07,457
+pattern and then take the transition for
+the character that you just find.
+
+212
+00:18:07,457 --> 00:18:13,912
+So, let's, let's look at this.
+So let's run this machine, if we'd seen it
+
+213
+00:18:13,912 --> 00:18:17,450
+on the text of, of BABA,.
+What we want to do,
+
+214
+00:18:17,450 --> 00:18:25,236
+We want to put the machine in the state as
+if we have backed up, but we don't want to
+
+215
+00:18:25,236 --> 00:18:31,340
+backup. So, if we see a B, we stay in
+zero, if we see an we, we go to one.
+
+216
+00:18:31,340 --> 00:18:37,180
+Then we see a B we go two.
+And if we see an A, we go to three.
+
+217
+00:18:37,618 --> 00:18:50,089
+So now we're in state three in if we had a
+mismatch then the, for the fifth
+
+218
+00:18:50,089 --> 00:18:56,906
+character, what we do on a, on a mismatch
+here we have to look what happens if we
+
+219
+00:18:56,906 --> 00:19:02,326
+get an A or we get a B.
+If we'd run it on BABA and we get an A,
+
+220
+00:19:02,326 --> 00:19:07,281
+then we should go back to one.
+So, what that says is, if we had a
+
+221
+00:19:07,281 --> 00:19:12,717
+mismatch and we saw an A in five we would
+need to be in state one.
+
+222
+00:19:12,717 --> 00:19:18,984
+Because if we had, had run the thing on
+the characters that we know, BABAA, we
+
+223
+00:19:18,984 --> 00:19:27,285
+would wind up in state one.
+And similarly if we were if we got the
+
+224
+00:19:27,285 --> 00:19:31,729
+mismatch on a B,
+A if we did BABA,, we would be in state
+
+225
+00:19:31,729 --> 00:19:35,330
+three.
+And, we're in state three and we saw B
+
+226
+00:19:35,559 --> 00:19:39,926
+we'd go to four.
+So again to summarize, if four instate
+
+227
+00:19:39,926 --> 00:19:44,425
+five and we see a C, we know that's a
+match, we go to six.
+
+228
+00:19:44,425 --> 00:19:50,559
+If we see an A, we know that the previous
+five characters in the text were BABAA.
+
+229
+00:19:51,204 --> 00:19:56,450
+So, we can just simulate the machine.
+Babaa, we're in state one.
+
+230
+00:19:56,450 --> 00:20:01,372
+And ifwe get a mismatch that's a B, then
+that's DFAB five,
+
+231
+00:20:01,372 --> 00:20:07,667
+Then we know that the previous five
+characters in the text were BABAB. And
+
+232
+00:20:07,667 --> 00:20:14,016
+that would put us in state four.
+So that's the simulation of BABA puts us
+
+233
+00:20:14,016 --> 00:20:17,390
+in state three.
+If we get an A, we go to one.
+
+234
+00:20:17,625 --> 00:20:21,313
+So that means that from five, we go back
+to one.
+
+235
+00:20:21,313 --> 00:20:26,883
+And if we get a B, we go to four.
+So, that's how, one way to calculate the
+
+236
+00:20:26,883 --> 00:20:32,219
+mismatched transitions.
+And as we've noted in the simulation, this
+
+237
+00:20:32,219 --> 00:20:35,750
+is the only non-trivial one for this
+example.
+
+238
+00:20:35,985 --> 00:20:42,362
+Now, there's a little problem with that,
+Is that it seems to require j steps to do
+
+239
+00:20:42,362 --> 00:20:46,963
+the simulation.
+In order to figure out these mismatched
+
+240
+00:20:46,963 --> 00:20:53,863
+transitions, I had to all the way through
+the pattern shifted over one to figure out
+
+241
+00:20:53,863 --> 00:20:58,464
+this state three.
+So that seems to be a bit of a problem,
+
+242
+00:20:58,464 --> 00:21:04,625
+but actually it's no problem at all,
+because we can run this simulation one
+
+243
+00:21:04,625 --> 00:21:08,733
+character at a time as we're building the
+machine.
+
+244
+00:21:09,061 --> 00:21:16,619
+All we need to do is keep track of the
+that we would be at if we had run the DFA
+
+245
+00:21:16,619 --> 00:21:24,904
+on the pattern starting at position one.
+Once, once we get going it's pretty easy
+
+246
+00:21:25,183 --> 00:21:31,378
+but just let's start well, let's just
+illustrate it by saying, okay,
+
+247
+00:21:31,378 --> 00:21:35,829
+We maintain this state x,
+Which is where we would be if we if we had
+
+248
+00:21:35,829 --> 00:21:39,350
+run the machine and the pattern had
+shifted over one.
+
+249
+00:21:39,616 --> 00:21:45,595
+Now when we come to do our mismatches to
+figure out where the mismatch transitions
+
+250
+00:21:45,595 --> 00:21:51,308
+from five are all we do is look at if we
+get, if we were to get an A, would be as
+
+251
+00:21:51,308 --> 00:21:56,888
+if we were to state X and got an A.
+So that's one and if we were to get a B
+
+252
+00:21:56,888 --> 00:22:01,340
+it's as if we were at state X and got a B.
+And that's state four.
+
+253
+00:22:01,340 --> 00:22:07,850
+So, what we need to do is to compute the
+mismatch transitions is keep track of
+
+254
+00:22:07,850 --> 00:22:12,859
+state x.
+And that is where would the thing be if we
+
+255
+00:22:12,859 --> 00:22:19,203
+had run it starting with the, at the
+pattern one position shifted over.
+
+256
+00:22:19,203 --> 00:22:24,238
+And we want to update that.
+So, when we're moving to the next state,
+
+257
+00:22:24,238 --> 00:22:30,588
+if we had a match on C, state x gets
+updated to where it would have gone if it
+
+258
+00:22:30,588 --> 00:22:34,368
+got a C.
+Because for the next character, when we
+
+259
+00:22:34,368 --> 00:22:39,206
+move j over for the match on C we'll want
+to have x updated.
+
+260
+00:22:39,433 --> 00:22:46,312
+So, that's the key is keeping track of the
+state where the machine would be if we had
+
+261
+00:22:46,312 --> 00:22:51,000
+backed up or if we had run it on the
+pattern shifted over one.
+
+262
+00:22:51,000 --> 00:22:58,920
+So let's take a look at a demo that does
+the full construction for the KMP DFA.
+
+263
+00:22:59,286 --> 00:23:05,522
+So here, here goes.
+Again, one state for every character plus
+
+264
+00:23:05,522 --> 00:23:09,686
+an accept.
+Match transitions are easy.
+
+265
+00:23:09,990 --> 00:23:16,084
+We build those.
+And we're going to start at position zero.
+
+266
+00:23:16,389 --> 00:23:24,796
+And the mismatched transitions are easy.
+So now, when we move over x is when we're
+
+267
+00:23:24,796 --> 00:23:30,021
+in position one of the pattern, x is where
+we would be if we started out without
+
+268
+00:23:30,021 --> 00:23:33,170
+that, that character,
+Which would be the empty string.
+
+269
+00:23:33,441 --> 00:23:37,600
+So we start out with just filling in
+zeros.
+
+270
+00:23:39,193 --> 00:23:45,518
+For state zero and we can do that without
+any further every reason and now we've got
+
+271
+00:23:45,518 --> 00:23:53,955
+x initialized. so now, what we need to do
+is fill in the mismatch transitions for
+
+272
+00:23:53,955 --> 00:23:56,800
+state one.
+So, what are they?
+
+273
+00:23:56,800 --> 00:24:02,300
+They're what would happen if we found
+those characters?
+
+274
+00:24:02,670 --> 00:24:07,395
+And, and we're in state x,
+If we found an A, we would go to state
+
+275
+00:24:07,395 --> 00:24:11,285
+one.
+If we found a C, we'd go to state zero.
+
+276
+00:24:11,656 --> 00:24:18,882
+And maybe you noticed, that's just taking
+the entries corresponding to the entries
+
+277
+00:24:18,882 --> 00:24:23,977
+we need from x's column and putting them
+in j's column.
+
+278
+00:24:23,977 --> 00:24:28,702
+That's all it is.
+And then, we need to update x, which is
+
+279
+00:24:28,702 --> 00:24:35,186
+where it would be if we matched a B.
+So, well stay and x will stay in state
+
+280
+00:24:35,186 --> 00:24:38,188
+zero.
+So now let's look at state two.
+
+281
+00:24:38,188 --> 00:24:44,759
+So we need to fill in what would happen if
+we got a B and what would happen if got a
+
+282
+00:24:44,759 --> 00:24:48,044
+C.
+Well, it's what would happen if we were in
+
+283
+00:24:48,044 --> 00:24:53,121
+state x and we got a B or a C,
+So what we'll do is move those two zeroes
+
+284
+00:24:53,121 --> 00:24:57,890
+over to column two.
+And then don't forget we have to update x
+
+285
+00:24:57,890 --> 00:25:03,845
+and x goes where the machine goes if we
+saw an A, that transitions from two to the
+
+286
+00:25:03,845 --> 00:25:06,600
+three.
+So, we just move x to state one.
+
+287
+00:25:06,821 --> 00:25:12,804
+So now, we have x in state one, and we're
+doing position three and now you can see
+
+288
+00:25:12,804 --> 00:25:16,792
+how really simple the algorithm is once it
+gets going.
+
+289
+00:25:17,014 --> 00:25:23,514
+So now the mismatched transitions are A
+and C, and that's what we have to fill for
+
+290
+00:25:23,514 --> 00:25:30,430
+column but those mismatched transitions
+were already computed that's where x would
+
+291
+00:25:30,430 --> 00:25:35,195
+go if we, that's where it would go if we
+happen to be in state one.
+
+292
+00:25:35,195 --> 00:25:39,683
+So, we move the one and zero from column
+one over to column three.
+
+293
+00:25:39,683 --> 00:25:46,050
+And again, we update x and when we see a B
+x goes to state two.
+
+294
+00:25:48,704 --> 00:25:54,389
+And, and again, you can check what, what
+is x suppose to be.
+
+295
+00:25:54,389 --> 00:26:00,140
+It's, it's suppose to be where you would
+be if you started the machine on the
+
+296
+00:26:00,140 --> 00:26:05,674
+pattern with the first letter cut off.
+So, it's, it's suppose to be where would
+
+297
+00:26:05,674 --> 00:26:09,268
+you wind up if you got BAB, BAB and that's
+a check.
+
+298
+00:26:09,268 --> 00:26:15,019
+Alright, so now it's straightforward,
+straightforward we have to fill in B and
+
+299
+00:26:15,019 --> 00:26:18,206
+C.
+We go to x's column and copy over B and C
+
+300
+00:26:18,206 --> 00:26:20,769
+from x's column.
+Then we update x.
+
+301
+00:26:20,985 --> 00:26:24,220
+That's if you see an A, you go to state
+three.
+
+302
+00:26:24,427 --> 00:26:29,954
+Now we're ready for state five.
+We've got x all computed and we need to do
+
+303
+00:26:30,162 --> 00:26:32,373
+A and B.
+And we get those from X.
+
+304
+00:26:32,373 --> 00:26:36,173
+If it's an A it's a one.
+And if it's a B it's a four.
+
+305
+00:26:36,173 --> 00:26:42,249
+It's just moved them over.
+And then when we do the C and get the
+
+306
+00:26:42,249 --> 00:26:49,077
+accept there's no mismatch.
+That's the we do update x to get ready.
+
+307
+00:26:49,350 --> 00:26:57,362
+But when we get to state six we're done.
+And again, it's just as a doublecheck, x
+
+308
+00:26:57,362 --> 00:18:02,224
+is where you'd be if you saw BABAC.bac
+That's the construction of the
+
+309
+00:18:02,224 --> 00:27:07,629
+Knuth-Morris-Pratt DFA efficient
+algorithm.
+
+310
+00:27:07,929 --> 00:27:14,220
+Really ingenious and as it turns out,
+simple to implement.
+
+311
+00:27:14,220 --> 00:27:21,755
+Implementation for the DFA construction
+for Knuth-Morris-Pratt requires remarkably
+
+312
+00:27:21,755 --> 00:27:27,976
+little code so it just goes through with
+what we did in the demo.
+
+313
+00:27:28,239 --> 00:27:35,861
+So we've got x and for every entry of the
+DFA and x's column that corresponds to
+
+314
+00:27:35,861 --> 00:27:41,820
+everyone except for the match we just copy
+x's column to j's column.
+
+315
+00:27:42,049 --> 00:27:47,790
+In fact, we just copy'em all, and then
+overwrite one corresponding to the match
+
+316
+00:27:47,790 --> 00:27:52,076
+case, to j plus one.
+So there. And the entry in the column that
+
+317
+00:27:52,076 --> 00:27:58,046
+corresponds to the pattern character,
+that's where do we go if we match, that's
+
+318
+00:27:58,046 --> 00:28:01,720
+j plus one, all the rest of them are
+copied from x.
+
+319
+00:28:01,720 --> 00:28:08,697
+So, one forwarded the copy from x then set
+the match case and the only other thing to
+
+320
+00:28:08,697 --> 00:28:12,145
+do is update x.
+And how do you update x?
+
+321
+00:28:12,145 --> 00:28:18,220
+You take the [unknown] machine to where it
+would go if it were at state x and I got
+
+322
+00:28:18,220 --> 00:28:27,441
+the current x pattern, pattern character.
+So that's the, DFA construction amazingly
+
+323
+00:28:27,757 --> 00:28:33,275
+a line of code.
+So the only, so flaw in this codec, is
+
+324
+00:28:33,275 --> 00:28:42,711
+that it does take time proportional to R
+times M where are R is the radix and, and
+
+325
+00:28:42,711 --> 00:28:50,481
+M is the length of the pattern and, and as
+we'll see this, ways to, get around this.
+
+326
+00:28:50,481 --> 00:28:58,956
+But for relatively small alphabets this is
+no problem because the search is so
+
+327
+00:28:58,956 --> 00:29:03,567
+efficient this way and the construction as
+well.
+
+328
+00:29:03,567 --> 00:29:11,732
+But if you're doing this for Unicode for a
+long pattern maybe that's too much memory
+
+329
+00:29:11,732 --> 00:29:19,219
+to devote to the DFA representation.
+So the bottom line is and this follows
+
+330
+00:29:19,219 --> 00:29:25,851
+immediately from examining the code is
+that the substrings can be substring
+
+331
+00:29:25,851 --> 00:29:31,534
+search as linear time.
+Your only access at most, each character
+
+332
+00:29:31,534 --> 00:29:36,912
+in the pattern, each character in the
+texts wants quite remarkable.
+
+333
+00:29:37,145 --> 00:29:42,367
+Each pattern character you have accessed
+once when your making the DN, DFA.
+
+334
+00:29:42,367 --> 00:09:56,096
+And each text character is accessed once
+when you're simulating the DFA, and that's
+
+335
+00:29:48,835 --> 00:29:54,212
+in the worst case.
+Now the space again, is proportional to RM
+
+336
+00:29:54,212 --> 00:30:01,892
+because we have all those mismatches.
+It is possible to develop a version of
+
+337
+00:30:01,892 --> 00:30:09,440
+Knuth-Morris-Pratt that constructs the
+automaton in time and space proportional
+
+338
+00:30:09,440 --> 00:30:12,567
+to M.
+It's actually a non-deterministic
+
+339
+00:30:12,567 --> 00:30:19,061
+automaton cuz it's either a match or all
+mismatches and mismatch might involve
+
+340
+00:30:19,061 --> 00:30:23,952
+multiple hops.
+So if you are interested you can read
+
+341
+00:30:23,952 --> 00:30:29,645
+about that version of KMP.
+But it's sufficiently more complicated
+
+342
+00:30:29,645 --> 00:30:36,300
+that you should be, be prepared to study
+it carefully to really understand it.
+
+343
+00:30:36,583 --> 00:30:42,256
+This algorithm is really interesting
+because of its history.
+
+344
+00:30:42,256 --> 00:30:49,348
+It was actually independently discovered
+by two theoreticians and a hacker.
+
+345
+00:30:49,631 --> 00:30:55,683
+So there's Knuth who was one of the
+fathers of computer science.
+
+346
+00:30:55,683 --> 00:31:02,774
+Who read a paper that was a very esot by
+Steve Cook, a very esoteric theoretical
+
+347
+00:31:02,774 --> 00:31:09,340
+result that he realized implied that it
+should be possible to solve the substring
+
+348
+00:31:09,340 --> 00:31:14,863
+search problem in linear time.
+The theorem really didn't give any way to
+
+349
+00:31:14,863 --> 00:31:20,740
+solve it but it indicated that it should
+be possible to solve it in linear time.
+
+350
+00:31:20,952 --> 00:31:24,068
+So, Knuth worked on it and figured out a
+way.
+
+351
+00:31:24,280 --> 00:31:30,087
+And then Pratt who was a student of
+Knuth's at Stanford at the time figured
+
+352
+00:31:30,087 --> 00:31:36,630
+out a way to take care of this mismatch,
+independent of the alphabet side.
+
+353
+00:31:36,630 --> 00:31:42,124
+And in the meantime, across the Bay at
+Berkeley Jim Morris was busy writing a
+
+354
+00:31:42,124 --> 00:31:45,559
+text editor.
+In those days people were using
+
+355
+00:31:45,559 --> 00:31:49,337
+typewriters.
+And other people were realizing that
+
+356
+00:31:49,337 --> 00:31:52,771
+computers would be really good at editing
+text.
+
+357
+00:31:52,977 --> 00:31:57,854
+And so you know,
+Many people would work on text editing and
+
+358
+00:31:57,854 --> 00:32:01,769
+formatting systems.
+Ahm it was kind of a badge of honor in
+
+359
+00:32:01,769 --> 00:32:05,753
+those times.
+Morris actually worked for the computer
+
+360
+00:32:05,753 --> 00:32:10,969
+center at Berkeley.
+And wanted to have a really bolt-proof
+
+361
+00:32:10,969 --> 00:32:15,384
+text editor that everyone could use.
+And one of the things he wanted to do was
+
+362
+00:32:15,384 --> 00:32:19,897
+avoid backup.
+Cuz backup was just really inconvenient,
+
+363
+00:32:19,897 --> 00:32:25,231
+Involved a lot of code.
+And just something that he didn't want to
+
+364
+00:32:25,231 --> 00:32:28,712
+have.
+And he basically came up with the same
+
+365
+00:32:28,712 --> 00:32:33,971
+algorithm and the community was kind of
+small at that time.
+
+366
+00:32:34,194 --> 00:32:39,305
+And theory meets practice.
+And that's where this paper came from
+
+367
+00:32:39,527 --> 00:32:43,453
+1977.
+Morris, then went on to get his PHD, and
+
+368
+00:32:43,675 --> 00:32:48,934
+to work at Xerox Parc.
+And unfortunately later on another systems
+
+369
+00:32:48,934 --> 00:32:54,046
+programmer came and took a look at
+Morris's code and couldn't understand it,
+
+370
+00:32:54,046 --> 00:32:59,609
+and put the brute force algorithm back in.
+But that part of the story is maybe a less
+
+371
+00:32:59,609 --> 00:33:02,620
+successful example of theory meeting
+practice.
+
+372
+00:33:02,620 --> 00:33:07,725
+That's Knuth-Morris-Pratt algorithm, one
+of the most ingenious algorithms that
+
+373
+00:33:07,725 --> 00:33:08,380
+we'll see.

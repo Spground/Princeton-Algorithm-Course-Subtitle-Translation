@@ -1,0 +1,639 @@
+1
+00:00:03,087 --> 00:00:08,045
+Okay next we're gonna look at another
+extension of geometric algorithms to
+
+2
+00:00:08,045 --> 00:00:12,096
+process slightly more complicated objects
+and then we'll see an important
+
+3
+00:00:12,096 --> 00:00:18,421
+application. This is called interval
+search. So now instead of points, our data
+
+4
+00:00:18,421 --> 00:00:25,056
+is intervals. So this is, we'll start with
+one dimension as before and right away you
+
+5
+00:00:25,056 --> 00:00:31,223
+can see that it's a more complicated
+problem than we've been dealing with. So
+
+6
+00:00:31,448 --> 00:00:37,006
+we want to support the following
+operations. We wanna be able to insert an
+
+7
+00:00:37,006 --> 00:00:42,390
+interval. So an interval is just a left
+endpoint, right endpoint of a
+
+8
+00:00:42,390 --> 00:00:48,606
+1-dimensional data or points on the line.
+We wanna be able to Insert an interval
+
+9
+00:00:48,807 --> 00:00:54,960
+search for an interval, delete an interval
+but the main thing is we want the interval
+
+10
+00:00:54,960 --> 00:01:01,105
+intersection query. So given a query
+interval, we want to find all intervals in
+
+11
+00:01:01,105 --> 00:01:07,661
+the data structure that overlap that
+interval or find any interval we'll start
+
+12
+00:01:07,661 --> 00:01:14,708
+with that simpler problem. So how are we
+going to support that? So this is the API
+
+13
+00:01:14,708 --> 00:01:20,650
+in Java code [cough], so We, have,
+intervals, so instead of one key we have
+
+14
+00:01:20,650 --> 00:01:26,863
+two, which is left and right end points of
+the interval for input. And [inaudible],
+
+15
+00:01:26,863 --> 00:01:32,641
+and then we have delete, and then we have
+intersects. And again simplify the code,
+
+16
+00:01:32,641 --> 00:01:39,304
+we are going to make the non degeneracy
+assumption that no two intervals have the
+
+17
+00:01:39,304 --> 00:01:44,637
+same left end point. [cough] and, [cough].
+Easy, easy to fix but, but we don't
+
+18
+00:01:44,637 --> 00:01:50,866
+simplify the code. So now we'll look at a
+data structure called an interval search
+
+19
+00:01:50,866 --> 00:01:57,526
+tree that helps to solve this problem.
+And, it's a extremely, simple algorithim,
+
+20
+00:01:57,760 --> 00:02:04,026
+but surprisingly, complicated to
+understand, so we'll go slowly. So the
+
+21
+00:02:04,026 --> 00:02:10,081
+first thing is what we're going to do is
+use the left end point of each interval as
+
+22
+00:02:10,081 --> 00:02:16,031
+the binary search tree key. So our, eh,
+our node stored intervals, but we only use
+
+23
+00:02:16,031 --> 00:02:21,067
+our left end point as the key. So this is
+the binary search tree that's built from
+
+24
+00:02:21,067 --> 00:02:27,003
+those five intervals, six intervals in our
+example. Seventeen, nineteen is at the
+
+25
+00:02:27,003 --> 00:02:32,019
+root, so everybody with a le ft end point
+less than seventeen is to the left, the
+
+26
+00:02:32,019 --> 00:02:37,059
+left end point greater than seventeen is
+to the right and so forth. So that's a
+
+27
+00:02:37,059 --> 00:02:42,097
+binary search tree built, from those
+intervals. So that's easy. I just build a
+
+28
+00:02:42,097 --> 00:02:48,426
+binary search tree. I just use, the left
+end point, as the search key. But we're
+
+29
+00:02:48,426 --> 00:02:53,845
+also in the, each node of the tree, we're
+gonna store, not just the interval. But
+
+30
+00:02:53,845 --> 00:02:59,295
+we're gonna store the, largest endpoint in
+the subtree rooted at that node. So at
+
+31
+00:02:59,295 --> 00:03:05,340
+every node, we're gonna store the maximum
+endpoint and subtree rooted at that node.
+
+32
+00:03:05,340 --> 00:03:10,336
+So at the root, the maximum endpoint or
+the rightmost point covered by an
+
+33
+00:03:10,336 --> 00:03:15,440
+interval, is 24. So we [inaudible] 24 at
+the root, and, of course, the right
+
+34
+00:03:15,440 --> 00:03:22,652
+subtree. And the left subtree. The max end
+point is that eighteen so that's what we
+
+35
+00:03:22,652 --> 00:03:29,900
+store for the associated data with the
+note to the left of the root and so forth.
+
+36
+00:03:29,900 --> 00:03:36,043
+So. We going to have to, that's data that
+we're going to have to maintain when we do
+
+37
+00:03:36,043 --> 00:03:41,909
+an insert and it's data that we'll use
+when we're doing an interval-intersection
+
+38
+00:03:41,909 --> 00:03:48,375
+search. So let's take a look at an
+insertion into an interval search tree
+
+39
+00:03:48,670 --> 00:03:56,634
+with a demo. All right, so, the, insertion
+algorithm is pretty simple. We do the BST
+
+40
+00:03:56,634 --> 00:04:04,057
+insertion, just so we have to do that,
+update of the maximum in each node on the
+
+41
+00:04:04,057 --> 00:04:11,422
+search path. So, to insert 16/22 in this
+tree, while we use the, left endpoint as
+
+42
+00:04:11,422 --> 00:04:17,621
+the search key, sixteen is the left
+endpoint of our insert interval [cough].
+
+43
+00:04:17,621 --> 00:04:25,474
+We compare that with seventeen and
+therefore go left. How sixteen is bigger
+
+44
+00:04:25,474 --> 00:04:34,005
+than five so we go right. Now sixteen is
+bigger than fifteen so we go right. And
+
+45
+00:04:34,005 --> 00:04:43,035
+that's null, so that's where we insert our
+new, interval. [sound]. So now, we're
+
+46
+00:04:43,035 --> 00:04:49,784
+gonna go back up the tree. And, for every
+node that we encounter, it could be that,
+
+47
+00:04:50,018 --> 00:04:56,045
+our right endpoint of our interval, is
+bigger than what was there. So we have to
+
+48
+00:04:56,045 --> 00:05:02,251
+check, all the way up the path, the
+maximum in each node on the path. So we
+
+49
+00:05:02,251 --> 00:05:08,503
+have to check each node, to see if 22 is
+bigger, and, for the three nodes to the
+
+50
+00:05:08,503 --> 00:05:14,496
+left it is bigger than eighteen. For the
+node at the root, it's not. That stays to
+
+51
+00:05:14,496 --> 00:05:20,449
+be 24. So, it's just binary tree
+insertion, but then after the insertion on
+
+52
+00:05:20,449 --> 00:05:27,415
+the way up, we go ahead and, check, if the
+maximum that we have is bigger than the
+
+53
+00:05:27,415 --> 00:05:34,413
+maximum there and update it if necessary.
+So easy to code. [sound]. Alright, so now
+
+54
+00:05:34,413 --> 00:05:42,528
+about, how do we do a, a search. So the
+searches is definitely more complicated
+
+55
+00:05:42,528 --> 00:05:50,885
+and kind of mysterious, but let's look at
+the rules for search in an interval search
+
+56
+00:05:50,885 --> 00:05:58,098
+tree. Alright so now we're gonna look to
+see if we have an intersection what a. We
+
+57
+00:05:58,098 --> 00:06:02,880
+want to find just. Any interval that
+intersects this query interval 23 25.
+
+58
+00:06:03,070 --> 00:06:09,089
+We're not gonna try to find them all we'll
+get back to that in a minute. Try to find
+
+59
+00:06:09,089 --> 00:06:13,596
+any interval that intersects our query
+interval. So let's, let's see what we have
+
+60
+00:06:13,596 --> 00:06:21,759
+to do. So first thing is if At the root,
+we have an intersection, then we're done.
+
+61
+00:06:21,759 --> 00:06:28,517
+We just return. In this case, 2325 does
+not intersect, 1719. So, we have to go
+
+62
+00:06:28,517 --> 00:06:35,312
+down the tree somewhere. So left subtree
+is [inaudible] right, okay? Otherwise, we
+
+63
+00:06:35,312 --> 00:06:41,841
+have to check whether the max endpoint in
+the left subtree is less than, the low
+
+64
+00:06:41,841 --> 00:06:47,967
+point in our interval. [inaudible] it's
+easy to see, well, if that's the case,
+
+65
+00:06:48,204 --> 00:06:54,473
+then we're not gonna find an intersection.
+In the left. The maximum end-point in the
+
+66
+00:06:54,473 --> 00:07:00,383
+left is 22, and we're looking for 23, and
+we're not gonna find anything there, so we
+
+67
+00:07:00,383 --> 00:07:06,883
+just wanna go right. So in this case we'll
+go right 22, 23 no inter sectional left,
+
+68
+00:07:06,883 --> 00:07:13,499
+so we go right and now we do find an
+intersection 21, 24 does intersect with
+
+69
+00:07:13,499 --> 00:07:20,478
+23, 25 because 23 is in the middle there,
+so we find an intersection. Now on the
+
+70
+00:07:20,478 --> 00:07:27,379
+other hand, let's say they were looking
+for 1214, so no intersection. So. All the
+
+71
+00:07:27,379 --> 00:07:34,231
+algorithm says is that, if you didn't go
+right, go left. So let's go left, in this
+
+72
+00:07:34,231 --> 00:07:40,381
+case. So we weren't able to show that
+there was no intersection, on the left.
+
+73
+00:07:40,381 --> 00:07:46,534
+So, so we're gonna go left. In this we
+compare twelve fourteen to five eight, so
+
+74
+00:07:46,534 --> 00:07:52,097
+now we apply the same rules. Does it
+intersect? No, it doesn't intersect. So
+
+75
+00:07:52,097 --> 00:07:58,373
+should we go left. Well no, the maximum,
+end point in the left node is eight. So we
+
+76
+00:07:58,373 --> 00:08:04,403
+can have intersection there, so we gonna
+go right, [inaudible] to twelve and go
+
+77
+00:08:04,403 --> 00:08:11,094
+right. So, now does twelve, fourteen
+intersect fifteen, eighteen it does not so
+
+78
+00:08:11,094 --> 00:08:18,554
+there's no intersection so now what do we
+do. Should we go left no the max in point
+
+79
+00:08:18,554 --> 00:08:26,401
+on left is ten so we shouldn't go left. So
+we're going to go right. Those 12-14
+
+80
+00:08:26,401 --> 00:08:35,876
+intersect 16-22. It does not, So, now, the
+left end point's null. And so we're just
+
+81
+00:08:35,876 --> 00:08:42,934
+gonna go right. And there's no
+intersection. So in both cases we just
+
+82
+00:08:42,934 --> 00:08:49,439
+went along one path in the tree to
+determine whether or not there was an
+
+83
+00:08:49,439 --> 00:08:57,040
+interval or intersection. Let's look at
+one more example. 21, 23. So let's see. 21
+
+84
+00:08:57,040 --> 00:09:03,751
+thru 23 to seventeen, nineteen. They do
+not intersect, so now, what are we gonna
+
+85
+00:09:03,751 --> 00:09:11,674
+do next? Well we're gonna compare the left
+sub-tree, and it's Not, 22 falls within
+
+86
+00:09:11,674 --> 00:09:20,042
+our interval so it's not less than'r' so
+there might be an intersection there so we
+
+87
+00:09:20,042 --> 00:09:26,650
+better go to the left, so we do go to the
+left. Now we compare against 5-8, and
+
+88
+00:09:26,650 --> 00:09:32,949
+there's no intersection. So now, we're
+gonna go left to right. Well, we're gonna
+
+89
+00:09:32,949 --> 00:09:39,172
+go to the right, because, the max endpoint
+in the left subtree is eight, and our
+
+90
+00:09:39,172 --> 00:09:44,687
+interval's 21, so no intersection on the
+left. So we're gonna go right.
+
+91
+00:09:44,912 --> 00:09:50,496
+Intersection 21231518. They do not
+intersect. So now, do we go left or right?
+
+92
+00:09:50,496 --> 00:09:57,263
+Again ten is less than our left endpoint
+21. So we better go to the right. [cough].
+
+93
+00:09:57,263 --> 00:10:04,135
+And now 2123 does intersect 1622, so we
+return and intersection. Again one path
+
+94
+00:10:04,135 --> 00:10:10,003
+through the tree to determine an
+intersection. So from these rules you can
+
+95
+00:10:10,003 --> 00:10:15,980
+see that the man of code required to
+implement this intersecting inter role is
+
+96
+00:10:15,980 --> 00:10:21,229
+extremely low. Just check for an
+intersection, if we find it ret urn if
+
+97
+00:10:21,229 --> 00:10:26,852
+left is no we go right. Otherwise if the
+max is less than low we go right.
+
+98
+00:10:26,852 --> 00:10:33,052
+Otherwise we go left. Could hardly be
+simpler. Really amazingly simple and
+
+99
+00:10:33,052 --> 00:10:40,216
+efficient algorithm. We should convince
+ourselves really that it always works and
+
+100
+00:10:40,216 --> 00:10:46,713
+so we'll spend just a moment on a short
+proof. So let's look at the, the cases
+
+101
+00:10:46,713 --> 00:10:53,045
+that could happen. So first thing is if
+the search goes right. Then there's no
+
+102
+00:10:53,045 --> 00:10:58,553
+intersection on the left. And that's easy
+to convince ourselves of that just from,
+
+103
+00:10:58,744 --> 00:11:04,052
+from what we did in the demo. Of course,
+if the last sub-tree's empty, there's no
+
+104
+00:11:04,052 --> 00:11:09,082
+intersection there. But if the max
+endpoint in the left sub-tree is less than
+
+105
+00:11:09,082 --> 00:11:15,038
+low, that means every interval in the left
+sub-tree has a max endpoint less than mah,
+
+106
+00:11:15,228 --> 00:11:20,061
+low, and so therefore it can't intersect.
+So if you go right, there's no
+
+107
+00:11:20,061 --> 00:11:25,077
+intersection in the left. Any possible
+intersection would have to be in the
+
+108
+00:11:25,077 --> 00:11:30,354
+right, And then the other point is that if
+you go left, then either there's an
+
+109
+00:11:30,354 --> 00:11:38,057
+intersection there, or there's no
+intersections at all. So Lets suppose that
+
+110
+00:11:38,057 --> 00:11:43,315
+there is no intersect, and that's
+equivalent to saying, if there is no
+
+111
+00:11:43,315 --> 00:11:50,225
+intersection in the left then there is no
+intersection in the right. So lets look at
+
+112
+00:11:50,225 --> 00:11:56,015
+it if there is no intersection in the
+left, since we went to the left and then
+
+113
+00:11:56,015 --> 00:12:01,089
+we have got, low less than max. But, for
+any interval, in the right subtree, its
+
+114
+00:12:01,089 --> 00:12:08,557
+got to appear after. Low. Be, because
+since there's no intersections in the left
+
+115
+00:12:08,557 --> 00:12:16,559
+sub tree high has gotta be less than C.
+Where, because they're sorted by left N
+
+116
+00:12:16,559 --> 00:12:24,186
+point. And then that means that C-s got to
+be less than A if it is in the right, so
+
+117
+00:12:24,186 --> 00:12:30,545
+therefore there can't be any interesection
+in the right either. No intersection in
+
+118
+00:12:30,545 --> 00:12:36,988
+the left means no intersections at all, so
+those two cases is enough to show that
+
+119
+00:12:36,988 --> 00:12:43,240
+this algebroid finds an intersection, if
+there is one. And the other thing we can
+
+120
+00:12:43,240 --> 00:12:48,945
+do with this is just use a red-black BST
+to guarantee that we solved this in time
+
+121
+00:12:48,945 --> 00:12:54,690
+proportional to log in. So insert, find,
+delete, and find any interval that
+
+122
+00:12:54,690 --> 00:13:01,296
+intersects. All take time, guaranteed,
+proportional to log in. And if we wanna
+
+123
+00:13:01,296 --> 00:13:08,630
+find all intervals we just have to run the
+algorithm fur Each interval that's, until
+
+124
+00:13:08,630 --> 00:13:15,183
+we come up against no intersection, so
+it'll take time proportional to R log N if
+
+125
+00:13:15,183 --> 00:13:21,778
+there's R intervals that intersect. The
+theoretical best that you could possibly
+
+126
+00:13:21,778 --> 00:13:28,931
+do would be R plus log N but in practice R
+log N is quite efficient. This is an easy
+
+127
+00:13:28,931 --> 00:13:35,283
+and very efficient algorithm to solve this
+interval search problem and as we'll see
+
+128
+00:13:35,477 --> 00:13:40,618
+this algorithm. It's applicable to an
+important application that we'll see in a

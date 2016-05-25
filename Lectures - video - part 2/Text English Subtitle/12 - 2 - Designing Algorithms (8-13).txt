@@ -1,0 +1,163 @@
+Now, we'll look at a couple of more
+interesting examples that show how useful
+reductions are for designing new
+algorithms. so again that's the basic
+definition and the implication of the
+definition is that in order to design an
+algorithm for a problem X. we can go ahead
+and use some existing algorithm for Y. And
+here's the, some of the many examples that
+we've already seen in this course finding
+the median and element distinctness. I
+just talked about the scheduling problem,
+reduces the topological sort. we saw that
+in the shortest paths lecture. Also, the
+arbitrage problem of is, involves building
+a, a, a digraph for currency exchange. we
+reduce that to shortest paths. and there's
+several other examples. So, it's an
+important and useful technique. so that
+just the general mentality is, if I know
+how to solve Y, I have a new problem. can
+I use that to solve X? and every
+programmer does that and saying, well,
+I've got some code that solves Y or I've
+got a library function that does Y. Can I
+use that to solve X? That's reduction. So,
+our first example is convex hull problem
+that we looked at briefly back in the
+sorting lecture. And, and that's where
+your given endpoints in the plane and what
+you want to do is, I identify the points
+on the periphery, these, that's called
+extreme points on the convex hull. you can
+imagine a, a bunch of points on a big
+range and a rancher wants to use the
+cheapest amount of fence to surround them
+all. And so it's a minimum parameter way
+to draw a line that surrounds all the
+points, it's a convex hull. and there's
+many other ways to define it. That doesn't
+seem to be all that closely related to
+sorting but it's actually true that convex
+hull reduces the sorting. that is if you
+can sort, you can compute the convex hull.
+And that's an algorithm known as the
+Graham scan algorithm that we'll look at
+in the next slide. the cost of a convex
+hull is the cost of the sort and log N
+plus the cost of the reduction. And that
+Graham scan algorithm just uses linear
+time. So, with sorting we get an N log N
+algorithm for convex hull, which is a nice
+algorithm design technique. And this is a
+diagram of the, that shows the Graham scan
+algorithm we which we won't go through in
+detail but it's pretty intuitive. what we
+do is we pick a point one over in the
+corner and maybe the smallest Y coordinate
+point. and then, sort the points by polar
+angle swept out by that coordinate. so, if
+you think of a, of a line sweeping through
+and just picking out the points by polar
+angles centered at that point, then we get
+the points in order along this polygon.
+And because we're doing it by polar angle
+the lines don't intersect. It's a simple
+polygon which with no intersecting lines.
+And then, the Graham scan algorithm is
+just to proceed along, over here, it
+proceeds along that polygon. but if you
+ever come to a point where you are going
+to make a right turn or clockwise turn you
+throw out the points that would have
+caused that. So, in this case, this point
+will cause us to make a right turn so we
+throw it out. And now, our most recent
+points are these three. And again, that's
+a right point, so we throw that one out
+and it puts us in this position here and
+so, and the idea is that any point that
+would cause a right-hand turn is not going
+to be on the convex hull. It's going to
+kind of a, we kind of have a proof that
+the points inside just buys into the fact
+that it would make us do a right turn. So,
+we throw this one out and that leaves that
+and then we go here. And that would be a
+right turn on the, on our path. So throw
+that one out, and we're here. Another one
+and continuing in this way. when we
+finally get back to the beginning we've
+computed the points on the convex hull.
+So, the cost of the algorithm is the cost
+of the sort which is N log N. But the cost
+of the scan is only linear. Every point
+only gets considered once. that's an
+excellent example of a reduction to get a
+new algorithm. If you didn't have the fast
+sort this wouldn't be so effective. here's
+another example of a reduction we
+implemented and looked at short est path
+for digraphs. what about shortest paths on
+undirected graphs? It still makes sense.
+That's why I have a weighted undirected
+graph with non-negative weights and I'm
+going to find the shortest path from a
+given vortex, source vortex, S2 or a given
+target vortex T, and if it's the lowest
+weight path from S to T. so how are we
+gonna solve that one? We have shortest
+path that works for digraphs. Well, if we
+just replace each undirected edge by two
+directed edges, then the shortest path
+algorithm for digraphs works. in fact,
+with our graph representation it's just
+running that algorithm cuz our undirected
+graphs are represented with the edges
+going in both directions so they're
+actually represented as digraphs. and
+again, what's the cost? the cost this time
+is the cost of pre-processing to just take
+the graph in its undirected form and
+convert it to directed form and then the
+cost of shortest pass of the digraph is E
+log V. So that gives us an algorithm for
+shortest path in undirected graphs. Notice
+that it doesn't work if there's negative
+weights in the undirected graph, because
+the reduction creates a negative cycle. it
+is possible to find shortest paths in
+these graphs but you need a, a much more
+sophisticated algorithm to do it. so just
+continuing in this way we've considered
+quite a few problems that involved
+reductions. so, I just talked about
+finding median and element distinctness in
+convex hull reducing to sorting. and there
+were a bunch of other problems that we
+considered as exercises when we talked
+about applications to applications of
+sorting. So, application of sorting really
+means problem reduces to sorting. so sure
+as processing time scheduling and, and,
+and lots of other problems that are
+reduced to sorting. and in the graph world
+we looked at some pretty complicated
+problems. Arbitrage we looked at a
+parallel, parallel scheduling or CPM
+method and I just talked about shortest
+paths and undirected graphs and those all
+reduced to shortest paths and digraphs. we
+looked at problems that reduced to max
+flow bipartite matching, reduces to max
+flow and the linear program problem that
+we'll talk about next time, actually both
+max flow and shortest paths and digraphs
+reduce to linear program programming. So
+this is a pretty diversed set of problems
+that all through the set of reduction we
+found ways to solve them using some core
+kinds of problem solving models. And so
+reduction is an extremely important
+algorithm design technique.

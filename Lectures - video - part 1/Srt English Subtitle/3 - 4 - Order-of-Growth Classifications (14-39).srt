@@ -1,0 +1,708 @@
+1
+00:00:03,064 --> 00:00:08,071
+Now, fortunately when we analyze
+algorithms, actually not too many
+
+2
+00:00:08,071 --> 00:00:14,746
+different functions arise and actually
+that property allows us to really classify
+
+3
+00:00:14,746 --> 00:00:20,978
+algorithms according to their performance
+as the problem size grows. So that's what
+
+4
+00:00:20,978 --> 00:00:27,173
+we'll talk about next. So the good news is
+there's only these few functions turn up
+
+5
+00:00:27,173 --> 00:00:31,915
+about the algorithms that we are
+interested in. We can craft things that
+
+6
+00:00:31,915 --> 00:00:37,479
+have other functions and there are counter
+examples to this. But really a great
+
+7
+00:00:37,479 --> 00:00:43,394
+number of the algorithms that we consider
+are described by these few functions and
+
+8
+00:00:43,394 --> 00:00:50,362
+that are plotted here. And [cough] the
+when we are talking about the order of
+
+9
+00:00:50,362 --> 00:00:55,793
+growth, we are not talking about the
+leading constant. Normally we'll say the
+
+10
+00:00:55,793 --> 00:01:00,971
+running time of the algorithm is
+proportional to N log N. That means we
+
+11
+00:01:00,971 --> 00:01:06,686
+that we think that our hypothesis is that
+the running time is tilde C lg N, N lg N,
+
+12
+00:01:06,686 --> 00:01:12,671
+where C is some constant. And in these
+plots, these are lg, lg plots that not
+
+13
+00:01:12,671 --> 00:01:18,801
+really give a good idea of what's going
+on. If a order of growth is logarithmic or
+
+14
+00:01:18,801 --> 00:01:25,026
+constant, doesn't matter how big the thing
+is. It's going to be fast of the running
+
+15
+00:01:25,026 --> 00:01:32,082
+time for is T for say a thousand, and for
+half a million it will be pretty close to
+
+16
+00:01:32,082 --> 00:01:38,674
+T. If it's linear, if it's auto growth is
+proportional to N then as the running
+
+17
+00:01:38,674 --> 00:01:44,945
+time, as the size increases the running
+time increases correspondingly. And the
+
+18
+00:01:44,945 --> 00:01:51,031
+same is true, almost, if it's N log N. So
+those are the algorithms that we strive
+
+19
+00:01:51,031 --> 00:01:56,755
+for. They scale with the input size. As
+the input grows, so grows the running
+
+20
+00:01:56,755 --> 00:02:02,647
+time. And that's, a reasonable situation
+to be in. As we talked about when we
+
+21
+00:02:02,647 --> 00:02:07,843
+talked about Union-find. If it's
+quadratic, the running time grows much
+
+22
+00:02:07,843 --> 00:02:13,469
+faster than the input size. And it's not
+feasible to use such an algorithm for
+
+23
+00:02:13,469 --> 00:02:21,397
+large inputs. And qubic is even worse. So
+what we find is for many algorithms our
+
+24
+00:02:21,397 --> 00:02:28,515
+first task is really, simply, make sure
+it's not quadratic or qubit. And these
+
+25
+00:02:28,515 --> 00:02:35,708
+order of growth classifications actually
+come from kind of simple patterns in terms
+
+26
+00:02:35,708 --> 00:02:41,918
+of the code that we write. So if our code
+has no loops in it, then the order of
+
+27
+00:02:41,918 --> 00:02:49,033
+growth is going to be constant. If our
+code has some kind of loop where the
+
+28
+00:02:49,033 --> 00:02:54,276
+input's divided in half, and so binary
+search algorithm is an example of that.
+
+29
+00:02:54,276 --> 00:03:00,676
+Then our order growth will be logarithmic
+and we'll take a look at that analysis and
+
+30
+00:03:00,676 --> 00:03:06,879
+but if you do the doubling test, it grows
+almost linearly, if you have a huge input
+
+31
+00:03:06,879 --> 00:03:12,633
+and you double the size it's, it's still
+going to be I'm sorry, not linearly,
+
+32
+00:03:12,633 --> 00:03:18,252
+constant just like if it's constant.
+You'll hardly notice that lg N. If you
+
+33
+00:03:18,252 --> 00:03:25,070
+have a loop where you touch everything in
+your input. Than the running time is
+
+34
+00:03:25,070 --> 00:03:31,592
+linear, proportional to end so a typical
+example of that would be find the maximum,
+
+35
+00:03:31,592 --> 00:03:38,205
+or to count the number of zeros. Our one
+some problem. A very interesting category
+
+36
+00:03:38,205 --> 00:03:44,681
+is a so-called N lg N algorithms or linear
+rhythmic algorithms. And those are the
+
+37
+00:03:44,681 --> 00:03:50,143
+ones that arise from a particular
+algorithms design technique called the
+
+38
+00:03:50,143 --> 00:03:55,573
+divide and conquer. And the Mergesort
+algorithm, which we'll talk about in a
+
+39
+00:03:55,573 --> 00:04:01,012
+couple of weeks, is a prime example of
+that. And then if you have double four
+
+40
+00:04:01,012 --> 00:04:07,543
+loops like our two sum algorithm, that's
+going to be time proportional to N^2. As
+
+41
+00:04:07,543 --> 00:04:13,530
+we saw, that's quadratic, or triple four
+loop like our 3-sum algorithm, that's
+
+42
+00:04:13,530 --> 00:04:19,369
+going to be cubic or time proportional to
+N^3. For a quadratic algorithm or a cubic
+
+43
+00:04:19,369 --> 00:04:25,312
+algorithm, the doubling factor is four or
+eight as the input size double for cubic
+
+44
+00:04:25,312 --> 00:04:30,331
+algorithm, the running time goes up by a
+factor of eight, and that's the kind of
+
+45
+00:04:30,331 --> 00:04:35,952
+calculation that you can do in your head
+while waiting for a program to finish.
+
+46
+00:04:35,952 --> 00:04:41,645
+There's also a category of algorithms
+who's running time is exponential and in
+
+47
+00:04:41,645 --> 00:04:47,059
+those algorithms n doesn't get very large
+at and we'll talk about those at the end
+
+48
+00:04:47,059 --> 00:04:53,150
+part two of the course. So these are some
+practical implications of, of the order
+
+49
+00:04:53,150 --> 00:04:59,352
+growth. And we really dwell on this too
+much, except to come back to the point
+
+50
+00:04:59,352 --> 00:05:04,723
+that the algorithms we are really
+interested in, that can solve huge
+
+51
+00:05:04,723 --> 00:05:11,633
+problems, are the linear and N lg N
+algorithms. Because even now a quadr atic
+
+52
+00:05:11,635 --> 00:05:17,913
+algorithm on a typical fast computer could
+only solve problems and saying that tens
+
+53
+00:05:17,913 --> 00:05:23,246
+of thousands in a cubic algorithm only in
+the size of thousands. And nowadays those
+
+54
+00:05:23,246 --> 00:05:28,567
+are just not useful because the amount of
+data that we have is more like the
+
+55
+00:05:28,567 --> 00:05:34,689
+millions or billions or trillions. That
+fact is becoming more and more evident as
+
+56
+00:05:34,689 --> 00:05:41,269
+time wears on the ancient times would have
+some discussion about whether quadratic
+
+57
+00:05:41,269 --> 00:05:47,154
+algorithm might be useful but the
+situation gets worse as the time goes on,
+
+58
+00:05:47,154 --> 00:05:52,593
+so we need better algorithms. To
+illustrate the process of developing a
+
+59
+00:05:52,593 --> 00:05:57,756
+mathematical model for describing a
+performance through an algorithm, we'll
+
+60
+00:05:57,756 --> 00:06:03,037
+look at a familiar algorithm called binary
+search. It's, the goal is that you have a
+
+61
+00:06:03,037 --> 00:06:08,323
+sorted array of integers, say and you're
+given a key. And you want to know, is that
+
+62
+00:06:08,323 --> 00:06:13,321
+key in the array? And if it is, what,
+what's its index? And a fast algorithm for
+
+63
+00:06:13,321 --> 00:06:18,178
+doing this is known as binary search,
+where we compare the key against the
+
+64
+00:06:18,178 --> 00:06:22,941
+middle entry. In this case, if we're
+looking for 33, we compare it against 53.
+
+65
+00:06:22,941 --> 00:06:27,737
+If its smaller we know its in the left
+half of the array, if it's larger we know
+
+66
+00:06:27,737 --> 00:06:32,819
+it's in the right half of the array, if
+it's equal, we found it. And then we apply
+
+67
+00:06:32,819 --> 00:06:39,680
+the same algorithm recursively. So let's
+quickly look at a demo. So we're looking
+
+68
+00:06:39,680 --> 00:06:45,777
+for 33 in this array, compare it against
+the middle entry in the array. 53 and it's
+
+69
+00:06:45,777 --> 00:06:51,160
+less so we go left, so now we can
+concentrate just on the left half of the
+
+70
+00:06:51,160 --> 00:06:56,788
+array, now we look in the middle of this
+half, that's 25, 33 is bigger so we go
+
+71
+00:06:56,788 --> 00:07:02,399
+right. And now we concentrate on the right
+half or the left half and we have a
+
+72
+00:07:02,399 --> 00:07:08,690
+smaller sub array. Look at the middle, 33
+is less so we go left and now we have only
+
+73
+00:07:08,690 --> 00:07:15,019
+the one element to look at and we found
+our key 33 in the array and we return that
+
+74
+00:07:15,019 --> 00:07:21,234
+index four. If we're looking for something
+that's not in the array, we do the same
+
+75
+00:07:21,234 --> 00:07:26,874
+process. So, say, we're looking for 34.
+It's going to be the same. Look in the
+
+76
+00:07:26,874 --> 00:07:32,923
+left half, look in the right half. Look to
+the left of the 43. Now, there's only one
+
+77
+00:07:32,923 --> 00:07:39,478
+key to look at. A nd it's not 34, so we
+say, it's not there. So that's binary
+
+78
+00:07:39,478 --> 00:07:47,488
+search. So here's the code for binary
+search. Actually, Binary Search although
+
+79
+00:07:47,488 --> 00:07:53,391
+it's a simple algorithm, its notoriously
+tricky to get every detail right. In fact
+
+80
+00:07:53,391 --> 00:07:58,827
+one paper claimed, that the first bug free
+binary search wasn't published until 1962,
+
+81
+00:07:58,827 --> 00:08:04,430
+and even in 2006, a bug was found in
+Java's implementation of binary search,
+
+82
+00:08:04,430 --> 00:08:09,417
+just an indication of the care that we
+have to take in developing algorithms
+
+83
+00:08:09,417 --> 00:08:15,847
+especially for libraries that are going to
+be used by millions of people. So here's
+
+84
+00:08:15,847 --> 00:08:24,048
+an implementation. It's not recursive
+although often we can implement this
+
+85
+00:08:24,048 --> 00:08:32,050
+recursively. And it's just reflexing code,
+what I described in words, we have to
+
+86
+00:08:32,050 --> 00:08:41,029
+find. A key, whether a key's in an array.
+And we use two pointers, low and high, to,
+
+87
+00:08:41,029 --> 00:08:46,051
+indicate the part of the array we are
+interested in, as long as low is less and
+
+88
+00:08:46,051 --> 00:08:51,053
+equal to high, we compute the middle. And
+then we compare our key against the
+
+89
+00:08:51,053 --> 00:08:56,082
+middle, actually its a three way compare,
+see its less or greater or if its equal,
+
+90
+00:08:56,082 --> 00:09:02,011
+we, we return that mid index. If its less
+we reset the high pointer, if its greater,
+
+91
+00:09:02,011 --> 00:09:07,026
+we reset the low pointer, and we keep on
+going until the pointers are equal. If
+
+92
+00:09:07,026 --> 00:09:12,034
+they are equal and we haven't found it
+then we return -one. And it's easy to
+
+93
+00:09:12,034 --> 00:09:18,023
+persuade ourselves that this program works
+as advertised by thinking about this
+
+94
+00:09:18,023 --> 00:09:24,025
+invariant, if the keys in the array, then
+it's between low and high in the array.
+
+95
+00:09:24,025 --> 00:09:30,036
+Alright, so that's a program that, you are
+probably familiar with. Lets look at the
+
+96
+00:09:30,036 --> 00:09:36,039
+mathematical analysis of that program. And
+this a, a theorem that we are going to
+
+97
+00:09:36,039 --> 00:09:42,049
+prove easily. We want to a lot of proofs
+but this is one worth doing. So its say
+
+98
+00:09:42,049 --> 00:09:48,045
+that binary search uses at most one + lg
+base two event compares, to complete a
+
+99
+00:09:48,045 --> 00:09:55,032
+search, in a sorted array of size f. So we
+do that, to setup the problem by defining,
+
+100
+00:09:55,032 --> 00:10:02,089
+a variable T(N), which is the number of
+compares that binary search needed for its
+
+101
+00:10:02,089 --> 00:10:10,001
+array size and. And then we write down a
+recurrence relation that is reflex the
+
+102
+00:10:10,001 --> 00:10:16,076
+code. And what the code does is, it
+divides the problem size in half so that.
+
+103
+00:10:16,076 --> 00:10:23,000
+If the event is less or equal to the event
+over two plus depending on how you count
+
+104
+00:10:23,000 --> 00:10:29,045
+what the compare is think of it as a two
+way compare so divided in half by doing
+
+105
+00:10:29,045 --> 00:10:35,046
+one compare and that's true as long as N
+is bigger than one. If it's equal to one
+
+106
+00:10:35,046 --> 00:10:42,039
+the solution is one. So it's a recurrent
+relation describing the computation. And
+
+107
+00:10:42,039 --> 00:10:48,094
+so we, we can go ahead and, solve this
+recurrence by applying the recurrence
+
+108
+00:10:48,094 --> 00:10:55,882
+itself, to the first term on the right.
+Now that's called telescoping. So if this
+
+109
+00:10:55,882 --> 00:11:03,378
+is true and we can apply the same thing to
+T(N/2). And throw out another one and if
+
+110
+00:11:03,378 --> 00:11:09,096
+that's, this is true, apply the same thing
+to N over four, and throw out another one
+
+111
+00:11:09,096 --> 00:11:15,340
+and so forth until we get down to just
+one. In which case we have lg N ones left.
+
+112
+00:11:15,340 --> 00:11:21,794
+Now this is a true sketch you might have
+noticed that, that this proof actually
+
+113
+00:11:21,794 --> 00:11:29,118
+only holds if N is a power of two. Because
+we nearly specify in this recurrence what
+
+114
+00:11:29,118 --> 00:11:36,985
+we mean if N is odd. But it's possible to
+go ahead and sorry, possible to go ahead
+
+115
+00:11:36,985 --> 00:11:45,649
+and take care of that detail as well and
+show that binary search running time is
+
+116
+00:11:45,649 --> 00:11:52,779
+logarithmic always. All right, so given
+that fact we can develop a faster
+
+117
+00:11:52,779 --> 00:11:58,548
+algorithm for a threesome. It's a sorting
+based algorithm. And so what we're going
+
+118
+00:11:58,548 --> 00:12:04,638
+to do is we're going to take the numbers
+that we have as input and sort them. We'll
+
+119
+00:12:04,638 --> 00:12:11,553
+talk about sorting algorithms next week.
+And we get that time in time proportional
+
+120
+00:12:11,553 --> 00:12:18,416
+to N lg N but that's not the main part of
+the computation. The main part of the
+
+121
+00:12:18,416 --> 00:12:25,682
+computation is to after the numbers are
+sorted, we'll go through and for each pair
+
+122
+00:12:25,682 --> 00:12:32,452
+of numbers ai and aj. We'll do a binary
+search for -ai + ij. If we find it then
+
+123
+00:12:32,452 --> 00:12:41,319
+we'll have three numbers that sum to zero.
+So if we [cough] sort our numbers and then
+
+124
+00:12:41,319 --> 00:12:48,610
+go through for each pair do a binary
+search to see if it's there, so -40, zero.
+
+125
+00:12:48,611 --> 00:12:55,631
+Minus that is 40, we do a binary search
+that's in there so we have one solution to
+
+126
+00:12:55,631 --> 00:13:02,081
+the 3-sum problem. And do that for all
+pairs of numbers. Then a quick analysis
+
+127
+00:13:02,081 --> 00:13:08,243
+says the order of growth of running time
+is going to be N^2 lg N. Then you need a
+
+128
+00:13:08,243 --> 00:13:14,064
+good sort, well, you could use the
+elementary insertion sort the first one we
+
+129
+00:13:14,064 --> 00:13:20,678
+talk about but the running time of the
+binary search for each of the pairs, each
+
+130
+00:13:20,678 --> 00:13:26,712
+of the N^2 pairs or N^2/2 pairs we're
+going to do the binary search, so we get a
+
+131
+00:13:26,712 --> 00:13:32,997
+N^2 lg N running time. So, a quick example
+of how we could improve the performance,
+
+132
+00:13:32,997 --> 00:13:39,970
+we could find an imroved algorithm to
+solve a problem. N^2 lg N is much less
+
+133
+00:13:39,970 --> 00:13:46,462
+than N^3 for large N. And so, we're
+implicitly making the hypothesis that if
+
+134
+00:13:46,462 --> 00:13:51,872
+we do this, do the sort base thing and use
+binary search, we're going to have a
+
+135
+00:13:51,872 --> 00:13:58,257
+faster program. And, sure enough we can go
+ahead and run some experiments and find
+
+136
+00:13:58,257 --> 00:14:03,498
+that whereas it took us 50 seconds to
+solve the problem for 8,000 numbers
+
+137
+00:14:03,498 --> 00:14:08,858
+before. It's taking less than a second
+now. In 50 seconds we can solve up to
+
+138
+00:14:08,858 --> 00:14:15,118
+64,000. So typically we expect that better
+order of growth means. Faster in practice
+
+139
+00:14:15,118 --> 00:14:21,051
+and but when it comes to examining the
+algorithms in detail we can, we can go
+
+140
+00:14:21,051 --> 00:14:26,731
+ahead and do the tests and figure out
+which algorithm is faster. And certainly
+
+141
+00:14:26,731 --> 00:14:31,893
+going from N^3 to N^2 lg N we're going to
+expect that we're going to have a much
+
+142
+00:14:31,893 --> 00:14:33,003
+better algorithm.

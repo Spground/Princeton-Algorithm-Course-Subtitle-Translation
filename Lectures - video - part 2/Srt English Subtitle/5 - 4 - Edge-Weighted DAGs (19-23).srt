@@ -1,0 +1,1123 @@
+1
+00:00:03,620 --> 00:00:08,720
+Now we're going to look at shortest paths
+and edge weighted dags.
+
+2
+00:00:08,720 --> 00:00:15,311
+This is a very common situation and we'll
+see a couple of important applications.
+
+3
+00:00:15,311 --> 00:00:19,234
+Suppose that you've got an edge weighted
+digraph.
+
+4
+00:00:19,234 --> 00:00:25,120
+That's our input to shortest paths.
+But you konw there's no directed cycles.
+
+5
+00:00:25,120 --> 00:00:29,355
+And actually that's true and in many
+applications we see some.
+
+6
+00:00:29,355 --> 00:00:35,094
+The question is this fact that it has no
+directed cycles make it easier to find the
+
+7
+00:00:35,094 --> 00:00:40,750
+surest path than in a general digraph,
+And the answer is yes, it certainly does.
+
+8
+00:00:40,750 --> 00:00:46,029
+So lets take a look at what happens.
+And the algorithm is very simple.
+
+9
+00:00:46,029 --> 00:00:51,691
+What we're going to do is, just consider
+the vertices in topological order.
+
+10
+00:00:51,691 --> 00:00:58,118
+Since there's no cycles, we know there's a
+topological ordering where we can lay out
+
+11
+00:00:58,118 --> 00:01:03,551
+the graph and all the edges point to
+vertices that we haven't seen yet.
+
+12
+00:01:03,551 --> 00:01:09,442
+And so we're just relaxed all edges,
+pointing from each vertex, taking them in
+
+13
+00:01:09,442 --> 00:01:13,701
+topological order.
+Again, this'll be easy to see in an
+
+14
+00:01:13,701 --> 00:01:18,858
+example.
+Alright, so here's a edge-weighted
+
+15
+00:01:19,103 --> 00:01:24,896
+directed acyclic graph.
+And the first thing that we do is sort it
+
+16
+00:01:24,896 --> 00:01:29,302
+in topological,
+Sort the vertices in topological order.
+
+17
+00:01:29,546 --> 00:01:35,747
+And we talked about an algorithm for doing
+that a couple of lectures ago.
+
+18
+00:01:35,992 --> 00:01:42,193
+So just using that first search.
+So we consider vertex zero, and relax all
+
+19
+00:01:42,193 --> 00:01:49,405
+the edges coming from vertex zero.
+And that gives us shortest paths to one
+
+20
+00:01:49,673 --> 00:01:54,323
+four and seven.
+So next we consider vertex one.
+
+21
+00:01:54,591 --> 00:02:00,851
+We don't do anything except take the next
+vertex in topological order.
+
+22
+00:02:01,119 --> 00:02:07,825
+We could of also taken four in this case.
+And so we're going to add that.
+
+23
+00:02:08,094 --> 00:02:14,085
+And then just relax along all the edges
+coming from that vertex.
+
+24
+00:02:14,353 --> 00:02:21,060
+In this case that gives us new shortest
+paths to two and to three.
+
+25
+00:02:21,346 --> 00:02:29,080
+Next is four relax and that gives us new
+shortest paths to five and six.
+
+26
+00:02:29,347 --> 00:02:36,225
+Next in topological left quarter is seven.
+Relax and that gives us a new shortest
+
+27
+00:02:36,225 --> 00:02:42,300
+path to two, but not to five.
+The path that we had to five was better.
+
+28
+00:02:42,563 --> 00:02:47,313
+So next in the order is five.
+Relax along its edges.
+
+29
+00:02:47,577 --> 00:02:52,678
+And it gives us better ways to get to both
+two and to six.
+
+30
+00:02:52,942 --> 00:02:56,372
+Then 2's next.
+Relax along its edges.
+
+31
+00:02:56,636 --> 00:03:02,001
+And it gives us, new better ways to get
+both three and six.
+
+32
+00:03:02,265 --> 00:03:06,575
+Then we do three, and relax.
+And that doesn't help.
+
+33
+00:03:06,838 --> 00:03:11,494
+And then we do six.
+And, when we're done all we did was
+
+34
+00:03:11,494 --> 00:03:15,420
+consider the edges in topological order
+and relax.
+
+35
+00:03:15,656 --> 00:03:22,095
+Then we have a shortest path tree.
+From the source to every vertex in the
+
+36
+00:03:22,095 --> 00:03:28,534
+directed acyclic weighed digraph.
+So that's a demo of a simple algorithm for
+
+37
+00:03:28,534 --> 00:03:32,454
+that case.
+Alright, why does that algorithm
+
+38
+00:03:32,454 --> 00:03:38,527
+considering the vertices and topological
+work for edge-weighted dags.
+
+39
+00:03:38,770 --> 00:03:45,491
+Now, one thing that's pretty important
+about this is that the edge weights could
+
+40
+00:03:45,491 --> 00:03:49,540
+even be negative doesn't matter to this
+algorithm.
+
+41
+00:03:49,783 --> 00:03:54,480
+So let's look again.
+Every edge is relaxed exactly once.
+
+42
+00:03:54,716 --> 00:04:01,346
+When, we add a vertex to the tree we,
+relax each of the edges that go from that
+
+43
+00:04:01,346 --> 00:04:05,372
+vertex.
+And, again, just as, with Dykestra, after
+
+44
+00:04:05,372 --> 00:04:12,081
+we're done with the relaxation, we have
+this condition holds that, distance to w
+
+45
+00:04:12,081 --> 00:04:17,132
+is less than or equal to the distance to v
+plus the edge weight.
+
+46
+00:04:17,369 --> 00:04:23,052
+Either it was before-hand and we ignored
+the weight, or we made it equal.
+
+47
+00:04:23,289 --> 00:04:29,991
+And so. when we relax an edge we have that
+condition.
+
+48
+00:04:29,991 --> 00:04:36,309
+And again, inequality holds until the
+algorithm terminates.
+
+49
+00:04:36,620 --> 00:04:42,770
+Well, first, again, we only.
+Decrease values in the distribute array.
+
+50
+00:04:42,969 --> 00:04:47,811
+We don't change it to increase.
+So the only thing that can happen to this
+
+51
+00:04:47,811 --> 00:04:51,989
+2W is that it gets smaller.
+And that's not going to violate the
+
+52
+00:04:51,989 --> 00:04:55,903
+inequality.
+And then the other thing is, this 2V's not
+
+53
+00:04:55,903 --> 00:04:58,954
+going to change because of the topological
+order.
+
+54
+00:04:59,153 --> 00:05:02,071
+When we process v, it's in topological
+order.
+
+55
+00:05:02,071 --> 00:05:05,720
+That means we're not going to find an edge
+that points 2V.
+
+56
+00:05:05,720 --> 00:05:10,846
+So this two v's not going to change.
+And edge weight doesn't change, so the
+
+57
+00:05:10,846 --> 00:05:14,774
+inequality holds.
+And this is true even if the edge weights
+
+58
+00:05:14,774 --> 00:05:19,346
+are negative.
+So shortest path optimality conditions
+
+59
+00:05:19,346 --> 00:05:23,136
+hold.
+And so this simple algorithm finds
+
+60
+00:05:23,136 --> 00:05:27,996
+shortest paths in edge-weighted directed
+acyclic graphs.
+
+61
+00:05:28,243 --> 00:05:33,680
+Whether or not the edge weights are
+positive or negative.
+
+62
+00:05:33,919 --> 00:05:39,588
+Pretty easy algorithm to implement.
+So this, acyclic, shortest path.
+
+63
+00:05:39,828 --> 00:05:43,900
+So, the goal is to compute edge two and
+disc two.
+
+64
+00:05:43,900 --> 00:05:50,767
+And then we use those to respond to client
+queries of the length of the shortest path
+
+65
+00:05:50,767 --> 00:05:54,520
+and the path itself.
+This is the constructor.
+
+66
+00:05:54,739 --> 00:05:59,133
+We build the arrays.
+We initialize this distances to infinity.
+
+67
+00:05:59,133 --> 00:06:05,712
+Distance the source to zero.
+Then we use our topological sort algorithm
+
+68
+00:06:05,712 --> 00:06:13,214
+on di-graphs to compute an iterable that
+gives us the vertices in topological
+
+69
+00:06:13,214 --> 00:06:17,542
+order.
+And that's the order method in this
+
+70
+00:06:17,542 --> 00:06:23,409
+topological class.
+So that's using the API that we set up for
+
+71
+00:06:23,409 --> 00:06:28,795
+topological sorting,
+Which has to be adapted to weighted
+
+72
+00:06:28,795 --> 00:06:33,700
+di-graphs.
+But that's just adding some nomenclature.
+
+73
+00:06:33,700 --> 00:06:36,789
+So we take the vertices in topological
+order.
+
+74
+00:06:36,995 --> 00:06:42,214
+We take for every vertex in topological
+order, taken in topological order.
+
+75
+00:06:42,214 --> 00:06:46,540
+We take every edge that emanates from that
+vertex and relax it.
+
+76
+00:06:46,743 --> 00:06:51,496
+It couldn't be simpler.
+And then we're done we have the other
+
+77
+00:06:51,496 --> 00:06:55,706
+shortest pass.
+And that works even for negative edge
+
+78
+00:06:55,706 --> 00:06:57,780
+weights.
+Pretty simple.
+
+79
+00:06:57,780 --> 00:07:05,113
+Now, as an example of a, familiar
+application of, shortest paths in dags and
+
+80
+00:07:05,113 --> 00:07:10,113
+weighted dags we'll look at, the idea of
+scene carving.
+
+81
+00:07:10,363 --> 00:07:17,530
+And this is a relatively recent algorithm
+that, was developed that has, important
+
+82
+00:07:17,530 --> 00:07:22,530
+application that you'll see, in this,
+YouTube film clip.
+
+83
+00:07:22,530 --> 00:07:26,080
+Scene carving for content-aware image
+resizing.
+
+84
+00:07:26,940 --> 00:07:30,907
+Digital media today has the ability to
+support dynamic page layouts.
+
+85
+00:07:30,907 --> 00:07:35,458
+By changing the window or display size, we
+can change the layout of a document.
+
+86
+00:07:35,458 --> 00:07:40,067
+However, images imbedded in a document
+typically remain rigid in size and shape.
+
+87
+00:07:40,067 --> 00:07:43,860
+Resizing is also important to put images
+into different displays.
+
+88
+00:07:43,860 --> 00:07:48,703
+Current techniques, including cropping or
+scaling, are limited in their abilities to
+
+89
+00:07:48,703 --> 00:07:53,353
+capture the image content.
+We present a method for content aware
+
+90
+00:07:53,353 --> 00:07:56,853
+resizing of images.
+Our technique enables resizing while
+
+91
+00:07:56,853 --> 00:08:01,440
+adapting the image content and layout.
+This is sometimes called re-targeting.
+
+92
+00:08:06,060 --> 00:08:11,299
+We also define a flexible, multi-size
+representation for images that supports
+
+93
+00:08:11,299 --> 00:08:16,630
+continuous resizing.
+An image can be shrunk in a non-uniform
+
+94
+00:08:16,630 --> 00:08:20,945
+manner while preserving its features, but
+it can also be extended beyond its
+
+95
+00:08:20,945 --> 00:08:26,340
+original size.
+Instead of scrolling through images that
+
+96
+00:08:26,340 --> 00:08:30,840
+do not fit in a given display, we
+gracefully re-size them to fit inside the
+
+97
+00:08:30,840 --> 00:08:36,308
+window.
+For example, assume that we need to change
+
+98
+00:08:36,308 --> 00:08:39,712
+the width of an image.
+The simplest way to do this is to remove
+
+99
+00:08:39,712 --> 00:08:43,601
+columns of pixels from the image.
+The best column to remove would be the
+
+100
+00:08:43,601 --> 00:08:45,924
+least noticeable, or least important
+column.
+
+101
+00:08:45,924 --> 00:08:50,408
+We can search for this column by defining
+the importance or energy function on the
+
+102
+00:08:50,408 --> 00:08:52,677
+image.
+In this example, we use the gradient
+
+103
+00:08:52,677 --> 00:08:56,108
+magnitude of the image.
+Next, we look for the column which
+
+104
+00:08:56,108 --> 00:09:00,496
+contains the least energy and remove it.
+However, using such an approach quickly
+
+105
+00:09:00,496 --> 00:09:04,273
+leads to serious artifacts.
+Therefore, instead of using rigid columns,
+
+106
+00:09:04,273 --> 00:09:08,661
+we search for connected paths of pixels,
+or seams, from one side of the image to
+
+107
+00:09:08,661 --> 00:09:13,105
+the other, that contain the least energy.
+This can be done using a simple dynamic
+
+108
+00:09:13,105 --> 00:09:17,549
+programming algorithm as described in the
+paper in both vertical and horizontal
+
+109
+00:09:17,549 --> 00:09:21,021
+directions.
+Here's another example of an image, its
+
+110
+00:09:21,021 --> 00:09:25,320
+energy function, and the least noticeable
+horizontal and vertical seams.
+
+111
+00:09:26,820 --> 00:09:31,708
+By successively removing horizontal and
+vertical seams, the image can be resized
+
+112
+00:09:31,708 --> 00:09:35,435
+in a non-uniform manner.
+The order of seam removal in an image
+
+113
+00:09:35,435 --> 00:09:40,018
+defines an order on the pixels on the
+image by storing the simple indexing
+
+114
+00:09:40,018 --> 00:09:43,440
+information we create content to where
+multisize images.
+
+115
+00:09:44,440 --> 00:09:50,009
+So that's a amazingly powerful image
+processing process.
+
+116
+00:09:50,009 --> 00:09:57,567
+And you'll find it all over image
+processing applications, from Photoshop to
+
+117
+00:09:57,567 --> 00:10:03,435
+GIMP to Image Magic.
+And actually nowadays almost any image
+
+118
+00:10:03,435 --> 00:10:08,110
+that you see on your cell phone or your
+Tablet.
+
+119
+00:10:08,110 --> 00:10:13,001
+And what really, does that have to do with
+shortest paths?
+
+120
+00:10:13,001 --> 00:10:19,952
+Well, it's actually a direct application
+of shortest paths on a directed acyclic
+
+121
+00:10:19,952 --> 00:10:23,813
+graph.
+So what we do is, build a huge directed
+
+122
+00:10:23,813 --> 00:10:27,846
+acyclic graph.
+And this is a really huge graph.
+
+123
+00:10:27,846 --> 00:10:34,540
+Because images now, at high resolution,
+can have millions or billions of pixels.
+
+124
+00:10:34,817 --> 00:10:39,343
+And so.
+Every pixel corresponds to a vertex in
+
+125
+00:10:39,343 --> 00:10:44,318
+this graph.
+And the edges are gonna be just directed
+
+126
+00:10:44,318 --> 00:10:48,950
+edges from every pixel to its three
+downward neighbors.
+
+127
+00:10:49,183 --> 00:10:53,784
+And then there's, what weight do we assign
+to the pixels?
+
+128
+00:10:53,784 --> 00:11:00,568
+Well, there's an energy function that has
+to do with the image processing, that is,
+
+129
+00:11:01,036 --> 00:11:04,389
+a function of the eight neighboring
+pixels.
+
+130
+00:11:04,389 --> 00:11:10,004
+Every, every pixel, has a relationship
+with all its neighboring pixels.
+
+131
+00:11:10,004 --> 00:11:17,490
+And, the energy function, has it, is, is a
+image processing, concept that, is.
+
+132
+00:11:17,490 --> 00:11:21,248
+Perfect for, assigning weights, in, in
+this instance.
+
+133
+00:11:21,474 --> 00:11:27,187
+And so, that gives, the weights.
+And then, a seam is just the shortest
+
+134
+00:11:27,187 --> 00:11:30,570
+path, that goes from the top to the
+bottom.
+
+135
+00:11:30,818 --> 00:11:38,035
+So you can, imagine an imaginary source
+that goes all to the top ones, and, just,
+
+136
+00:11:38,283 --> 00:11:44,753
+run the shortest pass algorithm that we
+just gave, and, it'll find a seam.
+
+137
+00:11:45,002 --> 00:11:52,052
+So that's the lowest energy, one pixel
+cut, through the image, and then, the
+
+138
+00:11:52,052 --> 00:11:59,517
+resizing algorithm, just deletes, one, one
+pixel on each row, along that seam, and
+
+139
+00:11:59,517 --> 00:12:01,757
+that's the algorithm.
+Which.
+
+140
+00:12:01,757 --> 00:12:07,443
+The shortest pass algorithm,
+I'im I'm sorry, allows and enables the
+
+141
+00:12:07,740 --> 00:12:14,005
+re-sizing for a really huge graph.
+And, and it's really important to realize
+
+142
+00:12:14,005 --> 00:12:18,582
+that you have to have an efficient
+implementation of the shortest pass
+
+143
+00:12:18,582 --> 00:12:21,188
+algorithm.
+Because there's so many pixels.
+
+144
+00:12:21,188 --> 00:12:25,891
+And certainly the topological sort
+algorithm that we gave is extremely
+
+145
+00:12:25,891 --> 00:12:30,594
+efficient linear time algorithm.
+And you can see the effects of that
+
+146
+00:12:30,594 --> 00:12:36,524
+efficient algorithm all around you.
+Here's another completely different
+
+147
+00:12:36,524 --> 00:12:42,284
+application of shortest paths in directed
+acyclic graphs.
+
+148
+00:12:42,284 --> 00:12:49,703
+And the idea is that actually since
+negative weights are allowed, we can find
+
+149
+00:12:49,703 --> 00:12:56,440
+longest paths in edge-weighted DAGs, just
+by negating all the weights.
+
+150
+00:12:56,744 --> 00:13:04,970
+So what I want is I have edge.
+Again I have an edge weighted dag.
+
+151
+00:13:05,187 --> 00:13:09,455
+And what I want is, this is with, I guess
+five as the source.
+
+152
+00:13:09,455 --> 00:13:13,073
+I, I don't want the shortest path from
+five to two.
+
+153
+00:13:13,073 --> 00:13:18,467
+I want the longest path from five to two.
+We'll see an application why that's
+
+154
+00:13:18,467 --> 00:13:22,637
+important in a minute.
+And in order to get that, all I do is just
+
+155
+00:13:22,637 --> 00:13:25,750
+negate all the weights, and the run
+shortest paths.
+
+156
+00:13:25,750 --> 00:13:31,387
+And if you add up negative weights to get
+the smallest negative number, then to
+
+157
+00:13:31,387 --> 00:13:37,166
+negate the answer that's the longest path,
+and it works because the algorithm, top
+
+158
+00:13:37,166 --> 00:13:42,304
+logical sort algorithm, doesn't care
+whether the weights are positive or
+
+159
+00:13:42,304 --> 00:13:45,943
+negative.
+In general graphs it does matter as we'll
+
+160
+00:13:45,943 --> 00:13:51,794
+see in a minute, but for a cyclic graph it
+doesn't matter, we can find longest path
+
+161
+00:13:51,794 --> 00:13:57,360
+in a cyclic graph just by negating all the
+weights, therefore we can solve the
+
+162
+00:13:57,360 --> 00:14:00,900
+longest paths problem.
+So that's a key point.
+
+163
+00:14:00,900 --> 00:14:05,053
+And now, now you can look at applications
+that had problems.
+
+164
+00:14:05,053 --> 00:14:10,543
+And there's a really important application
+for longest paths in edge weighted
+
+165
+00:14:10,543 --> 00:14:14,906
+directed A-cyclic graphs.
+And that's called the Job Scheduling
+
+166
+00:14:14,906 --> 00:14:17,825
+Problem.
+And this is just another example to show
+
+167
+00:14:17,825 --> 00:14:21,962
+the importance of the shortest paths
+problem as a problem solving model.
+
+168
+00:14:22,134 --> 00:14:26,156
+This particular problem doesn't seem
+related to shortest paths at all.
+
+169
+00:14:26,156 --> 00:14:29,776
+But we'll show how to formulate it as a
+shortest paths problem.
+
+170
+00:14:29,776 --> 00:14:34,200
+And that's great, because we have an
+efficient solution to the shortest paths
+
+171
+00:14:34,200 --> 00:14:37,073
+problems.
+Or actually, it's a longest paths problem
+
+172
+00:14:37,073 --> 00:14:41,002
+in this case.
+So this is just an example that arises
+
+173
+00:14:41,002 --> 00:14:46,023
+say, in man, in manufacturing.
+Or other applica, applications we have a
+
+174
+00:14:46,023 --> 00:14:50,831
+complex set of interacting processes.
+So this we call, job scheduling.
+
+175
+00:14:50,831 --> 00:14:55,287
+Parallel job scheduling.
+So we've got a bunch of let's say a
+
+176
+00:14:55,287 --> 00:14:59,530
+factory manager has a bunch of jobs to
+manage, And they have.
+
+177
+00:14:59,530 --> 00:15:05,591
+Durations and precedents constraints.
+So durations just means the job takes a
+
+178
+00:15:05,591 --> 00:15:10,745
+certain amount of time.
+And precedents constraints means that you
+
+179
+00:15:10,745 --> 00:15:15,887
+can't start job one until after job zero
+is done, or seven, or nine.
+
+180
+00:15:15,887 --> 00:15:20,873
+One, seven and nine have to start sometime
+after jo-, job zero.
+
+181
+00:15:21,106 --> 00:15:26,560
+And similarly three and eight have to
+start after six, and so forth.
+
+182
+00:15:26,788 --> 00:15:32,884
+So maybe this is manufacturing a car.
+And, you know you can't, paint the car
+
+183
+00:15:32,884 --> 00:15:38,142
+until after you put the doors on.
+Or whatever else you can imagine.
+
+184
+00:15:38,371 --> 00:15:44,543
+Easily, setting up, precedence
+constraints, that are natural, for trying
+
+185
+00:15:44,543 --> 00:15:50,868
+to complete this whole, set of jobs.
+And so what we want to do is, find a start
+
+186
+00:15:50,868 --> 00:15:55,670
+time for each job.
+That minimizes the completion time.
+
+187
+00:15:55,926 --> 00:16:00,550
+While still respecting all the precedence
+constraints.
+
+188
+00:16:00,550 --> 00:16:04,951
+So when do we start each job?
+That's the parallel job scheduling
+
+189
+00:16:04,951 --> 00:16:08,252
+problem.
+We, we assume that we got enough workers
+
+190
+00:16:08,252 --> 00:16:12,997
+that we can have a bunch of jobs going on
+at the same time, same time.
+
+191
+00:16:12,997 --> 00:16:20,276
+So, This graph model shows that we can
+change the job scheduling problem into a
+
+192
+00:16:20,276 --> 00:16:25,838
+graph processing problem.
+So, what we're going to do is, create an
+
+193
+00:16:25,838 --> 00:16:30,705
+edge weighted directed acyclic graph the
+following way.
+
+194
+00:16:30,705 --> 00:16:36,789
+We're going to have a source and sync
+vortex that the source is, begin
+
+195
+00:16:36,789 --> 00:16:40,440
+everything and the sync is, end
+everything.
+
+196
+00:16:40,680 --> 00:16:44,534
+And then, well at the zero weightage from
+the.
+
+197
+00:16:44,534 --> 00:16:50,957
+For every job will have a start and a
+finish vertex for that job, and then we'll
+
+198
+00:16:50,957 --> 00:16:54,330
+have an edge, whose weight is the
+duration.
+
+199
+00:16:54,556 --> 00:17:00,738
+And from the finished vertex of every job,
+we'll have edges to the start vertex of
+
+200
+00:17:00,738 --> 00:17:07,070
+the jobs that it has to complete before.
+That's, those are the precedence
+
+201
+00:17:07,070 --> 00:17:11,141
+constraints.
+We have a zero weight edge from, the,
+
+202
+00:17:11,367 --> 00:17:17,549
+overall source to every job start, and a
+zero weight edge from the overall, from
+
+203
+00:17:17,549 --> 00:17:23,734
+every job finish to, the, sink vertex.
+And so, in summary, there's three edges
+
+204
+00:17:23,734 --> 00:17:27,533
+for every job.
+There's from the begin to the end, the
+
+205
+00:17:27,533 --> 00:17:30,820
+start to the finish, weighted by the
+duration.
+
+206
+00:17:30,820 --> 00:17:36,591
+From the source to the beginning, zero
+weight, and from the end to the sync, zero
+
+207
+00:17:36,591 --> 00:17:41,924
+weight, in the edges for the precedence
+constraints, also have zero weight.
+
+208
+00:17:41,924 --> 00:17:47,257
+So that's a graph model, we took our
+scheduling problem and now we have a
+
+209
+00:17:47,257 --> 00:17:50,690
+graph.
+And what relates this to what we've been
+
+210
+00:17:50,690 --> 00:17:55,220
+talking about is the longest path from the
+source to each job.
+
+211
+00:17:55,487 --> 00:18:02,082
+It turns out to give a schedule.
+So the job scheduling problem corresponds
+
+212
+00:18:02,082 --> 00:18:09,787
+to a solution to the longest path problem
+in directed acyclic graph by the way this
+
+213
+00:18:09,787 --> 00:18:15,735
+graph doesn't have any cycles because that
+would mean we have to do a job before
+
+214
+00:18:15,735 --> 00:18:21,684
+another job insist that one be done after
+zero and that two be done after one.
+
+215
+00:18:21,684 --> 00:18:27,845
+We can't also insist that zero be done
+after two because that would be a present
+
+216
+00:18:27,845 --> 00:18:34,586
+cycle that couldn't be satisfied at all.
+And so the, the n-, now you have to think
+
+217
+00:18:34,586 --> 00:18:40,320
+of this quite a while to understand why
+the longest path from the source.
+
+218
+00:18:40,510 --> 00:18:45,985
+We'll schedule each job, but, that's a
+fact in that it means, then, we have, a
+
+219
+00:18:45,985 --> 00:18:49,295
+fast, linear time algorithm for solving
+this problem.
+
+220
+00:18:49,486 --> 00:18:54,706
+Negate all the weights, run shortest paths
+with topological sort, and negate the
+
+221
+00:18:54,706 --> 00:18:57,889
+answer, and you have the start times for
+every job.
+
+222
+00:18:58,080 --> 00:19:03,109
+In fact, in the book and the book site,
+you'll find code that not solves, this,
+
+223
+00:19:03,491 --> 00:19:08,647
+schedule, parallel job scheduling problem
+using the critical path method, Again,
+
+224
+00:19:08,647 --> 00:19:14,667
+showing how important it is to have, a
+fast and efficient solution to the
+
+225
+00:19:14,667 --> 00:19:16,340
+shortest paths problem.

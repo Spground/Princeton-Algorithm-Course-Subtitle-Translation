@@ -1,0 +1,277 @@
+Now we will look a Kruskal's algorithm for
+computing the MST this is an old algorithm
+that dates back over 50 years but it is an
+effective way to solve the problem.
+The idea is very simple.
+We are going to take the edges and we are
+going to sort them by weight.
+And we are going to consider ''em in order
+of ascending weight.
+And the algorithm is simply add the next
+edge to the tree.
+Unless that edge would create a cycle.
+If it, if the edge creates cycle, ignore
+it and go on to the next one.
+Let's look at a demo of Kruskal's
+algorithm.
+Okay.
+So we have the edges sorted by weight and
+we're going to take them in ascending
+order of weight.
+The smallest edge is in the MST.
+And so we add that to the tree it doesn't
+create a cycle.
+Next smallest edge is two, three.
+That doesn't create a cycle.
+Next one is one, seven that's fine.
+Next one is zero, two.
+Next one, five, seven.
+Now when we get to one, three that one
+creates a cycle and the algorithm says,
+creates a cycle just ignore it.
+Next one is one, five that one also
+creates a cycle. one, five, seven.
+Again, just ignore it.
+Two, seven creates a cycle not in the MST.
+Four, five that, the next smallest edge
+does not create a cycle so we add it to
+the MST.
+One, two creates a cycle.
+Four, seven creates a cycle.
+Zero, four creates a cycle.
+And finally we get to six, two which does
+not create a cycle, so we add that to the
+tree.
+At this point we have an MST we could
+check that we have V - one edges and stop
+or we can just keep going and see that the
+other edges in the graph create a cycle.
+And when we're done considering all the
+edges then we have computed the minimum
+spanning tree.
+That's with Kruskal's Algorithm.
+Consider the edges in descending order of
+weight, add the next edge to T, unless
+doing so would create a cycle.
+Now let's look at what Kruskal's algorithm
+does on a very large graph.
+You get a good feeling for what it's
+doing.
+It's taking the small edges and they
+coalless together in little clusters and
+eventually the edges get longer and longer
+and they connect together the clusters.
+Initially it is broken up into the very
+small edges and after a while if you look
+at the larger clusters eventually an edge
+will come that will connect them together.
+It's not going to be so easy to see how
+the algorithm ends.
+Though there's some, long edge there.
+That's the longest edge in the MST that'll
+finally connect the graph.
+This simulation really gives a good
+feeling for Kruskal's algorithm.
+In fact when we first had personal
+computers I was fortunate to be in Xerox
+Park.
+And I remember very well in the late 70s,
+This was one of the first algorithms that
+I wanted to see visualized on a personal
+computer.
+And I, I wrote a program at that time that
+produced pretty much this image it's a
+very interesting way to look at MST
+algorithms.
+Alright, so it's easy to implement we have
+to prove that it computes the MST of
+course I and we've done a lot of work
+setting that up.
+And.
+We do so just by proving that its a
+special case of the greedy MST algorithm.
+So what does that mean?
+Well.
+It, suppose that crosco's algorithm.
+Colors a given edge black.
+So say it's VW.
+So we'll define a cut.
+That, is the set of vertices that are
+connected to V.
+So it might be just a V, but if theres any
+black edges connecting V to other vertices
+we put all of those in the cut.
+So for that cut there's no black crossing
+edge.
+Cuz it's a, it's a component.
+And the other thing is that there's no
+crossing edge with lower weight than VW.
+And why is that?
+Well we haven't examined any of those
+edges yet, and they're all longer because
+we are considering the edges in increasing
+order of their weight.
+So this new edge that connects V somewhere
+else is a crossing edge of minimal weight.
+And so therefore the algorithm always
+finds a cut and colors a crossing edge of
+minimal weight for that cut black.
+And it's an instance of the Greedy
+Algorithm.
+Now we still have a bit away from having
+an implementation of Kruskal's algorithm.
+So the question is, how do we know whether
+adding a new edge to the tree will cause a
+cycle?
+So, you might think about how difficult
+that is.
+I've, I've got a tree, that's represented
+as the set of edges or however.
+And I have a new edge, and I want to know
+whether it creates a cycle or not.
+How, how difficult is that going to be?
+Well, it turns out way back in the first
+lecture of algorithms part one we had a
+way.
+What one thing we could do is just run DFS
+to check if we can get to W from V.
+That'd take time proportional to V.
+But the union find data structure that we
+did in the first lecture absolutely does
+the job.
+It's just testing whether this edge
+connects anybody in, in the equivalence
+class corresponding to V with anybody in
+the equivalence class corresponding to Y,
+for to W and if it did, it creates a
+cycle.
+So union find is exactly what we need.
+So we're going to what we're going to do
+is maintain a set for each of the
+connected components in the spanning tree,
+that we built up so far and so if the new
+edge connects vertices that are in the
+same set, then that means it would create
+a cycle.
+And otherwise we're going to be adding the
+edge to the tree.
+So then we just do the union operation and
+merge the set containing V with the set
+containing W.
+Those are the two things that we need to
+do and those are the two things that union
+find does for us.
+So this leads to a very compact
+implementation of Kruskal's Algorithm.
+Now to consider the edges in order, we'll
+use a, a priority queue, a modern data
+structure.
+So let's take a look the, the every line
+of this implementation of Kruskal's
+algorithm.
+We are going to have a queue of edges.
+That's how we are going to represent the
+MST.
+It could be a stack or bag, but, but we'll
+use a queue.
+And then, the, Cruskill MST algorithm
+takes a graph.
+And it's going to compute the MST in this
+MST.
+And to do that, it's going to use a
+priority queue, a min priority queue.
+A minimum oriented priority queue of
+edges.
+So we'll build that minimum, priority
+queue.
+Now edges are comparable.
+We had a compare to a method so our, our,
+generic priority queue code is going to
+work fine.
+And so, what we'll do is we'll put all the
+edges in the graph into the priority
+queue.
+So that's building a priority queue.
+Containing all the edges in the graph.
+Alternatively, we could put the edges in
+an array and sort the array, but priority
+queues.
+A more elegant way to express this, and is
+a way to look at more efficient algorithms
+as well.
+Okay, so that's priority queue, so that's
+the first data structure from part one
+that we're going to make use of.
+And then the second one is the union find
+data structure.
+So we're going to build a union find data
+structure with for vertices because the
+spanning force divides the vertices into
+equivalence classes.
+So then we go into the main loop.
+And the main loop stops in two conditions.
+We run out of edges is one, where we'd
+have a minimum spinning force.
+Or the other condition is we get to V -
+one edges in the MST.
+So as long as neither one of those is
+true, then we've got an edge in the
+priority queue, and we want to take the
+smallest one.
+We want to get its vertices V and W either
+and other.
+And then we want to check using the union
+find algorithm if they're connected.
+If they're connected we don't want to do
+anything, if they're not connected then we
+want to merge them, and put that edge onto
+the MST.
+Thats it.
+And then when the that's the full
+implementation and then we have the edges
+method for the client to return the MST.
+It's quite a compact implementation of a
+classic algorithm.
+Using the basic data structures that we
+built up in algorithm part one data
+structures and algorithms of priority
+queue.
+And union find gives a, a, really fine
+implementation of this MST algorithm.
+So what about the running time of this
+algorithm?
+Well it's not hard to see that it's going
+to compute the MST in time proportional to
+e log e.
+It's linearithmic in the number of edges.
+Which means that we can use it for huge
+graphs.
+So this is just, this table is just a
+proof that, summarizes the costs.
+We're going to first build the priority
+queue.
+And, we can do that in linear time using
+bottom-up, construction method.
+We have to, every edge comes off the
+priority Q.
+So there's E of them, and it takes log E
+per operation.
+Snd then union operations, every vertex is
+involved in one, and connected operations,
+every edge is involved in one.
+So the total time is dominated by the E
+log E for the priority queue operations.
+One thing to note is that, if the edges
+come in, in sorted order, for some reason,
+it's almost linear.
+The order of growth is E log star of E.
+And, actually we don't have to always,
+sort'em.
+We can, in real life situations, we can
+stop when we get the V-1 edges in the MST.
+When we have those v - one edges we can
+stop and usually that's for practical
+situations that's way before we see all
+the edges in the graph.
+So that's Kruskal's algorithm for
+computing the MST.

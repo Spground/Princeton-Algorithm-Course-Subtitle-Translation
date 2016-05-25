@@ -1,0 +1,1053 @@
+1
+00:00:04,520 --> 00:00:11,076
+Now, we're going to finish up by looking
+at some extra operations that are
+
+2
+00:00:11,076 --> 00:00:15,334
+supported for string keys when we use
+Tries.
+
+3
+00:00:15,590 --> 00:00:22,533
+So, we're going to look at a couple of
+character based operations that can, that
+
+4
+00:00:22,533 --> 00:00:30,180
+are quite useful and, and can be supported
+by the string symbol table API with tries.
+
+5
+00:00:30,444 --> 00:00:37,739
+One important one is a prefix match.
+So that's given a prefix, like say sh,
+
+6
+00:00:38,003 --> 00:00:42,710
+What we want is the method to return all
+the keys.
+
+7
+00:00:42,710 --> 00:00:49,236
+Let's start with that prefix.
+In this case, it'll be shells, shore and
+
+8
+00:00:49,236 --> 00:00:53,149
+she.
+Another one is so-called wild card match.
+
+9
+00:00:53,149 --> 00:00:59,776
+So that's when we don't specify one of the
+characters, or multiple characters.
+
+10
+00:00:59,776 --> 00:01:06,921
+So we put a dot to say we'll take any key
+that matches the other characters and we
+
+11
+00:01:06,921 --> 00:01:11,999
+don't care what that one is.
+So he. would match she and the.
+
+12
+00:01:12,344 --> 00:01:15,873
+And another one is so-called longest
+prefix.
+
+13
+00:01:15,873 --> 00:01:23,103
+So now we've got a long key and we want to
+find the best match that's in our symbol
+
+14
+00:01:23,103 --> 00:01:28,251
+table that matches that key.
+The key in the symbol table that has the
+
+15
+00:01:28,251 --> 00:01:32,613
+longest match with our key.
+So going, in this case, the ones that's
+
+16
+00:01:32,613 --> 00:01:35,567
+the longest prefix of shells sort is
+shells.
+
+17
+00:01:35,768 --> 00:01:41,406
+Later on we're going to see applications
+of some of these and the important idea
+
+18
+00:01:41,406 --> 00:01:44,426
+for now is that these are easy to
+articulate.
+
+19
+00:01:44,426 --> 00:01:49,300
+And not only that, they're easy to
+implement with tries.
+
+20
+00:01:49,300 --> 00:01:57,313
+Nts tr, and Turner research tree.
+So, we're going to take our standard API
+
+21
+00:01:57,313 --> 00:02:03,916
+and add these four methods.
+So, while there's keys that returns all
+
+22
+00:02:03,916 --> 00:02:06,607
+keys.
+And, and, as is our usual practice.
+
+23
+00:02:06,804 --> 00:02:11,530
+When we have a lot of things to return,
+we're going to return'em as a, as an
+
+24
+00:02:11,530 --> 00:02:15,141
+iterable.
+So the clients can just, iterate through
+
+25
+00:02:15,337 --> 00:02:19,670
+the what's returned.
+And that's usually what clients want to
+
+26
+00:02:19,670 --> 00:02:22,098
+do.
+And then we have keys with prefix.
+
+27
+00:02:22,295 --> 00:02:27,415
+Give a string s, and the iterable will
+return all the keys in the symbol table
+
+28
+00:02:27,415 --> 00:02:31,813
+that have s as a prefix.
+If the client wants to find the associated
+
+29
+00:02:31,813 --> 00:02:34,570
+values, they can do gets to get the
+values.
+
+30
+00:02:34,570 --> 00:02:41,272
+And then we have keys that match so that's
+where we allowed dot to be a wild card, in
+
+31
+00:02:41,272 --> 00:02:47,679
+S, and we want to return all the keys
+that, match, S, taking dot to be a wild
+
+32
+00:02:47,679 --> 00:02:51,215
+card.
+And then longest prefix of S is the key in
+
+33
+00:02:51,215 --> 00:02:56,002
+there that's the longest prefix of S.
+We're gonna see later on.
+
+34
+00:02:56,002 --> 00:03:01,673
+This particular one plays, an important,
+role in a, in a more complicated
+
+35
+00:03:01,673 --> 00:03:05,312
+algorithm.
+We could also go ahead and add all the
+
+36
+00:03:05,312 --> 00:03:10,840
+ordered symbol table methods that we
+considered when we looked at binary search
+
+37
+00:03:10,840 --> 00:03:15,816
+trees like floor, and, and rank.
+And, we're not going to take time to do
+
+38
+00:03:15,816 --> 00:03:18,650
+that right now.
+It's very straightforward.
+
+39
+00:03:20,432 --> 00:03:26,436
+So one thing that we haven't really talked
+about but it's a good warm up for the
+
+40
+00:03:26,436 --> 00:03:29,550
+kinds of methods that we're going to look
+up.
+
+41
+00:03:30,109 --> 00:03:35,709
+Look at for these implementations is
+ordered iteration.
+
+42
+00:03:35,709 --> 00:03:44,331
+And this is trie-traversal, so we are
+going to do an in-order traversal of the
+
+43
+00:03:44,331 --> 00:03:51,498
+trie, that is, visit the left, now visit
+the middle, visit the right.
+
+44
+00:03:51,834 --> 00:03:59,792
+In that traversal, we can maintain the
+sequence of characters on the path from
+
+45
+00:03:59,792 --> 00:04:05,643
+the root to the current node just by
+adding an, adding a character when we go
+
+46
+00:04:05,643 --> 00:04:08,862
+down and removing a character when we go
+up.
+
+47
+00:04:08,862 --> 00:04:15,882
+And when we encounter values,
+Then we can put out this, the characters
+
+48
+00:04:15,882 --> 00:04:21,686
+that we have, and that's the way to pull
+out all the keys in the trie.
+
+49
+00:04:21,686 --> 00:04:27,006
+So, for example, in this case we go down
+and we have b, and then we hit the y's.
+
+50
+00:04:27,006 --> 00:04:31,096
+So we can output,.
+Say onto a queue we can output by.
+
+51
+00:04:31,096 --> 00:04:37,223
+And then we go back, we have s, e and a.
+And, we find a value, so we go ahead and
+
+52
+00:04:37,223 --> 00:04:41,789
+put out the a.
+Now we drop the a and do the l, and that's
+
+53
+00:04:41,789 --> 00:04:48,098
+the l, l, l, l,. and then we get to that
+s, we have a value we can put ourselves.
+
+54
+00:04:48,098 --> 00:04:53,146
+And then we can drop these, get back to
+the s, and get the sh.
+
+55
+00:04:53,398 --> 00:04:57,773
+She, finite value, and put, put the she in
+the queue.
+
+56
+00:04:57,773 --> 00:05:04,923
+Lls and put shells on the queue.
+Drop all those values down to the h, and
+
+57
+00:05:04,923 --> 00:05:10,055
+get us sho, shor, shore,
+Find the value and drop shore onto the
+
+58
+00:05:10,055 --> 00:05:14,900
+queue.
+And then finally, t, th, the and, find a
+
+59
+00:05:14,900 --> 00:05:22,392
+value and put the, down the queue.
+So it's easy to, very easy to keep track
+
+60
+00:05:22,392 --> 00:05:30,759
+of the sequence of characters on the path
+from the rout to every node and every node
+
+61
+00:05:30,759 --> 00:05:35,448
+check for value and programmer key.
+That's a ordered iteration and
+
+62
+00:05:35,662 --> 00:05:41,559
+implementations of these extra operations
+are just based on multiplying ordered
+
+63
+00:05:41,559 --> 00:05:46,346
+iteration.
+So this is a implementation of keys with,
+
+64
+00:05:46,346 --> 00:05:54,064
+which is essentially of the operation that
+I was tracing on the last slide.
+
+65
+00:05:54,324 --> 00:06:01,349
+So if client wants keys, we make a queue.
+Then we call a recursive routine that
+
+66
+00:06:01,609 --> 00:06:06,310
+collects all the keys in the try, starting
+at that node.
+
+67
+00:06:06,536 --> 00:06:13,171
+And, given a null string, which is, the,
+sequence of characters on the path to the
+
+68
+00:06:13,171 --> 00:06:17,544
+given node.
+When that recursive routine, returns, then
+
+69
+00:06:17,770 --> 00:06:23,350
+we just return the queue.
+And the recursive routine does encode what
+
+70
+00:06:23,350 --> 00:06:27,647
+I said in words, most of the time.
+This is for a try.
+
+71
+00:06:27,647 --> 00:06:33,453
+You can do the same thing for a Turner
+research tree with just a little more
+
+72
+00:06:33,453 --> 00:06:37,863
+code.
+So for every character we just move down
+
+73
+00:06:37,863 --> 00:06:45,330
+the trie for that character add the
+character to the prefix and also pass the
+
+74
+00:06:45,330 --> 00:06:49,878
+queue along.
+If we get a null value, we put what we
+
+75
+00:06:49,878 --> 00:06:57,431
+have on the queue when we get null when we
+return. So a very simple implementation of
+
+76
+00:06:57,688 --> 00:07:03,736
+ordered iteration of the recursive.
+So that's the implementation of the keys
+
+77
+00:07:03,736 --> 00:07:08,792
+method.
+So prefix matches an other things like
+
+78
+00:07:08,792 --> 00:07:13,749
+that going to work.
+Are going to work, just by modifying that,
+
+79
+00:07:13,988 --> 00:07:21,246
+and you're familiar with, prefix matches,
+When you type, nowadays, in your browser,
+
+80
+00:07:21,485 --> 00:07:28,185
+a search, function, you're getting, a
+prefix match of all the things that you
+
+81
+00:07:28,185 --> 00:07:33,688
+typed or other people have typed, that,
+matches those strings.
+
+82
+00:07:33,927 --> 00:07:39,430
+And you find that also nowadays when
+searching in your address books.
+
+83
+00:07:39,670 --> 00:07:47,611
+It's a quite, common function nowadays.
+So let's look at how that looks, in an
+
+84
+00:07:47,611 --> 00:07:51,551
+R-way trie.
+So what about finding all the keys in a
+
+85
+00:07:51,551 --> 00:07:55,255
+symbol table that start with a given,
+prefix.
+
+86
+00:07:55,255 --> 00:08:01,875
+Well, we just search for that prefix.
+And then, then just do a collect at the
+
+87
+00:08:01,875 --> 00:08:06,210
+keys in that sub tri.
+So that's, very straightforward.
+
+88
+00:08:06,676 --> 00:08:12,628
+So you get the node.
+That is the one you get to by starting
+
+89
+00:08:12,628 --> 00:08:18,306
+with that prefix and then you just call
+the recursive collect and boom you're
+
+90
+00:08:18,306 --> 00:08:22,755
+done.
+Extremely simple, implementation of keys
+
+91
+00:08:22,755 --> 00:08:27,995
+with a prefix in an R-way trie..
+What about longest prefix?
+
+92
+00:08:28,261 --> 00:08:35,100
+And here's one that, is, is, very,
+actually very heavily used, in the
+
+93
+00:08:35,100 --> 00:08:40,418
+internet.
+If your query strings are IP addresses on
+
+94
+00:08:40,418 --> 00:08:48,451
+the internet and you have some given
+destination IP address, the router has a
+
+95
+00:08:48,451 --> 00:08:56,383
+lot of IP addresses in a routing table.
+An it wants to choose the one that will
+
+96
+00:08:56,383 --> 00:09:00,723
+get you as far as close to the destination
+as you can.
+
+97
+00:09:00,941 --> 00:09:03,847
+So it's going to choose the longest
+prefix.
+
+98
+00:09:03,847 --> 00:09:09,731
+So if you want to get to 128 by 112, you
+can think of these as hops on the way to
+
+99
+00:09:09,731 --> 00:09:14,090
+where you want to get, where eleven is the
+final destination.
+
+100
+00:09:14,090 --> 00:09:20,120
+And essentially this table says, it knows
+how to get this far and so that's what it
+
+101
+00:09:20,120 --> 00:09:25,133
+wants is the longest prefix.
+The longest prefix matches this one. Well,
+
+102
+00:09:25,133 --> 00:09:30,872
+it doesn't know how to get any further
+than 112 and this other one only to 128.
+
+103
+00:09:30,872 --> 00:09:38,120
+I, and this operation gets performed
+extremely often on the internet nowadays.
+
+104
+00:09:38,120 --> 00:09:42,803
+Just a quick note,
+It's not the same as the floor function
+
+105
+00:09:42,803 --> 00:09:46,680
+and it actually is a kind of a string
+operation.
+
+106
+00:09:46,886 --> 00:09:51,910
+These things actually, usually on the
+internet, they're not represented as
+
+107
+00:09:52,117 --> 00:09:55,283
+strings.
+They're represented as binary numbers.
+
+108
+00:09:55,489 --> 00:10:00,514
+But in machine or assembly language
+implementation tries are even easier.
+
+109
+00:10:00,514 --> 00:10:06,364
+You can just take a bunch of bits and use
+them as index into a table to move down
+
+110
+00:10:06,364 --> 00:10:09,805
+the try.
+And actually tries are pretty old because
+
+111
+00:10:10,011 --> 00:10:14,829
+so easy to implement data structures in
+that way in the past.
+
+112
+00:10:15,036 --> 00:10:20,473
+You'd be surprised at how much of our
+computational infrastructure is built by
+
+113
+00:10:20,680 --> 00:10:25,525
+Program or consists of programs that are
+written in machine or assembly language
+
+114
+00:10:25,525 --> 00:10:30,191
+that can make use, efficient, really
+efficient use of low level representations
+
+115
+00:10:30,191 --> 00:10:33,874
+like this.
+But it's also useful in higher-level
+
+116
+00:10:34,105 --> 00:10:37,883
+languages.
+So what does it look like in an R-way
+
+117
+00:10:37,883 --> 00:10:41,585
+trie..
+Well, all we're going to do is just do a
+
+118
+00:10:41,585 --> 00:10:48,062
+search and then we're going to keep track
+of the longest key that we encountered.
+
+119
+00:10:48,062 --> 00:10:53,597
+So, we have a path.
+And on that path there is the most
+
+120
+00:10:53,597 --> 00:11:03,035
+recently seen value that's the longest key
+that we found If we end that at no link
+
+121
+00:11:03,497 --> 00:11:07,891
+that's fine.
+It's the, if there is a value on that node
+
+122
+00:11:07,891 --> 00:11:12,825
+that's kind of a no link that's the value
+we're going to return.
+
+123
+00:11:13,056 --> 00:11:17,218
+So that's a very straightforward
+implementation.
+
+124
+00:11:17,604 --> 00:11:23,077
+Just keeping track of the longest key
+encountered on the search for our key.
+
+125
+00:11:23,077 --> 00:11:29,706
+That's implementation of longest prefix of
+and the usual set up of, of making
+
+126
+00:11:29,706 --> 00:11:34,940
+recursive calls.
+And this code is quite straightforward.
+
+127
+00:11:35,228 --> 00:11:40,719
+And application of this one and so-called
+T9 texting.
+
+128
+00:11:40,719 --> 00:11:48,135
+And now you know, when we do a course like
+this, we try to keep up with modern
+
+129
+00:11:48,135 --> 00:11:53,240
+technology.
+And modern technology is moving almost as
+
+130
+00:11:53,240 --> 00:11:59,019
+fast as we can.
+There are lots of young people who really
+
+131
+00:11:59,019 --> 00:12:03,353
+don't know about texting with keypads
+anymore.
+
+132
+00:12:03,738 --> 00:12:10,762
+But there's a certain range of, you know,
+five or ten years where people got
+
+133
+00:12:10,762 --> 00:12:17,103
+extremely adept at doing so called
+multi-tap input, where the only keys on
+
+134
+00:12:17,103 --> 00:12:20,669
+the phone were the nine keys to dial
+numbers.
+
+135
+00:12:20,907 --> 00:12:26,058
+And then you had three letters associated
+with each number,
+
+136
+00:12:26,058 --> 00:12:32,240
+Like on old dial telephones.
+And to enter a letter you had to like to
+
+137
+00:12:32,240 --> 00:12:38,581
+enter an H you had to tap twice, cuz
+that's the second letter on the four key
+
+138
+00:12:38,581 --> 00:12:42,464
+you had to tap four twice or something
+like that.
+
+139
+00:12:42,702 --> 00:12:47,237
+So,
+The so-called T9 text input would use the
+
+140
+00:12:47,237 --> 00:12:55,525
+kinds of algorithms that we're talking
+about to make it so that maybe you didn't
+
+141
+00:12:55,525 --> 00:13:01,869
+have to do multi-tap.
+So rather than type two 4's, you would do
+
+142
+00:13:01,869 --> 00:13:07,803
+a tries type search to figure out which
+word that you typed.
+
+143
+00:13:07,803 --> 00:13:13,235
+And that now looked,
+It'll look good to us as a potential
+
+144
+00:13:13,235 --> 00:13:19,184
+application for a while.
+Glad we didn't spend too much time on it.
+
+145
+00:13:19,458 --> 00:13:23,942
+If you study this keyboard, maybe you'll
+see, see why.
+
+146
+00:13:23,942 --> 00:13:31,446
+Well you think about how to implement it.
+But once we get into it, we realize, Kevin
+
+147
+00:13:31,446 --> 00:13:38,695
+realized there's no S in this sample
+keypad, what happened to the S?
+
+148
+00:13:38,695 --> 00:13:47,226
+So what are we going to implement because
+even if there's no S there, so what
+
+149
+00:13:47,226 --> 00:13:56,311
+exactly are they doing and well maybe this
+is a bit of a fantasy that this is the
+
+150
+00:13:56,311 --> 00:14:03,180
+response that, maybe these people lived in
+a world with no S's.
+
+151
+00:14:03,180 --> 00:14:09,260
+Mmm.
+Well anyway, we've moved on from tries
+
+152
+00:14:09,260 --> 00:14:12,609
+from, from that type of, way of entering
+text.
+
+153
+00:14:12,609 --> 00:14:19,736
+But I still want to mention a few more
+ideas because the basis behind tries and
+
+154
+00:14:19,736 --> 00:14:26,605
+Turner research trees is still out there
+and is still really an important part of
+
+155
+00:14:26,605 --> 00:14:31,757
+our infrastructure.
+And there's some really great algorithms
+
+156
+00:14:31,757 --> 00:14:38,426
+that we just don't have time to cover.
+Now one of them's an old algorithm called
+
+157
+00:14:38,426 --> 00:14:43,119
+Patricia.
+And, This one, is a really interesting and
+
+158
+00:14:43,119 --> 00:14:47,964
+intricate algorithm.
+Particularly when implemented for binary
+
+159
+00:14:47,964 --> 00:14:53,944
+tries, where you just do a bit at a time.
+And people, again, implemented this kind
+
+160
+00:14:53,944 --> 00:14:59,924
+of algorithm in machine language.
+And got extremely efficient performance.
+
+161
+00:15:00,151 --> 00:15:07,176
+If we cast it in, in, our way tries that
+we've talked about it's really the best
+
+162
+00:15:07,176 --> 00:15:11,635
+way to think about it is, a way to remove
+one way branching.
+
+163
+00:15:11,635 --> 00:15:16,958
+It seems wasteful, to have, all these
+nodes that just have one branch.
+
+164
+00:15:16,958 --> 00:15:22,496
+And so one of the main ideas behind
+Patricia there's others that, don't
+
+165
+00:15:22,496 --> 00:15:27,891
+really, show up, in the level, high level
+representation we're using.
+
+166
+00:15:27,891 --> 00:15:35,258
+But one of the main ideas behind Patricia
+was rather than associate a character with
+
+167
+00:15:35,258 --> 00:15:39,231
+each node,
+Associated sequence of characters with
+
+168
+00:15:39,231 --> 00:15:43,718
+each node, so you just don't have any one
+way branching.
+
+169
+00:15:44,208 --> 00:15:51,876
+Implementing this is maybe one step beyond
+this course but maybe it's within what we
+
+170
+00:15:51,876 --> 00:15:57,914
+could do in this course.
+Where just not going to take the time to
+
+171
+00:15:57,914 --> 00:16:02,401
+do so.
+And you'll find implementations that in
+
+172
+00:16:02,401 --> 00:16:08,996
+practice avoid the one-way branching that
+are used in many, many applications,
+
+173
+00:16:08,996 --> 00:16:14,824
+performance critical applications for
+searching nowadays, I already mentioned IP
+
+174
+00:16:14,824 --> 00:16:19,177
+routing tables.
+There's probably, you know, no piece of
+
+175
+00:16:19,177 --> 00:16:22,617
+code that's executed more often than that
+one.
+
+176
+00:16:22,828 --> 00:16:28,726
+That's based on a trie type algorithm.
+And we have these other applications
+
+177
+00:16:28,726 --> 00:16:33,560
+listed as well.
+It's got some other names too.
+
+178
+00:16:33,560 --> 00:16:42,325
+Another thing, is, so called, suffix tree.
+So, that's, building a tree from a suffix
+
+179
+00:16:42,325 --> 00:16:46,883
+table.
+So, we talked about having, for suffix
+
+180
+00:16:46,883 --> 00:16:53,982
+sorting, we talk about applications.
+You can also build a search structure from
+
+181
+00:16:53,982 --> 00:17:00,469
+suffixes of a string.
+That admits, all kinds of, fast string
+
+182
+00:17:00,469 --> 00:17:07,707
+processing application.
+And again, usually, eliminate on way
+
+183
+00:17:07,707 --> 00:17:14,574
+branching in suffix trees, and also
+amazing, amazingly you can get'em
+
+184
+00:17:14,574 --> 00:17:20,352
+constructed in linear time.
+And there's all kinds of interesting
+
+185
+00:17:20,352 --> 00:17:26,986
+applications of suffix trees probably the
+most important now a days are in
+
+186
+00:17:26,986 --> 00:17:33,255
+computation biology databases.
+Again extensions of the kinds of
+
+187
+00:17:33,255 --> 00:17:40,336
+algorithms that we've talked about today.
+So I think the bottom line for considering
+
+188
+00:17:40,336 --> 00:17:46,350
+string search trees is that it's a real
+success story in algorithm design and
+
+189
+00:17:46,350 --> 00:17:50,590
+analysis.
+It's a number of clever algorithms that
+
+190
+00:17:50,821 --> 00:17:57,991
+really have made a difference in the kinds
+of operations that we can perform in the
+
+191
+00:17:57,991 --> 00:18:03,080
+amount of data that we can handle in
+modern applications.
+
+192
+00:18:03,080 --> 00:18:11,654
+We, we started with red-black BST's which
+is a pretty good solution for a general
+
+193
+00:18:11,654 --> 00:18:16,820
+symbol table.
+And also hash tables, which are also
+
+194
+00:18:16,820 --> 00:18:22,426
+widely used.
+But with tries, and Turner research tries
+
+195
+00:18:22,426 --> 00:18:30,560
+we have a performance guarantee where
+we'll only have to really access log-in
+
+196
+00:18:30,560 --> 00:18:35,532
+characters.
+And when you think about that, that's,
+
+197
+00:18:35,532 --> 00:18:41,271
+even when N is huge, that's going to be a
+pretty small number.
+
+198
+00:18:41,271 --> 00:18:49,172
+Say we're looking among billions, billions
+of things log in, even in you only have
+
+199
+00:18:49,172 --> 00:18:55,851
+two wave branching would be 30.
+And when we have 256 way branching, it's
+
+200
+00:18:55,851 --> 00:19:01,307
+way, way smaller.
+And that's just the number of, so it's the
+
+201
+00:19:01,307 --> 00:19:06,905
+number of characters accessed.
+And the, really the bottom line is, if
+
+202
+00:19:06,905 --> 00:19:12,595
+you, you can set things up nowadays even
+on the internet when there's huge, huge
+
+203
+00:19:12,595 --> 00:19:18,146
+amounts of data out there you can set
+things up so that you can only need to
+
+204
+00:19:18,146 --> 00:19:24,530
+look at maybe 100 bits to get at anything.
+We think about 100 bits, that's specifies
+
+205
+00:19:24,530 --> 00:19:29,734
+two to the 100th of possibilities.
+And two to the 100th is a huge number.
+
+206
+00:19:29,734 --> 00:19:35,423
+There are not two to the 100th pieces of
+information, even on the internet, even
+
+207
+00:19:35,423 --> 00:19:39,568
+will ever exist on the internet in the.
+Into this galaxy.
+
+208
+00:19:39,568 --> 00:19:46,166
+But with just 100 bits, which really isn't
+too much, we can search for anything
+
+209
+00:19:46,166 --> 00:19:50,566
+efficiently.
+And that's an amazing success story for
+
+210
+00:19:50,566 --> 00:19:56,488
+algorithm design and analysis.
+So that completes our look at tries and
+
+211
+00:19:56,488 --> 00:19:58,180
+Turner research tries.

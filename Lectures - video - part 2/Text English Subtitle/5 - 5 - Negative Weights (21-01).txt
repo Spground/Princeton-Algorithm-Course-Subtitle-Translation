@@ -1,0 +1,458 @@
+So finally, we're going to take a look at
+the implications of having negative
+weights in directed weighted graphs.
+So the first thing to notice is that the
+easy solutions don't work at all.
+Dijkstra's algorithm just doesn't work in
+the presence of, presence of negative
+weights.
+So say, this weight from two to three is
+-nine.
+What Dijkstra's algorithm will do is just
+immediately select vertex three and never
+revisit that decision.
+Saying the shortest way to get from zero
+to three is, is,
+Is to take this edge of three which has
+weight two.
+But the actual shortest path goes over to
+four and then over to one and down to two
+for a weight of ten.
+And then a -nine makes it one.
+So there's a way to get from, zero to
+three with a weight path weight just one.
+Because of the -nine.
+But Dijkstra's algorithm won't find that.
+So that's not going to work and you might
+think, well, why don't we just make all
+the weights positive by adding nine to
+everything.
+Well, that's not going to work because a
+longer path will have nine added to it a
+lot of times, so its just not any relation
+between shortest paths in this graph and
+shortest paths in that graph.
+So, those easy attempts, just don't work
+for dealing with, negative weights, in
+general graphs.
+So the conclusion is we need some
+different algorithm and the top logical
+sort one isn't going to work cuz the graph
+might have a cycle in it, so there's no
+topological sort so we needs some
+different algorithm.
+And the main thing to think about in terms
+of weighted directed graphs, that might
+have cycles,
+Is that you can have this situation called
+a negative cycle.
+This is a graph, it all looks fine.
+It's just got this one negative edge from
+five to four of weight -0.66.
+And these other ones are 0.37 + 0.28. So
+that's +0.65.
+But if you go from five to four to seven
+to five, Then the distance around that is
+-0.01.
+And if we're trying to find, say a
+shortest path from zero to six, Well as
+soon as you hit this cycle if you want
+really want the shortest path, what you
+could do is spin around this well an
+infinite number of times.
+You could make the path a short as you
+want, if you hit an infinite, if you hit a
+negative cycle.
+So, negative cycles definitely can get in
+the way of trying to solve the shortest
+path problem.
+It make somewhat specified.
+So, the first thing is if there's no
+negative cycles, then there's a shortest
+path tree, and if there's a shortest path
+tree, there's no negative cycles assuming
+that you can actually get to the vertices.
+So what we'll want is graphs that have no
+negative cycles and then we can work with
+those.
+And is an algorithm an old algorithm known
+as the Bellman-Ford algorithm that does
+the job.
+It's only slightly more specific than the
+generic algorithm that we gave before.
+It just says so if you have V vertices,
+for just V times all you do is go through
+all the edges in the graph and relax each
+edge.
+So you make V passes through relaxing all
+the edges in the graph.
+And that's, an algorithm that finds
+shortest paths, in graphs that don't have
+any negative cycles.
+If there's a negative cycle, it, you know,
+we'll talk about what happens in a minute.
+So lets look at that one in terms of a
+demo.
+So we'll just take the list of edges in
+the graph it could be in any order, and
+we'll just relax them all.
+So to start out, we, set the distance to
+the source zero and everybody else's
+distance, infinity as usual.
+And then here's the list of edges.
+So we'll relax In this case, we start out
+with the edges sort of in the order that
+you'd get em' by walking through the whole
+graph so you get all the edges associated
+with each vertex together.
+So relax zero, one, relax zero, four,
+relax zero, seven, that's kind of the way
+Dijkstra would start out.
+And then, we go ahead and relax the edges
+that, come out from one, so one, two takes
+to, two for the first time, one, three
+takes us to three for the first time.
+One, seven is no help so we ignore it.
+Now we relax.
+Sorry, went too far.
+Two, three and two, six and those, that
+one takes us to six for the first time.
+And now three, six that does not give us a
+better way to six so we ignore it.
+Now we go to four, five that takes us to
+five for the first time.
+Four, six well we could get to four and
+nine and twenty to six so that's no help.
+Four, five that's no help.
+Now we do the ones from five, five, two
+that's going to give a better way to two
+so we've improved that.
+And five, six is going to give a better
+way to six.
+Now, seven, five that's no help.
+And seven, two is no help.
+So we've completed the first paths.
+And now we're just gonna go through and
+relax all the edges again.
+Now a lot of them are really just what we
+did before so they're not going to improve
+anything, like the ones at the beginning
+are not gonna improve anything.
+But before too long so still no
+improvement.
+But here, now the second time we relax
+two, three we have it gives us a better
+way to get to three.
+In, for the first path that didn't help us
+but the second path we relax two, three to
+get us to three and seventeen.
+Now that's going to change things for
+three, If we had already been through
+three it wouldn't, wouldn't matter.
+In this, in this, we'd take another path
+to deal with, but in this case, we're
+going to be coming through three later.
+And, there's another, two to six gets
+better.
+Then three to six well, two to six beat it
+so it doesn't help.
+And now I think, there's nothing else that
+helps in this example.
+And in fact, there's no further changes.
+Once we have the shortest path stream,
+which, we know from this example, because
+it's similar to one we did before then
+there's going to be no, no changes to it.
+You're not going to find any edges that
+successfully relax.
+And so, go through and, try them all, and
+in the end we have a shortest path stream.
+So that is an example of a Bellman-Ford
+algorithm, on a simple, simple graph.
+Here's the visualization of the
+Bellman-Ford algorithm running on a bigger
+graph.
+And here's what it looks like after four
+passes, seven, ten, thirteen.
+And this graph has 100 something vertices.
+And it finds the tree in a relatively
+small number of passes.
+And we'll talk about the performance in a
+second of.
+One thing is to be sure that the algorithm
+works.
+And there's a couple of ways to prove it.
+And again, the reason the proof has to be
+done with care is that there could be
+edges with negative weights but no
+negative cycles.
+The idea of the proof is that after you've
+done the i for pass, you've found the
+shortest path containing at most i edges.
+And, and we'll leave that proof for the
+book.
+Now there is a couple of ways to improve
+the Bellman-Ford algorithm in practice.
+And, the most important one is that if you
+didn't change the distance to a vertex
+during one pass,
+Then you don't have to worry about it in
+the next pass.
+You don't have to worry about it, it's
+edges in the next pass.
+And so, what we do in practice, is if you
+just maintain a queue of the vertices that
+we found shorter paths to, in each path.
+We want to make sure that we keep, at
+most, one copy of each vertex on the
+queue.
+Otherwise, you could wind up with
+situations where, the, queue, size of the
+queue, blows up.
+But that's easy to do, with, a vertex
+index array to keep track of that.
+And so, in the worst case, you could have
+all the vertices on the queue for, And
+then therefore all the edges relaxed, in
+every one of the V passes.
+But in practice not too many vertices
+really get relaxed.
+So, this is a, a quick summary of the
+algorithms that we've looked for, for,
+shortest paths, And, we didn't do the code
+for Bellman-Ford.
+We've done enough code today.
+It's quite simple code that you'll find in
+the book over on the book site.
+So, probably the simplest algorithm is
+when there are no directed cycles.
+And that's when we just topologically sort
+the vertices and then go through that list
+and relax every edge.
+So that's linear time.
+You relax all the edges in the graph and
+that's it.
+And that works even if there are negative
+weights.
+If there's no negative weights but there
+maybe cycles, then Dijkstra's algorithm
+works.
+And then we looked at E log V algorithms
+which are slightly faster depending on
+what kind of heap you use.
+The Bellman-Ford algorithm which works
+with negative weights as long as it's no
+negative cycles it's if, if you do the q
+you can get the in, in practice it turns
+out to be linear time for the times of
+graphs that arise in practice.
+Although in principle the worst case it
+could be E times V which is much to slow.
+So, directed cycles make the problem
+harder.
+You need a Dijkstra instead of top logical
+sort.
+Negative weights definitely make the
+problem harder.
+Because you might need, to, get the worst
+case of Bellman-Ford.
+And negative cycles, in the presence of
+negative cycles, it actually makes the
+problem intractable.
+And we'll talk about that a little bit at
+the end of the course.
+One thing that you can do with the
+Bellman-Ford algorithm is to at least
+find, find out if there's a negative
+cycle.
+In one practical reason to do that is
+maybe it has something to do with
+something else specified in the problem.
+And so if you can detect a negative cycle
+and deal with it that would be useful.
+And we'll look at another important
+practical reason for finding negative
+cycles in just a second.
+So anyway, since its a useful thing to do
+we're going to add two methods to the API.
+And that is does the graph have a negative
+cycle and in an interval?
+If it does have a negative cycle please
+give it to me.
+So for this graph, it would return true.
+And then it would give an iterable that
+would have these three edges that give me
+the negative cycle.
+So, the, observation or the way to find a
+negative cycle is to realize that what
+will happen with a Bellman-Ford algorithm
+if there's a negative cycle is that it'll
+every, every path through, it'll basically
+go around the cycle.
+Well not every pass in the, in the whole
+length in the cycle.
+It'll get stuck in a loop going around the
+cycle depending on the order of vertices.
+And it'll update and just get stuck going
+around the, around the cycle.
+So by testing what happens after
+Bellman-Ford is done, even if there's
+negative cycles present, we can find the
+negative cycles and that, in fact,
+If some vertex is updated in the last
+phase of the Bellman-Ford algorithm then
+there's a negative cycle.
+And not only that.
+Edge 2v is the last edge, on that cycle.
+That's the way you got to v.
+And you can trace back to find the cycle.
+So just run the Bellman-Ford algorithm and
+if some vertex gets, get updated, the last
+time through it means there's a negative
+cycle.
+In practice actually, you don't have to
+wait till the last phase.
+You can check these two entries for
+negative cycles, more frequently.
+But anyway, it's possible to find a
+negative cycle.
+And let's look at an application.
+This is an application that it really
+motives some people to understand the
+shortest paths to algorithms.
+And the idea is currency exchange.
+And so these are typical numbers that you
+might see in a newspaper table, or
+nowadays in an app on your mobile device
+that gives the exchange rates for various
+currencies.
+So to convert a dollar to euros using
+factor of points 0.741, I compute Euros
+too, Great Britain pounds, 0.888, and so
+forth.
+So this table is a table of exchange
+rates.
+And the problem is, is there an arbitrage
+opportunity?
+So what is an arbitrage.
+Well arbitrage is when just by making
+exchanges according to the legal rates in
+the table you can make money.
+So say we had a $1000.
+And then these are the going rates.
+Well we can convert that $1000 into 741
+Euros.
+So now, if we take those 71 Euros and
+convert them into Canadian dollars it
+works out that we get 1,012.206 Canadian
+dollars.
+And if we take those Canadian dollars and
+convert them back to U.S.
+Dollars, it works out that we have $1,007.
+Well that's arbitrage and that's
+interesting.
+If we could go ahead and do for well let
+say $10,000 then would make $70 on the
+deal or a $100,000 would make $700 or
+maybe a million dollars would make $7,000
+or maybe a billion would make $7,000,000.
+No reason to stop there.
+With arbitrage opportunity you're making
+money off the system.
+So of course there's intense interest in
+looking for opportunities like this.
+Course in modern financial market.
+It's there's many more things that you can
+trade than currencies.
+And these tables are big and complex.
+And the market is suppose to take care of
+eliminating these opportunities.
+But if you are using a computer and you've
+got a fast algorithm for finding negative
+cycles in directed graphs then maybe you
+can find the opportunity and take
+advantage of it before the market.
+So let's look at how it works.
+What we do is again model the situation
+with a graph.
+So we're going to have a vertex for every
+currency.
+And then on the edge corresponding to
+every transaction or every entry in the
+table so this is actually a complete
+directed graph.
+And the weight is equal to the exchange
+rate.
+And what we are trying to find is a
+directed cycle whose product of edge
+weights is greater than one.
+So that doesn't look like a shortest path
+problem although it's close.
+And actually it's very close.
+To convert this to a shortest path problem
+what we want to do is just take logs.
+If instead of using the exchange rate, we
+take minus the log of the exchange rate.
+And then multiplying turns to addition for
+looking for multiplying the exchange
+rates.
+That's the same as summing the logs.
+And, we took minus log it means that what
+we're looking for when we're trying to
+find products bigger than one.
+We're looking for a directed cycle whose
+sum of edge weights is less than zero.
+Find a directed cycle whose sum of edge
+weights is less than zero in a complete
+digraph.
+That's the negative cycle detection
+problem, and we just saw that, we can, do
+that with the, Bellman-Ford algorithm.
+And again, in a huge, directed graph in a
+modern trading situation, that's an
+extraordinarily valuable algorithm, and
+you can believe that you know,
+There are people out there running these
+algorithms in order to detect and take
+advantage of arbitrage opportunities.
+And if you don't have a fast algorithm, if
+you're using a slow one it'll be gone
+before you can take advantage of it.
+That's a fine example of the value of
+building efficient algorithm for a
+practical problem.
+So here's our summary of short as fast
+today.
+We've seen some great, classic algorithms
+that are, important and extraordinarily
+useful.
+First one is Dijkstra's algorithm which
+is, a fine, efficient workhorse algorithm
+that you see used, every day.
+And it's a, a grass search algorithm that
+is, similar to, Prim's, depth for search
+and rep for search that we've seen before
+and we'll see again if the graphs are,
+have no cycles which is a situation that
+arises in several important applications.
+We can do better than Dykstra's algorithm.
+It's easier.
+And also, negative weights are no problem,
+which enables us to solve scheduling
+problems in other examples If there's
+negative weights and negative cycles we
+can detect negative cycles.
+And if there aren't any negative cycles,
+we can find shortest paths.
+In, the general problem is intractable,
+and we'll come back to that.
+But the key point that I want people to
+remember from today's lecture is that
+shortest path is our first real example of
+a general problem solving model where
+there's a lot of important practical
+problems that we cast solve as shortest
+path problems.
+Number one and number two we have fast
+solutions to those problems, with these
+classic algorithms that we've talked about

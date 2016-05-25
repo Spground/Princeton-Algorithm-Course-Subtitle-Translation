@@ -1,0 +1,162 @@
+next we're gonna talk about 3-way radix
+quicksort which is that algorithm that
+combines the benefits of quicksort and MSD
+radix sort.
+This algorithm actually came to me into
+development during the development of this
+course.
+As it turns out, radix sorting, while it
+was really well known to everyone in the
+60's and70's.
+It was kind of lost sight of for a while
+in the'80's as people moved to a higher
+level of programming languages.
+And it wasn't so easy or effecient to get
+characters out of keys.
+You had to either work with numbers.
+You had to use abstractions like compared
+to.
+And radix sort got kind of lost for a
+while.
+But then string processing became more and
+more important as.
+Computers became bigger and faster and so
+we needed to talk about how to sort
+strings and this algorithm is a really
+simple algorithm that comes out when you
+start to address that problem.
+So, the idea is that what we're gonna do
+is use 3-way partitioning for quicksort.
+But just by character.
+So since there's a, we're gonna do one
+character at a time, there's gonna be a
+lot of equal keys for that character.
+And the idea is that when you do have
+equal keys, you'll pull'em together with
+those leading characters, and then you
+could recursively sort the subarrays, but
+you can do the normal quicksort thing for
+those.
+So for this example, when we partition,
+first partitioning item, we're going to
+use it's first character, and we're going
+to divide up into less than that.
+Equal to that and greater than that.
+And then we re-curse three times, one for
+the greater one for the ones that start
+with the same character and one for the
+less.
+That's overview of the algorithm.
+So, let's do just a, a quick trace of the
+first few recursive calls.
+So, partitioning item, again, is S.
+We divide it up that way.
+And so now, we're gonna sort the top
+subarray, the ones that are less than S.
+So we partition that out in B and then we
+get down to subarrays, size one.
+And the next thing that we need to do is
+the big middle sub-file.
+We need to sort it on its second
+character, so the partition item is E this
+time.
+So we rearrange those to have the ones
+that start with S, E.
+The ones that are less and there aren't
+any,
+And the ones that are bigger.
+And so next recursion is on the third
+letter in that middle subfile.
+In this case, it's A, and so We have, the
+ones that are equal, so that's the ones
+that start with SEA and the ones that are
+bigger of the two cells and then move on
+to the next character.
+So it, it's of the ones that are equal in
+kind of a controlled way.
+That's a example of a trace for 3-way
+string quicksort.
+Now it's a program that almost writes
+itself.
+Once you've seen the idea and you've seen
+an implementation of Quicksort,
+It's a very minor modification into the
+3-way quicksort that we discussed when we
+were talking about Quicksort.
+Instead, so we pick out the Dth character.
+We take d as an argument, we pick out the
+dth character we do the regular
+Partitioning element.
+Again, picking out.
+Just the Dth character for each key that
+we look at.
+And this is the standard three way
+partitioning.
+And then when we're done with the
+partitioning, we do the array of ones that
+are less chara-, that Dth characters less
+than the ones that are bigger.
+And then in the middle, if we had any,
+we'd sort the middle sub-ray and we'd move
+over one character.
+That's a, a very compact string sorting
+algorithm that performs very well.
+Now, what about the performance of that
+algorithm?
+Well, we talked about.
+Standard quicksort performance.
+And, if we randomly order the keys ahead
+of time.
+You use 2N natural log int string
+compares, on average.
+And, the thing is, though, if you have
+keys that have lots of long common
+prefixes.
+And this happens in lots of applications.
+Then, those compares are gonna go through
+all those keys every time.
+That 3-way string quicksort Uses, although
+the analysis is pretty complicated, it
+uses only 2N ln N character compares, so
+that's an amazing, a huge savings for
+typical common cases.
+It doesn't have to, go through the long
+common prefixes that usually cause the
+problem. And what about versus MSD's or,.
+Well, MSD sort has this caching problem
+and it's got the count arrays and it's got
+all this overhead involved in maintaining
+the counts.
+Whereas three way string quick-sort is
+still cash friendly, 'cause most of the
+time, it's partitioning the same way that
+normal quick sort is.
+It's still got that short inner loop and
+it doesn't use any extra space.
+And there's all kinds of applications that
+for example library call numbers or
+account numbers where long string keys
+that have non randomness in them.
+This algorithm adapts really well to such
+situations.
+The bottom line is if you've got string
+keys, 3-way string quicksort is the method
+of choice.
+It's simple to implement,
+And it's gonna perform well so I'll
+probably leave sorting algorithms with
+this bottom line.
+And the idea is that now we've got a quite
+fast algorithm that, does a linear
+rhythmic number of character compares,
+And that's in randomly, random keys in
+some way.
+But even if they're not random, it's
+difficult to characterize really the worst
+case.
+But it's more, when data is not or this
+algorithm won't perform well,
+And even better chance of getting
+sub-linear performance then all the other
+algorithms.
+That's 3-way radix quicksort.

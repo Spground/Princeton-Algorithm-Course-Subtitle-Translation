@@ -1,0 +1,434 @@
+.finally Finally we're going to look at
+suffix arrays and string processing using
+this data structure that has really played
+a very important role in, string
+processing applications that would not
+otherwise be possible.
+To get a feeling for the idea, we're going
+to look at a really old idea that you're
+actually familiar with called keyword in
+context search.
+And the idea is that you're given a text,
+a huge X and what you want to do is
+pre-process it to enable fast substring
+search.
+That is, you want a client to be able to
+give a query string and then you want to
+give all occurrences of that query string
+in context.
+So, if you look for the word, search, it
+will give all the occurrences of where the
+word search occurs in context.
+Or better thing is another one.
+And that's a, a very common operation.
+One, you're certainly familiar with it
+from web searching, in your browser.
+And there's many other applications.
+This is a pretty old idea that dates back
+to the late 50's, early 60's people have
+always wanted to do this.
+And there's an easy way to look at it
+called suffix sorting.
+The idea is you take your input string,
+and then, form the suffixes. remember when
+I talked about at the beginning with
+JAVA's string data type, you can get this
+done in linear time because each suffix is
+basically a pointer back into the input
+string.
+So the suffix, remember, the I suffix just
+start the character I and take the rest of
+the string.
+So, what this does is, it gives, sort
+keys, that, contain, kind of the, the,
+Pieces of the string itself in context and
+all we do is just, run a sort on that
+suffix.
+And what that sort does is, it brings if
+you do a search, it brings the things that
+you're searching for, close together.
+And, you can use, once you've done that
+suffix sort, you can use a binary search
+to find all occurrences of the string out
+of there.
+That's the, basic idea of a keyword and
+context searching.
+You suffix sort the text, then do binary
+search to find the query that you're
+looking for.
+And then you can, scan for wherever the
+binary search ends up.
+And so, this is all the places where, the
+word search occurs, in the text of Tale of
+Two Cities,
+And then, you can use this index, to,
+print out the context of whatever's
+needed.
+It's a fine and effective way, for solving
+this important practical problem.
+And that's interesting, but I want to talk
+about another really important problem
+that, it has, hugely important
+applications. This is the longest repeated
+substring problem.
+So you're given a string of characters,
+find the longest repeated substring. in
+this case, this is genomic data, and,
+there's the example of the longest,
+repeated substring. And now, in scientific
+data, the long repeated substring is often
+something that scientists are looking for.
+And so, and these strings are, are huge.
+it might be billions of these, characters.
+And so, it's really important, not only to
+know that you can find long substrings
+efficiently, but also, that you can do it
+for, huge, huge strings.
+Another example is, cryptanalysis.
+Where, a long repeat in a file that's
+supposed to be, encrypted random file
+indicates that somebody did something
+wrong.
+It might be the key to, breaking the code.
+Another example is data compression.
+When you've got a file that's got a lot of
+repeated stuff in it, you might, want to
+do this operation, to take advantage of,
+of these long repeats and not keep
+multiple copies of them.
+Here's another example, this for, studying
+or visualizing repetitions in music.
+In this example, every time there's a, a
+repeat of the notes then, there's, a, an
+arch drawn to, visualize the repeat.
+And it's, the arch is thick if, the number
+of repeats is long.
+And it's high if the repeats are far away.
+And this, tells, is an interesting way to
+analyze, repetitions, in music.
+So, how are we going to solve this
+problem?
+Very simple to state problem.
+Given a sequence of N characters, find the
+longest repeated substring.
+As with many problems, there's, an easy,
+brute force algorithm, that, at least
+gives us an idea of what, what the
+computation is like.
+But it's not going to be useful for huge
+strings.
+And that's you try all possibilities, all
+pairs of indices I and J and then just
+compute the longest common prefix for each
+pair.
+The problem with that is that if N is the
+length of the string, you've got, N
+squared over two pairs.
+And for every one of those pairs, you
+might have to, match them up to length D.
+It's definitely quadratic time, more than
+quadratic time in the length of the
+string.
+And can't be using that for, you're not
+going to be able to use that for strings
+that are billions of characters long.
+Another way to look at one way to solve
+the longest repeated substring, is to use
+a suffix sort. In fact, just we talked
+about before.
+So, I would take out our input string.
+Reform the suffixes.
+And then sort the suffixes and that brings
+the long repeated substrings together.
+So, that's a quite elegant and efficient
+solution to this problem. just build the
+suffix array that's a linear time process.
+Do the sort.
+We, we just saw we can do that, with n log
+n character, character compares.
+And then go through and find the repeated
+the substrings.
+So, it's just one passthrough to check for
+adjacent substrings to see which one's the
+longest.
+And this is very easy to code up.
+Here's the Java code for computing the
+longest repeated substring.
+We get the length of our string out.
+We build our suffix array.
+Remember that's linear time and space
+because of Java string implementation
+allows us to do substring and constant
+time.
+Then we go ahead and sort the suffixes,
+and then find the least common prefix
+between the, adjacent suffixes in sorted
+order.
+Just keep track of the max so that's
+longest, repeated substring.
+And if so, for example, this sentence
+about such a funny, sporty, gamy, jesty,
+joky, hoky-pokie, lad, is the longest
+repeated substring in the text of
+Melville's Moby Dick.
+And now we run that one to, prove that
+we've got a linear-rhythmic algorithm
+because there's a lot of characters in
+that.
+And you're not going to find this, without
+a good algorithm.
+And, and this is just a humorous approach
+to what we've, talked about today.
+If you have, five scientists that are
+looking for a long substring, in a genome,
+that, they might encounter, this problem,
+with a billion nucleotides, and there are
+plenty of scientists that are not aware
+of, important algorithms are the ones,
+like the ones that we are talking about.
+And the one that uses the good algorithm
+is definitely more likely to find a cure
+for cancer.
+But there is a flaw even in this, that
+computer scientists discovered as they got
+into ever more complex algorithms for
+problems like this, and that is if the,
+the longest repeated substring is long,
+there's a problem.
+So this is just some, experiments, for,
+finding the longest, repeated substring in
+various files.
+From just a program to, the text of Moby
+Dick.
+Or a chromosome with 7.1 million
+characters.
+And, using, the, brute force method, you
+get stuck, and too slow, very soon.
+But using, a suffix sort, you can get
+these jobs done, even for huge files like
+the first ten million digits of pi.
+By the way, if there was a really long
+repeated substring in the first in the
+digits of pi, that would be news.
+Maybe it would help us, understand more,
+about this number.
+So lots of people, write programs of this
+sort.
+But the big problem is if you have a
+really long repeated substring, then
+suffix sort is not going to work.
+Our fast algorithm, doesn't complete.
+So what's going on?
+In the explanation is really simple.
+If, for example, you have two copies of
+something.
+When you form the suffix array, what
+happens is that if you have the longest
+repeat, but you also have every version of
+that repeat appears.
+And you have to look for those when
+checking, for the longest repeated
+substring.
+So, if D is the length longest match,
+then, just to check for the longest common
+prefix, you got to do, at least one + two
++ three + four up to D character compares.
+Which means it's going to be quadratic
+just for checking for the longest common
+prefix of adjacent, elements in this
+algorithm.
+It's also a problem for the sort.
+So, if you have very long repeats, we
+still don't have an algorithm.
+So, the question is, that was confronting,
+computer scientists, in the late 80's,
+early 90's is how can we get this done?
+What's the best algorithm for this
+problem?
+And there was a great algorithm called the
+Manber-Myers algorithm,
+That I'll talk about in just a minute.
+That got the job done in linear rhythmic
+time.
+And actually, there's a clever old
+algorithm that uses the data structure
+called, suffix trees.
+But it was really the Manber-Myers
+Algorithm that, got people, excited about
+this area.
+And so, I want to describe that, briefly.
+Actually, these two computer scientists,
+one of them went on the become chief
+scientist of an internet company.
+The other one went on to become chief
+scientist of a company that won the race
+in sequencing the genome.
+In both cases, good algorithms for
+processing long strings are very
+important.
+And this is a great algorithm.
+Now, it's a little too complex to give all
+the details in a lecture, but I can give a
+pretty good idea of how it works.
+So the overview is that, it's kind of like
+an MSD, sort.
+But, what it manages to do is double the
+number of characters that it looks at in
+each passthrough of the array.
+And, the idea is that, you, since you're
+doubling the number of characters that you
+look at each time.
+It, it finishes in, log in time that's the
+size of the, suffix array.
+If, if you double until you get n, it's
+log n.
+And it turns out, what's really ingenious
+about the algorithm is that, you can do
+it, do each phase in linear time.
+So, this is an example of how it works.
+So, it's, we going to do a suffix sort.
+And then I'll, I'll talk about the least
+common prefix as well in a minute.
+So, sorting the first character, while we
+just use key, key index counting or
+something like that.
+So we know how to do that, in linear time.
+And then the idea has given that sorted on
+the first character.
+We can sort it, easily sort on the first
+two.
+Well again, we could use, key index
+counting.
+So now, what we can do is, double the
+number of characters that we, involve each
+time.
+So, the next phase of the Manber-Myers
+algorithm, now gets it sorted on four
+characters.
+And, of course, as we, the more characters
+we have sorted on at the leading part, the
+smaller the [INAUDIBLE] files in the
+trading, in the trailing part. So, that's,
+certainly a feature.
+And then, in this case, after we get to,
+eight characters, and all our sub files
+are of size one, and we're done with the
+sort.
+Now, the key to the algorithm is, the idea
+that, once it's going, it uses what's
+called an index sort,
+Which essentially means that it can do
+compares in constant time in the middle of
+the algorithm.
+Now, lets just take a look at, at, at how
+that works.
+So lets look at, trying to compare string
+zero with string, nine.
+And we know that we've already got the
+thing sorted on, four characters and we
+want to sort it on eight So, zero and nine
+are equal on the first four characters.
+They're in the same subfile.
+So, now we're going to get it sorted on
+the other.
+But the thing is if we add four to our
+given indices. So, we're at zero, and we
+add four.
+That gets us to four, and we're at nine.
+We add four that gets us to thirteen. we
+already know that the thing is sorted on
+those characters.
+And, we know that, thirteen appears before
+four in this sorted list.
+It's already sorted.
+And we can keep track of that by, using an
+inverse array which says, for every index,
+where it appears in the sorted order.
+So, this says that thirteen appears at
+position six, and four appears at position
+seven.
+That is, thirteen appears before four.
+So, when we're trying to compare, the,
+this, string here, that's the zeroth
+suffix with the ninth suffix,
+We can go in and again, add four to get
+four, add four to get thirteen go into the
+index array and see which one is less and
+the one that appears first is going to be
+less.
+So, that's a constant time, comparison.
+Thirteen is less than or equal to four
+because the inverse of thirteen is less
+than the inverse four, which means that
+suffixes of nine, if you take eight
+characters out of nine and eight
+characters out of zero, it's less.
+It's a really, simple and of course,
+Easy to implement operation.
+So, maintaining the inverse, I can get
+constant time string compare.
+So, what does that imply, for the whole
+suffixsort??uh
+Well,
+With a constant time compare, then, I can
+get, at a minimum, I can get an, an analog
+N sort, just by using quicksort or
+mergesort.
+And then, I get much faster than quadratic
+performance no matter what the strings
+are.
+That's a big key to the success of this
+algorithm.
+And actually, if, if you use a version of
+three-way quicksort, it's been proven that
+it even gets down to linear time for the
+sort,
+No matter what the input is.
+That's one thing, and then the other thing
+is when you need to do, the longest common
+prefix to look for the, longest match
+after the array is sorted you can also do
+this constant time, string compare and get
+the job done.
+So this is really an in-, ingenious
+algorithm that, can get, suffix sorting
+done very fast. even in the presence of, a
+huge repeat.
+And I think really underscores, the
+importance of careful algorithmic
+thinking, in addressing new computational
+challenges.
+So, string sorting, just to summarize, is
+a really, interesting area of inquiry.
+For one thing, we can develop linear time
+sorts for many, many applications.
+We, we thought, we're doing well when we
+had, n log n sorts, but actually we can do
+much better for many applications.
+And in fact, we can even get to sublinear
+where we don't even have to examine all
+the data.
+In today's world, when we have huge
+amounts of data, to be able to, get it
+sorted without even looking, at it at all
+is really quite a miracle.
+Three-way string quicksort,,you you can't
+do better than that in terms of the
+numbers of characters that you have to,
+examine.
+And it's a lot of deep mathematical
+analysis, behind that result.
+But I think the other lesson to learn is
+that algorithms like three-way string
+quicksort and Manber-Myers, show that we
+really have a lot to learn still in string
+processing.
+And they're not really random.
+In fact, a lot of times we're looking for
+non-randomness and we might want to use
+specialized algorithms.
+So, at string processes or introduction to
+string processing,
+We're going to look at many other string
+processing examples in the coming
+lectures.

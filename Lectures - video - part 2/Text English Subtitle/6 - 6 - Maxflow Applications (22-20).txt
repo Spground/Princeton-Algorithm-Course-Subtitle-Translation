@@ -1,0 +1,490 @@
+Let's finish up by looking at some
+applications of maxflow like shortest
+paths maxflow is a very widely-applicable
+problem solving model. And it is really
+important to recognize at this stage,
+We've looked at a lot of algorithms for
+solving specific problems.
+And they're important problems.
+And it's important to have efficient
+algorithms for solving them.
+But when you have something like maxflow
+or shortest paths the, the importance that
+we attach to them is really magnified by
+the idea that they have this property
+that, that they're a very general way to
+state a problem and we have many, many
+practical situations that we can cast in
+terms of these problems.
+We looked at arbitrage coming or reducing
+down to a shortest paths problem.
+And we'll look at a bunch of problems that
+don't seem to be related at all, that can
+be modeled as maxflow problems.
+So, they're extremely important because
+they're problem solving models that work
+for a broad variety of important
+applications.
+Number one that wouldn't be any good if we
+didn't have efficient algorithms for
+solving them.
+But we do have efficient algorithms for
+solving them.
+And so, that magnifies their importance.
+And that's why people work so hard on
+finding efficient algorithms for solving
+these problems.
+And we'll talk about that as well in a
+minute.
+So, these are, again, just a few of the
+many, many algorithms applications of
+maxflow We saw an image processing
+algorithm called syncarving for shortest
+path.
+There's another one called segmentation
+for maxflow. Again, if you have an image
+and you have one vertex per pixel you have
+a huge, huge graph.
+And you have many explicit huge graphs and
+we've talked about those types of things.
+But there are other things where the graph
+is, is an abstraction that it gets
+involved in a model of the abstract graph
+and the maxflow problem.
+Its maybe a bit surprising at first, and
+we'll look at a couple examples of that to
+illustrate the point.
+Over here is a medical example having to
+do with it.
+That's the, the image processing one on a
+medical example to help identify some
+important part of a medical image.
+So, we'll look at a, at a couple examples
+to that the idea of a general problem
+solving model that, once we have an
+efficient algorithm, then we can think
+about using the problem solving model.
+And later on, we'll see that this, this
+concept of a general problem solving model
+has really profound implications and we'll
+be looking at that later on.
+So, let's just look at a, at a couple of
+examples.
+Here's one called the bipartite matching
+problem.
+So you have this is a bit of an idealized
+situation.
+But it works in more messy, real life
+situations, too.
+So, there's n jobs out there and n
+students apply for them.
+And we'll use a small example where
+there's five students and five jobs.
+But, of course, in the real world, this
+can be huge.
+Now during hiring season, the students go
+out and apply for the jobs and they each
+get a bunch of offers.
+So looking at it from a student's point of
+view.
+Alice gets offers from Adobe, Amazon, and
+Google.
+Adobe makes offers to Alice, Bob, and
+Carol, and like that.
+So, this is an association between
+students and jobs.
+Everybody gets several offers.
+And in question is well, it would be good
+if everybody got a job, right?
+And the question is, is there some way for
+everybody to get a job.
+That's called the bipartite matching
+problem.
+And it comes up in lots of forms directly
+related to graph processing.
+Now, we could study and people do study
+algorithms for explicitly solving this
+particular problem.
+But what I want to emphasize is that
+actually, maxflow is a reasonable model
+for it.
+So, we can use our efficient maxflow
+implementation to get it solved.
+We don't have to come up with a
+specialized algorithm for this problem.
+So, in terms of graphs, it's called the
+bipartite matching problem,
+Given a bipartite graph, find a perfect
+matching.
+And a bipartite graph is one where you
+have two sets of vertices, in this case,
+one to corresponding to students and
+another corresponding to companies.
+And you have every edge in the graph goes
+from one type of vertex to other, the
+other type of vertex.
+And a matching in the graph is a set of
+edges that are disjoint that disconnects
+two vertices but that's it.
+And so, in this case, there's a perfect
+matching works out that if Alice takes the
+Google job and Bob takes the Adobe job and
+Carol takes the Facebook job and like
+that, then everybody gets a job.
+So, that's a perfect matching.
+But you can also have a situation where
+that's not possible.
+So let's look at how to formulate,
+How to, well, the one thing is, how do we
+find the matching?
+And then the other thing is, is there one?
+So this is easy to formulate as a matching
+network flow problem.
+That's what this diagram shows.
+So, what we'll do is we'll create our
+source and target vertices.
+We'll have one vertex for each student.
+One vertex for each company in the flow
+network.
+And we'll add a capacity one edge from s
+to each student.
+And a capacity one edge from t to from
+each company to t and then it doesn't
+matter what the capacity.
+We'll add an infinite capacity edge from
+each student to each job offer.
+And then, we'll ask for a maximum flow in
+this graph.
+So, you can see that the flow, every
+augmenting path has to go from s to a
+student to a company to t and so, the flow
+will give us the match and let's see how
+it works.
+This is a, a one to one correspondence
+between perfect matchings and bipartite
+graphs, and integer value maxflows. so, in
+this case, there's a flow of value five.
+And that flow gives us the matching
+immediately.
+So what the mean cut tells us if, if
+there's a no perfect matching, explain
+why.
+So, here's an example that maybe could
+have happened with the job offers.
+And when the we're algorithm terminates it
+terminates with a cut we're the, a cut of
+the bipartite graph, which separates two,
+four, and five from seven and ten.
+And essentially the cut tells us that
+students in two, four, or five can only be
+matched to companies seven and ten.
+You could see all the edges from two,
+four, five go to seven and ten, so you
+have two companies and three students.
+So, there's no way that everybody can be
+matched, somebody's gonna be left out.
+So that's a the students, so that they'll
+be a mean cut, and the s will be the
+students on the s side and t will be the
+companies on the s side and if it's bigger
+than, s is bigger than t, then I can't
+have a matching.
+So in this case at, there's only, four
+jobs and somebody is going to be left out.
+It's also interesting to trace through
+what happens with the maxflow algorithm on
+bipartite graphs like this.
+Essentially augmenting paths or usually
+forward edges makes some matching.
+And then if it's possible to find a path
+that undoes some matching.
+It, zig zags through, undoing matching and
+trying other ones to find a way through to
+the target.
+But if there's no perfect matching,
+there'll be a mean cut.
+And that one will explain why.
+So, that's a problem,
+The bipartite matching problem that we can
+model as a maxflow algorithm and just use
+our existing code to solve it.
+Here's another one that's even further
+away.
+It doesn't seem to have a graph at all,
+but it does.
+It's called the baseball elimination
+problem.
+In this is again, just to show the breadth
+of applicability of the maxflow model.
+It's interesting at certain times of year,
+you get near the of the baseball season
+and often you'll hear in the news, or see
+in the paper, or see in the web, that your
+team is mathematically eliminated.
+Actually most of the time, they don't
+really get that right because they don't
+do the computation that we're going to
+talk about next.
+Sometimes, it's easy this is an example
+where it's easy.
+So we've got four teams, they already have
+this win-loss record and this is the
+number of games to play.
+So in this case Montreal has only three
+games to play. so the best they could do
+is win 80.
+Ag, but Atlanta has already got 83 wins so
+there's no way Montreal is going to win.
+So, that's a mathematical elimination that
+anyone could figure out.
+Usually the newspaper will get that one
+right.
+So but sometimes it's more complicated if
+you look, say, this case.
+So Philly has 80 wins, three games to
+play.
+So the best they can do is 83 wins.
+So that's interesting.
+But the thing is that Atlanta has a bunch
+of games against, it's got six games
+against the Mets.
+And either Atlanta wins one of them, which
+would give Atlanta 84 wins, or the Mets
+win all of them, in which case, they get
+84 wins.
+Either way, Philadelphia is mathematically
+eliminated.
+That's a bit more complicated decision
+about which team wins.
+The thing is and there's many more
+complicated situations that show up. And
+the observation, just from these two easy
+examples, is that you can't figure out
+who's mathematically eliminated without
+knowing the full schedule of games.
+It depends, not only on how many games
+were already won, how many are left to
+play, but it depends on the schedule and
+who's playing who.
+And usually, your average sportswriter is
+not going to do that computation without a
+computer.
+And I hope that one of you becomes a
+sportswriter and puts this in for the
+future for us.
+So let's look at a more complicated
+situation.
+So this is the American League East awhile
+ago near the end of the season.
+And question is which teams are
+mathematically eliminated and which ones
+aren't.
+Now in this case it turn's out that the,
+this is pretty far from the end of the
+season actually.
+These 27 games to finish.
+And this is a proof here that Detroit is
+mathematically eliminated.
+But it's a pretty complicated argument and
+well, you can, you can reason it out with
+arithmetic.
+The tough part is to figure out this set
+of teams here are.
+So what we're going to see is that you can
+do a maxflow computation to figure out
+this sets of teams.
+And this, let's just look at it for this
+example.
+So, at this point, Detroit is
+mathematically eliminated.
+And so it's got 27 games to play, so it
+could in theory, win 76 of the games.
+Now but the logic that will convince you
+that they are eliminated is that if you
+take the four teams the other four teams
+and add up all their wins there's 278 of
+them.
+And you look at the remaining games
+there's 27.
+So somebody's gotta win every one of those
+games.
+The total number of games won for that set
+of The teams is 305, and if you divide by
+four.
+It means the average is 76.25.
+And right there is a proof that one of
+them is got to win 77 games.
+That takes a little thought, but if you
+have the four teams, then from the
+remaining games, you can figure out that
+Detroit is mathematically eliminated.
+But the key is, how do we find those four
+teams.
+And the answer, as I've already said, is
+it's maxflow. and so this is a maxflow
+network that can be used to solve the
+baseball elimination problem.
+So the intuition is that, that you have a
+source vertex and you have what happens in
+the remaining games flowing from the
+source to the target.
+So here we're trying to prove that team
+four is we're trying to decide if team
+four is eliminated or not.
+That's Detroit, in this case.
+And so, what we need is a vertex for each
+pair of vertices that are not the team
+we're interested in.
+And so, that's going to relate to all the
+remaining games because these are the
+pairs of teams.
+And then you have an edge from the source
+to each one of those vertices.
+And the capacity of the edge is the number
+of games left between those two.
+So that's on one end.
+And then, you have a vertex for each team.
+And then what we do for each one of these
+pair of vertices,
+We put infinite capacity edges to the two
+teams involved.
+So, the flow is going to be an integer
+flow, so some of it will go one way and
+some of it will go the, the other way.
+But then, for each of the teams what we're
+going to do is, make sure that they don't
+win more games than team four, the team
+we're interested in.
+So, we'll put this upper bound on the flow
+here that we won't let the numbers of wins
+get better than what our team of interest,
+team four can do.
+And the fact is that if you compute a
+maxflow of this you can convince yourself,
+that if you can fill this network up
+going, going from s in, in the maxflow
+Then team four, team four is not going to
+be eliminated.
+Nobody's going to get more wins than team
+four.
+And so the way to solve the baseball
+elimination problem is to run maxflow on
+this network, and the mean cut will give
+the set of keys, it's our, mean cut will
+give the set of teams that you needed in
+this calculation to figure out to prove to
+a friend that, or to a sportswriter that
+the team you're interested in is, is
+eliminated.
+An interesting application of maxflow.
+Again, we just take our problem, use it to
+build a network solve the problem on the
+network using our existing code and
+translate that solution to a solution to
+our original problem.
+That's called reduction and it's a very
+important technique that we're going to
+use we're going to talk about it in some
+detail later on.
+So now we come to the theory of maxflow
+algorithms.
+This is ,, an even hotter area than
+minimum spanning tree and shortest paths
+that we've looked at before and that it's
+a very frustrating situation for
+theoretical computer scientists.
+And that we have this relatively
+straightforward to state algorithm and we
+have this all, this design freedom,
+forward focus in algorithm.
+There's lots and lots of ways that we
+could try to find augmenting paths and
+there's even other methods that don't use
+forward focus and that are almost as
+simple. and the question is, how difficult
+is it to solve the maxflow problem?
+And there's literally hundreds of papers
+in the scientific literature that are
+oriented at trying to solve this problem.
+Now, again the, the theoretical computer
+scientists are trying to find an algorithm
+that's guaranteed to work well in the
+worst case.
+So, they're just counting the number of
+edges that the algorithms examine in the
+worst case.
+But when related to practical graphs these
+are very, very conservative upper bounds.
+And the real performance is going to be
+totally different.
+So, you can't use these to compare the
+performance of a given algorithm.
+The performance of a given algorithm
+really depends on the characteristic of
+networks.
+But still, there's a huge gap between the
+best algorithms that we know.
+In a most recent one was discovered just
+this,
+This year that can guarantee e squared
+over log e, number of edges examined to
+try to find maxflow. and so, that's fine
+but there's a huge gap between, and very
+small compared to say, shortest augmenting
+path which is e cubed essentially.
+And that's, that's fine, but actually in
+practice, the running time of many of the
+algorithms seems to be relatively small
+factor of e,
+And no one can prove that there might not
+exist an algorithm, or no one has proved
+yet, that there might not exist an
+algorithm that gets the job done in linear
+time.
+So one of the exciting things about
+studying the field of algorithms is
+there's still room to find, to discover
+interesting and innovative algorithms that
+could have a huge practical impact.
+Because we have algorithms that won't run
+well on practical networks.
+Lots and lots of important practical
+applications use them.
+And if someone, someone or discovered, to
+discover a fast, practical, guaranteed
+linear time algorithm, it would
+immediately have huge impact.
+So that's the first warning was worst case
+order of growth.
+You're not going to compare algorithms in
+practice.
+And there's plenty of research papers out
+there that have done empirical studies on
+the maxflow algorithms for realistic
+networks in the so-called ath, best so far
+in practice is known as the push-relabel
+method with gap relabeling, which runs in
+time e square v, where e is the number of
+edges.
+And, again, even that in practical
+networks is going to run faster than that.
+So, there's numerous research challenges
+still to be addressed in studying the
+maxflow problem.
+There's plenty of practitioners that are
+using the codes like the one's that we've
+shown and, and variations to try to solve
+a huge real maxflow mincut problems and
+trying to get them done in linear time.
+There's many theoretical computer
+scientist that are trying to prove that
+there exists or not exists, a maxflow
+algorithm that is guaranteed to run in
+linear time, no matter what the input.
+There's many, many people doing and
+there's still a great deal to be learned.
+It's a fine example of why it's exciting
+to be working in the field of algorithms.
+There's, an opportunity for new knowledge
+still available and many people are still
+working on them.

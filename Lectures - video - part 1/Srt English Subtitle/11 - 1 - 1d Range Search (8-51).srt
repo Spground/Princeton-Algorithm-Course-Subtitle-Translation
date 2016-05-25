@@ -1,0 +1,438 @@
+1
+00:00:03,054 --> 00:00:09,019
+Welcome back. Today, we're gonna take a
+look at a number of interesting
+
+2
+00:00:09,019 --> 00:00:15,011
+applications of symbol tables and the
+binary search tree data structure to
+
+3
+00:00:15,011 --> 00:00:21,413
+address problems with processing geometric
+data. So let's take a look at it. The idea
+
+4
+00:00:21,413 --> 00:00:27,378
+is that we're gonna be talking about
+geometric objects, not simple keys like
+
+5
+00:00:27,378 --> 00:00:33,338
+strings and numbers. So here's an example.
+So say your geometric objects are points
+
+6
+00:00:33,338 --> 00:00:38,346
+in the plane and you specify a rectangle
+that's oriented with the
+
+7
+00:00:38,346 --> 00:00:43,404
+horizontal/vertical axes. And you might
+wanna ask, which points are inside the
+
+8
+00:00:43,404 --> 00:00:48,200
+rectangle or how many points are inside
+the rectangle? Or maybe what you are
+
+9
+00:00:48,200 --> 00:00:54,011
+processing is rectangles. You have a set
+of rectangles, and we want to know which
+
+10
+00:00:54,011 --> 00:01:00,291
+of these rectangles intersect? Or how many
+rectangles intersections are there? These
+
+11
+00:01:00,291 --> 00:01:05,837
+are interesting problems that have lots
+and lots of applications, from
+
+12
+00:01:05,837 --> 00:01:11,806
+computerated design, to games and movies
+and also in abstractions such as data
+
+13
+00:01:11,806 --> 00:01:17,849
+bases and other situations where you might
+have multiple keys or multiple dimensions.
+
+14
+00:01:18,065 --> 00:01:24,856
+And it's a very interesting extension of
+the ideas that we've looked at for symbol
+
+15
+00:01:24,856 --> 00:01:30,175
+tables for all sorts of familiar
+applications. And, surprisingly binary
+
+16
+00:01:30,175 --> 00:01:34,300
+search trees and these associated
+algorithms that we've looked at are going
+
+17
+00:01:34,300 --> 00:01:39,774
+to provide very efficient solutions to a
+number of important problems in this area.
+
+18
+00:01:39,774 --> 00:01:45,943
+And really have enabled a new developments
+and new technology in all of these kinds
+
+19
+00:01:45,943 --> 00:01:51,135
+of applications. So, to get started, we're
+going to look at a simple problem called
+
+20
+00:01:51,135 --> 00:01:56,761
+one-dimensional range search. And it
+really forms the basis for what we're
+
+21
+00:01:56,761 --> 00:02:02,146
+going to do. It's a little bit of an
+extension of the ordered symbol table API
+
+22
+00:02:02,146 --> 00:02:07,837
+that we gave before and we're going to
+have operations range-search and
+
+23
+00:02:07,837 --> 00:02:12,797
+range-count. So, a one-dimensional just
+means we have one key, so we'll insert a
+
+24
+00:02:12,797 --> 00:02:19,116
+key value pairs before and what we want to
+do is to be able to search for a key, and
+
+25
+00:02:19,116 --> 00:02:24,770
+a value associated with it, want to b e
+able to delete. But then we want these
+
+26
+00:02:24,770 --> 00:02:30,703
+operations range-search and range-count.
+So, find all the keys that are between two
+
+27
+00:02:30,703 --> 00:02:36,083
+given keys, or give how many keys are
+there between two given keys. So, for this
+
+28
+00:02:36,083 --> 00:02:42,251
+example at right we have insert a number
+of keys and, and we're just showing them
+
+29
+00:02:42,251 --> 00:02:47,992
+in sorted order. But then, you might say,
+well, how many keys are there that are
+
+30
+00:02:47,992 --> 00:02:53,780
+between g and k? In this case, there's
+just two. And then the client might say,
+
+31
+00:02:53,780 --> 00:02:59,598
+well, what are those keys and you want to
+be able to return them. And this is a very
+
+32
+00:02:59,598 --> 00:03:06,010
+common operation, say, in databases. You
+want to return how many taxpayers have
+
+33
+00:03:06,010 --> 00:03:11,335
+salaries between one million and ten
+million and then which ones are they and
+
+34
+00:03:11,335 --> 00:03:17,431
+so forth. So, range searching is a very
+important fundamental operation. Now, in
+
+35
+00:03:17,431 --> 00:03:23,459
+geometric interpretation, we just think
+that the keys as points on a line. And so,
+
+36
+00:03:23,459 --> 00:03:29,627
+the key values well, are just specified as
+points on a line. We might convert the
+
+37
+00:03:29,627 --> 00:03:34,856
+letters to numbers, or we might, keys
+might be numbers. And then, what we're
+
+38
+00:03:34,856 --> 00:03:41,119
+looking for is to find or count the points
+in a given interval in one dimension. So
+
+39
+00:03:41,575 --> 00:03:47,272
+how we're going ti implement that? Well
+this is the basic problem that is very
+
+40
+00:03:47,272 --> 00:03:52,356
+similar to our symbol table problem. We
+might consider keeping the things in an
+
+41
+00:03:52,356 --> 00:03:57,529
+unordered array. Just put them in an
+array, and then, well, insertion is, is
+
+42
+00:03:57,529 --> 00:04:03,254
+fast. We just add it to the end of the
+array. We might have to use resizing to
+
+43
+00:04:03,254 --> 00:04:08,371
+make the array grow. But this is
+unattractive because for large numbers of
+
+44
+00:04:08,371 --> 00:04:13,899
+keys, in order to count the keys that fall
+within a given range, you have to go
+
+45
+00:04:13,899 --> 00:04:19,711
+through all the keys and test whether
+they're in the range or not and to return
+
+46
+00:04:19,711 --> 00:04:26,043
+them the same way. So take linear time for
+large number of keys. If you keep the
+
+47
+00:04:26,267 --> 00:04:32,638
+things in order like in a binary search
+situation then to insert in order to keep
+
+48
+00:04:32,638 --> 00:04:38,591
+it in order in an array, you might need to
+move the larger ones over one pos ition
+
+49
+00:04:38,596 --> 00:04:44,209
+and so forth or elementary implementation
+of binary search when we did symbol tables
+
+50
+00:04:44,406 --> 00:04:49,662
+did this. So, the insertion time might be
+linear, but then you can use binary
+
+51
+00:04:49,662 --> 00:04:55,329
+search, to look for the two endpoints,
+that's only going to take time
+
+52
+00:04:55,329 --> 00:05:00,631
+proportional to log in. And then from
+that, you can figure out how many keys
+
+53
+00:05:00,631 --> 00:05:06,243
+there are or return them all between the
+index, the lowest one in the range, index
+
+54
+00:05:06,243 --> 00:05:12,027
+the highest one in the range. So, those
+elementary implementations are no
+
+55
+00:05:12,027 --> 00:05:18,179
+acceptable for a large numbers of keys cuz
+they have the linear time operation. So,
+
+56
+00:05:18,179 --> 00:05:24,035
+what we really want is to have time
+proportional to log in. For insert and,
+
+57
+00:05:24,035 --> 00:05:29,186
+and for counting. For range search, of
+course, we, we have to touch every key
+
+58
+00:05:29,186 --> 00:05:35,413
+that we return, so the running time is
+going to be proportional to the number of
+
+59
+00:05:35,413 --> 00:05:43,042
+keys that match. But anyway, those are
+reasonable goals. And they're easy to
+
+60
+00:05:43,042 --> 00:05:51,545
+achieve. So [cough] so, for example what
+about one-dimensional range counting?
+
+61
+00:05:51,545 --> 00:05:58,014
+Well, what we're going to do is just keep
+the keys in a binary search tree and we
+
+62
+00:05:58,014 --> 00:06:03,484
+looked at the implementation of the rank
+function for binary search trees where for
+
+63
+00:06:03,484 --> 00:06:09,342
+every key, we can compute how many keys
+are there that are strictly less than that
+
+64
+00:06:09,342 --> 00:06:15,508
+key. So in this case, the rank of e is two
+and h is three and so forth. So, in a
+
+65
+00:06:15,508 --> 00:06:21,413
+binary search tree, those rank numbers go
+in an increasing order as we do in an
+
+66
+00:06:21,413 --> 00:06:27,662
+ordered traversal and that's easy to
+compute. You need to keep that rank tree
+
+67
+00:06:27,662 --> 00:06:33,813
+as a field, or keep a field which has the
+size of the tree and it's easy to complete
+
+68
+00:06:33,813 --> 00:06:40,760
+the rank from that. So how many keys
+between, say e and s? Well one, two,
+
+69
+00:06:40,760 --> 00:06:51,297
+three, four, five. It's actually just the
+difference between the ranks plus one if
+
+70
+00:06:51,623 --> 00:07:00,361
+the high [cough] entry in the range query
+is in the table and not +one over. So,
+
+71
+00:07:00,361 --> 00:07:08,274
+there's the same number of keys between e
+and s as there are between e and t five.
+
+72
+00:07:08,274 --> 00:07:15,192
+Between f and t, there's only f our. So,
+that's a, a really 1d range count is a
+
+73
+00:07:15,192 --> 00:07:22,412
+very easy computation to perform in, in
+log time with a binary search tree. The
+
+74
+00:07:22,412 --> 00:07:28,297
+[cough] number of nodes examined when we
+do a search is the length of the search
+
+75
+00:07:28,297 --> 00:07:33,789
+path to low plus the length of the search
+path to high to [cough] find their ranks
+
+76
+00:07:33,976 --> 00:07:39,595
+and that's going to be time proportional
+to log N. [cough]. So and a range search.
+
+77
+00:07:39,595 --> 00:07:46,018
+Well, we just do a recursive search and to
+find all the keys between low and high you
+
+78
+00:07:46,214 --> 00:07:51,472
+look in the left subtree if any of them
+could fall in the range. You look at the
+
+79
+00:07:51,472 --> 00:07:57,106
+current node and you look at the right
+subtree, if any of them could fall in the
+
+80
+00:07:57,106 --> 00:08:02,555
+range. And it's easy to tell whether any
+of them could fall in the range by just
+
+81
+00:08:02,555 --> 00:08:08,476
+checking whether they're range overlaps
+the root or not. So, if we are looking for
+
+82
+00:08:08,476 --> 00:08:14,469
+all the keys between f and t then we have
+to look at both the subtrees of the root
+
+83
+00:08:14,469 --> 00:08:19,643
+s. But we don't to look at the left
+subtree of e because all of those are less
+
+84
+00:08:19,643 --> 00:08:26,018
+than e and therefore are less than f. So,
+we don't have to have to look there. But
+
+85
+00:08:26,018 --> 00:08:31,419
+otherwise, it's a simple modification of
+recursive tree search to find all the keys
+
+86
+00:08:31,635 --> 00:08:37,702
+and it's easy to see the running time to
+that is going to be proportional to the
+
+87
+00:08:37,702 --> 00:08:47,518
+number of keys returned plus log N. So,
+that's one dimensional range search using
+
+88
+00:08:47,518 --> 00:08:51,040
+binary search trees.

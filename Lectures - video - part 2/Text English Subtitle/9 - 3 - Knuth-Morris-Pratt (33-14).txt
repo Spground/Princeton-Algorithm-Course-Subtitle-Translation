@@ -1,0 +1,745 @@
+So, the algorithm that we're going to look
+at for solving the substring search
+problem is called the Knuth-Morris-Pratt
+algorithm.
+It's got an interesting history that we'll
+get to at the end.
+But I just want to start by saying that.
+This is one of the coolest algorithms that
+we'll cover in this course.
+And it's not an algorithm that anyone
+would come up with without a lot of lotta
+hard work.
+But understanding this algorithm really
+gives somebody an appreciation for what's
+possible with careful algorithmic thinking
+even for such a simple problem as this.
+It's a quite ingenious method.
+So, here's the intuition behind the
+algorithm.
+So, say, we're looking for the pattern.
+B followed by a bunch of a's in the text.
+So we're going along and so ahm well,
+we're trying to mismatch right away so
+we'll move over to first position.
+And we'll go BAAAA, and then we find a
+mismatch at the end in this case.
+So now, what the, brute force method is
+going to do is back up to move over one
+position if b doesn't match the a, back up
+again if b doesn't match the a, and keep
+going matching the first b against all
+these a's before getting to the next
+character in the text.
+So, we've matched five characters and we
+mismatched on the sixth.
+But the key point is that when we got that
+mismatch all we have is A's and B's.
+We already matched BAAAA, four A's and we
+got a mismatch so it's AB..
+So, at that point we know what the
+previous characters in the text are, and
+we know that if we move over one position,
+we're going to be trying to match B
+against A.
+So we should be able to take advantage of
+that knowledge, that's the intuition on
+the method of the Knuth-Morris-Pratt.
+We don't need to back up the text pointer
+in this case.
+When we get the mismatch, we can just keep
+going.
+We don't even have to match the first b we
+know it's there So,
+We can just keep going in the text pointer
+and start in the second pattern pointer.
+The Knuth-Morris-Pratt algorithm is a very
+clever method that manages to always avoid
+backup no matter what the pattern is.
+So, let's take a look at what's involved.
+It's based on the idea of building a
+deterministic finite state machine for
+string searching.
+Now, the deterministic finite state
+machine, if you're not familiar or don't
+remember, it's a very simple thing.
+You've got a finite number of states.
+It's always in one of the states.
+There's a start state and a, and a halt
+state.
+And from every state, there's exactly one
+transition for each possible character in
+the alphabet.
+So we're, if we're in a state and we're
+reading a particular character we move to
+the state that is indicated by that
+character.
+So, if we're in state two and we're
+reading an A, we move to state three,
+that's what this line in the table says.
+If we're in state two and we read A, that
+happens to be the pattern character is a,
+and if we see and A, we move to state
+three.
+If we see AB or AC,c we go back to state
+zero.
+That's what this machine says. It says,
+the tabular representation and the
+graphical representation.
+If we get to stage six then we just say,
+except we found the pattern and you could
+see how that is, the pattern and then if
+we match the pattern character, we move
+right through this machine till we get to
+the halt state.
+So, let's first take a look at exactly how
+the machine works to make sure that
+everybody follows that.
+And then we'll look at how to rebuild this
+machine.
+So that's our machine and that's our text
+up at the top.
+So, we start at state zero we're reading
+in a.
+What are we supposed to do if we're in
+state zero and we're reading an A?
+This enter the table and says, we're
+supposed to go to state one.
+So, we go to state one.
+Every, at every step, we consume a text
+character.
+A.
+And in the graphical representation, it
+says, stay in state one.
+Or in this representation, it says, if
+you're in state one and you see an a, stay
+in state one.
+So that's what we'll do.
+We'll read the a and stay in state one.
+Now, we're in state one and so you can say
+that in, in state one is reading a's and
+in a way, looking for something that's not
+A,
+No matter how many a's you have, you'll
+read them right here in state one.
+So now, we're in state one and we're
+reading a B and it says, go to state two
+in that case.
+So, that's where we'll go, read the B.
+Now, we're in state two and reading an A,
+So we go to state three and read the A.
+Now, we're in state three and see a C.
+In state three, when we see a C we're
+supposed to go back to state zero.
+That's a mismatch our pattern sees not
+until the end.
+So now, we have to start the search all
+over again.
+Although in the final state machine does
+not know that, it's just plotting along
+according to the state transitions they're
+supposed to do.
+So, we read the C, C, now we're back in
+state zero.
+So now, we're in state zero looking at an
+a.
+And we move to one, and read the A.
+And then we see another A so we stay in
+one and read the A.
+And now we see a B, and we go to state
+two, and read the B. And then we go to
+state three and read the A, state three
+and read the A.
+State four and read the A.
+State five and read the C.
+And now, we're in state six.
+And that means we found the pattern.
+So, that's the simulation of what the
+deterministic finite state be. that is
+corresponding to this pattern would do.
+And as we'll see the code for implementing
+this simulation is quite simple.
+That's a demo of DFA simulation.
+So let's just take a quick look at what
+the interpretation of what this DFA is.
+So, what is it, what does it mean after we
+just read the ith character of the text?
+Well the number of the state is the number
+of characters in the pattern that we've
+matched up to the current point.
+So, that is it.
+At state three, we've matched three
+characters in the pattern.
+And what's happened is, that we've matched
+a prefix of a pattern, the first three
+characters of the pattern.
+It's, and actually, it's the longest
+prefix of the pattern that's also a suffix
+of the i, first i plus one characters from
+the text,
+Text from zero to i.
+That's the interpretation of what it is.
+So and if the DFA is in state three after
+the first six characters of the text it's
+got ABA is the longest prefix of a
+pattern.
+That's also a suffix of first six
+characters of the text.
+So, another prefix of the pattern that
+looks like it might work is ABABA but
+that's not a suffix of the text string
+ending at character six.
+And third, interpretation is useful to
+understanding what's going on.
+So given that we've constructed this DFA.
+It's just the state transition table for
+the DFA is simply a two-dimensional array.
+That's indexed by the pattern character.
+So, if, if you in a, a certain, if you're
+reading a certain pattern character sorry,
+if you're reading a certain text character
+then for each we reset the pattern pointer
+to be the entry given in the table that
+corresponds to the current one.
+So let's go back to the table to be sure
+about that.
+So when we're in a particular state like
+two and we see an a we read, so this would
+be j we refer to that column.
+And whatever text character we happen to
+see, that's how we update j.
+So that's what this code does.
+And then, if we ever to get to the
+transition state, the final state, we just
+return i minus m. Now, this is just like
+that alternate implementation of the brute
+force method that we gave.
+But the key idea is that,
+Notice that i never gets decremented.
+All we're doing is incrementing i and
+changing j.
+Either always just referring to the table.
+When we have a match, the table
+automatically increments j.
+We have a mismatch, it figures out the
+right state to go to.
+So, that's a very simple and economical
+and fast implementation of substring
+search.
+So the running time is clearly, all it
+does it look up an entry in the table for
+every text character.
+So, that's linear time.
+The key is, is.
+How do we build that table that drives the
+algorithm?
+And that's the tricky algorithm.
+So a warning.
+This is definitely the trickiest algorithm
+we've looked at so far.
+And the idea, the importance, again, of no
+backup is that since the text pointer
+never decrements, you could use the input
+stream and just replace text [UNKNOWN]
+just read the next character in the next
+input stream.
+And this algorithm is going to work fine,
+no matter how big the input stream is.
+It will just go right, right through.
+Its not no memory of what the text is.
+But its got some memory of what the
+pattern is that's built into the DFA.
+So, this is the key that, you have a
+pattern,
+You can spend some time building this DFA
+table and doing pre-processing.
+But then, when you get the text, just,
+just index into this table for every text
+character and you're doing this substring
+search.
+So, you can build a machine that does
+this.
+No backup.
+Okay.
+So let's take a look at what it means to
+construct this DFA.
+So it depends on the pattern instead of
+with one character one state for each
+character in the pattern plus an extra at
+substate.
+And let's look at what it means to build
+the same.
+So first thing now we do to one character
+one stage for each character in the
+pattern.
+So the first thing we do is deal with the
+match transitions.
+So, that's when the you've, you're in
+state j,
+That means you've already matched j
+characters in a pattern.
+Then if, if the next character matches.
+So that the character that you have is
+the, the character that's supposed to
+match.
+You're going to so it's, add that
+character j, that's just a j plus first
+character,
+Then you know that you've matched j plus
+one characters.
+So, all that means is we can put in the
+match transitions.
+So, we have ABABAC, and these guys go
+ABABAC if you're in state zero and you see
+an A you go to state one, if you're state
+one and you see a B, you go to state two
+and so forth.
+That's how we get the match transitions to
+get us all the way through the pattern to
+the accept state.
+So that's the, the easy part.
+And then the hard part is the mismatch
+transitions.
+What are you supposed to do if you come
+against a text character that does not
+match the current text character?
+So, for example, if you're in state zero,
+the pattern starts with an A.
+If you didn't see if you don't see an A as
+the first character in the text,
+If you see a B or a C, then obviously you
+want to stay in state zero.
+So, you can think of state zero as,
+scanning through the text looking for an
+A.
+It's going to stay in, in state zero as
+long as it sees a B or C as soon as it
+sees an A, it'll go to state one.
+That completes state zero, you know what
+to do if you have a, an A, you know what
+to do if you have a B or a C.
+What about state one?
+So, we know that if you're in state one,
+you saw an A in the text, and you see a B
+in the text, what are you supposed to do?
+Well there's two different cases.
+If you,
+If you see a B going to state two if you
+see a C and that's not going to match the
+first character A in the pattern.
+So, you go back to state zero.
+But if you see an A, it's just as if you
+saw an A, a in state zero,
+So, you might as well stay in state one.
+So, that's how we fill in the DFA for
+state one,
+If you see a B going state two, you
+matched.
+If you see an A, well that matches the
+first character.
+So, stay in state one.
+If you see a C, clearly you have to go
+back to state zero.
+Okay, what about the next one?
+So if we're in state two and we see an A
+we know that we go on to state three.
+And what about the mismatch pages?
+Well, in that case, it's a B or C and
+again if you're sitting out a B or a c, C
+you'd better go back to state zero to keep
+looking for an a.
+This is state three, and well, now it gets
+to be a little more complicated.
+C, you state three, see a B, you
+succeeded, if you see a C, you go back to
+state zero.
+It's not so bad if you see an A, it's just
+like before.
+That's going to be like the first one.
+So seems like we're going along pretty
+fine.
+And again if we're in state four, we seen
+A, you go to five.
+If you see a B or a C, then you better go
+back and look for an A again.
+This one, is the one that's a little more
+complicated.
+If you're in state five and you see a B
+you, you go back to state four.
+And that's it's a little more work to
+figure out why that's the case.
+And then that last case is kind of the
+essence of the algorithm.
+So we'll look at a systematic way to be
+able to figure out what you do on a
+mismatch in each case.
+In this case, you only needed that, that
+for that one state.
+Otherwise, it was elementary reasoning.
+So that's a full DFA for KnuthMorrisPratt.
+A demo of at least thinking about how it's
+going to be constructed.
+Okay, let's look a little more carefully
+and systematically at the construction
+process for the KnuthMorrisPratt DFA.
+So the, the start is clear.
+We're going to go through the pattern.
+And for systematically fill in the match
+transitions.
+If we're in state zero and we see an A, we
+want to go state one.
+If we're in state one and we see a B,
+we're going to, we want to go to state
+two.
+State two, so we look up the pattern
+character and then, whatever that one is,
+we want to go to the next state.
+So, we can fill in at least that much
+automatically.
+Now the real key is the mismatch
+transition.
+So, here is the idea of the mismatched
+transition.
+So if you're in stage J and you get a
+mismatch, the next character in the text
+does not match the jth character in the
+pattern.
+So as pointed out at the beginning as
+motivation for KnuthMorrisPratt,
+You know a lot about the text at that
+point.
+And you know that the last j, j minus one
+characters of the text are if you lop off
+the first character of the pattern, it's
+from one to j minus one. So, in this case
+and then, it's followed by the text
+character that, that you're looking at.
+So one thing that you could do, so what
+you want to do, so you know that.
+And what you could do is simulate the DFA
+that you have built on that part of the
+pattern and then take the transition for
+the character that you just find.
+So, let's, let's look at this.
+So let's run this machine, if we'd seen it
+on the text of, of BABA,.
+What we want to do,
+We want to put the machine in the state as
+if we have backed up, but we don't want to
+backup. So, if we see a B, we stay in
+zero, if we see an we, we go to one.
+Then we see a B we go two.
+And if we see an A, we go to three.
+So now we're in state three in if we had a
+mismatch then the, for the fifth
+character, what we do on a, on a mismatch
+here we have to look what happens if we
+get an A or we get a B.
+If we'd run it on BABA and we get an A,
+then we should go back to one.
+So, what that says is, if we had a
+mismatch and we saw an A in five we would
+need to be in state one.
+Because if we had, had run the thing on
+the characters that we know, BABAA, we
+would wind up in state one.
+And similarly if we were if we got the
+mismatch on a B,
+A if we did BABA,, we would be in state
+three.
+And, we're in state three and we saw B
+we'd go to four.
+So again to summarize, if four instate
+five and we see a C, we know that's a
+match, we go to six.
+If we see an A, we know that the previous
+five characters in the text were BABAA.
+So, we can just simulate the machine.
+Babaa, we're in state one.
+And ifwe get a mismatch that's a B, then
+that's DFAB five,
+Then we know that the previous five
+characters in the text were BABAB. And
+that would put us in state four.
+So that's the simulation of BABA puts us
+in state three.
+If we get an A, we go to one.
+So that means that from five, we go back
+to one.
+And if we get a B, we go to four.
+So, that's how, one way to calculate the
+mismatched transitions.
+And as we've noted in the simulation, this
+is the only non-trivial one for this
+example.
+Now, there's a little problem with that,
+Is that it seems to require j steps to do
+the simulation.
+In order to figure out these mismatched
+transitions, I had to all the way through
+the pattern shifted over one to figure out
+this state three.
+So that seems to be a bit of a problem,
+but actually it's no problem at all,
+because we can run this simulation one
+character at a time as we're building the
+machine.
+All we need to do is keep track of the
+that we would be at if we had run the DFA
+on the pattern starting at position one.
+Once, once we get going it's pretty easy
+but just let's start well, let's just
+illustrate it by saying, okay,
+We maintain this state x,
+Which is where we would be if we if we had
+run the machine and the pattern had
+shifted over one.
+Now when we come to do our mismatches to
+figure out where the mismatch transitions
+from five are all we do is look at if we
+get, if we were to get an A, would be as
+if we were to state X and got an A.
+So that's one and if we were to get a B
+it's as if we were at state X and got a B.
+And that's state four.
+So, what we need to do is to compute the
+mismatch transitions is keep track of
+state x.
+And that is where would the thing be if we
+had run it starting with the, at the
+pattern one position shifted over.
+And we want to update that.
+So, when we're moving to the next state,
+if we had a match on C, state x gets
+updated to where it would have gone if it
+got a C.
+Because for the next character, when we
+move j over for the match on C we'll want
+to have x updated.
+So, that's the key is keeping track of the
+state where the machine would be if we had
+backed up or if we had run it on the
+pattern shifted over one.
+So let's take a look at a demo that does
+the full construction for the KMP DFA.
+So here, here goes.
+Again, one state for every character plus
+an accept.
+Match transitions are easy.
+We build those.
+And we're going to start at position zero.
+And the mismatched transitions are easy.
+So now, when we move over x is when we're
+in position one of the pattern, x is where
+we would be if we started out without
+that, that character,
+Which would be the empty string.
+So we start out with just filling in
+zeros.
+For state zero and we can do that without
+any further every reason and now we've got
+x initialized. so now, what we need to do
+is fill in the mismatch transitions for
+state one.
+So, what are they?
+They're what would happen if we found
+those characters?
+And, and we're in state x,
+If we found an A, we would go to state
+one.
+If we found a C, we'd go to state zero.
+And maybe you noticed, that's just taking
+the entries corresponding to the entries
+we need from x's column and putting them
+in j's column.
+That's all it is.
+And then, we need to update x, which is
+where it would be if we matched a B.
+So, well stay and x will stay in state
+zero.
+So now let's look at state two.
+So we need to fill in what would happen if
+we got a B and what would happen if got a
+C.
+Well, it's what would happen if we were in
+state x and we got a B or a C,
+So what we'll do is move those two zeroes
+over to column two.
+And then don't forget we have to update x
+and x goes where the machine goes if we
+saw an A, that transitions from two to the
+three.
+So, we just move x to state one.
+So now, we have x in state one, and we're
+doing position three and now you can see
+how really simple the algorithm is once it
+gets going.
+So now the mismatched transitions are A
+and C, and that's what we have to fill for
+column but those mismatched transitions
+were already computed that's where x would
+go if we, that's where it would go if we
+happen to be in state one.
+So, we move the one and zero from column
+one over to column three.
+And again, we update x and when we see a B
+x goes to state two.
+And, and again, you can check what, what
+is x suppose to be.
+It's, it's suppose to be where you would
+be if you started the machine on the
+pattern with the first letter cut off.
+So, it's, it's suppose to be where would
+you wind up if you got BAB, BAB and that's
+a check.
+Alright, so now it's straightforward,
+straightforward we have to fill in B and
+C.
+We go to x's column and copy over B and C
+from x's column.
+Then we update x.
+That's if you see an A, you go to state
+three.
+Now we're ready for state five.
+We've got x all computed and we need to do
+A and B.
+And we get those from X.
+If it's an A it's a one.
+And if it's a B it's a four.
+It's just moved them over.
+And then when we do the C and get the
+accept there's no mismatch.
+That's the we do update x to get ready.
+But when we get to state six we're done.
+And again, it's just as a doublecheck, x
+is where you'd be if you saw BABAC.bac
+That's the construction of the
+Knuth-Morris-Pratt DFA efficient
+algorithm.
+Really ingenious and as it turns out,
+simple to implement.
+Implementation for the DFA construction
+for Knuth-Morris-Pratt requires remarkably
+little code so it just goes through with
+what we did in the demo.
+So we've got x and for every entry of the
+DFA and x's column that corresponds to
+everyone except for the match we just copy
+x's column to j's column.
+In fact, we just copy'em all, and then
+overwrite one corresponding to the match
+case, to j plus one.
+So there. And the entry in the column that
+corresponds to the pattern character,
+that's where do we go if we match, that's
+j plus one, all the rest of them are
+copied from x.
+So, one forwarded the copy from x then set
+the match case and the only other thing to
+do is update x.
+And how do you update x?
+You take the [unknown] machine to where it
+would go if it were at state x and I got
+the current x pattern, pattern character.
+So that's the, DFA construction amazingly
+a line of code.
+So the only, so flaw in this codec, is
+that it does take time proportional to R
+times M where are R is the radix and, and
+M is the length of the pattern and, and as
+we'll see this, ways to, get around this.
+But for relatively small alphabets this is
+no problem because the search is so
+efficient this way and the construction as
+well.
+But if you're doing this for Unicode for a
+long pattern maybe that's too much memory
+to devote to the DFA representation.
+So the bottom line is and this follows
+immediately from examining the code is
+that the substrings can be substring
+search as linear time.
+Your only access at most, each character
+in the pattern, each character in the
+texts wants quite remarkable.
+Each pattern character you have accessed
+once when your making the DN, DFA.
+And each text character is accessed once
+when you're simulating the DFA, and that's
+in the worst case.
+Now the space again, is proportional to RM
+because we have all those mismatches.
+It is possible to develop a version of
+Knuth-Morris-Pratt that constructs the
+automaton in time and space proportional
+to M.
+It's actually a non-deterministic
+automaton cuz it's either a match or all
+mismatches and mismatch might involve
+multiple hops.
+So if you are interested you can read
+about that version of KMP.
+But it's sufficiently more complicated
+that you should be, be prepared to study
+it carefully to really understand it.
+This algorithm is really interesting
+because of its history.
+It was actually independently discovered
+by two theoreticians and a hacker.
+So there's Knuth who was one of the
+fathers of computer science.
+Who read a paper that was a very esot by
+Steve Cook, a very esoteric theoretical
+result that he realized implied that it
+should be possible to solve the substring
+search problem in linear time.
+The theorem really didn't give any way to
+solve it but it indicated that it should
+be possible to solve it in linear time.
+So, Knuth worked on it and figured out a
+way.
+And then Pratt who was a student of
+Knuth's at Stanford at the time figured
+out a way to take care of this mismatch,
+independent of the alphabet side.
+And in the meantime, across the Bay at
+Berkeley Jim Morris was busy writing a
+text editor.
+In those days people were using
+typewriters.
+And other people were realizing that
+computers would be really good at editing
+text.
+And so you know,
+Many people would work on text editing and
+formatting systems.
+Ahm it was kind of a badge of honor in
+those times.
+Morris actually worked for the computer
+center at Berkeley.
+And wanted to have a really bolt-proof
+text editor that everyone could use.
+And one of the things he wanted to do was
+avoid backup.
+Cuz backup was just really inconvenient,
+Involved a lot of code.
+And just something that he didn't want to
+have.
+And he basically came up with the same
+algorithm and the community was kind of
+small at that time.
+And theory meets practice.
+And that's where this paper came from
+1977.
+Morris, then went on to get his PHD, and
+to work at Xerox Parc.
+And unfortunately later on another systems
+programmer came and took a look at
+Morris's code and couldn't understand it,
+and put the brute force algorithm back in.
+But that part of the story is maybe a less
+successful example of theory meeting
+practice.
+That's Knuth-Morris-Pratt algorithm, one
+of the most ingenious algorithms that
+we'll see.

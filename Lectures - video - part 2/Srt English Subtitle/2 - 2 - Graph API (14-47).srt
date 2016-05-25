@@ -1,0 +1,804 @@
+1
+00:00:00,000 --> 00:00:07,801
+.
+As we'll see, in little bit later in the
+
+2
+00:00:07,801 --> 00:00:13,177
+lecture the way that we're going to set up
+our graph processing algorithms, is to
+
+3
+00:00:13,177 --> 00:00:19,018
+develop an API to cover our representation
+of the graph and provide simple set of
+
+4
+00:00:19,018 --> 00:00:22,271
+methods for clients to call to process the
+graph.
+
+5
+00:00:22,271 --> 00:00:28,991
+So, let's take a look at that in detail.
+So, the idea is we have to represent, a,
+
+6
+00:00:29,281 --> 00:00:34,214
+graph within the computer.
+One of the first things, to remember is
+
+7
+00:00:34,214 --> 00:00:40,380
+that, you can, draw a graph, that maybe,
+that provides some kind of intuition,
+
+8
+00:00:40,597 --> 00:00:45,748
+about the structure, an, but you could
+have two drawings that represent,
+
+9
+00:00:45,748 --> 00:00:49,520
+represent the same graph that look pretty
+different.
+
+10
+00:00:49,725 --> 00:00:55,414
+And so one of the things to remember in
+any graph representation is, it can give
+
+11
+00:00:55,414 --> 00:00:59,459
+you some intuition.
+But that intuition may be misleading.
+
+12
+00:00:59,664 --> 00:01:04,600
+And we'll just remember that as we look at
+different representations.
+
+13
+00:01:04,600 --> 00:01:08,450
+So first thing is how to represent the
+vertices.
+
+14
+00:01:08,688 --> 00:01:15,120
+So what we're going to do in this lecture
+is just use integers between zero and V
+
+15
+00:01:15,120 --> 00:01:18,932
+minus one.
+The reason we do that is it allows us, to
+
+16
+00:01:18,932 --> 00:01:23,776
+use vertex indexed arrays, within the
+graph representation.
+
+17
+00:01:23,776 --> 00:01:29,494
+And we understand, from earlier
+algorithms, lectures, that we can use a
+
+18
+00:01:29,494 --> 00:01:34,674
+symbol table to convert names to integers,
+with a symbol table.
+
+19
+00:01:34,913 --> 00:01:40,104
+And so, we'll, leave that part as a symbol
+table application.
+
+20
+00:01:40,104 --> 00:01:46,173
+And, just work with graphs with vertex
+names between zero and V minus one where v
+
+21
+00:01:46,173 --> 00:01:51,692
+is the number of vertices.
+Now we have to remember when we're doing
+
+22
+00:01:51,692 --> 00:01:56,700
+representation we can have various
+anomalies in the graph.
+
+23
+00:01:56,935 --> 00:02:03,351
+So we can we draw edges, but actually, in
+real data we might have multiple edges or
+
+24
+00:02:03,351 --> 00:02:09,064
+we might have a self loop.
+And we'll take that into account when we
+
+25
+00:02:09,064 --> 00:02:12,820
+look at the representation, graph
+representation.
+
+26
+00:02:12,820 --> 00:02:16,027
+So here is the API that we're going to
+use.
+
+27
+00:02:16,027 --> 00:02:21,546
+So again our graph processing algorithms
+are going to be clients of this API.
+
+28
+00:02:21,770 --> 00:02:25,499
+The idea is that will use this to build
+graphs.
+
+29
+00:02:25,723 --> 00:02:30,496
+And then our processing programs will be
+client at this program,
+
+30
+00:02:30,720 --> 00:02:35,493
+In this, of this API.
+And the idea is most of them have a very
+
+31
+00:02:35,493 --> 00:02:41,833
+simple operations that they need to do,
+and those are the one's that we put in the
+
+32
+00:02:41,833 --> 00:02:44,220
+API.
+So we have two constructors.
+
+33
+00:02:44,448 --> 00:02:48,248
+One that creates an empty graph would be
+vertices.
+
+34
+00:02:48,248 --> 00:02:52,352
+Another one that creates a graph from an
+input stream.
+
+35
+00:02:52,580 --> 00:02:58,812
+Then the basic operation for building a
+graph is just add edge, so that adds an
+
+36
+00:02:58,812 --> 00:03:04,838
+edge connecting two vertices, V and W.
+The basic operations for processing our
+
+37
+00:03:04,838 --> 00:03:09,597
+graph, well there's V and E that gives a
+number of edges and vertices.
+
+38
+00:03:09,804 --> 00:03:14,080
+But then there's an iterator that takes
+the vertex's argument,
+
+39
+00:03:14,080 --> 00:03:19,260
+Then iterates through the vertices
+adjacent to that vertex.
+
+40
+00:03:19,260 --> 00:03:25,456
+All of our graph processing can be cast in
+terms of this iterator.
+
+41
+00:03:25,456 --> 00:03:33,061
+So down here is an example of a client
+program that prints out every edge in the
+
+42
+00:03:33,061 --> 00:03:37,756
+graph.
+So we created an input stream, maybe with
+
+43
+00:03:37,756 --> 00:03:43,108
+a given final name, create a graph from
+that input stream,
+
+44
+00:03:43,108 --> 00:03:49,492
+And we'll look at the code for that.
+And then the client program for every
+
+45
+00:03:49,492 --> 00:03:53,276
+vertex,
+So remember the vertices are numbered
+
+46
+00:03:53,276 --> 00:03:57,467
+between zero and G dot the number of
+vertices minus one.
+
+47
+00:03:57,468 --> 00:04:04,058
+So for every vertex, we iterate through
+all the vertices adjacent to that vertex
+
+48
+00:04:04,293 --> 00:04:11,420
+and print out an edge, if, if there's an
+edge connecting v and w we print out v and
+
+49
+00:04:11,420 --> 00:04:15,805
+then a little dash to indicate an edge and
+then w.
+
+50
+00:04:15,805 --> 00:04:22,618
+This actually prints out every edge twice
+and in an undirected graph because if the
+
+51
+00:04:22,618 --> 00:04:28,570
+v and w are connected by an edge then w
+appears in v's adjacency list and v
+
+52
+00:04:28,570 --> 00:04:34,707
+appears in w's adjacency list.
+So heres an example of a running that
+
+53
+00:04:34,707 --> 00:04:41,938
+client, if, if we have a file tinyG.txt,
+our standard is we have a number of
+
+54
+00:04:41,938 --> 00:04:48,137
+vertices as an integer in the first is the
+first integer in the file.
+
+55
+00:04:48,137 --> 00:04:55,110
+Number of edges is the second integer in
+the file and then pairs of vertex names.
+
+56
+00:04:55,680 --> 00:05:00,626
+And so.
+The constructor will read those two things
+
+57
+00:05:00,626 --> 00:05:07,271
+and then call that edge for all of these
+pairs of things and that enables this
+
+58
+00:05:07,271 --> 00:05:12,737
+client, to, if we run it for that graph,
+to print out all the edges.
+
+59
+00:05:12,737 --> 00:05:19,128
+So everybody adjacent to zero, 61 and
+five, everybody adjacent to one is just
+
+60
+00:05:19,128 --> 00:05:24,008
+zero, So you notice the edge 0-1 appears
+twice in the list.
+
+61
+00:05:24,008 --> 00:05:28,550
+So that's the sample client of our basic
+graph in API.
+
+62
+00:05:28,550 --> 00:05:35,853
+And so here's some typical and simpicle,
+simple graph processing code that uses the
+
+63
+00:05:35,853 --> 00:05:40,039
+API.
+So you can write a static method that
+
+64
+00:05:40,039 --> 00:05:46,768
+takes a graph and a vertex as argument.
+And returns the degree, the number of
+
+65
+00:05:46,768 --> 00:05:53,580
+edges that are connect, number of vertices
+that are connected by an edge to V.
+
+66
+00:05:53,806 --> 00:06:00,454
+So all it does is set a local variable
+degree to zero, And then iterate through
+
+67
+00:06:00,454 --> 00:06:05,290
+all the vertices adjacent to V and
+increment that and return it.
+
+68
+00:06:05,290 --> 00:06:11,067
+Similarly, you can compute the maximum
+degree of a vertex in a graph.
+
+69
+00:06:11,067 --> 00:06:17,779
+And that's for every vertex, compute the
+degree and find the biggest one or the
+
+70
+00:06:17,779 --> 00:06:22,197
+average degree.
+Well, the average degree, if you think
+
+71
+00:06:22,197 --> 00:06:28,381
+about it, it's just twice the number of
+edges divided by the vertex or you could
+
+72
+00:06:28,381 --> 00:06:33,928
+go through all the way through every
+vertex and edge and compute the total and
+
+73
+00:06:33,928 --> 00:06:39,545
+divide, but this is probably a much more
+efficient way to do it or say number of
+
+74
+00:06:39,545 --> 00:06:45,232
+self loops. and so that involves going
+through the whole graph of every vertex
+
+75
+00:06:45,232 --> 00:06:51,621
+for every edge adjacent to that vertex you
+check whether it's v and we've got a self
+
+76
+00:06:51,621 --> 00:06:56,045
+loop.
+And if it does then your return the number
+
+77
+00:06:56,045 --> 00:07:00,960
+of self loops that divided by two because
+every edge is counted twice.
+
+78
+00:07:00,960 --> 00:07:07,158
+So those are examples of static methods
+that a client might use.
+
+79
+00:07:07,423 --> 00:07:13,958
+In just example of the use of the ATI.
+So now how we going to implement that?
+
+80
+00:07:14,166 --> 00:07:20,067
+That's our usual standard of lets look at
+some clients and now let's talk about a
+
+81
+00:07:20,067 --> 00:07:24,510
+representation that we can use to
+implement the graph API.
+
+82
+00:07:24,510 --> 00:07:30,626
+So one possible representation is, set of
+edges representation, where, for every
+
+83
+00:07:30,626 --> 00:07:36,815
+edge, we just maintain a list, maybe an
+array of edges or a linked list, of edges.
+
+84
+00:07:37,034 --> 00:07:42,568
+So for every edge in the graph, there's, a
+representation of it.
+
+85
+00:07:42,786 --> 00:07:48,320
+And that one is a possible representation,
+but it leads to, inefficient,
+
+86
+00:07:49,121 --> 00:07:55,092
+implementation, much less efficient, that
+would make it unusable for, the huge
+
+87
+00:07:55,092 --> 00:08:01,263
+graphs that we see in practice.
+Another one is called the adjacency matrix
+
+88
+00:08:01,263 --> 00:08:06,423
+representation,
+Here we maintain a 2-dimensional v x v
+
+89
+00:08:06,423 --> 00:08:10,426
+array,
+It's a boolean array, 0-1 or true or
+
+90
+00:08:10,426 --> 00:08:16,168
+false.
+And for every edge v-w in the graph you
+
+91
+00:08:16,168 --> 00:08:22,930
+put true for row v in column w and for row
+w in column v.
+
+92
+00:08:22,930 --> 00:08:30,251
+So it's actually two representations of
+each edge in an adjacency matrix graph
+
+93
+00:08:30,251 --> 00:08:35,187
+representation.
+S, you can immediately, give a v and w
+
+94
+00:08:35,187 --> 00:08:39,688
+test whether there's an edge connecting v
+and w.
+
+95
+00:08:39,688 --> 00:08:47,470
+But that's one of the few operations
+that's efficient with this representation
+
+96
+00:08:47,470 --> 00:08:54,596
+and it's not very widely used, because for
+a huge graph, say with billions of, of,
+
+97
+00:08:54,596 --> 00:08:58,581
+vertices,
+You would have to have billion squared
+
+98
+00:08:58,581 --> 00:09:04,489
+number of entries in this array, which is
+going to be too big for your computer,
+
+99
+00:09:04,489 --> 00:09:08,527
+most likely.
+So this one actually isn't that widely
+
+100
+00:09:08,527 --> 00:09:11,566
+used.
+A, The one that is most widely used in
+
+101
+00:09:11,566 --> 00:09:15,699
+practice, and the one that we'll stick
+with, is called the adjacency list
+
+102
+00:09:15,699 --> 00:09:20,778
+representation.
+And that's where we keep a vertex index
+
+103
+00:09:20,778 --> 00:09:28,849
+array where, for every vertex, we maintain
+a list of the vertices that are adjacent
+
+104
+00:09:28,849 --> 00:09:33,589
+to that.
+So, for example, vertex four, Has, five,
+
+105
+00:09:33,596 --> 00:09:39,184
+is connected to five, six, and three, so
+its list has five, six, and three on it.
+
+106
+00:09:39,184 --> 00:09:44,982
+Now, on lower level representations we've
+talk about using linked width or array for
+
+107
+00:09:44,982 --> 00:09:48,893
+these,
+But actually in modern lingo with the
+
+108
+00:09:48,893 --> 00:09:54,761
+background that we'd built with algorisms
+what we're going to use is an abstract
+
+109
+00:09:54,761 --> 00:09:58,742
+data type.
+Our bag representation for this, which is
+
+110
+00:09:58,742 --> 00:10:04,190
+implemented with a linked list, but we
+don't have to think about it when we're
+
+111
+00:10:04,190 --> 00:10:08,540
+talking about graphs. we'd keep the
+vertices,
+
+112
+00:10:08,793 --> 00:10:14,107
+Names of, numbers of the vertices that are
+adjacent to each given vertex in a bag.
+
+113
+00:10:14,296 --> 00:10:19,440
+And we know that we can implement it, such
+that we can iterate through and time
+
+114
+00:10:19,440 --> 00:10:24,678
+proportional to the number of entries and
+the space taken is also proportional to
+
+115
+00:10:24,678 --> 00:10:28,703
+the number of entries,,
+And that's going to enable us to process
+
+116
+00:10:28,703 --> 00:10:35,751
+huge graphs.
+So here's the full implementation of the
+
+117
+00:10:36,152 --> 00:10:40,697
+Jason C,
+List graph representation.
+
+118
+00:10:41,098 --> 00:10:49,190
+So, the private instance variables that
+we're gonna use area the number of
+
+119
+00:10:49,190 --> 00:10:57,236
+vertices in the graph and then a array of
+nags of integers. so data the types and
+
+120
+00:10:57,236 --> 00:11:03,911
+set of values, set operations on those
+values, so those are the sets of values
+
+121
+00:11:04,161 --> 00:11:09,084
+for a graph.
+So here's the constructor of an empty
+
+122
+00:11:09,084 --> 00:11:15,807
+graph with V vertices.
+We keep the value v in the instance
+
+123
+00:11:15,807 --> 00:11:18,850
+variable as usual.
+Then we create.
+
+124
+00:11:19,145 --> 00:11:23,979
+An array of size V.
+And, of bags of integers.
+
+125
+00:11:24,275 --> 00:11:31,969
+And, store that array in, [inaudible] as
+the adjacency array of the graph.
+
+126
+00:11:31,969 --> 00:11:36,527
+Adjacency lists array.
+And then, as usual.
+
+127
+00:11:36,527 --> 00:11:42,395
+When we create, a, a, an array of objects.
+We go through.
+
+128
+00:11:42,395 --> 00:11:49,954
+And for every entry in the array, we
+initialize with, a, empty object.
+
+129
+00:11:49,954 --> 00:11:54,430
+So, after this code, we have the empty
+bags.
+
+130
+00:11:54,430 --> 00:12:02,557
+And so that's the constructor and then the
+other main engine and building graphs is
+
+131
+00:12:02,557 --> 00:12:09,963
+at edge and so, to add an edge between V
+and W, we add W to V's bag, and we add V
+
+132
+00:12:09,963 --> 00:12:11,860
+to W's bag.
+That's it.
+
+133
+00:12:11,860 --> 00:12:19,583
+And to iterate through all the vertices
+adjacent to a given vertex we simply
+
+134
+00:12:19,583 --> 00:12:26,184
+return the bag which is iterable.
+This is a nice example, illustrating the
+
+135
+00:12:26,184 --> 00:12:30,934
+power of abstraction.
+Because we did the low level processing,
+
+136
+00:12:31,157 --> 00:12:37,021
+for, that, that's involved, with our bag
+implementation in one of the early,
+
+137
+00:12:37,244 --> 00:12:41,103
+lectures.
+And now we, we get to use that to give a
+
+138
+00:12:41,103 --> 00:12:47,116
+very compact implementation, and efficient
+implementation, of the, graph data
+
+139
+00:12:47,116 --> 00:12:50,753
+structure.
+So it's really important to understand
+
+140
+00:12:50,753 --> 00:12:54,687
+this code.
+And you should make sure, that you study
+
+141
+00:12:54,687 --> 00:12:57,234
+it.
+So, as I mentioned in practice.
+
+142
+00:12:57,446 --> 00:13:01,391
+We're gonna be using this adjacency list
+representation.
+
+143
+00:13:01,602 --> 00:13:07,379
+Because all the algorithms are based on
+iterating over the vertices adjacent to V.
+
+144
+00:13:07,379 --> 00:13:12,099
+And this gets that done in time
+proportional to the number of such
+
+145
+00:13:12,099 --> 00:13:15,904
+vertices.
+So that's number one and number two, in
+
+146
+00:13:15,904 --> 00:13:20,412
+the real world, the graphs have lots of
+num, lots of vertices,
+
+147
+00:13:20,412 --> 00:13:27,901
+But a pretty small vertex degre. so number
+one, we can afford to represent, represent
+
+148
+00:13:27,901 --> 00:13:34,262
+the graph when we use the adjacency list
+representation because basically our space
+
+149
+00:13:34,262 --> 00:13:40,258
+is proportional to the number of edges.
+And number two, we can afford to process
+
+150
+00:13:40,258 --> 00:13:46,619
+it because our time taken is proportional
+to the number of edges that, that we
+
+151
+00:13:46,619 --> 00:13:52,176
+examined, with the ray of edges
+representation in the adjacency matrix
+
+152
+00:13:52,176 --> 00:13:57,062
+representation it gets very slow for some
+very simple task,
+
+153
+00:13:57,062 --> 00:14:03,080
+But, mostly, it's very slow for iterating
+over the vertices given to, adjacent to a
+
+154
+00:14:03,080 --> 00:14:06,055
+given vertex.
+Which is the key operation.
+
+155
+00:14:06,263 --> 00:14:11,936
+A list of edges, you have to go through
+all the edges to find the ones adjacent to
+
+156
+00:14:11,936 --> 00:14:15,741
+a given vertex.
+Adjacency matrix, you have to go through,
+
+157
+00:14:15,948 --> 00:14:21,206
+all possible, vertices adjacent and that's
+just going to be much too slow in
+
+158
+00:14:21,206 --> 00:14:24,734
+practice,
+Because adjacency list gets it done, in
+
+159
+00:14:24,734 --> 00:14:30,879
+time proportional degree of v, which is
+much smaller, for the huge graph that we
+
+160
+00:14:30,879 --> 00:14:34,682
+see in the real world.
+So that's our basic API.
+
+161
+00:14:34,682 --> 00:14:39,760
+Next, we'll look at some algorithms that
+are clients of this API.

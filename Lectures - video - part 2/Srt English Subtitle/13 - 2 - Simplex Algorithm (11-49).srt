@@ -1,0 +1,509 @@
+1
+00:00:03,440 --> 00:00:09,525
+Now, we'll look at an algorithm for
+solving the linear programming problem and
+
+2
+00:00:09,525 --> 00:00:16,437
+leaves the brewer's problem as an example.
+this algorithm was developed by George
+
+3
+00:00:16,437 --> 00:00:22,824
+Dantzig right after World War II. and it,
+it was in response to a very important
+
+4
+00:00:22,824 --> 00:00:30,257
+practical problem which was the logistics
+of the Berlin airlift. and again, scarce
+
+5
+00:00:30,257 --> 00:00:36,675
+resources and particular constraints and
+you want to maximize an objective
+
+6
+00:00:36,675 --> 00:00:43,490
+function. and this algorithm that was
+developed by Dantzig again, is very, very
+
+7
+00:00:43,490 --> 00:00:50,226
+widely used today and certainly one of the
+top ten scientific algorithms ever, I'd
+
+8
+00:00:50,226 --> 00:00:56,724
+say. so, it's a very simple generic idea.
+we're going to start at some extreme
+
+9
+00:00:56,724 --> 00:01:02,250
+point. And then, we're going to perform
+this operation called pivoting that moves
+
+10
+00:01:02,250 --> 00:01:07,786
+us from one extreme point to an ad, an
+adjacent one that at least doesn't
+
+11
+00:01:07,786 --> 00:01:13,289
+increase the object, doesn't decrease the
+objective function. And we just keep going
+
+12
+00:01:13,289 --> 00:01:18,658
+until we get stuck where there's an
+extreme point that is not better than any
+
+13
+00:01:18,658 --> 00:01:24,828
+of its adjacent ones. and then we have an
+optimal solution. so, in our brewer's
+
+14
+00:01:24,828 --> 00:01:29,807
+problem we start at the origin and just,
+you know, simply move from one extreme
+
+15
+00:01:29,807 --> 00:01:36,439
+point to the other until we find an
+optimal solution. and what's remarkable is
+
+16
+00:01:36,439 --> 00:01:44,538
+that really Linear Algebra sets us up to
+do this solution. if you're familiar with
+
+17
+00:01:44,538 --> 00:01:52,370
+solving simultaneous equations this uses
+the same basic idea. the difference is
+
+18
+00:01:52,370 --> 00:02:00,469
+that we've got many more unknowns and
+equations usually certainly not an equal
+
+19
+00:02:00,469 --> 00:02:07,528
+number and so we have to take care of that
+situation and also, we have the objective
+
+20
+00:02:07,528 --> 00:02:15,318
+function playing a role. so but still, the
+basic idea is to get it down to solving
+
+21
+00:02:15,318 --> 00:02:23,790
+simultaneous equations. so, there's first
+the idea of a basis, that's just a subset
+
+22
+00:02:23,790 --> 00:02:32,158
+of the variables. and, so, we pick a
+subset of the variables. and then we're
+
+23
+00:02:32,158 --> 00:02:39,469
+always going to be working with something
+called a basic feasible solution. so the
+
+24
+00:02:39,469 --> 00:02:46,499
+idea is you have a subset of the
+variables. so let's say, that's M in this
+
+25
+00:02:46,499 --> 00:02:55,107
+case. there's three variables in the
+basis. and the idea is that you set the
+
+26
+00:02:55,107 --> 00:03:05,044
+other variables to zero. so now, you've
+got M equations and M unknowns cuz you,
+
+27
+00:03:04,582 --> 00:03:12,903
+you just set M minus N to zero. and so,
+that gives you values for your basis. and
+
+28
+00:03:13,366 --> 00:03:22,842
+the idea is that a basic feasible solution
+corresponds to an extreme point on the
+
+29
+00:03:22,842 --> 00:03:29,420
+simplex. so, for example, if all the
+flacks, slack variables are in the basis
+
+30
+00:03:29,720 --> 00:03:37,699
+and that, we set the others to zero, we
+set A and B to zero. then, that's what
+
+31
+00:03:37,699 --> 00:03:45,031
+that says, that's the value of A and B
+when the slack variables are all in the
+
+32
+00:03:45,031 --> 00:03:54,336
+basis. if B is in the basis and, and HS
+and HM are in the basis then B is zero and
+
+33
+00:03:54,336 --> 00:04:00,916
+then, if you solve for the three
+equations, you get that A is 32 and so
+
+34
+00:04:00,916 --> 00:04:09,942
+forth. So basic feasible solution is if
+you have M constraints it's a subset of
+
+35
+00:04:09,942 --> 00:04:16,072
+size M, so that you have an M by M system
+equation to solve assuming the others to
+
+36
+00:04:16,072 --> 00:04:22,054
+be zero. and for the algorithm so it's
+called the simplex algorithm, because this
+
+37
+00:04:22,054 --> 00:04:27,183
+thing that's the intersection of the half
+plane, it's just called a simplex And it's
+
+38
+00:04:27,183 --> 00:04:32,197
+going to move along the simplex with, it's
+basic feasible solutions, are extreme
+
+39
+00:04:32,197 --> 00:04:36,750
+points on the simplex. And the simplex
+algorithm is going to move along from one
+
+40
+00:04:36,750 --> 00:04:42,156
+point to another. now, there's some
+solutions that are infeasible that are not
+
+41
+00:04:42,156 --> 00:04:48,132
+on the simplex. if it's, it says, if it's
+unique and feasible, it's a basic feasible
+
+42
+00:04:48,132 --> 00:04:53,813
+solution. It could be like if you pit A,
+B, and S sub H to be in your basis, you
+
+43
+00:04:53,813 --> 00:04:59,420
+set the other ones to zero it's, it's not
+feasible, it's outside of the simplex. So,
+
+44
+00:04:59,420 --> 00:05:06,449
+we won't even consider those. okay. So,
+so, so to get things started what we need
+
+45
+00:05:06,449 --> 00:05:13,447
+to do is initialize. And I'll initialize
+in that case, at the origin, when A and B
+
+46
+00:05:13,447 --> 00:05:20,276
+are equal to zero. and these three slack
+variables are the basis. and then the
+
+47
+00:05:20,276 --> 00:05:27,189
+solution is really easy in that case.
+here's our equations. we set A and B to
+
+48
+00:05:27,189 --> 00:05:33,681
+zero, so that cancels out all of that
+stuff. So, that tells us the values of SC,
+
+49
+00:05:33,681 --> 00:05:42,455
+SH and SM in, in that case. so, that's
+easy to solve in that case. so one basic
+
+50
+00:05:42,455 --> 00:05:48,545
+variable per row this started as the basis
+at and since they are non-basic variables
+
+51
+00:05:48,545 --> 00:05:54,879
+to zero to solve three equations to get
+the answer, you don 't have to do any work
+
+52
+00:05:54,879 --> 00:06:00,482
+for that. So, that's how we initialize
+things from that. you can initialize right
+
+53
+00:06:00,482 --> 00:06:07,303
+from the constraints of the problem. All
+that's in here is our recipe for ale and
+
+54
+00:06:07,303 --> 00:06:13,494
+our recipe for beer and our profit margins
+for the two different drinks. okay. So now
+
+55
+00:06:13,494 --> 00:06:19,868
+it starts to get interesting. And we're
+going to perform an operation called a
+
+56
+00:06:19,868 --> 00:06:26,758
+pivot. and we'll talk about how to choose
+the pivot in a minute. So right now, let's
+
+57
+00:06:26,758 --> 00:06:33,649
+say, we're going to choose to pivot on
+this entry right here. What that means is,
+
+58
+00:06:33,649 --> 00:06:40,569
+what we're going to do just as you do in
+Gaussian elimination you're going to pick
+
+59
+00:06:40,569 --> 00:06:46,660
+this element and then you're going to
+solve for that variable. and then
+
+60
+00:06:46,907 --> 00:06:53,164
+substitute that solution into all the
+other equations so that these entries
+
+61
+00:06:53,164 --> 00:06:59,924
+become zero. So, we solve for B equals,
+you take 480 minus five, A minus SC divide
+
+62
+00:06:59,924 --> 00:07:04,080
+by fifteen.
+This equation says that's what B is.
+
+63
+00:07:04,080 --> 00:07:12,128
+Substitute it in these other equations and
+that puts B into the basis and takes some
+
+64
+00:07:12,128 --> 00:07:19,467
+other variable out. and at the start, you
+just might think about how do you figure
+
+65
+00:07:19,467 --> 00:07:28,120
+out which variable it replaces. if we do
+the math here here's what the system of
+
+66
+00:07:28,120 --> 00:07:35,268
+equation looks like. so that's just
+substituting B into the other equations,
+
+67
+00:07:35,268 --> 00:07:43,332
+including the objective function. and now
+our basis is B, SH, and SM. A and FC are,
+
+68
+00:07:43,332 --> 00:07:51,305
+are zero and our objective function says,
+that Z equals 36, 736. So, that's called a
+
+69
+00:07:51,305 --> 00:07:58,024
+pivot. it picked a variable substitute
+into the other equations puts it into the
+
+70
+00:07:58,024 --> 00:08:04,233
+basis and makes the other entries in this
+column zero. so, why choose that
+
+71
+00:08:04,233 --> 00:08:11,862
+particular variable? well look at the
+objective function and its coefficient is
+
+72
+00:08:11,862 --> 00:08:19,131
+positive, so if we B is sitting at zero.
+And if we increase it to some positive
+
+73
+00:08:19,131 --> 00:08:25,929
+number, we're going to increase our
+objective function. so, as long as the
+
+74
+00:08:25,929 --> 00:08:33,481
+coefficient objective function is
+positive, that tells us the column. We can
+
+75
+00:08:33,481 --> 00:08:41,391
+also do it on A in this case and then Y,
+that row. well you have to make sure that
+
+76
+00:08:41,604 --> 00:08:48,139
+the right-hand side always stays bigger
+than zero. and so, what uses to choose the
+
+77
+00:08:48,139 --> 00:08:53,608
+row is the minimum ratio rule. So, if you
+ta ke the right-hand side over the
+
+78
+00:08:53,608 --> 00:08:58,936
+coefficient, you want the one that's
+smallest because when you do the
+
+79
+00:08:58,936 --> 00:09:05,281
+substitution that will make sure that the
+right-hand side is positive. so that's the
+
+80
+00:09:05,281 --> 00:09:11,101
+choice of the pivots. So now, we're in
+this situation and we just do the same
+
+81
+00:09:11,101 --> 00:09:17,304
+thing. So we want to look for something
+that's got a positive coefficient in the
+
+82
+00:09:17,304 --> 00:09:23,507
+objective function. And then, we want to
+do the minimum ratio rule. and that turns
+
+83
+00:09:23,507 --> 00:09:31,011
+out to be that we pivot on column one row
+two. and we just that's 32 plus 450 SC
+
+84
+00:09:31,011 --> 00:09:37,750
+minus SH divided by eight thirds is three
+eighths. substitute that into everything
+
+85
+00:09:37,980 --> 00:09:44,149
+and that's going to eliminate A everywhere
+else and it will put see, since we're
+
+86
+00:09:44,359 --> 00:09:49,547
+substituting for A, A comes out of the
+basis in the objective function and
+
+87
+00:09:49,547 --> 00:09:55,085
+something else will go in. And again,
+think about what it is that goes in. and
+
+88
+00:09:55,085 --> 00:10:02,401
+then we wind up in this situation here. so
+that's again, just doing the math. Now,
+
+89
+00:10:02,401 --> 00:10:10,477
+what's interesting about having done the
+math here now we don't have any positive
+
+90
+00:10:10,477 --> 00:10:18,554
+coefficients in the exec, in objective
+function. so, these two variables are zero
+
+91
+00:10:18,554 --> 00:10:25,983
+now but if we take them out of the basis
+and get a bigger value that's going to be
+
+92
+00:10:25,983 --> 00:10:32,272
+no good. so we'll stuck. And that's the
+same as, same as the time that we stop
+
+93
+00:10:32,272 --> 00:10:39,589
+pivoting. if we to go in any direction
+from where we are we're not going to do as
+
+94
+00:10:39,589 --> 00:10:46,743
+well. and that is optimal because first of
+all any solution is going to satisfy the
+
+95
+00:10:46,743 --> 00:10:53,881
+current system of equations. so in
+particular whatever values you give SC and
+
+96
+00:10:53,881 --> 00:11:01,186
+SA, it's got to satisfy this equation but
+that's going to since they're positive,
+
+97
+00:11:01,186 --> 00:11:08,407
+you can't do better than 800. so you might
+as well just be happy when they're zero
+
+98
+00:11:08,407 --> 00:11:15,053
+which is where they are. so it's as simple
+as that, you know? So, the current value
+
+99
+00:11:15,053 --> 00:11:21,508
+has 800, so it's optimal, you're not going
+to do better. and so that's a, a sketch of
+
+100
+00:11:21,508 --> 00:11:27,587
+a simplex algorithm. It's simply a matter
+of choosing a pivot element and then
+
+101
+00:11:27,587 --> 00:11:34,042
+pivoting and then keep going until you
+can't choose a pivot element. it's really
+
+102
+00:11:34,267 --> 00:11:40,461
+remarkably simple when you think about it.
+That's the simplex algor ithm for linear

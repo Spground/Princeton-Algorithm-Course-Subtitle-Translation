@@ -1,0 +1,488 @@
+1
+00:00:01,078 --> 00:00:08,004
+Now we'll look at our first implementation
+of an algorithm for solving the dynamic
+
+2
+00:00:08,004 --> 00:00:14,012
+connectivity problem, called Quick-find.
+This is a so called eager algorithm, for
+
+3
+00:00:14,012 --> 00:00:20,013
+solving kind activity problem. The data
+structure that we're going to use to
+
+4
+00:00:20,013 --> 00:00:25,082
+support the algorithm is simply an integer
+array indexed by object. The
+
+5
+00:00:25,082 --> 00:00:31,099
+interpretation is the two objects, P and Q
+are connected if and only if, their
+
+6
+00:00:31,099 --> 00:00:39,005
+entries in the array are the same. So for
+example in this example with our ten
+
+7
+00:00:39,005 --> 00:00:46,099
+objects the idea array that describes the
+situation after seven connections is
+
+8
+00:00:46,099 --> 00:00:53,349
+illustrated in the middle of the slide. So
+that, after the, at this point zero, five,
+
+9
+00:00:53,349 --> 00:00:59,578
+and six are all in the same connected
+component, because they have the same
+
+10
+00:00:59,578 --> 00:01:05,171
+array entry, zero. One, two, and seven all
+have entry one. And three, four, eight,
+
+11
+00:01:05,171 --> 00:01:10,664
+and nine all have entry eight. So that
+representation is, shows that they're
+
+12
+00:01:10,664 --> 00:01:16,636
+connected. And clearly, that's going to
+support a quick implementation of the find
+
+13
+00:01:16,636 --> 00:01:22,439
+operation. We just check the array entries
+to see if they're equal. Check if P and Q
+
+14
+00:01:22,439 --> 00:01:27,904
+have the same ID. So, six and one have
+different IDs. One has ID one, six has ID
+
+15
+00:01:27,904 --> 00:01:34,171
+zero. They're not in the same connected
+component. Union is more difficult in
+
+16
+00:01:34,171 --> 00:01:40,981
+order to merge the components, containing
+two given objects. We have to change all
+
+17
+00:01:40,981 --> 00:01:47,755
+the entries, whose ID is equal to one of
+them to the other one. And arbitrarily we
+
+18
+00:01:47,755 --> 00:01:53,634
+choose to change the ones that are the
+same as P to the ones that are same as Q.
+
+19
+00:01:53,634 --> 00:01:58,898
+So if we're going to union six and one,
+then we have to change entries zero, five,
+
+20
+00:01:58,898 --> 00:02:04,741
+and six. Everybody in the same connected
+component as six. From zero to one. And
+
+21
+00:02:04,741 --> 00:02:10,917
+this is, as we'll see, this is a bit of a
+problem when we have a huge number of
+
+22
+00:02:10,917 --> 00:02:16,927
+objects, because there's a lot of values
+that can change. But still, it's easy to
+
+23
+00:02:16,927 --> 00:02:23,263
+implement, so that'll be our starting
+point. So we'll start with a, a demo of
+
+24
+00:02:23,263 --> 00:02:31,189
+how this works. So, initially, we set up
+the ID array, with each entry, equal to
+
+25
+00:02:31,189 --> 00:02:37,932
+its index. And so all that says is that
+all the objects are independent. They're
+
+26
+00:02:37,932 --> 00:02:43,918
+in their own connected component. Now,
+when we get a union operation. So, say,
+
+27
+00:02:43,918 --> 00:02:49,694
+four is supposed to be unio n with three.
+Then we're going to change, all entries,
+
+28
+00:02:49,694 --> 00:02:56,190
+whose ID is equal to the first ID to the
+second one. So in this case, we'll change
+
+29
+00:02:56,190 --> 00:03:02,061
+the, connect three and four means that we
+need to change the four to a three. And
+
+30
+00:03:02,061 --> 00:03:10,259
+we'll continue to do a few more so you'll
+get an idea of how it works. So three and
+
+31
+00:03:10,259 --> 00:03:13,657
+eight now so to connect three and eight
+now three and four have to be connected to
+
+32
+00:03:13,657 --> 00:03:19,950
+eight. So both of those entries have to
+change to eight. Okay? So now, what about
+
+33
+00:03:19,950 --> 00:03:26,026
+six and five? So again, we change the
+first one to match the second one. So to
+
+34
+00:03:26,026 --> 00:03:32,332
+connect six and five, we change the six to
+a five. What about nine and four? So, now
+
+35
+00:03:32,332 --> 00:03:39,789
+we have to change the, to connect nine and
+four, we have to change, 9's entry to be
+
+36
+00:03:39,789 --> 00:03:45,325
+the same as 4's. So now we have three,
+four, eight, and nine. All have entries
+
+37
+00:03:45,325 --> 00:03:52,365
+eight. They're all on the same connected
+component. Two and one means that we
+
+38
+00:03:52,365 --> 00:04:00,013
+connect two and one by changing the 2201.
+Eight and nine are already connected. They
+
+39
+00:04:00,013 --> 00:04:06,660
+have the same, entries in the idea array.
+So, that connected query, that find says,
+
+40
+00:04:06,660 --> 00:04:13,096
+true, they're already connected. And five
+and zero have different entries. They're
+
+41
+00:04:13,096 --> 00:04:21,780
+not connected, so we'd return false, in
+that case, not connected. And then, if we
+
+42
+00:04:21,780 --> 00:04:31,617
+want to connect five and zero. Then, as
+usual we'll connect, the entry
+
+43
+00:04:31,617 --> 00:04:39,855
+corresponding to both five and six to
+zero. Seven and two, union seven and two.
+
+44
+00:04:39,865 --> 00:04:49,623
+That's an easy one. And union, six and one
+so there is three entries that have to get
+
+45
+00:04:49,623 --> 00:04:57,899
+changed. All those zeros have to get
+changed to ones. So, that's a quick demo
+
+46
+00:04:57,899 --> 00:05:04,126
+of Quick-find. Now next we'll look at the
+code for implementating that. Okay, with
+
+47
+00:05:04,126 --> 00:05:10,628
+this concrete demo in mind then moving to
+coding up this algorithim is pretty
+
+48
+00:05:10,628 --> 00:05:16,518
+straight forward. Although it's an
+interesting programming exercise that a
+
+49
+00:05:16,518 --> 00:05:23,312
+lot of us would get wrong the first time.
+So let's start with the constructor, well
+
+50
+00:05:23,312 --> 00:05:29,125
+we have a, a private integer array. That's
+our ID array. That's the data structure
+
+51
+00:05:29,125 --> 00:05:33,953
+that's going to support this
+implementation. The constructor has to
+
+52
+00:05:33,953 --> 00:05:40,637
+create the array and then go through and
+set the value corresponding to each index
+
+53
+00:05:40,637 --> 00:05:47,200
+I to I. That's straight forward. The find
+operation, or connected operation. That's
+
+54
+00:05:47,200 --> 00:05:53,024
+the easy one . This is the Quick-find
+algorithm. So it simply takes its two
+
+55
+00:05:53,024 --> 00:05:58,552
+arguments, P and Q, and checks whether
+their ID entries are equal, and returns
+
+56
+00:05:58,552 --> 00:06:04,077
+that value. If they're equal, it returns
+true. If they're not equal, it returns
+
+57
+00:06:04,077 --> 00:06:09,942
+false. The more complicated operation
+implement is a union. And there, we find
+
+58
+00:06:09,942 --> 00:06:15,803
+first the ID corresponding with the first
+argument, and then the ID corresponding to
+
+59
+00:06:15,803 --> 00:06:21,018
+the second argument. And then we go
+through the whole array, and looking for
+
+60
+00:06:21,018 --> 00:06:27,068
+the entries whose IDs are equal to the ID
+of the first argument, and set those to
+
+61
+00:06:27,068 --> 00:06:32,565
+the ID of the second argument. That's a
+pretty straightforward implementation. And
+
+62
+00:06:32,565 --> 00:06:38,156
+I mentioned that a lot of us would get us
+wrong. The mistake we might make is to put
+
+63
+00:06:38,156 --> 00:06:43,660
+ID of P here rather than first picking
+out, that value. And you can think about
+
+64
+00:06:43,660 --> 00:06:48,672
+the implications of that. That's an
+insidious bug. So, that's a fine
+
+65
+00:06:48,672 --> 00:06:54,900
+implementation of QuickFind so the next
+thing to decide is how effective or
+
+66
+00:06:54,900 --> 00:07:01,152
+efficient that algorithm is going to be
+and we'll talk in some detail about how to
+
+67
+00:07:01,152 --> 00:07:07,088
+do that but for this it's sufficient to
+just think about the number of times the
+
+68
+00:07:07,088 --> 00:07:12,901
+code has to access the array. As we saw
+when doing the implementation, both the
+
+69
+00:07:12,901 --> 00:07:19,019
+initialized and union operations involved
+the for-loop that go through the entire
+
+70
+00:07:19,019 --> 00:07:25,469
+array. So they have to touch in a constant
+proportional to n times after touching
+
+71
+00:07:25,469 --> 00:07:32,155
+array entry. Find Operation is quick, it's
+just to a constant number of times check
+
+72
+00:07:32,155 --> 00:07:37,829
+array entries. And this is problematic
+because the union operation is too
+
+73
+00:07:37,829 --> 00:07:45,708
+expensive. In particular if you just have
+N union commands on N objects which is
+
+74
+00:07:45,708 --> 00:07:52,515
+not unreasonable. They're either connected
+or not then that will take quadratic time
+
+75
+00:07:52,515 --> 00:07:58,458
+in squared time. And one of the themes
+that we'll go through over and over in
+
+76
+00:07:58,458 --> 00:08:04,531
+this course is that quadratic time is much
+to slow. And we can't accept quadratic
+
+77
+00:08:04,531 --> 00:08:10,796
+time algorithms for large problems. The
+reason is they don't scale. As computers
+
+78
+00:08:10,796 --> 00:08:16,305
+get faster and bigger, quadratic
+algorithms actually get slower. Now, let's
+
+79
+00:08:16,305 --> 00:08:22,464
+just talk roughly about what I mean by
+that. A very rough standard, say for now,
+
+80
+00:08:22,464 --> 00:08:29,206
+is that people have computers that can run
+billions of operations per second, and
+
+81
+00:08:29,206 --> 00:08:34,815
+they have billions of entries in main
+memory. So, that means that you could
+
+82
+00:08:34,815 --> 00:08:40,916
+touch everything in the main memory in
+about a second. That's kind of an amazing
+
+83
+00:08:40,916 --> 00:08:46,907
+fact that this rough standard is really
+held for 50 or 60 years. The computers get
+
+84
+00:08:46,907 --> 00:08:52,735
+bigger but they get faster so to touch
+everything in the memory is going to take
+
+85
+00:08:52,735 --> 00:08:57,403
+a few seconds. Now it's true when
+computers only have a few thousand words
+
+86
+00:08:57,403 --> 00:09:04,657
+of memory and it's true now that they have
+billions or more. So let's accept that as
+
+87
+00:09:04,657 --> 00:09:11,873
+what computers are like. Now, that means
+is that, with that huge memory, we can
+
+88
+00:09:11,873 --> 00:09:17,712
+address huge problems. So we could have,
+billions of objects, and hope to do
+
+89
+00:09:17,712 --> 00:09:23,608
+billions of union commands on them. And,
+but the problem with that quick find
+
+90
+00:09:23,608 --> 00:09:29,770
+algorithm is that, that would take
+ten^18th operations, or, say array axises
+
+91
+00:09:29,770 --> 00:09:35,098
+or touching memory. And if you do the
+math, that works out to 30 some years of
+
+92
+00:09:35,098 --> 00:09:42,033
+computer time. Obviously, not practical to
+address such a problem on today's
+
+93
+00:09:42,033 --> 00:09:48,057
+computer. And, and the reason is, and the
+problem is that quadratic algorithms don't
+
+94
+00:09:48,057 --> 00:09:54,097
+scale with technology. You might have a
+new computer that's ten times as fast but
+
+95
+00:09:54,097 --> 00:10:00,033
+you could address a problem that's ten
+times as big. And with a quadratic
+
+96
+00:10:00,033 --> 00:10:06,028
+algorithm when you do that. It's going to
+be ten times as slow. That's the kind of
+
+97
+00:10:06,028 --> 00:10:11,048
+situation we're going to try to avoid by
+developing more efficient algorithms for
+
+98
+00:10:11,048 --> 00:10:13,020
+solving problems like this.

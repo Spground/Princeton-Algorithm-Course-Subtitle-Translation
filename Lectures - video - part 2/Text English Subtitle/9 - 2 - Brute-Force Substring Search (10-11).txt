@@ -1,0 +1,227 @@
+As usual, it's very instructive to take a
+look at the simplest brute force algorithm
+for the problem.
+We'll look at that in a little detail,
+because it illustrates, really what,
+fundamental issues involved with getting
+efficient algorithms for this.
+And it's also the basis for more efficient
+algorithms.
+So the brute force method, we could give
+in a beginning programming class.
+You have your text, you have an index I
+that index as in to text, and you have an
+index j that indexes into the pattern.
+And, start out with both i and j at zero,
+and you compare text to pattern, and you
+keep going until you find a mismatch.
+If you find a mismatch before the end of
+the pattern, then what you do is move the
+pattern over one position,
+That corresponds to simply incremental the
+text pointer.
+And then, here we have a mismatch right
+away, so we move the pattern over one
+position, increment the text pointer.
+And then starting with I at two, we
+compare the second text character with j
+of zero, the first pattern character.
+Increment j to one, increment i to three,
+we have a mismatch.
+Mismatch happens at j and +J, j. the jth
+character the pattern versus the iJ +
+character of the text.
+Now we have a mismatch, move over.
+That's increment i to three, compare the
+first character of the pattern, j = zero
+would be the i plus j pattern of the text.
+That's a mismatch.
+Move over one.
+So we go first one is a match.
+The second one j of i is four compare
+against five, that's a mismatch.
+Move the pattern over one, that's a
+mismatch.
+Finally get to i = position six, and we go
+for j equals zero, one, two, three, all
+matches.
+When j gets to four, which is the number
+of characters in the pattern that's when
+we know we've found a match.
+So, in this table, the entry's engraved,
+just there for a reference.
+The black ones are where when we found
+matches, and the red ones are where we
+found mismatches.
+So, that's, we do the trace before the
+code, because the code is extremely
+simple.
+So this is, to implement brute force
+substring search, to look for a pattern, a
+given pattern, in a given text, or for job
+as index of, this woud be, on the index of
+method in, string, takes the argument
+pattern. So we get the pattern length, and
+we get the text length.
+And we're going to potentially look at
+every, straight, the pattern could start
+at any position in the text from zero to N
+- M.
+And for every value of i, we've create a
+new j and we look for the match between
+the pattern in position j and the text
+character of position + j.
+If we get all, all the way to j = m, then
+we found a match in i.
+If we get a mismatch, then we get a break
+before j = m, and we go and try the next
+value of i.
+And if we get all the way through there
+without returning, then we just return N,
+which is one past the index of the last
+text character, the length of the text.
+And that's an indication that the pattern
+was not found in the text.
+Very straightforward implementation of the
+pattern match algorithm.
+Now, the key point is that,
+This algorithm is fine in, in many
+contexts, and actually it's the one that
+Java's index of uses.
+But the real problem is that it can be
+slow. Number one,
+Just the algorithmic problem,
+It can be slow if there's a lot of,
+repeat, repetitive characters in the text
+and the pattern.
+For example, suppose, that the, text is,
+all A's and a B, and imagine that there is
+a million A's and a B or whatever.
+And then the pattern also was a smaller
+copy of the same thing, all A's and a B.
+Then what happens in this case is that for
+every possible position matching the
+pattern against the text, we go through
+all the pattern characters and only find
+the mismatch on the last one.
+So,
+And then we find a mismatch, we have to go
+over one and try them all and find the
+mismatch in the last one.
+And we eventually do find a match, but for
+every text character we've looked at
+almost M - one pattern characters.
+So, this is a worst case that shows that
+the running time of the brute force
+algorithm can be proportional to M  N,
+where M is the pattern length.
+And the pattern could be long, say that
+the pattern could be hundred characters
+and N can be huge, like a billion and
+that's going to be slow,
+Particularly by comparison to the
+alternatives that we're going to look at.
+Now a more important issue than just the
+worst case performance is the idea of
+backup.
+As I mentioned, for lots of applications,
+if we're going to put our machine in, on
+one of the wires of the Internet and watch
+the input go by or if we just take the
+abstract standard input model, you don't
+get to go, you don't get to back up when
+you find a mismatch but the brute force
+algorithm is always backing up.
+If we go through, matching our pattern
+against our text,
+When we find a mismatch,
+We say we want to move the potential
+pattern over one position,
+But that means backing up in the text.
+So, we would that's, ways to deal with
+that by, saving the most recent M text
+characters that we've seen.
+But it's definitely problematic for larger
+patterns and certainly inconvenient. so
+the brute force algorithm uses backup.
+And so you could maintain a buffer as I
+mentioned,
+But what we're going to look at is an
+ingenious way couple of ingenious ways to
+avoid having to do backup.
+To setup for that,
+We're going to look at,
+A slightly different implementation or
+alternate implementation of brute force.
+It, it,
+Compares the same characters as the
+previous, implementation.
+But, it, does things in a slightly
+different order, without, without a second
+for loop. And it does the explicit backup,
+so let's look at that.
+So, we have our i and j pointers, and, and
+we initialize them both at zero.
+And so it's a for loop where, I gets
+incremented on every iteration through the
+loop.
+And so what we do is, as long as we see a
+match we also increment J, so that while
+the pattern is matching we're implementing
+both I and J.
+When we see a mismatch what we do is just
+subtract.
+The current value of j from i the pointer.
+That's the next, character that we have to
+look at.
+So, when we find this mismatch, we wanna,
+subtract the current value of J.
+Then increment I at the end of the four
+loop.
+And that puts us right on the, next, text
+character that we wanna look at and then
+we reset j to zero.
+So this, does the same, Character
+comparisons.
+But it explicitly shows that we're backing
+up in the text.
+And then, if we ever get to the end of the
+pattern then we return I minus M.
+Which is the position of the first
+character in the text that matches the
+pattern which we found there was M
+matches.
+So it's an alternate implem,
+implementation that will come back to.
+So, the ideas that there are a couple of
+out rhythm challenges even though this
+brute force method, is simple it is not
+always good enough.
+And so the first one is just, from a
+purely algorthmic stand point.
+This is a challenge.
+Do we need N  M?
+Or M is the length of the pattern?
+Or can we do it in time independent of the
+length of the pattern?
+What we want is a linear time guarantee.
+And that was a fundamental problem
+algorithmic problem that people worried
+about.
+And for a, for a, for a bit and we're
+going to look at the, how people approach
+this fundamental algorithmic problem.
+And then there's the practical challenge
+of we don't, we might not have the room or
+the time to save the text and actually the
+judge might not be happy about us saving
+text away in some computer.
+So we want to avoid backup in the text
+stream.
+All we're supposed to know about is our
+pattern.
+And we're supposed to light the light if
+we find our pattern and that's it.
+So what we're gonna see next is a way to
+deal with both of those challenges at the
+same time.

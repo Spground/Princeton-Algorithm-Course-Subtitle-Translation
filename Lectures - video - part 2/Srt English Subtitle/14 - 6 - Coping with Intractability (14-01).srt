@@ -1,0 +1,608 @@
+1
+00:00:03,960 --> 00:00:09,651
+Okay. We're going to finish up by talking
+a little bit about different approaches to
+
+2
+00:00:09,651 --> 00:00:15,347
+dealing with needing to solve intractable
+problems. this, actually, a lot of
+
+3
+00:00:15,347 --> 00:00:22,029
+different ways to proceed when you run
+into an intractable problem. One idea is
+
+4
+00:00:22,029 --> 00:00:29,035
+to exploit it. In fact, an example of
+this, a very successful example of this is
+
+5
+00:00:29,035 --> 00:00:36,183
+modern cryptography. People using the
+internet for commerce, or for interaction
+
+6
+00:00:36,183 --> 00:00:42,965
+through digital signatures and other
+mechanisms are absolutely relying on
+
+7
+00:00:42,965 --> 00:00:49,807
+modern cryptography for security and
+privacy. and that's all based on the RSA
+
+8
+00:00:49,807 --> 00:00:55,601
+cryptosystem, or much of it. and it's
+based on the idea that multiplying two
+
+9
+00:00:55,815 --> 00:01:00,965
+N-bit integers is relatively easy. This
+and a, brute force multiplication
+
+10
+00:01:00,965 --> 00:01:06,616
+algorithm gets it done in quadratic time
+when there's faster ways. So that's
+
+11
+00:01:06,616 --> 00:01:12,552
+polynomial time. So in order to encrypt
+something, you need to multiply things,
+
+12
+00:01:12,552 --> 00:01:18,699
+but in order to break something, you would
+need to factor things. That's exploiting
+
+13
+00:01:18,699 --> 00:01:25,760
+interactability. Nobody knows a good way
+to factor. A factor is not MP complete, by
+
+14
+00:01:25,760 --> 00:01:32,646
+the way, not known to be MP complete. So
+it doesn't, in fact, not quite as hard as
+
+15
+00:01:32,646 --> 00:01:39,808
+other problems. But still nobody knows a
+fast way. So but this is an example of
+
+16
+00:01:39,808 --> 00:01:47,188
+exploiting suspected problems, that's
+suspected to be intractable. In fact,
+
+17
+00:01:47,188 --> 00:01:55,882
+there's other ways to make money [UNKNOW
+put, put some challenges and go ahead and
+
+18
+00:01:55,882 --> 00:02:05,713
+factor this number towards $30,000. . Some
+of these things have been , prices have
+
+19
+00:02:05,713 --> 00:02:12,642
+already been claimed but it may be easier
+to go after this than after the, the
+
+20
+00:02:12,642 --> 00:02:19,901
+millionth and actually [UNKNOWN] and
+Idilin were just not just but professors
+
+21
+00:02:19,901 --> 00:02:26,446
+at MIT when they came up with this and
+they realized that. the important
+
+22
+00:02:26,670 --> 00:02:33,152
+commercial potential of this And actually
+created a company based on the difficulty
+
+23
+00:02:33,152 --> 00:02:39,634
+of factoring that sold for 2.1 billion
+dollars not that long ago. And it's the
+
+24
+00:02:39,634 --> 00:02:46,712
+basis for, internet commerce. so these
+possibilities for making a lot of money
+
+25
+00:02:46,712 --> 00:02:53,120
+out of, understanding the difficulty of
+computation, are not imaginary. they're
+
+26
+00:02:53,120 --> 00:03:01,610
+quite real. so, I, talk briefly about the
+complexity of fac tors.
+
+27
+00:03:01,613 --> 00:03:11,023
+That's, another problem like, LP is that,
+it's current status is what LP was in the
+
+28
+00:03:11,023 --> 00:03:17,120
+70s. we're using it, a lot of people were
+doing it we knew that the worst case was
+
+29
+00:03:17,330 --> 00:03:23,007
+of simplex was exponential. we'd like to
+classify it, like to know if there's a
+
+30
+00:03:23,007 --> 00:03:28,474
+poly time, nomial time algorithm, but
+nobody knew one. And then the big surprise
+
+31
+00:03:28,474 --> 00:03:34,711
+for LP was that Catching came up with a, a
+polynomial time algorithm and, and, then,
+
+32
+00:03:34,711 --> 00:03:40,037
+you know, and people went to work. For
+factor we're kind of in the same
+
+33
+00:03:40,037 --> 00:03:47,406
+situation. It's NMP. Being as we saw, it's
+just a, search problem but. , it's not
+
+34
+00:03:47,406 --> 00:03:54,355
+known or believed to be either NP or NP
+complete. But again who knows. so what if
+
+35
+00:03:54,355 --> 00:04:01,412
+it turns out that P equals NP. so, so that
+would mean that now it factors in P and
+
+36
+00:04:01,412 --> 00:04:08,272
+that would . It's not just the math. that
+would mean, there'd be an easy way to
+
+37
+00:04:08,272 --> 00:04:14,718
+break the, RSA crypto system which is in
+wide use. people could, break codes by,
+
+38
+00:04:14,718 --> 00:04:20,440
+just by factoring. and that, that would
+not be a good thing for the modern
+
+39
+00:04:20,440 --> 00:04:26,380
+economy. actually, something that
+attracted a lot of attention, although
+
+40
+00:04:26,380 --> 00:04:32,102
+it's almost twenty years ago now. was a
+result by Peter Shore that said, that,
+
+41
+00:04:32,320 --> 00:04:40,107
+There's a device, not quite a real device,
+called a quantum computer. At least one
+
+42
+00:04:40,107 --> 00:04:47,797
+that you can imagine building that solves
+factoring in polynomial time. So that
+
+43
+00:04:47,797 --> 00:04:55,298
+raises the question of, do we still
+believe the extended Church-Turing thesis.
+
+44
+00:04:55,514 --> 00:05:01,420
+There are plenty of people that are not so
+sure and are working hard on trying to
+
+45
+00:05:01,420 --> 00:05:08,045
+build devices that might have a big impact
+on this kind of theory. well, actually we
+
+46
+00:05:08,045 --> 00:05:13,807
+create, and has created a, a new theory
+based on how difficult is it to do things
+
+47
+00:05:13,807 --> 00:05:20,364
+with these sorts of devices. Okay, but in
+general, suppose you have a intractable
+
+48
+00:05:20,364 --> 00:05:26,928
+problem, what are you going to do to cope
+with it? Well, there's a number of things
+
+49
+00:05:27,154 --> 00:05:33,401
+that people have done really successfully.
+so remember what it means to be
+
+50
+00:05:33,401 --> 00:05:40,175
+intractable. so a problem's intractable
+if, in, in, in the sense that we don't
+
+51
+00:05:40,175 --> 00:05:46,232
+know a polynomial time problem that's
+guaranteed to solve any instance. Now so
+
+52
+00:05:46,232 --> 00:05:52,071
+maybe you can give up on, on, on e of the
+three key features of that statement.
+
+53
+00:05:52,285 --> 00:05:58,195
+maybe we don't care if we can solve every
+possible instance. Maybe it's only the
+
+54
+00:05:58,195 --> 00:06:03,821
+instances that are gonna arrive in the
+real world, arise in the real world that
+
+55
+00:06:03,821 --> 00:06:11,100
+matter. so or maybe you can even simplify
+the problem and that's the one that you
+
+56
+00:06:11,100 --> 00:06:16,983
+really need to solve. So for example, if
+you restrict. Satisfiability to have at
+
+57
+00:06:16,983 --> 00:06:22,677
+most two literals per equation, can solve
+in linear time. Or even if you just insist
+
+58
+00:06:22,677 --> 00:06:28,439
+that there be at most one of the literals
+per equation be not negated. That's called
+
+59
+00:06:28,439 --> 00:06:33,516
+a Horn-SAT. There's a linear time
+algorithm for that. So maybe your problem
+
+60
+00:06:33,516 --> 00:06:38,798
+is you're trying to solve too hard a
+problem, and you can come up with a more
+
+61
+00:06:38,798 --> 00:06:43,943
+special case of the problem that's
+actually the one you want to solve that
+
+62
+00:06:43,943 --> 00:06:50,098
+you could solve. So that's definitely one
+way to cope with interactability. another
+
+63
+00:06:50,098 --> 00:06:59,216
+thing is optimality. we've been talking
+about search problems but this is, this is
+
+64
+00:06:59,216 --> 00:07:06,975
+more a statement about Mm-hm, . But,
+optimization problems, we're looking for
+
+65
+00:07:06,975 --> 00:07:12,203
+the best solution or we're looking for a
+proximate solutions. where you take away
+
+66
+00:07:12,203 --> 00:07:17,256
+the guarantee that the solution's perfect
+in some way. So for example, the traveling
+
+67
+00:07:17,256 --> 00:07:22,674
+sales person problem. People can find ways
+to get tours that are close to the best
+
+68
+00:07:22,674 --> 00:07:28,026
+possible tour, but maybe not the best. And
+there's many, many other example of this.
+
+69
+00:07:28,026 --> 00:07:32,783
+Where people are looking for good
+solutions, without trying to guarantee
+
+70
+00:07:32,783 --> 00:07:38,003
+that they're optimal. And those, maybe
+those solutions are very close to optimal,
+
+71
+00:07:38,003 --> 00:07:42,992
+or at least, close enough that you can use
+the solution and move on. if you
+
+72
+00:07:42,992 --> 00:07:47,607
+understand the quality of the solution
+that you have, that might be, good enough.
+
+73
+00:07:47,607 --> 00:07:52,334
+But and again, the idea of approximation
+algorithm and where you really can prove
+
+74
+00:07:52,334 --> 00:07:59,564
+what the quality is. So for example
+there's a max three set that guarantees to
+
+75
+00:07:59,841 --> 00:08:06,820
+satisfy seven-eighths of the clauses. And,
+actually these algorithm they're really
+
+76
+00:08:06,820 --> 00:08:12,709
+coming at the fine line between what's
+tractable and intractable. And so, for
+
+77
+00:08:12,709 --> 00:08:18,672
+example the, if you want to do 7/8's plus
+anything then it mea ns that P equals MP,
+
+78
+00:08:18,672 --> 00:08:24,412
+if you can do that in polynomial time P
+equals MP there are lots and lots of
+
+79
+00:08:24,412 --> 00:08:29,962
+amazing results of this sort out there.
+but anyway, in practice relaxing
+
+80
+00:08:30,171 --> 00:08:35,944
+condition, that you find the perfect
+solution sometimes can get a long way in
+
+81
+00:08:35,944 --> 00:08:41,948
+practice. and then the other thing is
+guaranteed polynomial time. We're talking
+
+82
+00:08:41,948 --> 00:08:48,188
+about worse case behavior. but there's
+solutions out there. for example, there's
+
+83
+00:08:48,188 --> 00:08:54,284
+a SAT solver that was done here at
+Princeton that can solve 10,000 variable
+
+84
+00:08:54,284 --> 00:08:59,950
+SAT instances. Or, as we, as I mentioned,
+there's solvers out there for integer
+
+85
+00:08:59,950 --> 00:09:07,611
+linear programming that will solve huge
+instances of real world problems. Worst
+
+86
+00:09:07,611 --> 00:09:12,242
+case behaviour may be observed in a real
+world, might even be hard to find real
+
+87
+00:09:12,242 --> 00:09:17,282
+world problems. This is, definitely a lot
+of room here, to not find solutions that,
+
+88
+00:09:17,458 --> 00:09:22,293
+might be efficient for the class of
+problems, that you want to solve. and I
+
+89
+00:09:22,293 --> 00:09:28,805
+just want to finish up with one of the
+most famous NP complete problems which is
+
+90
+00:09:28,805 --> 00:09:35,317
+the so-called Hamilton path problem. and
+so that's given a graph, you want to find
+
+91
+00:09:35,317 --> 00:09:43,274
+a path that visits every vertex exactly
+once. And simple path, so I can't reuse
+
+92
+00:09:43,274 --> 00:09:50,374
+any edge. So that's a solution to the
+Hamilton Path probelem for this graph.
+
+93
+00:09:50,374 --> 00:09:57,664
+Another way to characterize it is a
+longest path problem, longest simple path
+
+94
+00:09:57,664 --> 00:10:05,048
+problem in a graph. If you have one of
+visit every edge eactly once, that's not
+
+95
+00:10:05,048 --> 00:10:12,276
+difficult. It's actually in the book. But
+Hamilton path is NP complete. that's a
+
+96
+00:10:12,276 --> 00:10:19,413
+natural problem that's MP complete. and
+actually this is it's empty incomplete,
+
+97
+00:10:19,413 --> 00:10:26,872
+but here's a really simple exponential
+time algorithm for computing the Hamilton
+
+98
+00:10:26,872 --> 00:10:33,412
+path. it's just our depth for search
+algorithm where we mark nodes and
+
+99
+00:10:33,412 --> 00:10:40,640
+recursively go through all the edges all
+the vertices adjacent to the current
+
+100
+00:10:40,640 --> 00:10:47,782
+vertex. and if they're not marked, go
+ahead and visit them recursively, marking
+
+101
+00:10:47,782 --> 00:10:55,114
+all the nodes that we see. The only
+difference from the depth first search, is
+
+102
+00:10:55,114 --> 00:11:00,593
+this thing here. Where, when we're done,
+with our recursive call on a node we,
+
+103
+00:11:00,796 --> 00:11:06,343
+unmark it. And what that does is make this
+code try a ll possible paths. And there's
+
+104
+00:11:06,343 --> 00:11:12,499
+an exponential number of paths. so, so
+define program for doing it for small
+
+105
+00:11:12,499 --> 00:11:17,881
+graphs. But it's going to take exponential
+time for big graphs. But the longest path
+
+106
+00:11:17,881 --> 00:11:23,381
+problem is NP complete, and we're going to
+finish up with a, a, a song that was
+
+107
+00:11:23,381 --> 00:11:29,079
+composed by a John Hopkins student, one
+time when he was having trouble, thinking
+
+108
+00:11:29,079 --> 00:13:20,366
+about this idea. Woh, oh, oh, oh, find the
+longest path. Woh, oh, oh, oh. Find the
+
+109
+00:13:20,366 --> 00:13:30,809
+longest path. Woh, oh, oh, oh. Find the
+longest path. If you said P is NP tonight,
+
+110
+00:13:30,809 --> 00:13:30,809
+there would still be papers left to write.
+I have a weakness, I am addicted to
+
+111
+00:13:30,809 --> 00:13:30,809
+completeness. And I kep searching for the
+longest path. The algorithm I would like
+
+112
+00:13:30,809 --> 00:13:30,809
+to see is of polynomial degree. But it's
+elusive, nobody has found conclusive
+
+113
+00:13:30,809 --> 00:13:30,809
+evidence that we can find a longest path.
+I have been working for so long. I swear
+
+114
+00:13:30,809 --> 00:13:30,809
+it's right, and he marks it wrong. Some
+how I'll feel sorry when it's done, GPA
+
+115
+00:13:30,809 --> 00:13:30,809
+2.1 is more than I hope for. Gary,
+Johnson, Karp and other men (and women
+
+116
+00:13:30,809 --> 00:13:30,809
+too). Tried to make it order N log N. Am I
+a mad fool if I spend my life in Grad
+
+117
+00:13:30,809 --> 00:13:30,809
+School, forever following the longest
+path. Woh, oh, oh, oh, find the longest
+
+118
+00:13:30,809 --> 00:13:30,809
+path. Woh, oh, oh, oh, find the longest
+path. Woh, oh, oh, oh, find the longest
+
+119
+00:13:30,809 --> 00:13:36,183
+path. that's a fine sentiment on which to
+end this class on algorithms. I hope that
+
+120
+00:13:36,379 --> 00:13:41,924
+all of you out there are inspired to face
+the computational challenges of the future
+
+121
+00:13:41,924 --> 00:13:47,598
+with the algorithms and the concepts that
+you've learned in this class. so, that's
+
+122
+00:13:47,598 --> 00:13:49,360
+all. Keep searching, so long.

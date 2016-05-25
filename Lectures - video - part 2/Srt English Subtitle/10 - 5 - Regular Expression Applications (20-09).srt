@@ -1,0 +1,938 @@
+1
+00:00:03,520 --> 00:00:08,057
+So that's a regular expression,
+pattern-matching that we implement by
+
+2
+00:00:08,238 --> 00:00:12,412
+constructing and simulating a
+nondeterministic finite state machine.
+
+3
+00:00:12,412 --> 00:00:16,950
+Really, one of the most ingenious
+algorithms that we look at in this course.
+
+4
+00:00:17,131 --> 00:00:23,376
+next we'll look at some applications. so,
+the most famous is called, Grep and this
+
+5
+00:00:23,376 --> 00:00:29,835
+is what Ken Thompson implemented in the
+initial Unix. And it was a very, very
+
+6
+00:00:29,835 --> 00:00:37,602
+important tool for programmers working on
+the tiny really tiny, computers that were
+
+7
+00:00:37,602 --> 00:00:44,470
+available at that time. it was really
+important to be able to ask questions
+
+8
+00:00:44,470 --> 00:00:50,131
+about programs of this type. and it
+allowed the development of bigger and
+
+9
+00:00:50,131 --> 00:00:55,420
+bigger computational infrastructure like
+the Unix Operating System that's still
+
+10
+00:00:55,420 --> 00:01:01,326
+widely used today. so Grep was a simple
+command. what you want to do is take a
+
+11
+00:01:01,326 --> 00:01:06,876
+regular expression as a command line
+argument and print the lines from standard
+
+12
+00:01:06,876 --> 00:01:11,940
+input to have some substring that's
+matched by the regular expression.
+
+13
+00:01:11,940 --> 00:01:16,869
+Programmers use that all the time to try
+to figure out what variables they use in
+
+14
+00:01:16,869 --> 00:01:21,739
+what part of what programming. many
+programmers, use Grep every day still
+
+15
+00:01:21,739 --> 00:01:30,248
+today. and here's how we implement it
+using the code that you know, we've talked
+
+16
+00:01:30,248 --> 00:01:38,889
+about so far. so first thing is, is create
+the RE that we're going to match to make
+
+17
+00:01:38,889 --> 00:01:45,979
+it more like subscreen search. We just
+care for the things in there anywhere at
+
+18
+00:01:45,979 --> 00:01:53,867
+all. So we put a dot star before and after
+and we enclose it in parenthesis just cuz,
+
+19
+00:01:53,335 --> 00:02:00,603
+cuz our code simplified, if our RE's
+enclosed in parenthesis. Build an NFA from
+
+20
+00:02:00,603 --> 00:02:07,016
+that regular expression. and then as long
+as there's an align in standard input, we
+
+21
+00:02:07,016 --> 00:02:12,589
+read the line and we ask if the NFA
+recognizes it. So the constructor builds
+
+22
+00:02:12,589 --> 00:02:18,776
+the NFA and recognizes is the simulation.
+if one NFA on that string, if it's there,
+
+23
+00:02:18,776 --> 00:02:25,390
+you print it out. if it doesn't recognize
+it the final accept state is not in the
+
+24
+00:02:25,390 --> 00:02:31,079
+substrateq you could get to, for that
+string, it won't print it out. And we just
+
+25
+00:02:31,079 --> 00:02:40,896
+do that for every line in the input.
+pretty, amazingly simple implementation,
+
+26
+00:02:40,896 --> 00:02:49,809
+although, quite elegant, conceptually.
+It's a very, Elegant, and, and, ef ficient
+
+27
+00:02:49,809 --> 00:02:55,750
+permutation of this basic process.
+Absolutely correct. so, in the bottom line
+
+28
+00:02:55,750 --> 00:03:01,758
+for it is in the worst case it's the same
+as for the, elementary substring search
+
+29
+00:03:01,758 --> 00:03:07,567
+algorithm that we looked at when we first
+started talking about string searching and
+
+30
+00:03:07,567 --> 00:03:12,453
+it's really amazing. the brute force
+algorithm that you come up with of
+
+31
+00:03:12,453 --> 00:03:17,734
+tri-matching the string, the single string
+at every character position. The worst
+
+32
+00:03:17,734 --> 00:03:22,818
+case is time proportional to M times N.
+But here we have a regular expression
+
+33
+00:03:22,818 --> 00:03:27,703
+which specifies an infinite set of
+patterns. And we can tell if any one of
+
+34
+00:03:27,703 --> 00:03:33,295
+those infinite set of patterns is matched
+by our string in the same worst case kind.
+
+35
+00:03:33,479 --> 00:03:40,754
+it's really an amazing algorithm that's
+Ken Thompson, Grep. Once you have Grep
+
+36
+00:03:40,754 --> 00:03:46,982
+available, then crossword puzzles become a
+lot easier. a lot of it's standard in UNIX
+
+37
+00:03:46,982 --> 00:03:52,795
+to a dictionary or if you can't find one
+on your system, we have it on the book
+
+38
+00:03:52,795 --> 00:03:58,331
+site that simply has all the words on the
+dictionary, all the lower case one per
+
+39
+00:03:58,331 --> 00:04:04,589
+line. and if you have a crossword puzzle
+where you're missing a couple of letters
+
+40
+00:04:04,811 --> 00:04:11,864
+you can just Grep for in words.txt for
+and, and leave, don't care is for those
+
+41
+00:04:11,864 --> 00:04:17,951
+letters, and it'll tell you the, the
+things you can put in there. In this case
+
+42
+00:04:18,174 --> 00:04:24,113
+it's the one that has exactly that many
+letters. It's stricter. so that's a
+
+43
+00:04:24,113 --> 00:04:31,239
+typical, application and I'm sure lots of
+people use it that way now. now for
+
+44
+00:04:31,462 --> 00:04:38,026
+industrial strength nowadays there's, a
+lot of things that people expect when
+
+45
+00:04:38,026 --> 00:04:43,725
+using regular expressions. our
+implementation doesn't have character
+
+46
+00:04:43,725 --> 00:04:50,930
+classes. it doesn't have the extra meta
+characters like plus and other things. the
+
+47
+00:04:50,930 --> 00:04:58,205
+idea of capturing which actually get the
+part of the string that satisfies, that
+
+48
+00:04:58,205 --> 00:05:05,480
+matches the regular expression of various
+different extensions of closure. and then
+
+49
+00:05:05,480 --> 00:05:11,440
+there's the idea of greedy versus
+reluctant matching. So, for example, if
+
+50
+00:05:11,440 --> 00:05:19,423
+you have a regular expression, blink.
+/blink which you'd find in HML for the
+
+51
+00:05:19,423 --> 00:05:26,246
+blinking text. there's two possibilities.
+so called reluctant matching would be like
+
+52
+00:05:26,246 --> 00:05:32,658
+the tightest match, matches that you'd
+get. You h ave two of them but then, the
+
+53
+00:05:32,658 --> 00:05:38,659
+greedy matching would get as much text as
+it possibly could in different
+
+54
+00:05:38,659 --> 00:05:44,907
+applications, you might want different
+things. Capturing means give me the
+
+55
+00:05:44,907 --> 00:05:50,937
+substring that matches. and so those
+things are not difficult to add to the
+
+56
+00:05:50,937 --> 00:05:56,191
+basic code that we've done and all that
+has to be in industrial strength
+
+57
+00:05:56,391 --> 00:06:02,044
+implementation. many programming systems
+have Grep that have all these sorts of
+
+58
+00:06:02,044 --> 00:06:09,914
+things. again originated, originated in
+Unix in the 1970s and nowadays, every
+
+59
+00:06:09,914 --> 00:06:16,411
+language has to have some kind of extended
+regular expression facility. there's,
+
+60
+00:06:17,252 --> 00:06:23,825
+language Unix commands like Grep and lock,
+and old programmer's tools like EAMCs.
+
+61
+00:06:23,825 --> 00:06:30,169
+There's modern programmer's tools like
+Perl or PHP Python and Javascript. All of
+
+62
+00:06:30,169 --> 00:06:37,373
+these things have regular expression
+processing. and so, programmers demand
+
+63
+00:06:37,373 --> 00:06:44,631
+this facility nowadays. in fact, Perl is
+an example of an entire language that's
+
+64
+00:06:44,631 --> 00:06:51,398
+built on regular expressions. and again
+there is various command line options you
+
+65
+00:06:51,398 --> 00:06:58,168
+can say run it for each line and you have
+replacement facilities and many other
+
+66
+00:06:58,168 --> 00:07:05,086
+things that is, is certainly a worthwhile
+facility for any programmer to use
+
+67
+00:07:05,086 --> 00:07:11,268
+nowadays and many programmers use these
+things. Now to, again to go back to the
+
+68
+00:07:11,268 --> 00:07:17,376
+slide that was filled up with a regular
+expression you want to use these things
+
+69
+00:07:17,376 --> 00:07:23,464
+wisely there are definitely computational
+tasks, where it might be better to just
+
+70
+00:07:23,464 --> 00:07:29,123
+write a Java program, not try to use a
+regular expression. So every tool has it's
+
+71
+00:07:29,123 --> 00:07:34,931
+place and try not to do everything with
+the regular expression language. in Java
+
+72
+00:07:35,237 --> 00:07:44,108
+various facilities, are built in to
+different parts of the Java library. and
+
+73
+00:07:44,108 --> 00:07:51,928
+so and understanding how the
+implementation works. you can understand
+
+74
+00:07:51,928 --> 00:07:58,084
+how to use these. so one simple,
+implementation is in the Java string
+
+75
+00:07:58,084 --> 00:08:03,174
+library. so if there's a, you have a
+string called input and another string
+
+76
+00:08:03,174 --> 00:08:10,447
+called regexp and the matches method in
+the string library will return the bullion
+
+77
+00:08:10,447 --> 00:08:16,221
+that says if the strings in the line which
+you know, described by the regular
+
+78
+00:08:16,221 --> 00:08:23,680
+expression. so this is just a simple stub
+that I call validate that takes a regular
+
+79
+00:08:23,680 --> 00:08:28,839
+expression and an input from the command
+line, unless you know if the, the, the
+
+80
+00:08:29,251 --> 00:08:34,479
+string is in the line that's described by
+the regular expression. So, like as I dent
+
+81
+00:08:34,479 --> 00:08:40,395
+one, two, three, and leave a little Java
+identifier giving that regexp legal Java
+
+82
+00:08:40,395 --> 00:08:46,379
+identifiers that we looked at earlier and
+so forth. so that's one thing that's built
+
+83
+00:08:46,379 --> 00:08:52,570
+in to Java. So in Java programs you can
+use regular expression pattern-matching in
+
+84
+00:08:52,570 --> 00:09:01,700
+that simple way. another thing, another
+kind of task that is better handled with a
+
+85
+00:09:01,897 --> 00:09:06,410
+that's handled with this Java
+implementation as the idea of harvesting.
+
+86
+00:09:06,650 --> 00:09:13,296
+so we want to print all the sub strings of
+the input that match a given RE. So, say
+
+87
+00:09:13,296 --> 00:09:21,525
+this is the fragile X syndrome we want to
+harvest all the patterns from the DNA
+
+88
+00:09:21,525 --> 00:09:29,218
+that, have this property that starts with
+gcg and ends with ctg and has any number
+
+89
+00:09:29,486 --> 00:09:36,772
+of these triple gcg or cth, triples
+inside. or maybe you want to harvest the
+
+90
+00:09:36,772 --> 00:09:42,910
+same program harvests all the e-mail
+addresses from a web page. That's kind of
+
+91
+00:09:42,910 --> 00:09:50,233
+amazing that the same program can work for
+two such diverse tasks. that's, that's a
+
+92
+00:09:50,233 --> 00:09:56,167
+testimony to the utility of this
+abstraction. so how do we do harvesting
+
+93
+00:09:56,167 --> 00:10:03,301
+within Java? Well it's got a, Java has two
+classes called pattern and matcher that
+
+94
+00:10:03,301 --> 00:10:09,378
+implement regular expression
+pattern-matching basically by, as we did,
+
+95
+00:10:09,378 --> 00:10:16,687
+separating the construction of the machine
+from the simulation. so this is what the
+
+96
+00:10:16,687 --> 00:10:22,698
+code looks like for harvester. We take our
+regular expression as the first command
+
+97
+00:10:22,698 --> 00:10:28,204
+line argument and we setup an input stream
+from the second command line argument, can
+
+98
+00:10:28,204 --> 00:10:34,433
+be a file or a webpage. and then we read
+the input stream. then we use Java's
+
+99
+00:10:34,433 --> 00:10:41,312
+pattern class, to, to build a pattern
+which essentially is an NFA that is
+
+100
+00:10:41,312 --> 00:10:49,972
+constructed from the regular expression.
+in the pattern class, has a method called
+
+101
+00:10:49,972 --> 00:10:59,023
+a matcher and that essentially creates an
+NFA stimulator from that NFA for that
+
+102
+00:10:59,023 --> 00:11:07,003
+text. and, so that's a machine that not
+only does matching in the way that we did,
+
+103
+00:11:07,003 --> 00:11:14,023
+but it also finds a match and keeps track
+of what's called group, which is the
+
+104
+00:11:14,023 --> 00:11:20,854
+substring that caus e the match. so it
+adds that extra code to do these things
+
+105
+00:11:21,093 --> 00:11:28,032
+that are useful in this illustrates one
+line of code for each one of those
+
+106
+00:11:28,032 --> 00:11:33,936
+facilities. That is, create the NFA,
+create the simulator find the next match
+
+107
+00:11:33,936 --> 00:11:39,590
+and get the substring that cause the
+match. That's an implementation of
+
+108
+00:11:39,590 --> 00:11:45,794
+harvester that can go through and do
+things like get fragile X indicators from
+
+109
+00:11:45,794 --> 00:11:51,605
+a chromosome or get e-mail addresses from
+a web page. And of course, you could
+
+110
+00:11:51,605 --> 00:11:57,888
+extend that to print out the index of
+where they occur and other things. this is
+
+111
+00:11:57,888 --> 00:12:04,020
+a very powerful facility to have in a
+programming language and Java certainly
+
+112
+00:12:04,020 --> 00:12:10,701
+has it. Now there is a caveat about this
+that's really important. this introduces
+
+113
+00:12:10,701 --> 00:12:16,751
+the idea that we talked about with hashing
+and this is another example of the
+
+114
+00:12:17,007 --> 00:12:23,314
+algorithmic complexity attack. And that
+is, if you know something about the way
+
+115
+00:12:23,314 --> 00:12:30,147
+that a website is implemented at facility.
+in this case, it's possible to implement
+
+116
+00:12:30,356 --> 00:12:35,723
+regular expression pattern-matching in a
+not so efficient way and atypically,
+
+117
+00:12:35,723 --> 00:12:41,370
+actually, the implementations that we see
+out in the wild like the ones in Unix or,
+
+118
+00:12:41,161 --> 00:12:46,180
+or Java or Perl, do not guarantee
+quadratic performance the way we have.
+
+119
+00:12:46,180 --> 00:12:51,827
+They do not guarantee the running time's
+going to be proportional to the product or
+
+120
+00:12:51,827 --> 00:12:57,543
+the length of the string and the length of
+the regular expression. In fact, they go
+
+121
+00:12:57,543 --> 00:13:04,326
+exponential. again, going back to Kleene's
+theorem, it's relatively simple to prove.
+
+122
+00:13:04,326 --> 00:13:09,947
+it's not so difficult to develop an
+implementation that is more like Kleene's
+
+123
+00:13:10,925 --> 00:13:17,198
+theorem, but it can take exponential time.
+and you can try it yourself in Java or
+
+124
+00:13:17,198 --> 00:13:23,878
+Perl, if you try to look for a match for
+this regular expression in a string like
+
+125
+00:13:23,878 --> 00:13:30,639
+that, you add just a couple of characters
+to the string then running time will
+
+126
+00:13:30,639 --> 00:13:36,534
+double. again, going back to our
+algorithmic performance lectures. if
+
+127
+00:13:36,534 --> 00:13:42,450
+that's what happens, if I just add one
+thing and my running time doubles that
+
+128
+00:13:42,450 --> 00:13:50,866
+means I have exponential time. and so if
+I'm using a facility that has one of these
+
+129
+00:13:51,168 --> 00:14:00,020
+exponential time implementations then,
+this is, what's called a SpamAssassin reg
+
+130
+00:14:00,020 --> 00:14:05,711
+ular expression. it's going to take
+exponential time on certain e-mail
+
+131
+00:14:05,711 --> 00:14:12,829
+addresses and, somebody can create trouble
+by sending such addresses to a mail server
+
+132
+00:14:13,039 --> 00:14:19,127
+the mail server will take exponential time
+just trying to determine if it's spam or
+
+133
+00:14:19,127 --> 00:14:24,305
+not. and by having an inefficient
+algorithm, a server like that is
+
+134
+00:14:24,515 --> 00:14:29,413
+definitely subject to such a tax.
+generally, you don't want to have
+
+135
+00:14:29,413 --> 00:14:35,431
+exponential algorithms you particularly
+don't want to have exponential algorithms
+
+136
+00:14:35,641 --> 00:14:41,704
+if you have arbitrary clients out there
+that can cause trouble for you. a another
+
+137
+00:14:41,957 --> 00:14:49,029
+pitfall is things that kind of look like
+regular expressions but aren't actually
+
+138
+00:14:49,029 --> 00:14:55,848
+regular expressions. So it's common to
+have the backslash one notation. So that's
+
+139
+00:14:55,848 --> 00:15:04,436
+supposed to match the self expression that
+was matched earlier. So this thing dot
+
+140
+00:15:04,436 --> 00:15:12,616
+plus back slash one is a string that is
+two copies of something, like couscous or
+
+141
+00:15:12,220 --> 00:15:18,954
+with at least one character. and this one
+is a similar one. This one actually is
+
+142
+00:15:19,192 --> 00:15:25,768
+number of ones is not prime. it matches,
+so you can write pretty sophisticated
+
+143
+00:15:25,768 --> 00:15:33,215
+computational thing just with these little
+references. but there's a problem and it's
+
+144
+00:15:33,215 --> 00:15:40,445
+a fundamental problem, is that . that
+kinds of languages of the sets of strings
+
+145
+00:15:40,445 --> 00:15:45,726
+that you specify with such notation are
+not regular. That is, like I said, it's a
+
+146
+00:15:45,726 --> 00:15:52,196
+point you can't write a regular expression
+to specify. and so these are examples like
+
+147
+00:15:52,394 --> 00:15:57,478
+strings to the form ww For sum W, you
+can't write a regular expression that,
+
+148
+00:15:57,676 --> 00:16:02,759
+will recognize, that will describe all
+such strings. There are even scientific
+
+149
+00:16:02,759 --> 00:16:07,843
+applications like complemented
+palindromes. So that's like a palindrome,
+
+150
+00:16:07,843 --> 00:16:15,013
+but also complements a's to t's and c's
+and g's. So that's another, example. And
+
+151
+00:16:15,238 --> 00:16:21,551
+if they're not regular, then Kleene's
+theorem doesn't hold. there's no NFA that
+
+152
+00:16:21,551 --> 00:16:28,426
+corresponds to them, and in fact we're,
+we'll talk in a couple of lectures about
+
+153
+00:16:28,426 --> 00:16:33,889
+intractability. in fact, nobody knows an
+efficient method for guaranteeing
+
+154
+00:16:33,889 --> 00:16:40,071
+performance when you have back references.
+so, if you're allowing back references
+
+155
+00:16:40,287 --> 00:16:46,110
+you're pretty much subject to performance
+attacks like the one we just mentioned.
+
+156
+00:16:46,303 --> 00:16:51,329
+and that's where, we'll will finish up
+this lecture. this is an amazingly
+
+157
+00:16:51,523 --> 00:16:56,742
+elegant, and efficient, and ingenious
+algorithm, and it's based on the theory of
+
+158
+00:16:56,742 --> 00:17:02,220
+computation that has been studied since
+the 1930's and it's the basis for much of
+
+159
+00:17:02,220 --> 00:17:06,924
+the programming, programming languages
+that we do. it's really worth
+
+160
+00:17:06,924 --> 00:17:12,595
+understanding this theory and Grep is a
+wonderful example of why it's important to
+
+161
+00:17:12,595 --> 00:17:18,698
+understand theory like this. it really it
+takes us to the next level of algorithms
+
+162
+00:17:18,698 --> 00:17:25,636
+and that's writing programs that translate
+a program to machine code. actually, what
+
+163
+00:17:25,636 --> 00:17:32,650
+we've looked at, both for KMP and for Grep
+are examples of compiler, they're simple
+
+164
+00:17:32,650 --> 00:17:39,216
+examples of compiler. for KMP, we took a
+string and we built a DFA. For Grep, we
+
+165
+00:17:39,216 --> 00:17:46,110
+took an RE and we built an NFA. and all
+Java C does is take Java language code and
+
+166
+00:17:46,110 --> 00:17:52,624
+translate it to a byte code. Now, it uses
+more complicated theorems and laws from
+
+167
+00:17:52,624 --> 00:17:59,238
+theory of computation to get the job done,
+because a java program is also not
+
+168
+00:17:59,238 --> 00:18:05,820
+regular. But, it really is worthwhile
+thinking about the progression from KMP to
+
+169
+00:18:06,080 --> 00:18:12,402
+a Java compiler. Whereas in Java compiler,
+you have a program, now, you want to
+
+170
+00:18:12,402 --> 00:18:19,678
+compile of and know if it's legal you want
+to get byte code and then you've got a
+
+171
+00:18:19,678 --> 00:18:25,910
+java simulator, and that's not so
+substantially different from what we just
+
+172
+00:18:25,910 --> 00:18:32,714
+did for Grep in a stage along the way.
+that's quite interesting to see this kind
+
+173
+00:18:32,714 --> 00:18:38,823
+of context to get us such a practically
+useful and important algorithm. so the
+
+174
+00:18:38,823 --> 00:18:45,302
+summary is we did some from the standpoint
+of the program, we implemented substring
+
+175
+00:18:45,302 --> 00:18:50,199
+search by simulating a DFA and we
+implement a regular expression
+
+176
+00:18:50,199 --> 00:18:56,729
+pattern-matching by simulating an NFA.
+from theoretician what's interesting about
+
+177
+00:18:56,729 --> 00:19:02,905
+these abstractions is that NFAs and DFAs
+and RE are equivalent in power. if you can
+
+178
+00:19:02,905 --> 00:19:08,931
+describe a set of strings for one of them,
+you could describe a set of strings with
+
+179
+00:19:08,931 --> 00:19:14,213
+any of them. so that's interesting. And
+also interesting is that there's
+
+180
+00:19:14,213 --> 00:19:20,240
+limitations, there's sets of strings like
+palindromes and so forth, that you can't
+
+181
+00:19:20,484 --> 00:19:27,828
+specify with a DFA or, o r an NFA. but
+from a student in an algorithms class it,
+
+182
+00:19:27,584 --> 00:19:34,030
+it really is you know, worthwhile to see
+that these principles are not just theory.
+
+183
+00:19:34,275 --> 00:19:40,189
+they're a practical use and this is an
+essential paradigm all throughout computer
+
+184
+00:19:40,189 --> 00:19:44,712
+science. you know, we want to find an
+intermediate abstraction that we can
+
+185
+00:19:44,712 --> 00:19:49,770
+understand and make sure we pick the right
+one, and then we pick clients that can use
+
+186
+00:19:49,770 --> 00:19:54,947
+it in a real implementations that can
+implement it. And by building the right
+
+187
+00:19:54,947 --> 00:20:00,113
+intermediate abstraction, we can solve
+some important practical problems. those
+
+188
+00:20:00,113 --> 00:20:03,240
+are the lessons that Grep teaches us.

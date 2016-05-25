@@ -1,0 +1,1044 @@
+1
+00:00:01,070 --> 00:00:06,074
+Welcome back. In this and the next few
+lectures, we're going to look at symbol
+
+2
+00:00:06,074 --> 00:00:11,091
+tables. A fundamental and extremely
+important data type that have led to all
+
+3
+00:00:11,091 --> 00:00:17,050
+kinds of fascinating implementations and
+we're going to see at several of them in
+
+4
+00:00:17,050 --> 00:00:22,027
+this course. To begin, we'll take a look
+at the API and some elementary
+
+5
+00:00:22,027 --> 00:00:27,051
+implementations and various operations
+that people want to perform on Symbol
+
+6
+00:00:27,051 --> 00:00:33,028
+Tables. Start with the API. The idea
+behind symbol tables is to implement the
+
+7
+00:00:33,028 --> 00:00:39,067
+following abstraction. We are going to
+have keys, like our keys in priority
+
+8
+00:00:39,067 --> 00:00:45,089
+queues but, the whole ideas that we are
+going want to associate, values with each
+
+9
+00:00:45,089 --> 00:00:51,001
+key. So two operations that we're going to
+perform in symbol tables is the insert
+
+10
+00:00:51,001 --> 00:00:56,000
+operation where we're really putting a
+value, a key value pair into the symbol
+
+11
+00:00:56,000 --> 00:01:00,099
+table, a value with a specified key, and
+then given a key we want to search for a
+
+12
+00:01:00,099 --> 00:01:06,037
+corresponding value. Those are the two
+basic operations. Now the keys and the
+
+13
+00:01:06,037 --> 00:01:12,089
+values can interchange roles. And that's,
+that's why we, have the abstraction to
+
+14
+00:01:12,089 --> 00:01:19,033
+separate them. So for example, a domain
+name server might have a look up where
+
+15
+00:01:19,056 --> 00:01:26,008
+you've got a table that's got an IP
+address, and a URL associated with that IP
+
+16
+00:01:26,008 --> 00:01:32,060
+address. And different clients might want
+to use this data in different ways. One
+
+17
+00:01:32,060 --> 00:01:38,080
+might want to use the URL as key. Given
+the URL, give us the corresponding IP. The
+
+18
+00:01:38,080 --> 00:01:45,018
+address. Another client, might want to use
+the IP address as key, have an IP address,
+
+19
+00:01:45,040 --> 00:01:51,064
+give me the corresponding client. So those
+are just a couple of examples. This is a
+
+20
+00:01:51,064 --> 00:01:58,042
+very fundamental and basic abstraction. In
+the list of applications is huge, in fact
+
+21
+00:01:58,042 --> 00:02:05,061
+almost any computer application system is
+going to have symbol table or multiple
+
+22
+00:02:05,061 --> 00:02:12,072
+symbol tables at its core, all the way
+down to the basic memory system of the
+
+23
+00:02:12,072 --> 00:02:19,752
+computer or the networking system that
+your computer accessed information depends
+
+24
+00:02:19,752 --> 00:02:26,083
+on. You can think of it intuitively, as,
+like a dictionary. Well, there used to be
+
+25
+00:02:26,083 --> 00:02:31,025
+books, and people would open up those
+books to look for a word, to find the
+
+26
+00:02:31,025 --> 00:02:37,090
+definition. Nowadays, you're more likely,
+to do that online. Or, when you're trying
+
+27
+00:02:37,090 --> 00:02:42,582
+to find a song to download, you provide
+the name of the song. And then a value
+
+28
+00:02:42,582 --> 00:02:48,005
+will tell you what computer to go to, to
+get that or in commercial computing, the
+
+29
+00:02:48,005 --> 00:02:53,186
+key might be an account number, and the
+value might be the transaction details,
+
+30
+00:02:53,186 --> 00:02:58,304
+for that account. Web search is something,
+we all do multiple times every day. And
+
+31
+00:02:58,304 --> 00:03:02,628
+the key is a keyword, or a list of
+keywords. And the value is a list of
+
+32
+00:03:02,628 --> 00:03:08,128
+places where that keyword is found. And
+there's many, many other applications,
+
+33
+00:03:08,128 --> 00:03:15,623
+including scientific applications where
+say in genomics people use simple tables
+
+34
+00:03:15,623 --> 00:03:23,166
+to keep track of finding markers in the
+genome and again many other applications.
+
+35
+00:03:23,166 --> 00:03:29,694
+So, its a very fundamental concept and we
+will look at plenty of applications. But
+
+36
+00:03:29,694 --> 00:03:36,532
+first we want to look at some algorithms
+so the way that it's convenient to set up
+
+37
+00:03:36,532 --> 00:03:42,180
+a symbol table is to implement the
+so-called associative array abstraction.
+
+38
+00:03:42,450 --> 00:03:50,206
+And the idea behind that is to think about
+just associating one value with each key.
+
+39
+00:03:50,459 --> 00:03:57,235
+And well it's like in Java array of
+integers say. We're only, our keys in that
+
+40
+00:03:57,235 --> 00:04:02,930
+case are indices that are restricted
+between, to be between zero and the array
+
+41
+00:04:02,930 --> 00:04:09,954
+size. But we're only associating one value
+with each index. We think of storing the
+
+42
+00:04:09,954 --> 00:04:16,443
+value in the array position given by that
+index. And a good way to think of a symbol
+
+43
+00:04:16,443 --> 00:04:23,091
+table is as shown in the right here. When
+we put a key value pair onto the symbol
+
+44
+00:04:23,091 --> 00:04:28,451
+table. Think of that as using the key to
+index an array, and storing the value
+
+45
+00:04:28,451 --> 00:04:34,461
+there. Now this, isn't legal in Java if
+key is not an int. And, and we're going to
+
+46
+00:04:34,461 --> 00:04:40,389
+do this generic. It can be any type of
+data. But, it's a good way to think about
+
+47
+00:04:40,389 --> 00:04:46,832
+it. And then, to retrieve it, you just
+give that same key, and it'll return the
+
+48
+00:04:46,832 --> 00:04:52,362
+value. So that's our, two primary
+operations. Put a key value pair into the
+
+49
+00:04:52,362 --> 00:04:59,569
+table. So that is associate the value with
+key, and then get the value paired with
+
+50
+00:04:59,569 --> 00:05:07,399
+the key. Now th ere's particular rules for
+Null that I'll talk about in a second. And
+
+51
+00:05:07,399 --> 00:05:15,291
+then to properly maintain the symbol table
+in a dynamic situation in many clients you
+
+52
+00:05:15,291 --> 00:05:23,179
+want to support and delete operation and
+contains is, is simpler operation than
+
+53
+00:05:23,179 --> 00:05:29,220
+depth. It's convenient for many clients
+where it just tells us whether there's
+
+54
+00:05:29,439 --> 00:05:35,018
+some value paired with that key in the
+table isn't in size. And then another
+
+55
+00:05:35,018 --> 00:05:41,092
+thing that you might want to do is iterate
+through all the keys in, in the table. So
+
+56
+00:05:41,092 --> 00:05:46,656
+those are the basic operations that we're
+going to want to implement to get the
+
+57
+00:05:46,656 --> 00:05:52,740
+associative array abstraction. And then
+there's many, many possibilities for
+
+58
+00:05:52,740 --> 00:05:59,148
+clients and we'll look at some later on.
+Now there is a couple of conventions
+
+59
+00:05:59,148 --> 00:06:06,101
+around null. And these are not critical,
+but they make it bit more convenient for
+
+60
+00:06:06,101 --> 00:06:11,689
+several implementations. So we are not
+going to allow null values, we cannot
+
+61
+00:06:11,689 --> 00:06:18,836
+associate null with any key. And then we
+are going to adopt the convention that the
+
+62
+00:06:18,836 --> 00:06:25,407
+get method returns null, if the key is not
+present in the table. And also the
+
+63
+00:06:25,407 --> 00:06:31,890
+associative array abstraction is the put
+method, well, overwrite an old value with
+
+64
+00:06:31,890 --> 00:06:37,022
+a new value. So these are our
+consequences. So, it's, the contains
+
+65
+00:06:37,022 --> 00:06:43,032
+implementation is the same for all our,
+symbol typal implementations. If get
+
+66
+00:06:43,032 --> 00:06:49,051
+returns, a non null value, then there's a
+value corresponding to that key in the
+
+67
+00:06:49,051 --> 00:06:56,295
+table if it returns null. It's not get
+returns null keys not present. And the
+
+68
+00:06:56,295 --> 00:07:02,021
+other thing that we could do is we can use
+null in some situations or temporary
+
+69
+00:07:02,021 --> 00:07:09,052
+situations to implement a lazy version of
+the delete operation. We can associate the
+
+70
+00:07:09,052 --> 00:07:15,480
+key with null internally and then a client
+won't know the difference whether that's
+
+71
+00:07:15,480 --> 00:07:21,179
+in there or not. And some algorithms take
+advantage of the ability to use null in
+
+72
+00:07:21,179 --> 00:07:27,030
+this way. These are just conventions and
+somewhat details but it's important to
+
+73
+00:07:27,030 --> 00:07:32,764
+point them out at front. So now, we're
+going to want the value to be any generic
+
+74
+00:07:32,764 --> 00:07:37,817
+type at all, but the key type we have to
+make some natural assumptions about them.
+
+75
+00:07:37,817 --> 00:07:42,957
+And actually there's different assumptions
+that we make in our implementations
+
+76
+00:07:42,957 --> 00:07:47,766
+depending on the application. Though one
+of the most useful ones is to have
+
+77
+00:07:47,766 --> 00:07:53,277
+comparable keys. Just as in sorting
+algorithms we'll assume that the keys have
+
+78
+00:07:53,471 --> 00:07:58,806
+values that have come from a total order.
+And we can use compare to, to compare
+
+79
+00:07:58,806 --> 00:08:04,542
+whether one key is less than, than other
+or not. This is for two reasons. One is we
+
+80
+00:08:04,542 --> 00:08:10,623
+can get more efficient app implementations
+if we can use the ordering of the keys to
+
+81
+00:08:10,623 --> 00:08:16,191
+help us find our way around the data
+structure. And the other reason is that we
+
+82
+00:08:16,191 --> 00:08:22,021
+can support a broader set of simple table
+operations that are very convenient for
+
+83
+00:08:22,021 --> 00:08:28,044
+many clients. And it's very typical for
+keys to come from an ordered set. Now, for
+
+84
+00:08:28,044 --> 00:08:33,660
+example in the dictionary application or
+if keys are stings or numbers. Or account
+
+85
+00:08:33,660 --> 00:08:39,539
+numbers or many other situations. So if
+they're going to be comparable we might as
+
+86
+00:08:39,539 --> 00:08:45,419
+well take advantage of it. Both to get
+more efficient algorithms and to be able
+
+87
+00:08:45,419 --> 00:08:51,165
+to take advantage of a broader set of
+operations. Now in other situations, maybe
+
+88
+00:08:51,165 --> 00:08:55,930
+they're not comparable. And all we're
+allowed to use is to, use the equals
+
+89
+00:08:55,930 --> 00:09:01,608
+operation. That is everything every type
+of data in Java has to support and equals
+
+90
+00:09:01,608 --> 00:09:07,581
+operation that reads out to test whether
+they're equal. And there's another family
+
+91
+00:09:07,581 --> 00:09:15,694
+of methods where there's no ordering. Then
+there is a special method called hash code
+
+92
+00:09:15,974 --> 00:09:23,219
+that helps us [cough] inject randomness
+into the process and that's built into
+
+93
+00:09:23,219 --> 00:09:28,484
+Java and also some classic algorithms
+depend on that. We're going to start out
+
+94
+00:09:28,484 --> 00:09:34,855
+with the comparable mostly. And again, as
+with priority queues, the best practice is
+
+95
+00:09:34,855 --> 00:09:41,073
+to use immutable types, and experienced
+programmers know this and it's not
+
+96
+00:09:41,073 --> 00:09:48,059
+difficult to arrange for the natural types
+of data that people are going to use for
+
+97
+00:09:48,059 --> 00:09:54,097
+simple table keys. Unreasonable to expect
+the implementation to work well if the
+
+98
+00:09:54,097 --> 00:10:01,051
+client can change the values of keys that
+are in the table. If you want that, you
+
+99
+00:10:01,051 --> 00:10:07,007
+have to provide that as a specific
+operation. In the case of symbol tables ,
+
+100
+00:10:07,007 --> 00:10:12,015
+we are not going to do that. You have to
+remove it and put it back in. Alright, so
+
+101
+00:10:12,015 --> 00:10:18,781
+there's equalities. Now, equality again
+we're getting into programming language
+
+102
+00:10:18,781 --> 00:10:24,998
+issue but it's still it's important to be
+explicit about what's going on with,
+
+103
+00:10:24,998 --> 00:10:30,705
+equality. How do we test if two objects
+are equal? So, the job has got
+
+104
+00:10:30,705 --> 00:10:39,653
+requirements as for compared to in, here's
+the basic requirements about equals. There
+
+105
+00:10:39,653 --> 00:10:47,378
+is a method that all Java for equals, but
+the default implementation is simply to
+
+106
+00:10:47,378 --> 00:10:54,776
+test whether the references are equal. Are
+those precisely the same objects or not.
+
+107
+00:10:54,776 --> 00:11:00,734
+Usually in applications when we want to
+have something more general than that and
+
+108
+00:11:00,734 --> 00:11:05,861
+have a concept of a value or like a key in
+our case. And then we want to know if two
+
+109
+00:11:05,861 --> 00:11:11,272
+references refer to objects that have the
+same value and we want to call that equal,
+
+110
+00:11:11,272 --> 00:11:16,704
+that's what equals is about. So anyway
+we're required to make sure that X is
+
+111
+00:11:16,704 --> 00:11:23,128
+always equal to X and that, X = Y is the
+same Y = X, and if X = Y, Y = Z, then X =
+
+112
+00:11:23,128 --> 00:11:29,031
+Z. So that means that mathematical terms
+equals is called an equivalence relation.
+
+113
+00:11:29,344 --> 00:11:38,105
+And also no, no object is equal to null.
+So those are absolute requirements for
+
+114
+00:11:38,105 --> 00:11:44,809
+Java. And again, the default
+implementation is to check whether they
+
+115
+00:11:44,809 --> 00:11:49,719
+refer to the same object. And that's
+rarely what we want. Java systems programs
+
+116
+00:11:49,719 --> 00:11:55,429
+maybe want that. But client programs
+usually have customized implementations
+
+117
+00:11:55,429 --> 00:12:01,588
+that are based on comparing some sort of
+value and the standard built-in types of
+
+118
+00:12:01,588 --> 00:12:06,707
+the Java language are going to have those
+customized implementations and we can rely
+
+119
+00:12:06,707 --> 00:12:12,045
+on them doing what we expect. If we're
+going to implement our own types and then
+
+120
+00:12:12,045 --> 00:12:18,067
+use those types as keys and symbol tables
+you have to exercise a little bit of care
+
+121
+00:12:18,067 --> 00:12:24,450
+and we'll talk about that briefly. Say we
+have this simplified date implementation
+
+122
+00:12:24,450 --> 00:12:31,144
+we talked about before it's a mutable type
+and every day it's got a month a day in a
+
+123
+00:12:31,144 --> 00:12:36,994
+year. It seems like it should be easy to
+implement equals basically, we're just
+
+124
+00:12:36,994 --> 00:12:43,116
+going to check that all the significant
+fields are the same. Two dates should be
+
+125
+00:12:43,116 --> 00:12:49,055
+equal if they have the same day, month,
+and year. And if any one of those are not
+
+126
+00:12:49,055 --> 00:12:55,518
+the same value, then just return false. So
+that seems as if it should work. But that
+
+127
+00:12:55,518 --> 00:13:02,403
+doesn't have all the characteristics that
+we need in a job implementation. And so
+
+128
+00:13:02,403 --> 00:13:08,494
+all of this code in red shows a model for
+what you might do if you're going to
+
+129
+00:13:08,494 --> 00:13:15,475
+implement your own type of data equals for
+your own type of data. So we shouldn't use
+
+130
+00:13:15,475 --> 00:13:22,546
+it in connection with inheritance so we
+don't use inheritance that much so I won't
+
+131
+00:13:22,546 --> 00:13:28,803
+talk about that The type of the argument
+in the equals must be object, do you think
+
+132
+00:13:28,803 --> 00:13:34,783
+it should be date? And experts debate
+about that, and people who are interested
+
+133
+00:13:34,783 --> 00:13:40,778
+can look on the web for that kind of date.
+If it is the case that you happen to be
+
+134
+00:13:40,989 --> 00:13:45,970
+testing two objects that are the same
+object for equality, you might as well,
+
+135
+00:13:45,970 --> 00:13:51,959
+optimize everything and just test that. If
+Y is a reference that's pointing to the
+
+136
+00:13:51,959 --> 00:13:57,485
+same object as this object just returned
+true because, if you're going to test the
+
+137
+00:13:57,485 --> 00:14:01,532
+values they're going to have the same
+values anyway. And that's a good
+
+138
+00:14:01,532 --> 00:14:06,775
+optimization for lots of, situations. Why
+go through all that risk to that code if
+
+139
+00:14:06,775 --> 00:14:12,646
+you know right away they're, equal.
+There's this test for null, that has to be
+
+140
+00:14:12,646 --> 00:14:18,065
+there. And if not there can lead to
+nefarious plugs and, and, unusual
+
+141
+00:14:18,065 --> 00:14:23,278
+problems. So on your equals test you'd
+better, test that, the client didn't give
+
+142
+00:14:23,278 --> 00:14:28,274
+you null. They have to be in the same
+class. And while there's a couple of
+
+143
+00:14:28,274 --> 00:14:33,964
+different ways to check about the same
+class, and that's another religious
+
+144
+00:14:33,964 --> 00:14:40,725
+debate. That we'll ignore. We'll use, get
+class and that's something that's got to
+
+145
+00:14:40,725 --> 00:14:45,749
+work or they'll get, they'll get an
+exception in this later code. Because
+
+146
+00:14:45,749 --> 00:14:51,491
+since Y had to be an object, now we have
+to, cast it to a date. And then it better
+
+147
+00:14:51,491 --> 00:14:57,553
+be the right class, or else it's not going
+to have these fields, that, we can test
+
+148
+00:14:57,553 --> 00:15:04,078
+for. So, details but anyway, you can use
+this code as a model to implement equals
+
+149
+00:15:04,078 --> 00:15:10,741
+for any data type that you might wind up
+using as a simple table key. Okay so
+
+150
+00:15:10,741 --> 00:15:17,227
+that's a standard this is just in words
+the standard recipe for user find, type
+
+151
+00:15:17,227 --> 00:15:23,215
+optimize for reference equality, check
+against null. Make sure they're the same
+
+152
+00:15:23,215 --> 00:15:28,893
+type and do the casting, and then compare
+all the similar, significant fields. It
+
+153
+00:15:28,893 --> 00:15:34,895
+could be that if one of the fields is an
+object, then you use that object's equals,
+
+154
+00:15:34,895 --> 00:15:40,849
+which reapplies the world the rule
+recursively. And then if you ever feel
+
+155
+00:15:40,849 --> 00:15:46,851
+that it's an array you can go ahead and
+try applying it to each entry. And there's
+
+156
+00:15:46,851 --> 00:15:53,664
+implementations in Java. You don't want to
+use A, A. = B. That checks if those arrays
+
+157
+00:15:53,664 --> 00:15:59,006
+are the same objects. And that's not what
+you want you want to check that all the
+
+158
+00:15:59,006 --> 00:16:04,027
+values are the same. And if it's array of
+objects you can see that testing for
+
+159
+00:16:04,027 --> 00:16:10,037
+equals can actually involve a lot a code
+and a lot a cost. Alright so and certainly
+
+160
+00:16:10,037 --> 00:16:15,597
+you want to follow some of these best
+practices. So fields that are most likely
+
+161
+00:16:15,597 --> 00:16:21,427
+to differ. Those are the ones you might
+want to compare first. And your also going
+
+162
+00:16:21,427 --> 00:16:27,100
+to want to make compare to consistent with
+equals. The rule generally if we're have a
+
+163
+00:16:27,100 --> 00:16:32,693
+comparable types we'll use to compare to.
+If we don't have a comparable types then
+
+164
+00:16:32,920 --> 00:16:40,103
+we'll use equals. Okay, so now let's look
+at a couple of test clients before we look
+
+165
+00:16:40,103 --> 00:16:48,934
+at any particular implementation. So this
+is a test client so symbol tables are ST
+
+166
+00:16:48,934 --> 00:16:57,122
+is the type, symbol table, they're generic
+on key and value. And so this, this
+
+167
+00:16:57,122 --> 00:17:05,171
+statement builds a new symbol table with
+string keys and integer values that's
+
+168
+00:17:05,171 --> 00:17:11,571
+going to associate integers with strings.
+And so what the test client is going do is
+
+169
+00:17:11,571 --> 00:17:17,527
+going to a just go in a loop as long as
+standard n is not empty, and it's going to
+
+170
+00:17:17,527 --> 00:17:23,380
+read strings, read a string off standard
+input, and then put it in the symbol table
+
+171
+00:17:23,380 --> 00:17:29,470
+associated with the value I where did it
+appear in the value input. So this is an
+
+172
+00:17:29,470 --> 00:17:36,234
+index same client where we associate each
+string with its position most recent
+
+173
+00:17:36,234 --> 00:17:43,052
+position in the input. And, notice it's an
+associative array implementation so for
+
+174
+00:17:43,052 --> 00:17:49,261
+example, we have two Es and at the end E
+is a associated value twelve. The place
+
+175
+00:17:49,261 --> 00:17:56,191
+where it most recently appeared. We could
+also keep these things in a bag and do a
+
+176
+00:17:56,191 --> 00:18:03,596
+client that does all the positions that
+appeared. This is a simple indexing client
+
+177
+00:18:03,918 --> 00:18:11,622
+that we use for our traces. [cough] For
+analysis for bigger problems we'll use a
+
+178
+00:18:11,622 --> 00:18:17,236
+client called the frequency counter
+client. And so that one is going to read a
+
+179
+00:18:17,236 --> 00:18:23,303
+sequence of strings from standard input
+and print out the one that occurs with
+
+180
+00:18:23,303 --> 00:18:30,863
+highest frequency. So, so for this small
+data from the beginning of Dickens' Tale
+
+181
+00:18:30,863 --> 00:18:37,727
+of two Cities if we run a frequency
+count-, or the frequency counter client.
+
+182
+00:18:37,727 --> 00:18:44,411
+And this first argument is just ignore
+words of fewer than this many letters.
+
+183
+00:18:44,651 --> 00:18:51,221
+It'll say that the most frequent word
+where there's no word that appears more
+
+184
+00:18:51,221 --> 00:18:57,771
+frequently than it which appears ten
+times. And we'll want this client to work
+
+185
+00:18:57,771 --> 00:19:04,547
+well for huge data sets so Liepzeig is a,
+a data set from the web of about twenty
+
+186
+00:19:04,547 --> 00:19:11,293
+million words. About half a million
+distinct ones and in that Corpus, the word
+
+187
+00:19:11,293 --> 00:19:20,250
+government appears about 25,000 times. So,
+if you have a quadratic time algorithm for
+
+188
+00:19:20,250 --> 00:19:26,025
+implementing simple tables or linear time
+for each operation. You're not going to be
+
+189
+00:19:26,025 --> 00:19:31,330
+able to run this client in a reasonable
+amount of time for a big amount of data.
+
+190
+00:19:31,330 --> 00:19:37,449
+So that's the client that we're going to
+use for analysis. Here's the code for that
+
+191
+00:19:37,449 --> 00:19:42,555
+frequency counter client. Again, it's
+similar to the other one, we're creating a
+
+192
+00:19:42,555 --> 00:19:47,773
+simple table that associates strings with
+integers. We take that command line
+
+193
+00:19:47,773 --> 00:19:53,451
+argument which is the minimum length that
+we care about. We will read a new word.
+
+194
+00:19:53,451 --> 00:19:59,015
+We'll ignore the short strings. Just trap
+out if the word length is too small. And
+
+195
+00:19:59,015 --> 00:20:04,783
+now the integer we are going to associate
+with each word is the frequency of
+
+196
+00:20:04,783 --> 00:20:10,507
+occurrence of that word in a symbol table.
+So if word is not in the symbol table,
+
+197
+00:20:10,507 --> 00:20:16,072
+we'll put it there with a frequency of
+occurrence of one. That's the first time
+
+198
+00:20:16,072 --> 00:20:21,469
+we saw the word. If it is in the symbol
+table, we will just over write. The old
+
+199
+00:20:21,469 --> 00:20:27,146
+value, which is ST get word, with the new
+value, ST ge t word plus one. So increment
+
+200
+00:20:27,146 --> 00:20:32,532
+the frequency in the symbol table. So
+that's, read, this loop reads in all the
+
+201
+00:20:32,532 --> 00:20:38,118
+data and associates each word with its
+frequency of occurrence. And then we'll
+
+202
+00:20:38,118 --> 00:20:44,055
+have a client that uses the iterator,
+going through all the keys in the symbol
+
+203
+00:20:44,055 --> 00:20:50,271
+table. It'll get the value associated with
+each key. And if that's bigger than the
+
+204
+00:20:50,271 --> 00:20:55,859
+maximum found so far, we'll save that
+away. And then print out the, the word
+
+205
+00:20:55,859 --> 00:21:02,675
+that occurs the, the most often along with
+its frequency. So this is a useful and non
+
+206
+00:21:02,675 --> 00:21:08,744
+trivial client that's enable by symbol
+table. And, but it won't work well unless
+
+207
+00:21:08,744 --> 00:21:14,140
+we have an efficient symbol table
+operation. And we'll use this client to
+
+208
+00:21:14,375 --> 00:21:19,433
+compare different symbol table
+implementations. So that's the symbol
+
+209
+00:21:19,433 --> 00:21:23,046
+table API. And next, we'll take a look at
+implementations.

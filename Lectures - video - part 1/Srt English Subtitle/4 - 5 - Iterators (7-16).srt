@@ -1,0 +1,339 @@
+1
+00:00:01,010 --> 00:00:06,509
+Okay. There's another facility that Java
+provides that leads to very elegant
+
+2
+00:00:06,509 --> 00:00:11,759
+compact client code that's definitely
+worthwhile to add to our basic data types
+
+3
+00:00:11,759 --> 00:00:17,058
+and that's iteration, that's what we're
+going to talk about now. So, what we want
+
+4
+00:00:17,058 --> 00:00:23,176
+to do is to allow the client to iterate
+through the items in the collection. But
+
+5
+00:00:23,364 --> 00:00:28,286
+we don't have the client to know whether
+we're using an array or link list or
+
+6
+00:00:28,286 --> 00:00:34,620
+whatever internal representation we might
+have in mind. It's not relevant to the
+
+7
+00:00:34,620 --> 00:00:41,189
+client. And a lot of clients only want to
+do is just iterate through the stuff in
+
+8
+00:00:41,189 --> 00:00:47,304
+the collection. But Java does provide a nice
+a solution to this called iteration. So
+
+9
+00:00:47,304 --> 00:00:53,523
+what we're going to do is look at how to
+make our stack, and queue, and other data
+
+10
+00:00:53,523 --> 00:00:58,914
+structures that we consider later on
+implement the so-called Iterable interface
+
+11
+00:00:59,108 --> 00:01:05,662
+and it will work for client code no matter
+which implementation we used so let's take
+
+12
+00:01:05,662 --> 00:01:13,497
+a look at the details of that. So what's
+an Iterable? Well, in Java lingo what an
+
+13
+00:01:13,497 --> 00:01:20,914
+Iterable is, it's, it's a class that has a
+method that returns an iterator. And so
+
+14
+00:01:21,182 --> 00:01:29,271
+what's an Iterator? Well an Iterator is
+something, a class that has methods hasNext()
+
+15
+00:01:29,271 --> 00:01:37,519
+and next(). The Java also allows remove().
+We think that one is bad news, we don't
+
+16
+00:01:37,519 --> 00:01:45,861
+use it can lead to insidious debug, bug
+debugging problems. So, it's hasNext() and
+
+17
+00:01:45,861 --> 00:01:52,828
+next() and so to make the data structure
+iterable, we're going to implement those
+
+18
+00:01:52,828 --> 00:01:58,837
+things. It seems like a lot of baggage to
+carry around and the reason that we do it,
+
+19
+00:01:58,837 --> 00:02:04,768
+why do we go to the trouble doing it is
+that we can, if we have a data structure
+
+20
+00:02:04,768 --> 00:02:10,795
+that's iterable we can use a very compact
+and elegant client code in Java, the so
+
+21
+00:02:10,795 --> 00:02:16,185
+called for-each statement. So if we have a
+stack we can say - (for String s : stack).
+
+22
+00:02:16,185 --> 00:02:22,587
+It means for each string in the
+stack - print it out. And if we didn't have
+
+23
+00:02:22,587 --> 00:02:29,442
+that we would now, if we're using
+iterators, we could go ahead and write
+
+24
+00:02:29,442 --> 00:02:35,550
+this longhand code but nobody would ever
+do that cuz it's equivalent to the
+
+25
+00:02:35,550 --> 00:02:42,710
+shorthand or we might have to write client
+code that does a lot of unnecessary pushes
+
+26
+00:02:42,710 --> 00:02:48,386
+and pops just to do this iteration. So
+that's the key is to be able to have
+
+27
+00:02:48,386 --> 00:02:53,928
+client code that is so compact for
+iterating through items in the data
+
+28
+00:02:53,928 --> 00:02:59,370
+structure so we're going to provide
+iteration for all our basic data
+
+29
+00:02:59,370 --> 00:03:05,712
+structures and it's not too hard to do
+definitely worthwhile the effort. So
+
+30
+00:03:05,712 --> 00:03:12,877
+here's what it looks like for link list.
+So it's got to implement Iterable so what
+
+31
+00:03:12,877 --> 00:03:19,470
+does that mean implement Iterable? It's
+got to have a, a method iterator() that
+
+32
+00:03:19,470 --> 00:03:25,017
+returns an iterator. So what's an
+iterator? So, we're going to use an
+
+33
+00:03:25,017 --> 00:03:30,926
+inner class. In this case, we'll call it
+ListIterator that implements Iterator and
+
+34
+00:03:30,926 --> 00:03:36,498
+it's generic. And basically what this
+thing has to do is implement these methods
+
+35
+00:03:36,498 --> 00:03:42,158
+hasNext() and next(). And the semantics just
+clear from the names. hasNext() is supposed to
+
+36
+00:03:42,365 --> 00:03:47,917
+if, if we're done is supposed to return
+false. If we're not done we're supposed to
+
+37
+00:03:47,917 --> 00:03:53,462
+return true and the next() is supposed to
+give the next item in the iteration. So if
+
+38
+00:03:53,462 --> 00:03:58,973
+the thing is a linked list we're going to
+start out at first. We have that's the,
+
+39
+00:03:58,973 --> 00:04:04,896
+our first item in the list and we're going
+to maintain an instance variable current
+
+40
+00:04:04,896 --> 00:04:10,461
+inside this iterator which is the current
+thing that we're iterating. So, get the
+
+41
+00:04:10,461 --> 00:04:15,439
+next one just like if we want to remove
+the first. We pull out the current item
+
+42
+00:04:15,439 --> 00:04:21,073
+and then advance the current reference and
+return item. Moving current to the next
+
+43
+00:04:21,073 --> 00:04:27,483
+place. The client is always going to be
+testing hasNext() as I showed as I showed
+
+44
+00:04:27,483 --> 00:04:35,069
+and that stub code before and so when it
+gets to null it will return false in the
+
+45
+00:04:35,069 --> 00:04:41,084
+iterational stop. But for our iteration,
+we just have to worry about implementing
+
+46
+00:04:41,084 --> 00:04:47,952
+next() and hasNext() and perhaps using a local
+instance variable to get it done. We have
+
+47
+00:04:47,952 --> 00:04:54,457
+to probably to make bullet proof code -
+throw exceptions if a client tries to
+
+48
+00:04:54,457 --> 00:05:01,339
+call next() with no items there and tries
+to call remove() at all, we're not going
+
+49
+00:05:01,339 --> 00:05:07,326
+to support remove(). For, and for array,
+it's even simpler. So now with the iterator we
+
+50
+00:05:07,326 --> 00:05:13,041
+have control over which order we go
+through the items and so that's going to
+
+51
+00:05:13,041 --> 00:05:18,834
+go along with the semantics and the data
+structure so probably in a stack you want
+
+52
+00:05:18,834 --> 00:05:24,504
+to get the things in stack order like the
+order that come out of the stack so that's
+
+53
+00:05:24,504 --> 00:05:31,686
+reverse order in the array so in this case
+then next() is just decrement and return the
+
+54
+00:05:31,686 --> 00:05:37,522
+next one and our instance variable is an
+index in the array. And then hasNext() is
+
+55
+00:05:37,522 --> 00:05:48,052
+okay as long as that thing is positive. So
+a little Java [cough] code to provide this
+
+56
+00:05:48,052 --> 00:05:55,229
+iteration facility but actually within
+this framework not too much to do and you
+
+57
+00:05:55,229 --> 00:06:02,108
+can see how to implement this for your own
+data type and we'll use this paradigm for
+
+58
+00:06:02,108 --> 00:06:07,873
+every basic data type that we, that
+involves collections of objects that we'll
+
+59
+00:06:07,873 --> 00:06:14,633
+encounter. Alright, and in fact, it leads us
+to actually for a lot of clients it
+
+60
+00:06:14,633 --> 00:06:20,905
+doesn't really matter what order we get
+the items. Really often what we're doing
+
+61
+00:06:20,905 --> 00:06:27,275
+is just inserting items into a collection
+and then, later on, iterating through the
+
+62
+00:06:27,275 --> 00:06:34,410
+items that we have. That data structure is
+called a bag and so let's look at what
+
+63
+00:06:34,410 --> 00:06:40,680
+that API looks like. Order doesn't
+matter so all we want to do is add an item
+
+64
+00:06:40,913 --> 00:06:47,303
+maybe you want to know the size and we
+want to iterate through all the items in
+
+65
+00:06:47,303 --> 00:06:53,986
+the bag. So this is a simpler, narrower
+API but still it expresses an important
+
+66
+00:06:53,986 --> 00:07:00,370
+little collection of operations and, and
+we'll use this one and we've already seen
+
+67
+00:07:00,370 --> 00:07:06,512
+the implementations. You just take stack
+and remove the pop, or queue and remove the
+
+68
+00:07:09,792 --> 00:07:13,072
+dequeue [cough] and you have fine
+implementation of a useful data structure.

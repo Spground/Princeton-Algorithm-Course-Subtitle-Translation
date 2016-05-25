@@ -1,0 +1,1908 @@
+1
+00:00:03,320 --> 00:00:09,067
+Next we'll look at another classic
+algorithm for computing the MST called
+
+2
+00:00:09,067 --> 00:00:13,960
+Prim's algorithm.
+It's also an extremely simple algorithm to
+
+3
+00:00:14,193 --> 00:00:20,294
+state. What we're going to do now is start
+with vertex zero and we're going to grow
+
+4
+00:00:20,294 --> 00:00:24,238
+the tree one edge at a time, always
+keeping it connected.
+
+5
+00:00:24,238 --> 00:00:30,296
+The way we're going to do that is add to
+the tree the minimum weight edge that has
+
+6
+00:00:30,296 --> 00:00:36,001
+exactly one endpoint in the tree computed
+so far, and we'll keep doing that until
+
+7
+00:00:36,001 --> 00:00:39,100
+we've grown the whole v-minus one edge
+tree.
+
+8
+00:00:39,311 --> 00:00:42,340
+Let's look at a demo to see how that
+works.
+
+9
+00:00:42,544 --> 00:00:47,376
+So we start with vertex zero.
+And we're supposed to add them in minimum
+
+10
+00:00:47,376 --> 00:00:52,296
+edge that's connected to zero.
+So that's zero, seven Out of all the edges
+
+11
+00:00:52,296 --> 00:00:55,980
+connected to zero, that's the one of
+minimum weight.
+
+12
+00:00:55,980 --> 00:00:59,520
+So now we have one edge, two vertices on
+the tree.
+
+13
+00:00:59,520 --> 00:01:04,720
+And so now we want to add the min weight
+edge that connects to the tree.
+
+14
+00:01:04,720 --> 00:01:10,498
+In this case, that's seven, one out of all
+the edges that connect to the tree, one,
+
+15
+00:01:10,498 --> 00:01:14,544
+seven is the shortest one, so that's the
+one that we add.
+
+16
+00:01:14,544 --> 00:01:20,106
+So now we have two edges on the tree.
+Continuing now, the min weight edge that
+
+17
+00:01:20,106 --> 00:01:24,040
+connects to the tree is zero, two so, we
+add that one.
+
+18
+00:01:24,252 --> 00:01:27,987
+So, now we have three edges, four vertices
+on the tree.
+
+19
+00:01:27,987 --> 00:01:33,837
+The closest edge, the closest vertex to
+the tree or the smallest edge coming out
+
+20
+00:01:33,837 --> 00:01:37,150
+of the tree is two, three so we add that
+one.
+
+21
+00:01:37,375 --> 00:01:43,752
+So now we have three more vertices to go,
+and you can see that the next one that's
+
+22
+00:01:43,752 --> 00:01:48,517
+going to come is five.
+That's closer, to the three than four or
+
+23
+00:01:48,517 --> 00:01:52,229
+six.
+So we do that, add five, now there's two
+
+24
+00:01:52,229 --> 00:01:58,255
+more and so, out of all those edges, the
+closest one to the tree is 45.
+
+25
+00:01:58,487 --> 00:02:01,580
+It's a little shorter than four, seven and
+zero, four.
+
+26
+00:02:01,588 --> 00:02:08,408
+So that's the one that gets added and then
+finally six gets added to the tree by the
+
+27
+00:02:08,408 --> 00:02:12,516
+surest edge that connects it to the tree,
+which is six, two.
+
+28
+00:02:12,516 --> 00:02:19,182
+So start with vertex zero, add an edge at
+a time to the tree, it's the shortest edge
+
+29
+00:02:19,182 --> 00:02:25,150
+that goes from, a tree vertex to a
+non-tree vertex, that's Prim's algorithm.
+
+30
+00:02:25,150 --> 00:02:32,545
+Now let's look at Prim's algorithm running
+on, on the same huge graph that we ran for
+
+31
+00:02:32,965 --> 00:02:36,747
+Kruskal's.
+This is also a fascinating dynamic
+
+32
+00:02:36,747 --> 00:02:42,153
+process.
+Usually, the new edge, is, close to, the
+
+33
+00:02:42,153 --> 00:02:46,963
+last edge added.
+But every once in a while, it gets stuck.
+
+34
+00:02:46,963 --> 00:02:51,945
+And so, jumps to a new place, to add
+edges, to the MST.
+
+35
+00:02:51,945 --> 00:02:55,982
+This algorithm's a little bit easier to
+follow.
+
+36
+00:02:56,240 --> 00:03:00,020
+But it's a very interesting dynamic
+process.
+
+37
+00:03:02,940 --> 00:03:07,621
+You can see that it, when it's easy, it
+just sticks where it was.
+
+38
+00:03:07,621 --> 00:03:13,343
+And when it runs into some long edges, it
+gets stuck and tries somewhere else.
+
+39
+00:03:13,343 --> 00:03:19,362
+Always adding to the tree, the shortest
+edge that connects a non-tree vertex to a
+
+40
+00:03:19,362 --> 00:03:23,374
+tree vertex.
+And you can see the last few things to be
+
+41
+00:03:23,374 --> 00:03:27,090
+added where the vertices in the upper left
+corner.
+
+42
+00:03:27,090 --> 00:03:29,730
+So that's a visualization of Prinz
+algorithm.
+
+43
+00:03:29,730 --> 00:03:34,131
+Completely different character, but comes
+out to the same tree as Kruskal's
+
+44
+00:03:34,131 --> 00:03:37,300
+algorithm as long as the edge weights are
+distinct.
+
+45
+00:03:37,544 --> 00:03:45,541
+So we need to prove Prim's algorithm
+correct and this one has been rediscovered
+
+46
+00:03:45,541 --> 00:03:52,477
+a, a few times depending on how you cast
+the data structure for implementing
+
+47
+00:03:52,477 --> 00:03:57,536
+finding the minimum.
+But the basic algorithm has been known
+
+48
+00:03:57,536 --> 00:04:04,961
+since at least 1930 and it's proof that it
+computes the MST again comes because it's
+
+49
+00:04:04,961 --> 00:04:08,470
+a special case of the greedy MST
+algorithm.
+
+50
+00:04:08,470 --> 00:04:16,007
+So the, let's suppose that E is the
+min-win weight edge connecting the vertex
+
+51
+00:04:16,007 --> 00:04:22,331
+on the tree to a vertex not on the tree.
+Well, you just, you take, as your cut, the
+
+52
+00:04:22,331 --> 00:04:26,679
+tree vertices.
+There's no black crossing edge from the
+
+53
+00:04:26,679 --> 00:04:31,579
+tree vertices to non tree vertex.
+That's a definition that's not on the
+
+54
+00:04:31,579 --> 00:04:35,237
+tree.
+And there's no crossing edge of low
+
+55
+00:04:35,237 --> 00:04:39,309
+weight, cuz that's the minimum one.
+That we picked by design.
+
+56
+00:04:39,309 --> 00:04:44,830
+So it's a special case of the Greedy
+algorithm where you take, as the cut, the
+
+57
+00:04:45,037 --> 00:04:49,335
+set of vertices currently on the tree.
+That's Prim's algorithm.
+
+58
+00:04:49,335 --> 00:04:53,105
+Now how are we going to implement Prim's
+algorithm?
+
+59
+00:04:53,105 --> 00:04:58,550
+How are we going to find the minimum
+weight edge with exactly one point and T?
+
+60
+00:04:58,550 --> 00:05:02,978
+Well, one thing that we could do is just
+try all the edges.
+
+61
+00:05:03,207 --> 00:05:07,712
+And, maybe some early implementations that
+would do that.
+
+62
+00:05:07,941 --> 00:05:13,210
+But what we're going to do is use a modern
+data structure of priority q.
+
+63
+00:05:13,210 --> 00:05:16,776
+So we're going to keep the, edges, on a
+priority queue.
+
+64
+00:05:16,776 --> 00:05:22,125
+But, have exactly one end point in T.
+And then we can just, pick out the minimum
+
+65
+00:05:22,125 --> 00:05:25,883
+weight one.
+That's a so called, lazy implementation of
+
+66
+00:05:25,883 --> 00:05:29,513
+Prim's algorithm.
+We'll look at another one, called the
+
+67
+00:05:29,513 --> 00:05:34,225
+eager implementation afterwards.
+So, what we need to do is find the minimum
+
+68
+00:05:34,225 --> 00:05:37,410
+weight edge with exactly one endpoint in
+the tree.
+
+69
+00:05:37,410 --> 00:05:43,866
+So, the solution is to make a priority cue
+of the edges that have at least one end
+
+70
+00:05:43,866 --> 00:05:48,747
+point in the tree.
+And then we, using as priority, the key is
+
+71
+00:05:48,747 --> 00:05:52,841
+the edge and the priority is the weight of
+the edge.
+
+72
+00:05:53,077 --> 00:05:59,962
+And so, we're going to. Use delete min to
+find the next edge to add to the tree.
+
+73
+00:06:00,203 --> 00:06:04,390
+And then we have to update the priority
+queue.
+
+74
+00:06:04,390 --> 00:06:10,877
+When we consider that edge, now there's
+going to be some edges on the priority
+
+75
+00:06:10,877 --> 00:06:17,711
+queue that are obsolete, and we've already
+found better ways to connect them, so
+
+76
+00:06:17,711 --> 00:06:25,063
+we'll just disregard an edge that has both
+endpoints in the tree, we've already found
+
+77
+00:06:25,063 --> 00:06:32,070
+a way to connect them and we don't need
+that edge for the minimum spanning frame.
+
+78
+00:06:32,070 --> 00:06:34,891
+That's why it's called a lazy
+implementation.
+
+79
+00:06:34,891 --> 00:06:39,343
+We allow stuff to be on the priority queue
+that we know is obsolete.
+
+80
+00:06:39,531 --> 00:06:44,799
+And then when we pull it off the queue we
+test whether it belongs in the tree or
+
+81
+00:06:44,799 --> 00:06:47,683
+not.
+But then the key step in the algorithm is
+
+82
+00:06:47,683 --> 00:06:53,326
+to assume, is to, what do you do when you
+get a new vertex for the minimum pan in
+
+83
+00:06:53,326 --> 00:06:57,590
+tree and a new edge.
+So that means that one of the vertices is
+
+84
+00:06:57,590 --> 00:07:01,854
+on the tree, let's say that's v and the
+other one is not on the tree.
+
+85
+00:07:01,854 --> 00:07:05,740
+That means W.
+And so what we want to do is add W to the
+
+86
+00:07:05,740 --> 00:07:11,734
+tree but then we also want to add to the
+priority Q, any edge that's incident to W.
+
+87
+00:07:11,734 --> 00:07:17,655
+So that's got the possibility, as long as
+this other end point is not in the tree.
+
+88
+00:07:17,655 --> 00:07:23,503
+So those edges have the possibility of
+being minimum spanning tree edges in the
+
+89
+00:07:23,503 --> 00:07:29,643
+future unless some better way to connect
+their incident vertex to the tree is found
+
+90
+00:07:29,643 --> 00:07:33,565
+before they come off the queue.
+And that's the algorithm.
+
+91
+00:07:33,565 --> 00:07:37,869
+A lazy solution of Primm's algorithm.
+So lets take a demo of that.
+
+92
+00:07:37,869 --> 00:07:42,770
+So what we're going to do is start with a
+vertex and really grow the tree.
+
+93
+00:07:42,770 --> 00:07:47,670
+Add to T the mid-weight edge with exactly
+one end-point entry in the tree.
+
+94
+00:07:47,670 --> 00:07:51,775
+That's Primm's algorithm.
+But now we're going to show the data
+
+95
+00:07:51,775 --> 00:07:55,153
+structure, the priority Q, that allows us
+to do this.
+
+96
+00:07:55,153 --> 00:08:00,450
+By keeping all the edges that we know
+about that connect, that possibly could be
+
+97
+00:08:00,450 --> 00:08:04,977
+that edge on priority Q.
+So let's look at what happens, for our
+
+98
+00:08:04,977 --> 00:08:07,647
+sample graph.
+So we start at vertex zero,
+
+99
+00:08:07,647 --> 00:08:11,519
+That's fine.
+Now, we're going to add that, to the tree,
+
+100
+00:08:11,519 --> 00:08:16,460
+vertex zero to the tree, and we're going
+to put in the priority queue, all the
+
+101
+00:08:16,460 --> 00:08:21,734
+edges that are, incident to zero.
+And just for, the demo, we'll just show
+
+102
+00:08:21,734 --> 00:08:27,074
+the, edges sorted by weight, with the
+understanding that we have a heaped data
+
+103
+00:08:27,074 --> 00:08:31,480
+structure or something under there, to
+give us the smallest one.
+
+104
+00:08:31,480 --> 00:08:35,620
+But, for the demo, it's easiest to see,
+them sorted by weight.
+
+105
+00:08:35,620 --> 00:08:42,340
+Okay so then to greenly grow the tree we
+have to pick 0,7 off the priority queue.
+
+106
+00:08:42,340 --> 00:08:54,337
+But and so we'll show that one on the MST.
+And then the vertex that's not, on the
+
+107
+00:08:54,337 --> 00:08:59,837
+tree at that point is seven, so we're
+going to add seven to the tree.
+
+108
+00:09:00,090 --> 00:09:06,605
+So first we add zero, seven to be an MST
+edge, and then we add to the priority
+
+109
+00:09:06,605 --> 00:09:13,851
+queue all the edges that are incident to
+seven, that. All the edges into, incident
+
+110
+00:09:13,851 --> 00:09:18,598
+to seven that point to places, the
+vertices that are not on the tree that are
+
+111
+00:09:18,598 --> 00:09:21,386
+connected to vertices that are not on the
+tree.
+
+112
+00:09:21,386 --> 00:09:25,658
+So we don't put zero, seven back on'cause
+zero is already on the tree.
+
+113
+00:09:25,836 --> 00:09:31,770
+So we put all those on a priority queue.
+And, again, keep them sorted by weight.
+
+114
+00:09:32,085 --> 00:09:37,981
+So, now let's continue.
+So smallest thing is one, seven.
+
+115
+00:09:37,981 --> 00:09:46,404
+That's the smallest edge, to a from a tree
+edge to a non-tree edge.
+
+116
+00:09:46,720 --> 00:09:52,338
+And so that's, delete 1,7 from the
+priority queue and add it to the MSTs, so
+
+117
+00:09:52,338 --> 00:09:56,444
+we do that.
+And now that takes us to one and so now we
+
+118
+00:09:56,444 --> 00:10:02,639
+have to add to the priority queue, all the
+edges that, connect, one to non-tree
+
+119
+00:10:02,639 --> 00:10:06,241
+edges.
+So that's what the asterisks are, are the
+
+120
+00:10:06,241 --> 00:10:11,860
+new, new edges on the priority queue.
+And again, we keep ''em sorted by weight.
+
+121
+00:10:11,860 --> 00:10:17,772
+So now what we want on the priority queue
+is a subset of the, you wanna be sure that
+
+122
+00:10:17,772 --> 00:10:23,473
+every edge that connects a tree edge to a
+non-tree edge is on the priority queue.
+
+123
+00:10:23,473 --> 00:10:28,330
+We might have a few others as well, and
+we'll see that in, in a second.
+
+124
+00:10:28,330 --> 00:10:33,064
+So now 0,2's the smallest so we take 0,2
+and add it to the MST.
+
+125
+00:10:33,064 --> 00:10:39,377
+So notice now that once we add two to the
+MST, this edge between one and two becomes
+
+126
+00:10:39,377 --> 00:10:43,059
+obsolete.
+It's never going to be added to the MST.
+
+127
+00:10:43,059 --> 00:10:49,222
+At the time that we put one on, we thought
+maybe that was a good way to get to two.
+
+128
+00:10:49,222 --> 00:10:53,055
+But now we know there's a better way to
+get to two.
+
+129
+00:10:53,055 --> 00:10:58,315
+So that edge becomes obsolete.
+And the lazy implementation just leaves
+
+130
+00:10:58,315 --> 00:11:07,467
+that edge on the priority Q.
+So let's now continue, so, we added, two
+
+131
+00:11:07,467 --> 00:11:13,432
+to the, 0-2 to the MST.
+And we have to add, everybody infinite the
+
+132
+00:11:13,432 --> 00:11:18,459
+two, that, is not on the tree, to the
+priority queue.
+
+133
+00:11:18,459 --> 00:11:24,595
+So, in this case, it's 2-3 and 6-2.
+We don't have to add 1-2 and 2-7, 'cause
+
+134
+00:11:24,595 --> 00:11:28,600
+they go to three edges.
+We don't add'em back on.
+
+135
+00:11:28,600 --> 00:11:34,815
+Okay, so now the smallest is two, three.
+So take that, add it to the MST.
+
+136
+00:11:34,815 --> 00:11:42,383
+And add all the edges incident to three to
+non-tree vertices, in this case it's just
+
+137
+00:11:42,383 --> 00:11:45,265
+three, six.
+And that's a long one.
+
+138
+00:11:45,265 --> 00:11:49,500
+So now the next edge for the MST is five,
+seven.
+
+139
+00:11:49,728 --> 00:11:53,606
+Take that off the priority queue, put it
+on the MST.
+
+140
+00:11:53,834 --> 00:11:59,918
+And so and now all peak, all edges
+incident to five that go to non tree
+
+141
+00:11:59,918 --> 00:12:03,340
+vertices.
+It says just five, four and that one.
+
+142
+00:12:04,580 --> 00:12:10,917
+So now the next edge that would come off
+the priority que is one, three but, that's
+
+143
+00:12:10,917 --> 00:12:15,093
+an obsolete edge.
+We already have one, three connected in
+
+144
+00:12:15,093 --> 00:12:20,014
+the MST because we were lazy and left that
+in the priority que.
+
+145
+00:12:20,014 --> 00:12:25,755
+So now we just pull it off and, and
+discard it, because it connects through
+
+146
+00:12:25,755 --> 00:12:28,141
+three vertices.
+Same with 1,5.
+
+147
+00:12:28,141 --> 00:12:31,496
+We already have a better way to connect
+them.
+
+148
+00:12:31,496 --> 00:12:36,566
+2,7 connects through three vertices.
+And finally we get to four, five.
+
+149
+00:12:36,790 --> 00:12:41,521
+4,5 now gets deleted.
+And from the priority queue, and add it to
+
+150
+00:12:41,521 --> 00:12:45,092
+the MST.
+Everybody connected to four, that's just
+
+151
+00:12:45,092 --> 00:12:50,835
+six, and that's a long one, goes on.
+Now we have some obsolete edges we'll get
+
+152
+00:12:50,835 --> 00:12:54,687
+to that one too.
+And then four, seven is obsolete, and
+
+153
+00:12:54,687 --> 00:12:59,379
+zero, four is obsolete.
+And finally, the last edge to get added to
+
+154
+00:12:59,379 --> 00:13:04,459
+the MST is six, two.
+And after deleting 6-2 from the priority
+
+155
+00:13:04,459 --> 00:13:08,688
+queue and adding the MST we have, computed
+the MST.
+
+156
+00:13:08,927 --> 00:13:15,630
+We have V minus one edges on V vertices,
+and that's, implementation of the lazy
+
+157
+00:13:15,630 --> 00:13:20,816
+version of Prim's algorithm.
+And it's just a version of Prim's
+
+158
+00:13:20,816 --> 00:13:27,039
+algorithm we showed was the underlying
+data structure, the priority queue, that
+
+159
+00:13:27,039 --> 00:13:33,023
+ensures that we always get the shortest
+edge connecting a tree vertex to a
+
+160
+00:13:33,023 --> 00:13:37,551
+non-tree vertex.
+So let's look at the code for Prim's
+
+161
+00:13:37,551 --> 00:13:42,472
+algorithm.
+Again, the data structures that we build
+
+162
+00:13:42,472 --> 00:13:50,293
+up in part one of this course, give us a
+very compact implementation of this MST
+
+163
+00:13:50,293 --> 00:13:55,302
+algorithm.
+So we're going to need three instance
+
+164
+00:13:55,302 --> 00:13:58,905
+variables.
+One is a existence array.
+
+165
+00:13:58,905 --> 00:14:04,090
+A vertex indexed array of bullions, that
+for each vertex.
+
+166
+00:14:04,090 --> 00:14:07,191
+Will tell us whether or not it's on the
+MST.
+
+167
+00:14:07,403 --> 00:14:13,536
+Then we have the, list of edges on the
+MST, that, is going to be, returned to the
+
+168
+00:14:13,536 --> 00:14:17,202
+client after the MST is computed, to, for
+iterable.
+
+169
+00:14:17,414 --> 00:14:23,688
+And then we we'll have the priority queue
+of edges that, connect, tree vertices with
+
+170
+00:14:23,688 --> 00:14:27,989
+non-tree vertices.
+The super-set of the edges that connect
+
+171
+00:14:27,989 --> 00:14:30,950
+tree vertices and non-tree vertices.
+So.
+
+172
+00:14:31,231 --> 00:14:35,546
+Given a graph we'll build a priority
+queue.
+
+173
+00:14:35,546 --> 00:14:46,346
+We'll initialize all the data structures.
+And then we'll visit, and we'll show what
+
+174
+00:14:46,346 --> 00:14:50,598
+the routine does.
+That's the one that processes each vertex
+
+175
+00:14:50,794 --> 00:14:55,440
+when it gets added to, to the tree.
+We'll look at that in the next slide.
+
+176
+00:14:55,705 --> 00:15:03,585
+So the main loop is, while the priority q
+is not empty, we pull off the minimum edge
+
+177
+00:15:03,585 --> 00:15:09,341
+from the priority q.
+We get it's constituent vertices, if their
+
+178
+00:15:09,341 --> 00:15:14,943
+both marked then we just ignore it.
+They're already on the MST.
+
+179
+00:15:14,943 --> 00:15:22,267
+Otherwise, we put the edge on the MST.
+And which ever vertex was not on the tree,
+
+180
+00:15:22,267 --> 00:15:28,943
+we visit and put on the tree.
+And the visit routine is the one that puts
+
+181
+00:15:28,943 --> 00:15:35,990
+the vertex on the tree and puts all of its
+indecent edges on the priority Q.
+
+182
+00:15:35,990 --> 00:15:44,930
+So to visit a vertex we set its entry,
+corresponding entry in the marked array to
+
+183
+00:15:44,930 --> 00:15:51,523
+be true, so it's, added to the tree.
+And then for, every edge, that's adjacent
+
+184
+00:15:51,523 --> 00:15:57,733
+to that, we're going to, if it's, other
+edge is not marked, we're going to put it
+
+185
+00:15:57,733 --> 00:16:02,256
+on the priority Q.
+So if it's an edge that goes from a tree
+
+186
+00:16:02,256 --> 00:16:06,550
+vertex to a non-tree vertex, we put it on
+the priority Q.
+
+187
+00:16:06,780 --> 00:16:14,140
+And then, we have the, client query method
+to, get the MST, once the, MST is built.
+
+188
+00:16:14,140 --> 00:16:20,112
+Again, the data structures that we've used
+give a very compact and complete
+
+189
+00:16:20,112 --> 00:16:23,430
+implementation of Prim's, Prim's
+algorithm.
+
+190
+00:16:23,430 --> 00:16:30,662
+What's the running time of the algorithm?
+Well, it's correct cuz it implements
+
+191
+00:16:30,662 --> 00:16:37,619
+Prim's algorithm as we've showed us in the
+sense of a greedy algorithm.
+
+192
+00:16:37,619 --> 00:16:45,217
+And it's easy to see that the running time
+is always going to be proportional to E
+
+193
+00:16:45,217 --> 00:16:51,168
+log E in the worst case.
+And that's because you could put all the
+
+194
+00:16:51,168 --> 00:16:58,209
+edges on priority Q and. So, every edge
+would, might, would have to come off the
+
+195
+00:16:58,209 --> 00:17:04,350
+priority cue, so that's e times, and then
+the cost would be proportional to e for,
+
+196
+00:17:04,564 --> 00:17:08,705
+inserting and deleting, every edge off the
+priority cue.
+
+197
+00:17:08,920 --> 00:17:14,250
+So, E log e is sorry, is a fine running
+time.
+
+198
+00:17:14,459 --> 00:17:20,743
+The space, extra space proportional to e
+is you know, might be considered annoying,
+
+199
+00:17:20,743 --> 00:17:27,654
+or inelegant, or inefficient so there's a
+more efficient version of Prim's algorithm
+
+200
+00:17:27,654 --> 00:17:31,913
+where we clear off that dead weight on the
+priority queue.
+
+201
+00:17:32,123 --> 00:17:37,917
+And that's the eager implementation of
+Prim's algorithm that we'll look at next.
+
+202
+00:17:38,127 --> 00:17:44,131
+In practice, the lazy implementation works
+pretty well, but the eager implementation
+
+203
+00:17:44,131 --> 00:17:47,329
+is all.
+So a very elegant and efficient algorithm,
+
+204
+00:17:47,329 --> 00:17:52,179
+and it's worth learning both.
+So for the eager solution, what we're
+
+205
+00:17:52,179 --> 00:17:56,689
+going to do is.
+The priority Q is going to have vertices.
+
+206
+00:17:56,689 --> 00:18:00,876
+And it's going to have, at most, one entry
+per vertex.
+
+207
+00:18:00,876 --> 00:18:07,641
+And so those are the vertices that are not
+on the tree but are connected by an edge
+
+208
+00:18:07,641 --> 00:18:11,668
+to the tree.
+And the priority of a given vertex is
+
+209
+00:18:11,668 --> 00:18:18,030
+going to be the weight of the shortest
+edge connecting that vertex to the tree.
+
+210
+00:18:18,030 --> 00:18:29,311
+So if we look at this little example here
+Where we've build the tree for zero, seven
+
+211
+00:18:29,313 --> 00:18:37,855
+and one then the Black.
+Entries in this are the ones, the edges
+
+212
+00:18:37,855 --> 00:18:42,278
+that are on the MST.
+So that's zero, seven and one, seven and
+
+213
+00:18:42,284 --> 00:18:49,966
+the red ones are the ones that are on the
+priority Q because they're connected by an
+
+214
+00:18:49,966 --> 00:18:56,654
+edge to some vertex that's on the tree.
+And for each one of them, there's a
+
+215
+00:18:56,654 --> 00:19:03,794
+particular edge that connects, that's
+shortest, that connects that vertex to the
+
+216
+00:19:03,794 --> 00:19:07,590
+tree.
+So that's the key for the priority Q.
+
+217
+00:19:07,782 --> 00:19:13,117
+So that's what we're, that's what we're
+going to want for at any time during the
+
+218
+00:19:13,117 --> 00:19:17,552
+execution of the algorithm.
+We're going to want the vertices that are
+
+219
+00:19:17,552 --> 00:19:22,308
+connected to the tree by one vertex.
+And, and we're going to know the shortest
+
+220
+00:19:22,308 --> 00:19:27,321
+edge connecting that vertex to the tree.
+So then, the algorithm is again, delete
+
+221
+00:19:27,321 --> 00:19:30,920
+the minimum vertex.
+And it's got an associated edge that
+
+222
+00:19:30,920 --> 00:19:34,520
+connects it to the tree, and we put that
+one on the tree.
+
+223
+00:19:34,712 --> 00:19:37,669
+And then we have to update the priority
+queue.
+
+224
+00:19:37,669 --> 00:19:40,883
+So why do we have to update the priority
+queue.
+
+225
+00:19:40,883 --> 00:19:44,445
+So we have.
+This vertex that's not on the tree, we
+
+226
+00:19:44,445 --> 00:19:48,878
+consider all of the edges that are
+incident to that vertex.
+
+227
+00:19:48,878 --> 00:19:53,461
+If they point to a tree vertex then we're
+going to ignore it.
+
+228
+00:19:53,461 --> 00:19:57,894
+That's no problem.
+If it's not already on the priority Q,
+
+229
+00:19:57,894 --> 00:20:01,876
+we're going to put that new vertex on the
+priority Q.
+
+230
+00:20:01,876 --> 00:20:08,037
+And then other thing is, if the vertex is
+on the priority Q and we just found a
+
+231
+00:20:08,037 --> 00:20:14,274
+shorter way to get to it, then we're going
+to have to decrease the priority of that
+
+232
+00:20:14,274 --> 00:20:18,723
+vertex.
+So, let's look at how that works in a
+
+233
+00:20:18,723 --> 00:20:22,053
+demo.
+So, again, it's just an implementation of
+
+234
+00:20:22,053 --> 00:20:25,997
+Prim's algorithm.
+It's just how to we get the min weight
+
+235
+00:20:25,997 --> 00:20:31,009
+edge that connects to the tree?
+And this is a, a more efficient way to do
+
+236
+00:20:31,009 --> 00:20:34,377
+it.
+So, again, we start out with our graph,
+
+237
+00:20:34,634 --> 00:20:42,081
+started zero, and, let's get going.
+So, now, the priority QS vertices, and so
+
+238
+00:20:42,081 --> 00:20:49,101
+there's four vertices that are just one
+edge away from the tree, and, we keep'em
+
+239
+00:20:49,101 --> 00:20:54,580
+on the priority queue, in order of their
+distance to the tree.
+
+240
+00:20:54,803 --> 00:20:59,569
+So, and we also keep the edge.
+Two vertice, vertex index arrays.
+
+241
+00:20:59,569 --> 00:21:05,750
+One is the edge that takes us to the tree,
+and the other is the length of that edge.
+
+242
+00:21:05,958 --> 00:21:11,381
+And again we'll keep sorted on the
+priority queue just to make the demo
+
+243
+00:21:11,381 --> 00:21:15,552
+easier to follow.
+So the next vertex to go on the tree is
+
+244
+00:21:15,552 --> 00:21:20,162
+seven.
+The next edge to get added to the tree is
+
+245
+00:21:20,442 --> 00:21:25,380
+edge two of seven.
+And then we go from there.
+
+246
+00:21:25,380 --> 00:21:32,044
+So that's the smallest one, we take that
+for the tree and now we have to update the
+
+247
+00:21:32,044 --> 00:21:35,738
+priority q.
+So, how do we update the priority q?
+
+248
+00:21:35,738 --> 00:21:42,734
+Well we have to look at, everybody
+incident the seventh, and so, let's look
+
+249
+00:21:42,734 --> 00:21:47,389
+at, so, for example, 7-2.
+We don't need to put 7-2 in the priority
+
+250
+00:21:47,389 --> 00:21:53,153
+queue, since we already have a better way
+to connect two to the tree, thats 2-0.
+
+251
+00:21:53,153 --> 00:21:57,070
+So we don't have to change anything.
+Same with 7-4.
+
+252
+00:21:57,281 --> 00:22:01,657
+And about 7-5, and 7-1.
+One and five are not on the priority
+
+253
+00:22:01,657 --> 00:22:05,045
+queue.
+So, we have to put them on the priority
+
+254
+00:22:05,045 --> 00:22:08,432
+queue.
+And, then save the edges in length that,
+
+255
+00:22:08,644 --> 00:22:12,455
+get them, to seven which would get them to
+the tree.
+
+256
+00:22:12,455 --> 00:22:16,266
+So now, on our priority queue, we have our
+current tree.
+
+257
+00:22:16,478 --> 00:22:20,924
+And we have all vertices that were within
+one edge of the tree.
+
+258
+00:22:21,136 --> 00:22:25,230
+And the edge that gets'em to the tree, and
+their length.
+
+259
+00:22:25,230 --> 00:22:28,900
+So, we're ready for another step of the
+algorithm.
+
+260
+00:22:30,424 --> 00:22:37,006
+So now seventeen is the smallest thing in
+the priority queue.
+
+261
+00:22:37,300 --> 00:22:45,847
+And so we put that on the MST.
+And now we look at everybody connected to
+
+262
+00:22:45,847 --> 00:22:48,796
+one.
+And again, one seven we [inaudible],
+
+263
+00:22:48,796 --> 00:22:53,169
+because it's on the tree.
+One five we don't need cuz we have a
+
+264
+00:22:53,169 --> 00:22:57,878
+shorter way to get to the tree.
+One two we don't need cuz we have a
+
+265
+00:22:57,878 --> 00:23:04,001
+shorter way, to get, two to the tree, but
+we haven't seen three yet so we add vertex
+
+266
+00:23:04,001 --> 00:23:09,517
+three to the priority cue and say we get
+to the tree by one, one three, distance
+
+267
+00:23:09,517 --> 00:23:13,352
+point two nine.
+Every, all the vertices within one edge of
+
+268
+00:23:13,352 --> 00:23:17,860
+the tree and the edge and length of the
+shortest edge that gets.
+
+269
+00:23:17,860 --> 00:23:21,860
+To the tree from that vertex, that's what
+we're maintaining at every step.
+
+270
+00:23:22,120 --> 00:23:29,860
+Okay so next vertex to come to the tree is
+two and so we put that on the tree and now
+
+271
+00:23:29,860 --> 00:23:37,252
+we look at everybody that connected to
+two, so now we have our first example of
+
+272
+00:23:37,252 --> 00:23:41,340
+decrease key but let's, let's check them
+all.
+
+273
+00:23:41,340 --> 00:23:45,150
+So two, zero.
+Two, seven, and two, one, take us to
+
+274
+00:23:45,150 --> 00:23:50,907
+vertices that are already on the tree.
+So it's two, three and two, six.
+
+275
+00:23:50,907 --> 00:23:57,765
+So what we need to do for three, we had
+thought that the best way to get to three
+
+276
+00:23:57,765 --> 00:24:04,877
+from the tree from three was to go to one.
+And adding this new edge two means we now
+
+277
+00:24:04,877 --> 00:24:08,941
+know a better way to get from three to the
+tree.
+
+278
+00:24:08,941 --> 00:24:14,384
+So we have to update the priority.
+Update the edge two, in the priority we
+
+279
+00:24:14,384 --> 00:24:19,908
+have to decrease the key of the priority.
+So that's an operation that we're going to
+
+280
+00:24:19,908 --> 00:24:24,380
+need from our priority Q.
+And it's something that has to be factored
+
+281
+00:24:24,380 --> 00:24:28,458
+into our priority Q implementation.
+And the same thing for six.
+
+282
+00:24:28,458 --> 00:24:33,982
+We thought we had a good way to get to the
+tree from zero but two brings six closer
+
+283
+00:24:33,982 --> 00:24:37,270
+to the tree so we have to update that
+information.
+
+284
+00:24:37,270 --> 00:24:42,663
+And say now the best way to get from six
+to the three is 6,2 and that it's length.
+
+285
+00:24:42,663 --> 00:24:45,820
+We have to decrease the key.
+And this definitely.
+
+286
+00:24:45,820 --> 00:24:50,711
+Involves summary shuffling in the priority
+queue and our implementation is going to
+
+287
+00:24:50,711 --> 00:24:55,021
+take that into account.
+So, with those changes now, we have the
+
+288
+00:24:55,021 --> 00:25:00,294
+following situation.
+And, we've got, four edges on the tree.
+
+289
+00:25:00,508 --> 00:25:04,854
+Three edges on the tree.
+Now we're going to add the fourth, which
+
+290
+00:25:04,854 --> 00:25:08,560
+is 2-3.
+That's the smallest thing on the priority
+
+291
+00:25:08,560 --> 00:25:10,982
+queue.
+So we add, two, three to the MST.
+
+292
+00:25:10,982 --> 00:25:16,754
+And now we have to go to the, things
+connected to three, And, well, there's
+
+293
+00:25:16,754 --> 00:25:20,816
+nothing to add, since we already have a
+better way to six.
+
+294
+00:25:20,816 --> 00:25:30,429
+So next one that gets added is 5-7.
+And check, so, edges from five, seven.
+
+295
+00:25:30,429 --> 00:25:39,262
+So.
+We from five, We're going to decrease the
+
+296
+00:25:39,262 --> 00:25:46,045
+key of four from.38 to.5.'Cause the best
+way to get from four to the tree is no
+
+297
+00:25:46,045 --> 00:25:51,556
+longer 4,0, it's 4,5.
+So again, decrease the key and discard the
+
+298
+00:25:51,556 --> 00:25:57,067
+longer edge to the tree.
+And in fact, that's the next edge that we
+
+299
+00:25:57,067 --> 00:26:01,222
+pick.
+And we don't bother putting forth six on,
+
+300
+00:26:01,222 --> 00:26:06,564
+'cause we already have a better way to get
+from six to the tree.
+
+301
+00:26:06,564 --> 00:26:10,210
+And then the last edge that we had was
+6,2.
+
+302
+00:26:10,210 --> 00:26:17,061
+Again, it's the easy version of Prim's
+algorithm is an implementation that always
+
+303
+00:26:17,061 --> 00:26:22,051
+connects to the tree, the vertex that's
+closest to the tree.
+
+304
+00:26:22,051 --> 00:26:26,450
+But we use a more efficient data structure
+to do it.
+
+305
+00:26:26,450 --> 00:26:33,217
+That can only have one, at most one entry
+per vertex, as opposed to one entry per
+
+306
+00:26:33,217 --> 00:26:36,297
+edge.
+So that's the eager version of the Prim's
+
+307
+00:26:36,297 --> 00:26:40,234
+algorithm.
+Okay rather than focus on the code for the
+
+308
+00:26:40,234 --> 00:26:44,759
+eager version.
+Which is quite similar to the code for the
+
+309
+00:26:44,759 --> 00:26:49,422
+lazy version.
+We're going to talk briefly about the Key
+
+310
+00:26:49,422 --> 00:26:53,481
+data structure that we need to implement
+this.
+
+311
+00:26:53,481 --> 00:26:59,921
+And it's the implementation of the
+priority Q that allows us to decrease
+
+312
+00:26:59,921 --> 00:27:04,244
+keys.
+And so, this is a advanced version of the
+
+313
+00:27:04,244 --> 00:27:09,361
+priority Q that we talked about in part
+one of the course.
+
+314
+00:27:09,361 --> 00:27:13,242
+But it's necessary for algorithms like
+this.
+
+315
+00:27:13,242 --> 00:27:21,048
+So what we're going to do, The problem is.
+We have keys that the priority queue
+
+316
+00:27:21,048 --> 00:27:28,174
+algorithm doesn't really, Needs to know
+when we change values of keys, and so we
+
+317
+00:27:28,174 --> 00:27:33,896
+have to do that through the API.
+And so what we're going to do is allow the
+
+318
+00:27:33,896 --> 00:27:39,264
+client to change the key by specifying the
+index and the, and the new key.
+
+319
+00:27:39,476 --> 00:27:45,268
+And then the implementation will take care
+of changing the value and updating its
+
+320
+00:27:45,268 --> 00:27:48,518
+data structures to reflect the changed
+values.
+
+321
+00:27:48,730 --> 00:27:55,413
+You can't have the client changing values
+without informing the implementation.
+
+322
+00:27:55,638 --> 00:28:01,928
+The priority queue implementation.
+That's the basic challenge for this data
+
+323
+00:28:01,928 --> 00:28:07,096
+structure.
+So since we are working with vertex
+
+324
+00:28:07,096 --> 00:28:12,113
+indexed arrays and graphs.
+And, the priority queue implementation
+
+325
+00:28:12,113 --> 00:28:16,157
+might do the same.
+We'll just associate an index.
+
+326
+00:28:16,382 --> 00:28:19,902
+Kind of pass that idea onto the priority,
+queue.
+
+327
+00:28:20,127 --> 00:28:24,920
+To make it allow it to implement these
+operations officially.
+
+328
+00:28:25,179 --> 00:28:32,263
+So the constructor gets to know how many
+indices or how many keys there are going
+
+329
+00:28:32,263 --> 00:28:38,396
+to be at most ever in the priority Q.
+And so it can make use of that to
+
+330
+00:28:38,396 --> 00:28:43,148
+implement efficient data structures for
+the operations.
+
+331
+00:28:43,148 --> 00:28:47,900
+And so insert just associates a key with a
+given index.
+
+332
+00:28:47,900 --> 00:28:55,497
+Decrease key allows to decrease the keys
+associated with a given index we can
+
+333
+00:28:55,497 --> 00:28:59,434
+check.
+Whether that's a bug should be Mth K.
+
+334
+00:28:59,434 --> 00:29:05,509
+Is an index on the priority Q.
+We can remove a minimal key and give it's
+
+335
+00:29:05,509 --> 00:29:10,149
+associated index.
+Check whether it's empty and give its
+
+336
+00:29:10,149 --> 00:29:14,114
+size.
+Now it's pretty much a topic for part one
+
+337
+00:29:14,114 --> 00:29:20,863
+of the course, but we'll give just one
+slide here to show how these indeces kind
+
+338
+00:29:20,863 --> 00:29:26,179
+of help things go around.
+We're basically going to use the same
+
+339
+00:29:26,179 --> 00:29:33,074
+code, the heap based implementation of min
+PQ. But we'll keep parallel arrays that
+
+340
+00:29:33,074 --> 00:29:38,183
+allows us to access quickly all the
+information that we need.
+
+341
+00:29:38,183 --> 00:29:44,631
+So things on the queue are accessed by
+index, and so we'll keep the values in
+
+342
+00:29:44,631 --> 00:29:50,995
+keys, so that's where the keys are.
+So PQ of I will give the index of the key
+
+343
+00:29:50,995 --> 00:29:57,611
+that's in heap position I and QPI is the
+heap position of the key with index I.
+
+344
+00:29:57,611 --> 00:30:04,060
+So that is the information that you need
+when the client changes a value, you.
+
+345
+00:30:04,060 --> 00:30:12,345
+Need to get to the, you have to actually
+first of all change the value but then you
+
+346
+00:30:12,345 --> 00:30:18,798
+may need to adjust the heap to, To reflect
+the changed value.
+
+347
+00:30:18,798 --> 00:30:25,340
+So instead of a swim with an index, we use
+the, we get the heat position of the given
+
+348
+00:30:25,340 --> 00:30:30,091
+index, and so forth.
+So if you look in the book, you'll see the
+
+349
+00:30:30,091 --> 00:30:35,542
+code for index priority Q, and it's
+definitely a confusing topic for a
+
+350
+00:30:35,542 --> 00:30:41,383
+lecture, but it's important to realize
+that it's possible to implement this
+
+351
+00:30:41,383 --> 00:30:47,146
+decreased key operation in logarithmic
+time without ever having to search
+
+352
+00:30:47,146 --> 00:30:51,064
+through.
+Everything for anything, using the idea of
+
+353
+00:30:51,064 --> 00:30:55,287
+indexing.
+So with that change, We get, for all the
+
+354
+00:30:55,287 --> 00:30:59,038
+operations, we get time proportional to,
+log v.
+
+355
+00:30:59,038 --> 00:31:04,822
+And, what do we have to do for, the eager
+version of Prim's Algorithm?
+
+356
+00:31:05,057 --> 00:31:11,857
+We, we have to, might have to insert every
+vertex once, and delete min, every vertex
+
+357
+00:31:11,857 --> 00:31:15,452
+one.
+And we might do as many as E decrease key
+
+358
+00:31:15,452 --> 00:31:19,673
+operations.
+So that gives us a total running time of E
+
+359
+00:31:19,673 --> 00:31:23,347
+log V.
+But the main thing is that the amount of
+
+360
+00:31:23,347 --> 00:31:27,038
+space for the priority q, is.
+Only V not E.
+
+361
+00:31:27,038 --> 00:31:30,842
+And that can make a difference for a huge
+graph.
+
+362
+00:31:30,842 --> 00:31:35,756
+So there are modifications that you can
+make to this.
+
+363
+00:31:35,993 --> 00:31:42,254
+That give a more efficient running time.
+For example, one easy thing to do is to
+
+364
+00:31:42,492 --> 00:31:48,515
+use since the operation we're performing
+most often is the decreased key.
+
+365
+00:31:48,753 --> 00:31:55,014
+If we use a multi-way heap, like say a
+four way heap, or in general a D way heap.
+
+366
+00:31:55,252 --> 00:31:58,818
+Then that reduces the cost of that
+operation.
+
+367
+00:31:59,056 --> 00:32:03,239
+And it's.
+Slightly increases the cost for insert and
+
+368
+00:32:03,239 --> 00:32:09,935
+delete min but there's not many of those,
+so we can get the running time to log base
+
+369
+00:32:09,935 --> 00:32:14,291
+e over v of v.
+And that, if you do the math for various
+
+370
+00:32:14,291 --> 00:32:18,002
+types of graphs, that's, that's going to
+be faster.
+
+371
+00:32:18,002 --> 00:32:24,376
+And in fact a data structure called the
+Fibonacci heap was invented in the'80s
+
+372
+00:32:24,376 --> 00:32:30,669
+that actually gets the running time down
+to e plus v log b, although that data
+
+373
+00:32:30,669 --> 00:32:34,336
+structure's too.
+Complimented to actually, too complicated
+
+374
+00:32:34,336 --> 00:32:38,470
+to actually use in practice.
+If you have a, a dense graph.
+
+375
+00:32:38,470 --> 00:32:42,865
+Then you wouldn't even use a heap.
+You'd just use an array and find the
+
+376
+00:32:42,865 --> 00:32:48,188
+minimum by going through, everything.
+Since every vertex has, lots of connected
+
+377
+00:32:48,188 --> 00:32:50,665
+vertices.
+So we didn't consider that one.
+
+378
+00:32:50,665 --> 00:32:54,626
+Because the huge graphs that we find in
+practice are, are sparse.
+
+379
+00:32:54,626 --> 00:32:57,226
+And a binary heap is going to be much
+faster.
+
+380
+00:32:57,412 --> 00:33:01,374
+And if you really have a
+performance-critical situation, it's
+
+381
+00:33:01,374 --> 00:33:06,017
+worthwhile to do a four way heap.
+That's the, basic bottom line in the
+
+382
+00:33:06,017 --> 00:33:08,060
+running time of Prim's algorithm.

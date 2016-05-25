@@ -1,0 +1,828 @@
+1
+00:00:03,460 --> 00:00:06,494
+Okay.
+Now that we, that we've discussed
+
+2
+00:00:06,494 --> 00:00:11,077
+breadth-first search and depth-first
+search in connected components three.
+
+3
+00:00:11,263 --> 00:00:15,846
+Very useful graph processing algorithm for
+all sorts of real applications.
+
+4
+00:00:15,846 --> 00:00:21,234
+Now we're gonna go back to the idea of the
+different problems that might arise when
+
+5
+00:00:21,234 --> 00:00:25,259
+doing graph processing,
+And what are, what are our intuition I-,
+
+6
+00:00:25,259 --> 00:00:29,285
+with this experience?
+And what types of problems are difficult,
+
+7
+00:00:29,285 --> 00:00:34,239
+and what types of problems are easy?
+It's not that I have any real answers to
+
+8
+00:00:34,239 --> 00:00:37,460
+that but we wanna keep coming back to this
+issue,
+
+9
+00:00:37,669 --> 00:00:41,780
+So that we can appreciate a great
+algorithm when we see it.
+
+10
+00:00:42,051 --> 00:00:47,581
+So, here's a challenger or an example of a
+challenge.
+
+11
+00:00:47,581 --> 00:00:53,835
+So, here's a problem that comes up in
+plenty of applications.
+
+12
+00:00:54,107 --> 00:00:58,640
+So you want to know if a given graph is
+bipartite.
+
+13
+00:00:58,640 --> 00:01:06,195
+So what bipartite means is you can divide
+the edges into two subsets, divide the
+
+14
+00:01:06,195 --> 00:01:13,472
+vertices into two subsets with the
+property that every edge connects a vertex
+
+15
+00:01:13,472 --> 00:01:20,186
+in one subset to a vertex in another.
+So in this case, we can assign zero,
+
+16
+00:01:20,186 --> 00:01:25,658
+three, and four to be red vertices.
+And if we do that, then every edge
+
+17
+00:01:25,658 --> 00:01:30,745
+connects a red to a white vertex.
+That's a bipartite graph and we saw an
+
+18
+00:01:30,745 --> 00:01:34,333
+example of bipartite graph the Kevin Bacon
+graph.
+
+19
+00:01:34,333 --> 00:01:39,531
+We had movies and performers, two
+different types of vertices, and every
+
+20
+00:01:39,531 --> 00:01:45,096
+edge went from a movie to a performer.
+And in general and other applications, so
+
+21
+00:01:45,096 --> 00:01:50,733
+we want to know is a graph bipartite.
+So by graph processing challenge, I mean
+
+22
+00:01:50,733 --> 00:01:55,824
+is how difficult is this problem?
+And so what do you think, based on our
+
+23
+00:01:55,824 --> 00:01:59,020
+experience?
+Is this a problem that any programmer
+
+24
+00:01:59,020 --> 00:02:02,804
+could do?
+Or maybe you need to be a typical diligent
+
+25
+00:02:02,804 --> 00:02:07,691
+student in this course,
+Or maybe it's difficult enough that you
+
+26
+00:02:07,691 --> 00:02:12,482
+ought to pay somebody to do it.
+Or, actually maybe it's even an expert
+
+27
+00:02:12,482 --> 00:02:17,625
+couldn't do it, and we'll talk about the
+precise meaning of that later on.
+
+28
+00:02:17,625 --> 00:02:23,190
+Or maybe we don't even know how difficult
+it is, or maybe we can show that it's
+
+29
+00:02:23,190 --> 00:02:28,192
+impossible to solve this problem.
+These are pretty broad categories, and
+
+30
+00:02:28,192 --> 00:02:33,265
+you'd like to think that we could
+categorize problems in these kinds of
+
+31
+00:02:33,265 --> 00:02:37,077
+categories.
+So what about biparting? We'll do this for
+
+32
+00:02:37,077 --> 00:02:40,044
+a bunch of problems, but what about
+bipartitenes?.
+
+33
+00:02:40,807 --> 00:02:45,740
+Well the answer for that one is that you
+can use DFS to get this done.
+
+34
+00:02:45,740 --> 00:02:49,140
+I wouldn't think that any programmmer can
+do it.
+
+35
+00:02:49,140 --> 00:02:53,853
+Ask a friend.
+But with DFS, you can see in the book, a
+
+36
+00:02:53,853 --> 00:02:58,258
+pretty simple DFS based solution, that to
+this problem.
+
+37
+00:02:58,490 --> 00:03:04,671
+That'll tell you whether a graph is
+bipartite, by labeling vertices in such a
+
+38
+00:03:04,671 --> 00:03:08,149
+way.
+If it is bipartite, that, all the edges
+
+39
+00:03:08,149 --> 00:03:12,940
+have the property to go from one set, one
+vertex to another.
+
+40
+00:03:13,167 --> 00:03:20,614
+So definitely a good exercise after this
+lecture is to try to write a program that
+
+41
+00:03:20,614 --> 00:03:25,978
+test whether a graph is bipartites or not.
+Okay, let's, oh, here's another
+
+42
+00:03:25,978 --> 00:03:31,326
+application of this by the way.
+That dating graph for the sexual
+
+43
+00:03:31,326 --> 00:03:38,303
+transmitted diseases so there's males and
+females, is that one gonna be bipartite?
+
+44
+00:03:38,536 --> 00:03:43,420
+I think maybe this one is but, nowadays
+maybe not in general.
+
+45
+00:03:44,140 --> 00:03:52,271
+Okay, what about this one, Does a graph
+contain a cycle or not?
+
+46
+00:03:54,009 --> 00:04:01,816
+So in this case, there's a cycle, zero to
+five to four to six back to zero, and this
+
+47
+00:04:01,816 --> 00:04:08,642
+other cycle's two, zero, one, three, two
+there are two, four, six those are all
+
+48
+00:04:08,642 --> 00:04:12,885
+cycles.
+So how hard is it to find a cycle in a
+
+49
+00:04:12,885 --> 00:04:18,683
+graph in these categorizations well that
+one, It's very simple.
+
+50
+00:04:18,876 --> 00:04:21,769
+This one, maybe any programmer could do.
+Maybe.
+
+51
+00:04:21,962 --> 00:04:26,206
+You have to have the graph representation,
+But you have to use DFS.
+
+52
+00:04:26,399 --> 00:04:30,322
+Well, you could figure out a way to do it
+without, probably,
+
+53
+00:04:30,322 --> 00:04:35,723
+But anyway it's really simple with DFS.
+You, you don't even need to hire an expert
+
+54
+00:04:35,723 --> 00:04:41,012
+for finding a cycle.
+Alright here's a classic graph processing
+
+55
+00:04:41,012 --> 00:04:45,725
+problem that dates back to the eighteenth
+century.
+
+56
+00:04:45,992 --> 00:04:54,086
+So it's this town in Konigsberg in Prussia
+at the time where there's an island,
+
+57
+00:04:54,352 --> 00:05:02,179
+And the river kinda comes in and branches
+around the island and then goes out in two
+
+58
+00:05:02,179 --> 00:05:06,208
+branches.
+And there's a bunch of bridges, five
+
+59
+00:05:06,208 --> 00:05:11,723
+bridges onto the island, two from the
+banks and one across, to the this third
+
+60
+00:05:11,723 --> 00:05:15,960
+peninsula and then there's two bridges
+crossing that way,
+
+61
+00:05:15,960 --> 00:05:20,130
+So a total of seven bridges one, two,
+three, four, five, six, seven.
+
+62
+00:05:20,397 --> 00:05:28,413
+And Euler who's a famous mathematician
+would go out on Sunday stroll in this
+
+63
+00:05:28,413 --> 00:05:36,073
+place and came up with the idea.
+You know could anyone find a way to go on
+
+64
+00:05:36,073 --> 00:05:42,130
+a Sunday stroll and cross each one of
+these bridges exactly once.
+
+65
+00:05:42,479 --> 00:05:52,023
+So that's, often talked of as, the,
+original graph processing problem.
+
+66
+00:05:52,372 --> 00:06:01,800
+So, in terms of graphs, it's is there a
+cycle that uses every edge exactly once.
+
+67
+00:06:01,800 --> 00:06:05,710
+Given a graph, is there a cycle that uses
+every edge exactly once?
+
+68
+00:06:05,710 --> 00:06:12,879
+A and actually, a Euler, proved, a let's
+say first theorem in graph theory, a if
+
+69
+00:06:12,879 --> 00:06:18,866
+its connected, and all the vertices have
+even degree, you can always do it.
+
+70
+00:06:19,103 --> 00:06:23,830
+In this case you can't because there's a
+vertex with odd degree.
+
+71
+00:06:24,065 --> 00:06:29,169
+So that's, that's the answer to the
+existence, is there a cycle.
+
+72
+00:06:29,405 --> 00:06:36,273
+But suppose you wanted to find the cycle.
+So you can go ahead and check the degree
+
+73
+00:06:36,273 --> 00:06:40,936
+of every vertex.
+We looked at easy code for that to know
+
+74
+00:06:40,936 --> 00:06:47,681
+that there exists a cycle but how about
+finding one that uses every edge exactly
+
+75
+00:06:47,681 --> 00:06:51,261
+once.
+So in this case, here's the cycle that
+
+76
+00:06:51,261 --> 00:06:56,757
+uses every edge exactly once.
+And this graph every vertex has even
+
+77
+00:06:56,757 --> 00:07:02,406
+degree, and if you go zero, one, two,
+three, four, two, zero, six, four, five,
+
+78
+00:07:02,406 --> 00:07:09,759
+zero you get to every edge exactly once.
+That's an Eulerian Cycle. so how about
+
+79
+00:07:09,759 --> 00:07:16,059
+that one?
+Is that any programer a or do you have to
+
+80
+00:07:16,059 --> 00:07:21,496
+hire an expert, or is it impossible?
+Well this one we have it listed as a
+
+81
+00:07:21,496 --> 00:07:24,517
+typical, diligent algorithm student can do
+it.
+
+82
+00:07:24,718 --> 00:07:30,021
+But it's a, it's a, a bit of a challenge.
+It's a, an interesting program and again
+
+83
+00:07:30,223 --> 00:07:35,861
+once you get through the bipartite graph
+on you can think about this one.
+
+84
+00:07:35,861 --> 00:07:41,701
+A it makes some sense what the algorithm
+does, but it might take you a few tries to
+
+85
+00:07:41,902 --> 00:07:46,601
+get the code debugged,
+Let's say then you'll find code for it, it
+
+86
+00:07:46,601 --> 00:07:48,239
+looks like.
+Alright.
+
+87
+00:07:48,239 --> 00:07:56,897
+So that's a Eulerian Cycle What about if
+you want to visit every vertex exactly
+
+88
+00:07:56,897 --> 00:07:59,288
+once?
+So, you don't care about going over all
+
+89
+00:07:59,288 --> 00:08:02,524
+the edges, you just want to get to all the
+places.
+
+90
+00:08:02,524 --> 00:08:05,760
+That's called the, in this case there is a
+way.
+
+91
+00:08:06,001 --> 00:08:10,745
+For this graph zero, five, three, four,
+six, two, one, zero.
+
+92
+00:08:10,758 --> 00:08:15,193
+So that's a way to get to every vertex
+exactly once.
+
+93
+00:08:15,193 --> 00:08:20,756
+This is sometimes called the traveling
+salesperson problem on graphs.
+
+94
+00:08:20,756 --> 00:08:27,770
+If the sales, traveling salesperson has to
+get to every city and wants to just go
+
+95
+00:08:27,770 --> 00:08:32,850
+there once without retracing steps.
+So how about that one?
+
+96
+00:08:33,118 --> 00:08:39,206
+The, every edge is more to visit, it might
+seem more challenging.
+
+97
+00:08:39,206 --> 00:08:45,741
+And, actually, maybe if you have any
+experience with this, you realize that
+
+98
+00:08:45,741 --> 00:08:50,318
+this one is intractable.
+That's called the Hamiltonian Cycle
+
+99
+00:08:50,318 --> 00:08:53,624
+problem, and it's a classical NP-Complete
+problem.
+
+100
+00:08:53,624 --> 00:08:58,550
+We'll be talking about NP-Complete
+problems at the end of the course, but
+
+101
+00:08:58,550 --> 00:09:04,082
+basically the idea is that nobody knows an
+efficient solution to this problem for
+
+102
+00:09:04,082 --> 00:09:07,403
+large graphs.
+And it's a frustrating situation that
+
+103
+00:09:07,403 --> 00:09:11,629
+we'll talk about.
+But, you definitely not gonna, solve it by
+
+104
+00:09:11,629 --> 00:09:17,440
+just being a diligent algorithm student a
+and not even hiring an expert will get it
+
+105
+00:09:17,440 --> 00:09:20,610
+solved, no matter how much the expert
+charges.
+
+106
+00:09:20,859 --> 00:09:26,436
+So the intuition on finding a cycle that
+visits every edge once.
+
+107
+00:09:26,436 --> 00:09:31,347
+Yeah, you could do it.
+Find a cycle that visits every vertex
+
+108
+00:09:31,347 --> 00:09:36,341
+once, probably not.
+That's the kind of challenge that we face
+
+109
+00:09:36,341 --> 00:09:40,420
+when addressing applications of graph
+processing.
+
+110
+00:09:40,665 --> 00:09:46,066
+Here's another example.
+Problem is, given two graphs you want to
+
+111
+00:09:46,066 --> 00:09:51,550
+know are they identical except for the way
+that we need the vertex.
+
+112
+00:09:51,550 --> 00:09:57,381
+So here's an example of, a these two
+graphs don't look all that identical, at
+
+113
+00:09:57,381 --> 00:10:00,895
+all.
+But if you, take zero here and rename it
+
+114
+00:10:00,895 --> 00:10:04,650
+four and one and rename it three and like
+that,
+
+115
+00:10:04,650 --> 00:10:11,759
+Then sorry zero here and name it four and
+one and rename it three and like that.
+
+116
+00:10:11,759 --> 00:10:15,354
+Then you'll see that they are the same
+graph.
+
+117
+00:10:15,354 --> 00:10:21,169
+They represent the same connections.
+And in so many applications where, maybe
+
+118
+00:10:21,169 --> 00:10:25,258
+the vertex names are, are a bit arbitrary
+or you just wanna know.
+
+119
+00:10:25,258 --> 00:10:30,753
+Really the interest is in the structure of
+the connections, you might wanna know if
+
+120
+00:10:30,753 --> 00:10:34,714
+just the way that I name the vertex makes
+the graph different?
+
+121
+00:10:34,714 --> 00:10:39,890
+Or if I have two classes that have two
+different kinds of interactions, is it the
+
+122
+00:10:39,890 --> 00:10:44,746
+same interactions that's independent of
+the people or scientific experiment
+
+123
+00:10:44,746 --> 00:10:49,665
+studying a property of the universe or
+whatever, you might wanna know, is that
+
+124
+00:10:49,665 --> 00:10:55,236
+connection structure the same or not?
+That's called the Graph Isomorphism
+
+125
+00:10:55,236 --> 00:10:59,310
+Problem.
+How difficult you think that one is?
+
+126
+00:10:59,310 --> 00:11:06,306
+So, you know, you could, there you can try
+all possible ways of renaming the
+
+127
+00:11:06,306 --> 00:11:11,554
+vertices,
+But there's really a lot of ways, in
+
+128
+00:11:11,554 --> 00:11:15,490
+factorial ways.
+Way too many to try for a huge graph.
+
+129
+00:11:15,694 --> 00:11:20,796
+Is there efficient way to do it,
+Or is it intractable like the Hamiltonian
+
+130
+00:11:20,796 --> 00:11:24,488
+Path Problem.
+Where it's in this category that nobody
+
+131
+00:11:24,488 --> 00:11:28,390
+knows an efficient algorithm for but there
+could be one.
+
+132
+00:11:28,599 --> 00:11:34,521
+Actually for Graph Isomorphism, that's one
+that's stumped mathematicians and computer
+
+133
+00:11:34,521 --> 00:11:39,050
+scientists for many years.
+Nobody knows even how to classify this
+
+134
+00:11:39,050 --> 00:11:42,603
+problem.
+We don't know if it's easy or if it's in a
+
+135
+00:11:42,603 --> 00:11:47,829
+class of problems that are, we don't know
+how to solve but there could be a
+
+136
+00:11:47,829 --> 00:11:51,103
+solution.
+We can't show that it's impossible or
+
+137
+00:11:51,103 --> 00:11:56,360
+guaranteed to be difficult.
+Nobody knows how to classify this problem.
+
+138
+00:11:56,360 --> 00:12:01,735
+Again, pointing out that, even for a
+relatively simple problem to state.
+
+139
+00:12:01,955 --> 00:12:07,403
+The state of our knowledge and
+understanding the properties of algorithms
+
+140
+00:12:07,403 --> 00:12:11,600
+to solve such problems, is, it's
+incomplete for sure.
+
+141
+00:12:11,788 --> 00:12:14,865
+So one last one, here's a graph processing
+challenge.
+
+142
+00:12:14,865 --> 00:12:19,825
+So this graph, when it's laid out it's got
+two edges that cross between, between
+
+143
+00:12:19,825 --> 00:12:24,408
+three and four and zero and five.
+And in general if you have a graph that
+
+144
+00:12:24,408 --> 00:12:29,494
+you've got, so say the social networking
+graph of a small class, you want to study
+
+145
+00:12:29,494 --> 00:12:34,455
+that graph and look at it, you want to
+draw it on the plane and maybe you don't
+
+146
+00:12:34,455 --> 00:12:37,720
+want, you want to do it without having
+edges crossed.
+
+147
+00:12:37,720 --> 00:12:44,255
+So in this case there is a way to place
+the vertices in the plain so that when you
+
+148
+00:12:44,649 --> 00:12:50,711
+draw the edges no two of them cross.
+So, how difficult is that problem, even is
+
+149
+00:12:50,711 --> 00:12:56,129
+it possible to do or not.
+So, that's a classic problem in
+
+150
+00:12:56,129 --> 00:13:03,453
+graph-processing that, came up, from, the
+first time that people were ever sending
+
+151
+00:13:03,453 --> 00:13:08,226
+graphs in computers.
+And the answer to this one is also,
+
+152
+00:13:08,473 --> 00:13:14,398
+interesting to contemplate.
+There's a linear time algorithm known for
+
+153
+00:13:14,398 --> 00:13:19,180
+this based on DFS.
+So that means the running times, you could
+
+154
+00:13:19,180 --> 00:13:23,844
+run it on huge graphs.
+You could know, whether or not you could
+
+155
+00:13:23,844 --> 00:13:28,508
+lay it out in the plane.
+It was discovered, by Tarjan in the
+
+156
+00:13:28,508 --> 00:13:31,307
+1970's.
+And you heard that name come up again, in
+
+157
+00:13:31,307 --> 00:13:33,460
+graph processing.
+Based on DFS,
+
+158
+00:13:33,698 --> 00:13:40,446
+But, if you really wanna get this done,
+you need to hire an expert, 'cause that is
+
+159
+00:13:40,446 --> 00:13:46,084
+quite a complex algorithm,
+And probably, beyond, what a diligent
+
+160
+00:13:46,084 --> 00:13:50,530
+algorithm student, or a professor, might
+accomplish.
+
+161
+00:13:51,403 --> 00:13:58,068
+So, that's the kind of another point on
+this range of difficulty of graph
+
+162
+00:13:58,068 --> 00:14:02,533
+processing problems.
+So there's no question that graph
+
+163
+00:14:02,533 --> 00:14:08,017
+processing is challenging.
+And this introductory lecture gave us
+
+164
+00:14:08,252 --> 00:14:11,699
+numerous useful graph processing
+algorithms.
+
+165
+00:14:11,934 --> 00:14:18,436
+But still leaves us with the feeling that
+there's plenty more to know and we'll
+
+166
+00:14:18,436 --> 00:14:21,100
+cover some more in later lectures.

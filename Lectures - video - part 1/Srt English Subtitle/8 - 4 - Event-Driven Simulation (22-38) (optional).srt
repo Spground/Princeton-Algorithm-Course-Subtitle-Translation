@@ -1,0 +1,1123 @@
+1
+00:00:01,084 --> 00:00:07,035
+Now, look at an interesting application of
+priority queues that is actually
+
+2
+00:00:07,035 --> 00:00:11,901
+representative of whole family of a
+critically important applications in
+
+3
+00:00:12,094 --> 00:00:18,810
+applications of computing. It's called
+event driven simulation. And the idea is
+
+4
+00:00:19,081 --> 00:00:26,739
+we want to study some property of the
+natural world by simulating it. And that's
+
+5
+00:00:27,030 --> 00:00:34,013
+something that's very, very common in, in
+scientific inquiry nowadays. And this is a
+
+6
+00:00:34,013 --> 00:00:40,369
+very natural idea. And actually, the idea
+goes back to Einstein. So, we want to
+
+7
+00:00:40,369 --> 00:00:46,198
+simulate the motion of N moving particles
+that might collide with the priority.
+
+8
+00:00:46,198 --> 00:00:53,035
+This, this kind of stimulation is enabled
+by priority queues. And without something
+
+9
+00:00:53,035 --> 00:00:58,744
+like priority queues, you couldn't do this
+for a large number of particles because it
+
+10
+00:00:58,744 --> 00:01:05,215
+would require quadratic time and simply
+can't be afforded for a huge number of
+
+11
+00:01:05,215 --> 00:01:11,225
+particles. So, and let's take a look at
+how we can possibly make this happen. So
+
+12
+00:01:11,427 --> 00:01:16,532
+we use a simple scientific model called
+the hard disc model. And then, this is
+
+13
+00:01:16,532 --> 00:01:22,136
+just for simplicity to get this done and
+just part of a lecture. Clearly, these
+
+14
+00:01:22,136 --> 00:01:27,971
+things can be extended in many ways. So,
+we're going to have moving particles that
+
+15
+00:01:27,971 --> 00:01:33,034
+either collide with each other and with
+the walls. And each particle is a disc
+
+16
+00:01:33,034 --> 00:01:38,776
+that's got known position, velocity, mass,
+and radius. And there's no other forces
+
+17
+00:01:38,776 --> 00:01:43,258
+involved. It gets more complicated if
+there's more forces, like gravity
+
+18
+00:01:43,258 --> 00:01:49,783
+involved. And this point by itself is very
+significant. As I mentioned, it goes back
+
+19
+00:01:49,783 --> 00:01:56,017
+to the study of physics with [cough] the
+trying to understand the pressure and
+
+20
+00:01:56,017 --> 00:02:02,031
+temperature in Einstein's famous
+experiment on a pollen grain showing that
+
+21
+00:02:02,031 --> 00:02:08,678
+their motion was brownian and random. So
+whether it's individual atoms and
+
+22
+00:02:08,678 --> 00:02:14,784
+molecules or some bigger kinds of
+particles. It's a complex dynamic
+
+23
+00:02:14,784 --> 00:02:21,340
+situation that is better understood
+through computer simulation. And nowadays
+
+24
+00:02:21,582 --> 00:02:28,480
+that means priority queues. [cough] So, as
+a wa rm-up, here's code to implement
+
+25
+00:02:28,480 --> 00:02:37,862
+bouncing balls without the collisions. And
+this is an elementary programing exercise
+
+26
+00:02:38,194 --> 00:02:46,888
+that is the, the code at the left has the
+effects shown at the right. So, we have a
+
+27
+00:02:46,888 --> 00:02:55,341
+data type called ball that represents just
+one of the particles and has instance
+
+28
+00:02:55,341 --> 00:03:02,137
+variables that has the position and the
+velocity. So, that's why we make a bunch
+
+29
+00:03:02,137 --> 00:03:10,466
+of them and then we have a, a while loop
+which is just every 50 milliseconds clear
+
+30
+00:03:10,466 --> 00:03:18,072
+the, the whole drawing and then move the
+balls a little bit and then draw them in
+
+31
+00:03:18,072 --> 00:03:26,238
+their current position. And then the only
+to move [cough] operation does is to
+
+32
+00:03:26,507 --> 00:03:33,465
+update the position of the ball by the
+velocity, which is just another number and
+
+33
+00:03:33,465 --> 00:03:38,938
+then it does the bouncing off the walls.
+If it happens to hit the left of the wall
+
+34
+00:03:38,938 --> 00:03:44,371
+then you reflect the x-coordinate in the
+right wall, you reflect the x-coordinate
+
+35
+00:03:44,371 --> 00:03:48,818
+bottom to top, you do the same for the
+y-coordinate. So, this the is an easy
+
+36
+00:03:48,818 --> 00:03:54,423
+programming exercise given the right
+display primitives. And it's a good
+
+37
+00:03:54,630 --> 00:04:00,391
+exercise in object-oriented programming
+showing how just one implementation then
+
+38
+00:04:00,391 --> 00:04:05,575
+we can use that same implementation to
+simulate a number of instances. So, that's
+
+39
+00:04:05,575 --> 00:04:13,025
+our starting point in terms of the code.
+So this is the implementation of the ball
+
+40
+00:04:13,025 --> 00:04:19,981
+class. So, it's got position and velocity
+as I mentioned, and every ball has a, a
+
+41
+00:04:19,981 --> 00:04:25,362
+radius. And then there is a constructor
+and maybe we have a constructor that takes
+
+42
+00:04:25,362 --> 00:04:30,176
+arguments that would initialize the
+position and the velocity or maybe
+
+43
+00:04:30,176 --> 00:04:35,248
+initialize them to a random position if
+there's no arguments. And then, here's the
+
+44
+00:04:35,248 --> 00:04:40,394
+move method. And the move method again,
+most of the times, just takes the x and y
+
+45
+00:04:40,394 --> 00:04:46,564
+coordinates and adds the current velocity
+times the speed constant. The dt speed,
+
+46
+00:04:46,564 --> 00:04:52,007
+speed variable that's given as argument
+dt. And then these tests are for whether
+
+47
+00:04:52,007 --> 00:04:57,561
+it hits the walls in which case, you have
+to flip the x or y velocity. And then
+
+48
+00:04:57,561 --> 00:05:03,767
+draw, it's just using standard draw. Just
+draw the ball. So, that's all the code for
+
+49
+00:05:03,767 --> 00:05:09,349
+doing the bouncing ball simulation. Now,
+what's missing in this is what happens
+
+50
+00:05:09,349 --> 00:05:15,715
+when the balls collide with each other.
+And to cope with that we need to do both.
+
+51
+00:05:15,715 --> 00:05:22,521
+A little bit of high school Physics and a
+little bit of basic Computer Science. The
+
+52
+00:05:22,521 --> 00:05:28,269
+Physics problem is exactly what happens
+when two balls hit and they bounce off
+
+53
+00:05:28,269 --> 00:05:33,402
+each other according to some
+well-understood physical process, and
+
+54
+00:05:33,402 --> 00:05:39,507
+that's the high school Physics. And the CS
+problem is how and when to we exactly do
+
+55
+00:05:39,507 --> 00:05:45,957
+these computations for each of the balls.
+And how can we do it efficiently that is
+
+56
+00:05:46,161 --> 00:05:51,619
+in, in log N time versus quadratic time.
+Because if we have a computational process
+
+57
+00:05:51,619 --> 00:05:56,860
+that takes quadratic time, then it's not
+going to scale, we're not going to be able
+
+58
+00:05:56,860 --> 00:06:01,489
+to do large number of particles.
+Simulations in the real world, usually, we
+
+59
+00:06:01,489 --> 00:06:06,124
+wind up doing huge amounts of data and we
+cannot have a quadratic algorithm. This is
+
+60
+00:06:06,273 --> 00:06:11,363
+just first indication of that of why if
+you want to do this simulation, you better
+
+61
+00:06:11,363 --> 00:06:16,086
+know about some data structure like
+priority queues. If you try to do it
+
+62
+00:06:16,086 --> 00:06:21,639
+without it, you're not going to be
+successful. Alright, so, let's take a look
+
+63
+00:06:21,639 --> 00:06:28,967
+at what happens. So there's a number of
+things that you might consider trying. So,
+
+64
+00:06:28,967 --> 00:06:35,692
+one idea is the so-called time driven
+simulation. And we just say, we're going
+
+65
+00:06:35,692 --> 00:06:42,597
+to update everything every dt seconds.
+Then we go ahead and then we could check
+
+66
+00:06:42,597 --> 00:06:48,123
+if there's a collision, if the two balls,
+pieces of the two balls are occupying the
+
+67
+00:06:48,123 --> 00:06:53,250
+same space. And if there is, then we could
+roll back time just a little bit and I'll
+
+68
+00:06:53,250 --> 00:06:58,297
+try to figure out exactly, the moment of
+which they collided and then figure out
+
+69
+00:06:58,297 --> 00:07:02,904
+how the position and velocity should
+change accordingly and then continue the
+
+70
+00:07:02,904 --> 00:07:08,501
+simulation. But this has a huge problem.
+The first one is that you have t o check
+
+71
+00:07:08,501 --> 00:07:13,431
+all pairs of balls for overlap so that's
+quadratic, so it's going to be really,
+
+72
+00:07:13,817 --> 00:07:19,504
+really lot of overall texture you're not
+going to be able to do it for a huge, huge
+
+73
+00:07:19,504 --> 00:07:26,034
+value of N. But the other thing is even if
+N is small if you do a very small dt, then
+
+74
+00:07:26,244 --> 00:07:32,246
+you're just doing this calculation over
+and over again and there's just too much
+
+75
+00:07:32,246 --> 00:07:38,556
+computation moving the balls little bit at
+a time. On the other hand, if you try to
+
+76
+00:07:38,556 --> 00:07:45,620
+improve things by making dt too large you
+might completely miss a collision as shown
+
+77
+00:07:45,620 --> 00:07:51,167
+in the example at right. So figuring out
+the value of dt that would really work is
+
+78
+00:07:51,167 --> 00:07:56,850
+a huge problem for the time driven
+simulation. Instead, what we want to do is
+
+79
+00:07:56,850 --> 00:08:02,416
+called an event driven simulation. And
+this is a very general concept that's
+
+80
+00:08:02,416 --> 00:08:08,175
+useful in all kinds of context. And we are
+going to change things when something
+
+81
+00:08:08,175 --> 00:08:13,110
+happens. So, since the only thing that
+matters is collisions, we are going to
+
+82
+00:08:13,110 --> 00:08:17,574
+figure the particles move in a straight
+line, between collisions. And what we are
+
+83
+00:08:17,574 --> 00:08:22,049
+going to do is focus only on the times
+when the collisions are going to occur.
+
+84
+00:08:22,049 --> 00:08:26,680
+And the way we are going to that, is to
+maintain a priority queue and that
+
+85
+00:08:26,680 --> 00:08:31,771
+priority queue is going to have all the
+possible collisions that could happen in
+
+86
+00:08:31,771 --> 00:08:37,081
+the future and they're going to be
+prioritized by time. And when we remove
+
+87
+00:08:37,081 --> 00:08:42,521
+the minimum element from the priority
+queue, that's the next collision that we
+
+88
+00:08:42,521 --> 00:08:48,035
+have to deal with. And so we have two
+phases, we have prediction and resolution.
+
+89
+00:08:48,035 --> 00:08:53,448
+So, that's sometime t, we can take two
+particles. We know their position and
+
+90
+00:08:53,448 --> 00:08:59,114
+velocities shown at the bottom here and we
+can predict exactly the moment, which
+
+91
+00:08:59,114 --> 00:09:05,297
+they'll collide assuming that something
+else doesn't happen to them in between and
+
+92
+00:09:05,297 --> 00:09:10,979
+then so they will put that predicted
+collision time on the priority queue and
+
+93
+00:09:10,979 --> 00:09:17,152
+later on, when that time comes to pass we
+will be right at moment when they collide
+
+94
+00:09:17,152 --> 00:09:22,457
+and we can figure out what to do. Now,
+there is a possibly that something else
+
+95
+00:09:22,457 --> 00:09:27,211
+happened to t hem in between and we'll
+talk about that change, too. So, we have
+
+96
+00:09:27,211 --> 00:09:32,575
+to do collision prediction, which is given
+position, velocity, and radius when's it
+
+97
+00:09:32,575 --> 00:09:37,972
+going to hit with another particle or, or
+the wall. And then there's resolution
+
+98
+00:09:37,972 --> 00:09:46,258
+which is to figure out how to change the
+velocities of the particles according to
+
+99
+00:09:46,258 --> 00:09:53,791
+physical laws. Now this part I'm not going
+to talk about in that much detail right
+
+100
+00:09:53,791 --> 00:09:59,975
+now because it's high school Physics. And
+so, I think most students have had high
+
+101
+00:09:59,975 --> 00:10:06,327
+school Physics and will be able to do, do
+this Math or at least be convinced that
+
+102
+00:10:06,327 --> 00:10:12,354
+the code that does this Math is correct.
+So, if you know that you have a particle
+
+103
+00:10:12,354 --> 00:10:18,733
+that's at a certain position or x or y and
+has got a certain velocity, the x in the
+
+104
+00:10:18,733 --> 00:10:25,076
+x-direction and y in the y-direction, then
+you can from the distance to the pro,
+
+105
+00:10:25,076 --> 00:10:31,248
+vertical wall you can figure out how many
+seconds this is going to take until it
+
+106
+00:10:31,248 --> 00:10:37,011
+hits it. It's basically that distance
+divided by the by the velocity. And so
+
+107
+00:10:37,248 --> 00:10:42,600
+that's the prediction. And then, the
+resolution. When it hits the wall is, is
+
+108
+00:10:42,600 --> 00:10:48,586
+just going to change the velocity. So
+that's in, you know what the position is.
+
+109
+00:10:48,586 --> 00:10:54,909
+So that's just an example of collision, of
+collision prediction, when's it going to
+
+110
+00:10:54,909 --> 00:11:01,148
+hit the wall and resolution what do you do
+when it gets to the wall. When you have
+
+111
+00:11:01,148 --> 00:11:06,671
+two particles there's definitely more
+math. And again, this is high school
+
+112
+00:11:06,671 --> 00:11:13,109
+Physics. And we're not going to test on it
+or even go through the details. But it's
+
+113
+00:11:13,109 --> 00:11:19,031
+just a little bit of arithmetic with the
+velocities and positions to deal with what
+
+114
+00:11:19,031 --> 00:11:24,112
+happens when, when how to predict when a
+given particle is going to collide with
+
+115
+00:11:24,112 --> 00:11:28,186
+another given particle knowing their
+velocity and position. So, you have to
+
+116
+00:11:28,186 --> 00:11:33,772
+take both velocities and divide their
+distance by those and, and so forth. So
+
+117
+00:11:34,025 --> 00:11:41,520
+there's simple formulas to tell us what to
+do and we can also figure out the formulas
+
+118
+00:11:41,520 --> 00:11:47,904
+for what we do o nce they do collide. And
+again nobody's claiming that this is easy
+
+119
+00:11:47,904 --> 00:11:53,722
+but this is the Physics part and it's
+worked out and it comes from Newton's
+
+120
+00:11:53,722 --> 00:11:59,962
+Second Law. And, and, anybody taking high
+school Physics will, be able to deal with
+
+121
+00:11:59,962 --> 00:12:06,359
+these formulas and the rest of this may
+have to go to a reference book to get up
+
+122
+00:12:06,359 --> 00:12:11,799
+to speed on them. [cough] but once it's
+reduced to code we can be, it might have
+
+123
+00:12:11,799 --> 00:12:16,947
+some trouble debugging at first but at
+least we can be convinced that it works.
+
+124
+00:12:16,947 --> 00:12:23,104
+But now, let's look at the computer
+science code. So, this is just extending
+
+125
+00:12:23,104 --> 00:12:30,106
+our ball data type that we use for the
+bouncing balls that didn't collide to take
+
+126
+00:12:30,106 --> 00:12:35,324
+in, into account these extra things. So,
+ours will have mass, so there will be some
+
+127
+00:12:35,324 --> 00:12:40,962
+big heavy ones that make things more
+interesting. And there's also a variable
+
+128
+00:12:40,962 --> 00:12:46,141
+called count, which is the number of
+collisions of particles have been involved
+
+129
+00:12:46,141 --> 00:12:51,921
+in. And that's useful for a couple of
+purposes. So, we're going to need a bunch
+
+130
+00:12:51,921 --> 00:12:57,701
+of procedures which do the prediction and
+the collision resolution. I want, what's
+
+131
+00:12:57,701 --> 00:13:03,710
+the, given a particle what's the time till
+we hit that particle? What's the time till
+
+132
+00:13:03,710 --> 00:13:09,192
+we hit vertical horizontal wall? And the
+same thing is if we're at the point where
+
+133
+00:13:09,192 --> 00:13:14,080
+we're hitting a particle, what would we
+do, the, the same way with the vertical
+
+134
+00:13:14,080 --> 00:13:18,899
+and horizontal wall. So, that's the
+skeleton. We need those procedures that
+
+135
+00:13:18,899 --> 00:13:24,760
+implement those Physics rules for every
+particle. And, and this is what they look
+
+136
+00:13:24,760 --> 00:13:29,547
+like and again this is high school Physics
+so we're not going to do it in detail
+
+137
+00:13:29,724 --> 00:13:35,184
+other than to point out it's really not a
+huge amount of code. Lots of the xs and
+
+138
+00:13:35,184 --> 00:13:41,168
+the ys and the vs but really not a huge
+amount of code. And the other point is
+
+139
+00:13:41,369 --> 00:13:47,053
+we're going to return infinity if there's
+no collision at all so that it's going to
+
+140
+00:13:47,053 --> 00:13:51,710
+keep, keep that on the priority queue,
+that ran on the priority queue forever.
+
+141
+00:13:51,922 --> 00:13:59,105
+Okay, so that's the procedures that we
+need and then they're similar ones for the
+
+142
+00:13:59,105 --> 00:14:07,618
+horizontal and vertical walls. So now,
+let's look at the main loop for the event
+
+143
+00:14:07,618 --> 00:14:14,846
+driven simulation. So, the first thing is
+we're going to for every particle we're
+
+144
+00:14:14,846 --> 00:14:20,275
+going to compute the next time that it
+might hit every horizontal and vertical
+
+145
+00:14:20,275 --> 00:14:25,567
+wall. Well, actually if it's going away
+from a wall, it's not going to hit it so
+
+146
+00:14:25,567 --> 00:14:30,987
+that would be infinity. But if it's going
+towards a wall, then we'll compute the
+
+147
+00:14:30,987 --> 00:14:36,367
+time. And then that's a time in the future
+and we'll put that event on the priority
+
+148
+00:14:36,367 --> 00:14:41,437
+queue with that time as the key. And then,
+we'll do the same thing for all pairs of
+
+149
+00:14:41,437 --> 00:14:47,084
+particles. So, we do have a quadratic
+initialization phase that we perform just
+
+150
+00:14:47,084 --> 00:14:51,881
+once to get the priority queue filled up.
+Now, all collisions are, might not happen
+
+151
+00:14:51,881 --> 00:14:57,266
+so we might have two particles that are on
+a collision course that and we're going to
+
+152
+00:14:57,266 --> 00:15:01,897
+predict that point for both of those
+particles, you know, even right at the
+
+153
+00:15:01,897 --> 00:15:07,235
+beginning. But it might be the case that
+there's a third particle that knocks one
+
+154
+00:15:07,235 --> 00:15:12,431
+of those out before that thing happens and
+that event would be invalidated. So, the
+
+155
+00:15:12,431 --> 00:15:18,880
+simulation has to be careful to take that
+into account. But that's not difficult to
+
+156
+00:15:18,880 --> 00:15:23,856
+do. So, here's what the main loop is. So,
+we're going to take the next event from
+
+157
+00:15:23,856 --> 00:15:28,782
+the priority queue. That's the next
+collision that's going to happen from all
+
+158
+00:15:28,782 --> 00:15:33,618
+our calculations. There's one collision
+that's going to happen next. Then, we test
+
+159
+00:15:33,618 --> 00:15:39,518
+whether that event has been invalidated.
+And we do that by using that count field
+
+160
+00:15:39,518 --> 00:15:45,289
+in the particle. So, then that tells us
+what time it's going to be next. So, then
+
+161
+00:15:45,289 --> 00:15:49,766
+we have to go through all the particles
+and change their positions on a straight
+
+162
+00:15:49,766 --> 00:15:53,894
+line trajectory, where would they'll be
+after that much time? Then we have to take
+
+163
+00:15:53,894 --> 00:15:59,040
+the two particles that collide and change
+their velocity. They bounce off one
+
+164
+00:15:59,040 --> 00:16:04,014
+another. Now those two particles'
+velocities have changed , essentially that
+
+165
+00:16:04,014 --> 00:16:08,095
+invalidates the future collisions
+involving those. And then we, what we have
+
+166
+00:16:08,095 --> 00:16:13,094
+to do is for those two particles is go
+through and predict the future collisions
+
+167
+00:16:13,094 --> 00:16:18,069
+with any walls and collisions with any
+other particles. And put all those new
+
+168
+00:16:18,069 --> 00:16:22,742
+events on to the priority queue. But
+that's it. You got two particles, change
+
+169
+00:16:22,742 --> 00:16:28,021
+your velocities figure out the future
+collision of those particles with the wall
+
+170
+00:16:28,021 --> 00:16:33,036
+and update the priority queue and then the
+main loop is take the next thing off the
+
+171
+00:16:33,036 --> 00:16:42,017
+priority queue and keep going. That's the
+code that we'll look at next. So we have
+
+172
+00:16:42,017 --> 00:16:47,686
+a, a, a bunch of conventions just to
+reduce the code. And if we this the, the
+
+173
+00:16:47,686 --> 00:16:55,084
+thing called event which involves it says
+between two particles, something is going
+
+174
+00:16:55,084 --> 00:17:01,086
+to happen at a certain time and we're
+going to adopt the conventions that, if,
+
+175
+00:17:02,006 --> 00:17:07,048
+neither particle is null then we're
+talking about two particles. If one of the
+
+176
+00:17:07,048 --> 00:17:12,838
+particles is null then we're talking about
+a wall, a vertical or horizontal wall. And
+
+177
+00:17:12,838 --> 00:17:18,607
+if both particles are null we're saying we
+just want to redraw things. That's a bit
+
+178
+00:17:18,607 --> 00:17:25,231
+of a hack, but it cuts down on a lot of
+code. Our compared to is by time. And then
+
+179
+00:17:25,231 --> 00:17:33,018
+again, we need an, is valid to check about
+intervening collision. And then here's the
+
+180
+00:17:33,018 --> 00:17:40,763
+skeleton of what's going to happen with
+the collision system which is the key
+
+181
+00:17:40,763 --> 00:17:48,987
+thing is this prediction method that takes
+a particle as argument, and adds to the
+
+182
+00:17:48,987 --> 00:17:54,148
+priority queue, all the possible
+collisions involving this particle. So,
+
+183
+00:17:54,148 --> 00:18:00,369
+it's going to go through every particle
+and call the time to hit method for that
+
+184
+00:18:00,369 --> 00:18:06,776
+particle. And then, it'll put an event on
+the priority queue for that time, this
+
+185
+00:18:06,776 --> 00:18:12,695
+particle with that particle. And then,
+it'll also put an event for the vertical
+
+186
+00:18:12,695 --> 00:18:19,293
+wall and the horizontal wall, again, using
+this null convention to say that the event
+
+187
+00:18:19,533 --> 00:18:26,002
+second argument null is vertical. First
+argument null is horizontal. So that's a
+
+188
+00:18:26,002 --> 00:18:31,385
+key method t hat gets used in the
+simulation for each of the two particles
+
+189
+00:18:31,385 --> 00:18:38,129
+that are going to collide. So, now we can
+look finally at the main event driven
+
+190
+00:18:38,129 --> 00:18:45,613
+simulation loop. So there's build a
+priority queue. There's do this prediction
+
+191
+00:18:45,613 --> 00:18:53,936
+for every one of the particles. And then,
+also we're going to put as the first thing
+
+192
+00:18:53,936 --> 00:19:01,135
+that happened always a, an event that says
+redraw everything. So that's just a, a way
+
+193
+00:19:01,135 --> 00:19:08,856
+of make suring that the simulation keeps
+proceeding. It's an easy way to get things
+
+194
+00:19:09,110 --> 00:19:15,997
+drawn. Okay. So, now the main loop is
+while the priority queue is not empty
+
+195
+00:19:15,997 --> 00:19:22,166
+we're going to pull off an event. We're
+going to test whether it's valid. And
+
+196
+00:19:22,166 --> 00:19:27,562
+that's just checker if anything happened
+with those two particles. We're going to
+
+197
+00:19:27,562 --> 00:19:33,099
+pull off the two particles and then we're
+going to all, we're going to move all
+
+198
+00:19:33,099 --> 00:19:39,075
+particles by the amount of time that has
+elapsed since the last event. And then,
+
+199
+00:19:39,075 --> 00:19:44,656
+we're going to test which of the four
+types of events that it is. It's either
+
+200
+00:19:44,656 --> 00:19:50,174
+redraw, bounce, B of A or, or bounce off a
+vertical wall or, or a horizontal wall.
+
+201
+00:19:50,390 --> 00:19:55,737
+And then we'll go ahead and do the
+predictions of each of those particles, A
+
+202
+00:19:55,737 --> 00:20:01,282
+and B, against all other particles. That's
+the pretty much all the code for the
+
+203
+00:20:01,282 --> 00:20:09,427
+simulation. So this is data driven code.
+So, one thing we can do is just run it for
+
+204
+00:20:09,691 --> 00:20:16,813
+a 100 balls in random position at random
+velocity. But what's nice about data
+
+205
+00:20:16,813 --> 00:20:23,495
+driven code is now that the code's working
+and again we, we're not saying that this
+
+206
+00:20:23,495 --> 00:20:31,055
+is a trivial code to write but it's
+definitely manageable. And it's enabled by
+
+207
+00:20:31,055 --> 00:20:38,575
+priority queues. Without priority queues,
+it would be quite a bit more complicated
+
+208
+00:20:38,575 --> 00:20:45,912
+to figure out how to do this. And also, it
+wouldn't be reasonably efficient at all
+
+209
+00:20:45,912 --> 00:20:51,742
+for large data sets. So, that's a, a
+simple simulation to just generate random
+
+210
+00:20:51,742 --> 00:20:58,772
+positions. People might be interested in
+this one. Now this isn't exactly precisely
+
+211
+00:20:58,772 --> 00:21:04,482
+wh at would happen in the real world
+mainly because we didn't put in the
+
+212
+00:21:04,482 --> 00:21:10,836
+simulation what happens when three
+particles are touching or there's two
+
+213
+00:21:10,836 --> 00:21:16,683
+touching in another one hits them. And
+also nobody racks up a, a set of billiard
+
+214
+00:21:16,683 --> 00:21:23,063
+balls such that all fifteen are touching
+in all places. So life can be complicating
+
+215
+00:21:23,063 --> 00:21:28,604
+when you try to simulate the natural
+world. This is a little bit about
+
+216
+00:21:30,014 --> 00:21:38,281
+Einstein's experiment. If you got one big
+particle like a pollen grain and lots of
+
+217
+00:21:38,281 --> 00:21:46,045
+little particles like atoms molecules and
+bouncing against it the big one is going
+
+218
+00:21:46,045 --> 00:21:54,080
+to move about randomly. And then this is
+another famous physics experiment showing
+
+219
+00:21:54,080 --> 00:22:00,053
+diffusion. And there's many other things
+that you can do with this basic collision
+
+220
+00:22:00,053 --> 00:22:06,032
+system. If you have huge numbers of
+particles and you measure the number that
+
+221
+00:22:06,032 --> 00:22:11,867
+hit the size and the frequency with which
+they hit they sides you can do experiments
+
+222
+00:22:12,081 --> 00:22:18,082
+relating temperature and pressure and many
+other things or do three-dimensional
+
+223
+00:22:18,082 --> 00:22:23,835
+versions. Again simulation of the natural
+world is an increasingly important
+
+224
+00:22:24,081 --> 00:22:33,066
+application of computing and need
+efficient data structures like priority
+
+225
+00:22:33,066 --> 00:22:38,056
+queues to get it done.

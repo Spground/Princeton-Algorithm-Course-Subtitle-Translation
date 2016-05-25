@@ -1,0 +1,534 @@
+1
+00:00:03,440 --> 00:00:07,657
+So the final step in our regular
+refreshing pattern matching algorithm is
+
+2
+00:00:07,657 --> 00:00:12,905
+to construct and then determine the thick
+finite automaton. So how do we go ahead
+
+3
+00:00:12,905 --> 00:00:22,651
+and do that? and this is an integral part
+of the algorithm. but we pretty much have
+
+4
+00:00:22,651 --> 00:00:28,004
+got all the pieces, but really what makes
+it intricate is that if, an illustration
+
+5
+00:00:28,004 --> 00:00:34,638
+of what a programming line has to do to
+when trying understand your program, what
+
+6
+00:00:34,638 --> 00:00:40,443
+your programming does. What we need to do
+is somehow understand what's in the
+
+7
+00:00:40,443 --> 00:00:46,022
+regular expression and then take that
+information and use it to build the
+
+8
+00:00:46,022 --> 00:00:52,172
+machine. Now, that's what parson, that's
+called parsoning. to try to figure out the
+
+9
+00:00:52,172 --> 00:00:57,279
+structure of your program or regular
+expression and then, do something with it.
+
+10
+00:00:57,279 --> 00:01:03,522
+And this is a simple example of that but
+useful as well. So the first thing that
+
+11
+00:01:02,954 --> 00:01:10,254
+needs clear what to do. So we're going to
+have one state per character as we talked
+
+12
+00:01:10,254 --> 00:01:16,662
+about before, so that's easy to set up.
+and then the match transition edges. if a
+
+13
+00:01:16,662 --> 00:01:22,016
+state contains a character in the
+alphabet, we just put in a match
+
+14
+00:01:22,016 --> 00:01:27,288
+transition to the next state. and
+actually, that's implicit in our
+
+15
+00:01:27,288 --> 00:01:33,188
+algorithm. so now what about other things?
+Well, if we have for any parenthesis we
+
+16
+00:01:33,188 --> 00:01:40,004
+find, we'll just put in an epsilon
+transition to the next state. so our
+
+17
+00:01:40,004 --> 00:01:47,628
+machines all have that. now closure is one
+that you know, has quite a bit of action.
+
+18
+00:01:47,897 --> 00:01:55,701
+so, for every star let's look at the one
+that is just a one character closure. So
+
+19
+00:01:55,701 --> 00:02:02,787
+we have a single character closure. So
+this is A star. and, and what we need is
+
+20
+00:02:03,056 --> 00:02:10,424
+epsilon transitions for the star that
+allow the machine to go and pick up well,
+
+21
+00:02:10,424 --> 00:02:16,741
+there has, there has to be one, an epsilon
+transition that goes out to the star to
+
+22
+00:02:16,741 --> 00:02:22,761
+cover the case, so we have zero matches.
+and then after zero, then we want to go
+
+23
+00:02:22,761 --> 00:02:29,079
+back to have as many matches as we want
+before taking the sorry, take the match
+
+24
+00:02:29,079 --> 00:02:35,099
+transition. We're going to be able to go
+back and match as many as we want before
+
+25
+00:02:35,099 --> 00:02:43,048
+going up to the next. So for star, we have
+to add three epsilon transitions. The one
+
+26
+00:02:43,048 --> 00:02:52,370
+that goes if you have a character in I and
+a star in I + one , you have to add these
+
+27
+00:02:52,370 --> 00:03:01,272
+edges going both ways and then an edge out
+to the next character for, to get out of
+
+28
+00:03:01,272 --> 00:03:08,540
+the star. And that works also if there's a
+closure involving parentheses. If the
+
+29
+00:03:08,540 --> 00:03:14,104
+character before the star is a parenthesis
+then we want to add the same kind of
+
+30
+00:03:14,104 --> 00:03:19,736
+mechanism from the parenthesis, go out and
+skip the whole thing to cover the zero
+
+31
+00:03:19,738 --> 00:03:24,955
+match case or go back and match as many
+times as we need to match and then
+
+32
+00:03:24,955 --> 00:03:30,311
+finally, go out. So there's three edges
+have to be added for each star and defined
+
+33
+00:03:29,964 --> 00:03:37,945
+and well defined what they are. and then
+or there's two epsilon transition edges
+
+34
+00:03:37,945 --> 00:03:45,600
+that we have to add. and that is to allow
+the machine to skip the first part of the
+
+35
+00:03:45,600 --> 00:03:51,200
+expression and do the second or to skip
+the, do the first part of the expression
+
+36
+00:03:51,200 --> 00:03:57,542
+and skp the second. so if we keep track of
+where the left parenthesis is when we end
+
+37
+00:03:57,542 --> 00:04:03,233
+the or operator when we get to the right
+parenthesis, we have all the information
+
+38
+00:04:03,233 --> 00:04:09,376
+that we need in order to be able to add
+those two edges. so those are the edges
+
+39
+00:04:09,376 --> 00:04:16,037
+that we have to put together to build the
+NFA. and the trick is keeping track of the
+
+40
+00:04:16,037 --> 00:04:21,439
+information of where the previous
+operators are particularly since
+
+41
+00:04:21,439 --> 00:04:28,322
+parentheses can be nested. but this is not
+that difficult to do because we have a
+
+42
+00:04:28,322 --> 00:04:34,539
+mechanism for doing that. how to, to,
+remember where the left parentheses are
+
+43
+00:04:34,539 --> 00:04:42,479
+and, and the or and that's to maintain a
+push down stack. and so the, the algorithm
+
+44
+00:04:42,479 --> 00:04:51,850
+is to push left parenthesis in or onto the
+stack. And then when we hit right
+
+45
+00:04:51,850 --> 00:04:57,654
+parenthesis, then we can pop of course the
+corresponding left parenthesis and maybe,
+
+46
+00:04:57,654 --> 00:05:02,776
+maybe the or and that gives us all the
+information that we need to add the
+
+47
+00:05:02,776 --> 00:05:08,103
+epsilon transition edges and so the stack
+takes care of the nesting of the
+
+48
+00:05:08,103 --> 00:05:13,771
+parenthesis. and when you think about it,
+this is a very natural mechanism to use
+
+49
+00:05:13,976 --> 00:05:20,190
+very similar to the early programs that we
+wrote using Dexter's algorithms for medic
+
+50
+00:05:20,190 --> 00:05:26,518
+expressions. so let's look at a demo and
+you'll see how that works. So we're going
+
+51
+00:05:26,091 --> 00:05:32,716
+to build the machine corresponding to this
+regular expression and it's the one that
+
+52
+00:05:32,716 --> 00:05:39,698
+we've been working with. And so what we do
+is just go from left to right through the
+
+53
+00:05:39,698 --> 00:05:46,323
+regular expression and , take the
+appropriate action, for each character. So
+
+54
+00:05:46,323 --> 00:05:52,121
+for left parenthesis. there's always an
+epsilon transition from, left parenthesis
+
+55
+00:05:52,121 --> 00:05:56,865
+to the next state. and then the other
+thing is, if you remember that last
+
+56
+00:05:56,865 --> 00:06:01,610
+parenthesis on the push down stack. So we
+put the index zero onto the stack. so now
+
+57
+00:06:02,102 --> 00:06:07,941
+we got another left parenthesis again, we
+put the epsilon transition on, and we push
+
+58
+00:06:07,941 --> 00:06:14,400
+that one onto the stack. so now, if we
+have an alphabet symbol what we need to do
+
+59
+00:06:14,400 --> 00:06:20,919
+is add the match transition to the next
+state. And then there's a couple ways to
+
+60
+00:06:20,919 --> 00:06:27,135
+this, but one easy way, in this case, is
+to just look for the star and if you see
+
+61
+00:06:27,363 --> 00:06:33,655
+that the next one is a star then you've
+got everything you need for the epsilon
+
+62
+00:06:33,655 --> 00:06:40,250
+transitions. So, in this case the next one
+is a star so we'll add those epsilon
+
+63
+00:06:40,250 --> 00:06:47,776
+transitions from the from two to three and
+from three to two.
+
+64
+00:06:47,776 --> 00:06:54,712
+And adding epsilon transitions, that's
+just, adding edges to the phi graph. then
+
+65
+00:06:54,712 --> 00:07:00,237
+with closure that just takes us to the
+next state and we took care of the other
+
+66
+00:07:00,237 --> 00:07:05,555
+two earlier. now we have an alphabet
+symbol, that's the B, so we just put in
+
+67
+00:07:05,555 --> 00:07:11,633
+the transition to the next state. Now we
+have an or. All we do for an or is put it
+
+68
+00:07:11,633 --> 00:07:17,365
+on the stack. now it's got for A, we got
+the match transition, for C, we got the
+
+69
+00:07:17,365 --> 00:07:23,814
+match transition. and now we have the
+first right parenthesis. so this right
+
+70
+00:07:23,814 --> 00:07:29,572
+parenthesis so one thing we, the first
+thing we do is an epsilon period just to
+
+71
+00:07:29,572 --> 00:07:35,799
+get it over to the next state. but then we
+go to the put down stack and we pop. and
+
+72
+00:07:35,799 --> 00:07:42,045
+if the thing at the top of the stack is an
+or that's one thing, piece information
+
+73
+00:07:42,045 --> 00:07:47,533
+that we need. the other piece of
+information we need is the position of the
+
+74
+00:07:47,533 --> 00:07:53,594
+corresponding left parenthesis and that'll
+be the next thing on the stack. So we add
+
+75
+00:07:53,594 --> 00:08:00,003
+the transition we pop the or off the stack
+and we pop the or on and off the stack and
+
+76
+00:08:00,003 --> 00:08:05,924
+that gives us the information that we need
+to put in the epsilon transition. We're at
+
+77
+00:08:05,924 --> 00:08:09,617
+stage eight.
+We put one from the or to eight, and then
+
+78
+00:08:09,617 --> 00:08:15,538
+we put one from the one to the or + one.
+There's the, that's what we need to do.
+
+79
+00:08:15,747 --> 00:08:22,483
+and, look for a star the same way as we
+did for one character. now in this case we
+
+80
+00:08:22,483 --> 00:08:30,435
+have a no star. So we just do the finite
+alphabet symbol and we add the match
+
+81
+00:08:30,435 --> 00:08:37,424
+transition. and now we have the right
+parenthesis and so we pop the
+
+82
+00:08:37,424 --> 00:08:44,366
+corresponding left parenthesis. and it's
+not an or. so in this case you know,
+
+83
+00:08:44,561 --> 00:08:49,866
+there's nothing to do except do the
+epsilon transition to the accept state. so
+
+84
+00:08:50,084 --> 00:08:56,269
+that's the process for each character in
+the regular expression, it's well defined
+
+85
+00:08:56,269 --> 00:09:03,472
+what we do. left parenthesis and or we put
+onto the stack characters we do the match
+
+86
+00:09:03,472 --> 00:09:09,147
+transitions and right parenthesis we do a
+pop and if it's an or, put a numeric
+
+87
+00:09:09,147 --> 00:09:16,205
+transitions. otherwise we do the look at
+to check for the star. and that's the demo
+
+88
+00:09:16,205 --> 00:09:21,931
+of the construction for nondeterministic
+finite state of phenomena. So, it's
+
+89
+00:09:21,931 --> 00:09:28,945
+actually a remarkably simple process. we
+figured out what to do with each character
+
+90
+00:09:28,945 --> 00:09:35,706
+in the regular expression and this is the
+second part of the regular expression
+
+91
+00:09:35,706 --> 00:09:41,199
+pattern-matching algorithm, which is
+constructing the NFA. And again it's a
+
+92
+00:09:41,199 --> 00:09:50,393
+remarkably little code. So it's a routine
+that builds the epsilon transition. this
+
+93
+00:09:50,393 --> 00:09:59,970
+is a part of the NFA. So it's got the
+regular expression . yes, a useless
+
+94
+00:09:59,970 --> 00:10:07,762
+variable to refer to. and it's going to
+build a new diagraph with one state, one
+
+95
+00:10:07,762 --> 00:10:16,432
+extra state, the accept state M+11 if the
+rate description has M characters. so, the
+
+96
+00:10:16,663 --> 00:10:23,690
+and then we maintain a stack which is just
+integers. and for every character in a
+
+97
+00:10:23,690 --> 00:10:30,176
+regular expression we do the processing
+that we just described. if it's a left
+
+98
+00:10:30,176 --> 00:10:38,422
+parenthesis or an or we just put it on to
+the stack. and that's it. if it's a right
+
+99
+00:10:38,422 --> 00:10:45,371
+parenthesis then we pop. If that pop is an
+or, then we put in the two edges to skip
+
+100
+00:10:45,371 --> 00:10:51,634
+the or. and otherwise, we look ahead and
+do the closure exactly as described. If
+
+101
+00:10:51,634 --> 00:10:58,378
+it's any one of the metal symbols, we just
+put in a next line transition to the next
+
+102
+00:10:58,378 --> 00:11:04,272
+edge. And then a remarkably little code to
+go ahead and construct the NFA from a
+
+103
+00:11:04,272 --> 00:11:09,613
+given regular expression. and so, the
+final step is the analysis that's going to
+
+104
+00:11:10,042 --> 00:11:15,978
+take time and space proportional to M. and
+that's immediate, because for every
+
+105
+00:11:15,978 --> 00:11:21,771
+character we do most of two stack
+operations and add at most three epsilon
+
+106
+00:11:21,771 --> 00:11:28,065
+transitions. And, this is a generous upper
+bound, time and space proportional to the
+
+107
+00:11:28,065 --> 00:11:33,501
+number of characters in the regular
+expression. So that's how we get the NFA

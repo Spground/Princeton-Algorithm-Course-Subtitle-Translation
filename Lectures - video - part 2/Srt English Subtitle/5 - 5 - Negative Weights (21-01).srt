@@ -1,0 +1,1144 @@
+1
+00:00:03,220 --> 00:00:09,365
+So finally, we're going to take a look at
+the implications of having negative
+
+2
+00:00:09,365 --> 00:00:17,204
+weights in directed weighted graphs.
+So the first thing to notice is that the
+
+3
+00:00:17,204 --> 00:00:23,687
+easy solutions don't work at all.
+Dijkstra's algorithm just doesn't work in
+
+4
+00:00:23,687 --> 00:00:27,010
+the presence of, presence of negative
+weights.
+
+5
+00:00:27,010 --> 00:00:30,768
+So say, this weight from two to three is
+-nine.
+
+6
+00:00:30,777 --> 00:00:37,349
+What Dijkstra's algorithm will do is just
+immediately select vertex three and never
+
+7
+00:00:37,349 --> 00:00:41,998
+revisit that decision.
+Saying the shortest way to get from zero
+
+8
+00:00:41,998 --> 00:00:45,323
+to three is, is,
+Is to take this edge of three which has
+
+9
+00:00:45,323 --> 00:00:48,774
+weight two.
+But the actual shortest path goes over to
+
+10
+00:00:48,774 --> 00:00:53,005
+four and then over to one and down to two
+for a weight of ten.
+
+11
+00:00:53,006 --> 00:00:57,414
+And then a -nine makes it one.
+So there's a way to get from, zero to
+
+12
+00:00:57,414 --> 00:01:01,665
+three with a weight path weight just one.
+Because of the -nine.
+
+13
+00:01:01,665 --> 00:01:06,763
+But Dijkstra's algorithm won't find that.
+So that's not going to work and you might
+
+14
+00:01:06,763 --> 00:01:12,393
+think, well, why don't we just make all
+the weights positive by adding nine to
+
+15
+00:01:12,393 --> 00:01:16,116
+everything.
+Well, that's not going to work because a
+
+16
+00:01:16,116 --> 00:01:22,450
+longer path will have nine added to it a
+lot of times, so its just not any relation
+
+17
+00:01:22,450 --> 00:01:28,048
+between shortest paths in this graph and
+shortest paths in that graph.
+
+18
+00:01:28,269 --> 00:01:34,751
+So, those easy attempts, just don't work
+for dealing with, negative weights, in
+
+19
+00:01:34,751 --> 00:01:39,023
+general graphs.
+So the conclusion is we need some
+
+20
+00:01:39,023 --> 00:01:44,786
+different algorithm and the top logical
+sort one isn't going to work cuz the graph
+
+21
+00:01:44,786 --> 00:01:49,217
+might have a cycle in it, so there's no
+topological sort so we needs some
+
+22
+00:01:49,217 --> 00:01:55,839
+different algorithm.
+And the main thing to think about in terms
+
+23
+00:01:55,839 --> 00:02:01,347
+of weighted directed graphs, that might
+have cycles,
+
+24
+00:02:01,347 --> 00:02:07,399
+Is that you can have this situation called
+a negative cycle.
+
+25
+00:02:07,399 --> 00:02:15,277
+This is a graph, it all looks fine.
+It's just got this one negative edge from
+
+26
+00:02:15,277 --> 00:02:22,001
+five to four of weight -0.66.
+And these other ones are 0.37 + 0.28. So
+
+27
+00:02:22,001 --> 00:02:27,685
+that's +0.65.
+But if you go from five to four to seven
+
+28
+00:02:27,685 --> 00:02:34,420
+to five, Then the distance around that is
+-0.01.
+
+29
+00:02:34,420 --> 00:02:40,303
+And if we're trying to find, say a
+shortest path from zero to six, Well as
+
+30
+00:02:40,303 --> 00:02:46,070
+soon as you hit this cycle if you want
+really want the shortest path, what you
+
+31
+00:02:46,070 --> 00:02:50,876
+could do is spin around this well an
+infinite number of times.
+
+32
+00:02:50,876 --> 00:02:56,791
+You could make the path a short as you
+want, if you hit an infinite, if you hit a
+
+33
+00:02:56,791 --> 00:03:01,597
+negative cycle.
+So, negative cycles definitely can get in
+
+34
+00:03:01,597 --> 00:03:05,737
+the way of trying to solve the shortest
+path problem.
+
+35
+00:03:05,737 --> 00:03:14,886
+It make somewhat specified.
+So, the first thing is if there's no
+
+36
+00:03:14,886 --> 00:03:21,112
+negative cycles, then there's a shortest
+path tree, and if there's a shortest path
+
+37
+00:03:21,112 --> 00:03:27,492
+tree, there's no negative cycles assuming
+that you can actually get to the vertices.
+
+38
+00:03:27,492 --> 00:03:33,948
+So what we'll want is graphs that have no
+negative cycles and then we can work with
+
+39
+00:03:33,948 --> 00:03:38,656
+those.
+And is an algorithm an old algorithm known
+
+40
+00:03:38,656 --> 00:03:43,087
+as the Bellman-Ford algorithm that does
+the job.
+
+41
+00:03:43,087 --> 00:03:50,473
+It's only slightly more specific than the
+generic algorithm that we gave before.
+
+42
+00:03:50,473 --> 00:03:57,951
+It just says so if you have V vertices,
+for just V times all you do is go through
+
+43
+00:03:57,951 --> 00:04:02,290
+all the edges in the graph and relax each
+edge.
+
+44
+00:04:02,290 --> 00:04:07,277
+So you make V passes through relaxing all
+the edges in the graph.
+
+45
+00:04:07,497 --> 00:04:13,511
+And that's, an algorithm that finds
+shortest paths, in graphs that don't have
+
+46
+00:04:13,511 --> 00:04:18,572
+any negative cycles.
+If there's a negative cycle, it, you know,
+
+47
+00:04:18,572 --> 00:04:24,513
+we'll talk about what happens in a minute.
+So lets look at that one in terms of a
+
+48
+00:04:24,513 --> 00:04:29,743
+demo.
+So we'll just take the list of edges in
+
+49
+00:04:29,743 --> 00:04:34,950
+the graph it could be in any order, and
+we'll just relax them all.
+
+50
+00:04:36,010 --> 00:04:43,913
+So to start out, we, set the distance to
+the source zero and everybody else's
+
+51
+00:04:43,913 --> 00:04:49,011
+distance, infinity as usual.
+And then here's the list of edges.
+
+52
+00:04:49,011 --> 00:04:55,760
+So we'll relax In this case, we start out
+with the edges sort of in the order that
+
+53
+00:04:55,760 --> 00:05:01,710
+you'd get em' by walking through the whole
+graph so you get all the edges associated
+
+54
+00:05:01,710 --> 00:05:05,910
+with each vertex together.
+So relax zero, one, relax zero, four,
+
+55
+00:05:05,910 --> 00:05:10,670
+relax zero, seven, that's kind of the way
+Dijkstra would start out.
+
+56
+00:05:10,880 --> 00:05:18,076
+And then, we go ahead and relax the edges
+that, come out from one, so one, two takes
+
+57
+00:05:18,076 --> 00:05:25,205
+to, two for the first time, one, three
+takes us to three for the first time.
+
+58
+00:05:25,205 --> 00:05:29,658
+One, seven is no help so we ignore it.
+Now we relax.
+
+59
+00:05:29,658 --> 00:05:34,313
+Sorry, went too far.
+Two, three and two, six and those, that
+
+60
+00:05:34,313 --> 00:05:42,614
+one takes us to six for the first time.
+And now three, six that does not give us a
+
+61
+00:05:42,614 --> 00:05:48,673
+better way to six so we ignore it.
+Now we go to four, five that takes us to
+
+62
+00:05:48,673 --> 00:05:54,185
+five for the first time.
+Four, six well we could get to four and
+
+63
+00:05:54,185 --> 00:05:59,970
+nine and twenty to six so that's no help.
+Four, five that's no help.
+
+64
+00:05:59,970 --> 00:06:06,186
+Now we do the ones from five, five, two
+that's going to give a better way to two
+
+65
+00:06:06,188 --> 00:06:11,618
+so we've improved that.
+And five, six is going to give a better
+
+66
+00:06:11,618 --> 00:06:14,596
+way to six.
+Now, seven, five that's no help.
+
+67
+00:06:14,596 --> 00:06:18,721
+And seven, two is no help.
+So we've completed the first paths.
+
+68
+00:06:18,721 --> 00:06:22,996
+And now we're just gonna go through and
+relax all the edges again.
+
+69
+00:06:22,996 --> 00:06:28,307
+Now a lot of them are really just what we
+did before so they're not going to improve
+
+70
+00:06:28,307 --> 00:06:32,905
+anything, like the ones at the beginning
+are not gonna improve anything.
+
+71
+00:06:33,100 --> 00:06:36,740
+But before too long so still no
+improvement.
+
+72
+00:06:36,740 --> 00:06:43,548
+But here, now the second time we relax
+two, three we have it gives us a better
+
+73
+00:06:43,548 --> 00:06:48,316
+way to get to three.
+In, for the first path that didn't help us
+
+74
+00:06:48,316 --> 00:06:53,519
+but the second path we relax two, three to
+get us to three and seventeen.
+
+75
+00:06:53,538 --> 00:06:59,162
+Now that's going to change things for
+three, If we had already been through
+
+76
+00:06:59,162 --> 00:07:04,635
+three it wouldn't, wouldn't matter.
+In this, in this, we'd take another path
+
+77
+00:07:04,635 --> 00:07:10,258
+to deal with, but in this case, we're
+going to be coming through three later.
+
+78
+00:07:10,483 --> 00:07:13,707
+And, there's another, two to six gets
+better.
+
+79
+00:07:13,707 --> 00:07:18,281
+Then three to six well, two to six beat it
+so it doesn't help.
+
+80
+00:07:18,581 --> 00:07:23,080
+And now I think, there's nothing else that
+helps in this example.
+
+81
+00:07:23,840 --> 00:07:29,937
+And in fact, there's no further changes.
+Once we have the shortest path stream,
+
+82
+00:07:30,158 --> 00:07:36,623
+which, we know from this example, because
+it's similar to one we did before then
+
+83
+00:07:36,844 --> 00:07:42,721
+there's going to be no, no changes to it.
+You're not going to find any edges that
+
+84
+00:07:42,721 --> 00:07:47,423
+successfully relax.
+And so, go through and, try them all, and
+
+85
+00:07:47,423 --> 00:07:53,448
+in the end we have a shortest path stream.
+So that is an example of a Bellman-Ford
+
+86
+00:07:53,448 --> 00:07:59,288
+algorithm, on a simple, simple graph.
+Here's the visualization of the
+
+87
+00:07:59,288 --> 00:08:03,527
+Bellman-Ford algorithm running on a bigger
+graph.
+
+88
+00:08:03,527 --> 00:08:09,308
+And here's what it looks like after four
+passes, seven, ten, thirteen.
+
+89
+00:08:09,324 --> 00:08:16,245
+And this graph has 100 something vertices.
+And it finds the tree in a relatively
+
+90
+00:08:16,245 --> 00:08:21,868
+small number of passes.
+And we'll talk about the performance in a
+
+91
+00:08:21,868 --> 00:08:26,453
+second of.
+One thing is to be sure that the algorithm
+
+92
+00:08:26,453 --> 00:08:30,520
+works.
+And there's a couple of ways to prove it.
+
+93
+00:08:30,520 --> 00:08:38,639
+And again, the reason the proof has to be
+done with care is that there could be
+
+94
+00:08:38,639 --> 00:08:43,881
+edges with negative weights but no
+negative cycles.
+
+95
+00:08:43,881 --> 00:08:51,692
+The idea of the proof is that after you've
+done the i for pass, you've found the
+
+96
+00:08:51,692 --> 00:08:59,504
+shortest path containing at most i edges.
+And, and we'll leave that proof for the
+
+97
+00:08:59,504 --> 00:09:03,089
+book.
+Now there is a couple of ways to improve
+
+98
+00:09:03,089 --> 00:09:10,490
+the Bellman-Ford algorithm in practice.
+And, the most important one is that if you
+
+99
+00:09:10,490 --> 00:09:14,157
+didn't change the distance to a vertex
+during one pass,
+
+100
+00:09:14,157 --> 00:09:17,903
+Then you don't have to worry about it in
+the next pass.
+
+101
+00:09:17,903 --> 00:09:21,650
+You don't have to worry about it, it's
+edges in the next pass.
+
+102
+00:09:21,650 --> 00:09:28,636
+And so, what we do in practice, is if you
+just maintain a queue of the vertices that
+
+103
+00:09:28,636 --> 00:09:34,480
+we found shorter paths to, in each path.
+We want to make sure that we keep, at
+
+104
+00:09:34,480 --> 00:09:37,311
+most, one copy of each vertex on the
+queue.
+
+105
+00:09:37,513 --> 00:09:42,972
+Otherwise, you could wind up with
+situations where, the, queue, size of the
+
+106
+00:09:42,972 --> 00:09:47,218
+queue, blows up.
+But that's easy to do, with, a vertex
+
+107
+00:09:47,218 --> 00:09:53,202
+index array to keep track of that.
+And so, in the worst case, you could have
+
+108
+00:09:53,202 --> 00:09:59,865
+all the vertices on the queue for, And
+then therefore all the edges relaxed, in
+
+109
+00:09:59,865 --> 00:10:05,484
+every one of the V passes.
+But in practice not too many vertices
+
+110
+00:10:05,484 --> 00:10:10,761
+really get relaxed.
+So, this is a, a quick summary of the
+
+111
+00:10:10,761 --> 00:10:17,161
+algorithms that we've looked for, for,
+shortest paths, And, we didn't do the code
+
+112
+00:10:17,161 --> 00:10:20,766
+for Bellman-Ford.
+We've done enough code today.
+
+113
+00:10:20,766 --> 00:10:26,210
+It's quite simple code that you'll find in
+the book over on the book site.
+
+114
+00:10:26,444 --> 00:10:32,540
+So, probably the simplest algorithm is
+when there are no directed cycles.
+
+115
+00:10:32,728 --> 00:10:38,324
+And that's when we just topologically sort
+the vertices and then go through that list
+
+116
+00:10:38,324 --> 00:10:41,216
+and relax every edge.
+So that's linear time.
+
+117
+00:10:41,405 --> 00:10:44,612
+You relax all the edges in the graph and
+that's it.
+
+118
+00:10:44,800 --> 00:10:47,944
+And that works even if there are negative
+weights.
+
+119
+00:10:48,133 --> 00:10:53,414
+If there's no negative weights but there
+maybe cycles, then Dijkstra's algorithm
+
+120
+00:10:53,414 --> 00:10:56,433
+works.
+And then we looked at E log V algorithms
+
+121
+00:10:56,433 --> 00:11:00,520
+which are slightly faster depending on
+what kind of heap you use.
+
+122
+00:11:00,747 --> 00:11:07,042
+The Bellman-Ford algorithm which works
+with negative weights as long as it's no
+
+123
+00:11:07,042 --> 00:11:13,791
+negative cycles it's if, if you do the q
+you can get the in, in practice it turns
+
+124
+00:11:13,791 --> 00:11:19,252
+out to be linear time for the times of
+graphs that arise in practice.
+
+125
+00:11:19,252 --> 00:11:25,850
+Although in principle the worst case it
+could be E times V which is much to slow.
+
+126
+00:11:26,057 --> 00:11:29,246
+So, directed cycles make the problem
+harder.
+
+127
+00:11:29,246 --> 00:11:32,504
+You need a Dijkstra instead of top logical
+sort.
+
+128
+00:11:32,712 --> 00:11:36,525
+Negative weights definitely make the
+problem harder.
+
+129
+00:11:36,733 --> 00:11:41,793
+Because you might need, to, get the worst
+case of Bellman-Ford.
+
+130
+00:11:42,001 --> 00:11:47,339
+And negative cycles, in the presence of
+negative cycles, it actually makes the
+
+131
+00:11:47,339 --> 00:11:51,844
+problem intractable.
+And we'll talk about that a little bit at
+
+132
+00:11:51,844 --> 00:11:56,518
+the end of the course.
+One thing that you can do with the
+
+133
+00:11:56,748 --> 00:12:02,660
+Bellman-Ford algorithm is to at least
+find, find out if there's a negative
+
+134
+00:12:02,660 --> 00:12:06,269
+cycle.
+In one practical reason to do that is
+
+135
+00:12:06,499 --> 00:12:12,641
+maybe it has something to do with
+something else specified in the problem.
+
+136
+00:12:12,872 --> 00:12:19,245
+And so if you can detect a negative cycle
+and deal with it that would be useful.
+
+137
+00:12:19,475 --> 00:12:25,157
+And we'll look at another important
+practical reason for finding negative
+
+138
+00:12:25,157 --> 00:12:30,239
+cycles in just a second.
+So anyway, since its a useful thing to do
+
+139
+00:12:30,460 --> 00:12:37,161
+we're going to add two methods to the API.
+And that is does the graph have a negative
+
+140
+00:12:37,161 --> 00:12:42,389
+cycle and in an interval?
+If it does have a negative cycle please
+
+141
+00:12:42,389 --> 00:12:46,881
+give it to me.
+So for this graph, it would return true.
+
+142
+00:12:47,112 --> 00:12:53,420
+And then it would give an iterable that
+would have these three edges that give me
+
+143
+00:12:53,420 --> 00:12:58,651
+the negative cycle.
+So, the, observation or the way to find a
+
+144
+00:12:58,651 --> 00:13:04,614
+negative cycle is to realize that what
+will happen with a Bellman-Ford algorithm
+
+145
+00:13:04,614 --> 00:13:10,307
+if there's a negative cycle is that it'll
+every, every path through, it'll basically
+
+146
+00:13:10,307 --> 00:13:14,278
+go around the cycle.
+Well not every pass in the, in the whole
+
+147
+00:13:14,278 --> 00:13:18,647
+length in the cycle.
+It'll get stuck in a loop going around the
+
+148
+00:13:18,647 --> 00:13:24,538
+cycle depending on the order of vertices.
+And it'll update and just get stuck going
+
+149
+00:13:24,538 --> 00:13:28,836
+around the, around the cycle.
+So by testing what happens after
+
+150
+00:13:28,836 --> 00:13:34,213
+Bellman-Ford is done, even if there's
+negative cycles present, we can find the
+
+151
+00:13:34,213 --> 00:13:39,785
+negative cycles and that, in fact,
+If some vertex is updated in the last
+
+152
+00:13:39,785 --> 00:13:45,650
+phase of the Bellman-Ford algorithm then
+there's a negative cycle.
+
+153
+00:13:45,650 --> 00:13:50,237
+And not only that.
+Edge 2v is the last edge, on that cycle.
+
+154
+00:13:50,237 --> 00:13:55,141
+That's the way you got to v.
+And you can trace back to find the cycle.
+
+155
+00:13:55,141 --> 00:14:01,536
+So just run the Bellman-Ford algorithm and
+if some vertex gets, get updated, the last
+
+156
+00:14:01,536 --> 00:14:05,090
+time through it means there's a negative
+cycle.
+
+157
+00:14:05,359 --> 00:14:10,839
+In practice actually, you don't have to
+wait till the last phase.
+
+158
+00:14:11,199 --> 00:14:16,949
+You can check these two entries for
+negative cycles, more frequently.
+
+159
+00:14:17,308 --> 00:14:21,621
+But anyway, it's possible to find a
+negative cycle.
+
+160
+00:14:21,621 --> 00:14:27,730
+And let's look at an application.
+This is an application that it really
+
+161
+00:14:27,730 --> 00:14:33,750
+motives some people to understand the
+shortest paths to algorithms.
+
+162
+00:14:34,018 --> 00:14:42,165
+And the idea is currency exchange.
+And so these are typical numbers that you
+
+163
+00:14:42,165 --> 00:14:49,147
+might see in a newspaper table, or
+nowadays in an app on your mobile device
+
+164
+00:14:49,416 --> 00:14:54,698
+that gives the exchange rates for various
+currencies.
+
+165
+00:14:54,966 --> 00:15:02,197
+So to convert a dollar to euros using
+factor of points 0.741, I compute Euros
+
+166
+00:15:02,197 --> 00:15:05,273
+too, Great Britain pounds, 0.888, and so
+forth.
+
+167
+00:15:05,273 --> 00:15:08,349
+So this table is a table of exchange
+rates.
+
+168
+00:15:08,349 --> 00:15:12,570
+And the problem is, is there an arbitrage
+opportunity?
+
+169
+00:15:12,570 --> 00:15:19,273
+So what is an arbitrage.
+Well arbitrage is when just by making
+
+170
+00:15:19,273 --> 00:15:27,111
+exchanges according to the legal rates in
+the table you can make money.
+
+171
+00:15:27,111 --> 00:15:32,681
+So say we had a $1000.
+And then these are the going rates.
+
+172
+00:15:32,681 --> 00:15:37,317
+Well we can convert that $1000 into 741
+Euros.
+
+173
+00:15:37,631 --> 00:15:45,172
+So now, if we take those 71 Euros and
+convert them into Canadian dollars it
+
+174
+00:15:45,172 --> 00:15:50,200
+works out that we get 1,012.206 Canadian
+dollars.
+
+175
+00:15:50,200 --> 00:15:57,217
+And if we take those Canadian dollars and
+convert them back to U.S.
+
+176
+00:15:57,217 --> 00:16:04,750
+Dollars, it works out that we have $1,007.
+Well that's arbitrage and that's
+
+177
+00:16:04,750 --> 00:16:09,229
+interesting.
+If we could go ahead and do for well let
+
+178
+00:16:09,229 --> 00:16:15,512
+say $10,000 then would make $70 on the
+deal or a $100,000 would make $700 or
+
+179
+00:16:15,512 --> 00:16:22,484
+maybe a million dollars would make $7,000
+or maybe a billion would make $7,000,000.
+
+180
+00:16:22,484 --> 00:16:28,079
+No reason to stop there.
+With arbitrage opportunity you're making
+
+181
+00:16:28,079 --> 00:16:33,416
+money off the system.
+So of course there's intense interest in
+
+182
+00:16:33,416 --> 00:16:39,700
+looking for opportunities like this.
+Course in modern financial market.
+
+183
+00:16:39,700 --> 00:16:44,134
+It's there's many more things that you can
+trade than currencies.
+
+184
+00:16:44,330 --> 00:16:50,069
+And these tables are big and complex.
+And the market is suppose to take care of
+
+185
+00:16:50,069 --> 00:16:55,351
+eliminating these opportunities.
+But if you are using a computer and you've
+
+186
+00:16:55,351 --> 00:17:01,155
+got a fast algorithm for finding negative
+cycles in directed graphs then maybe you
+
+187
+00:17:01,155 --> 00:17:05,590
+can find the opportunity and take
+advantage of it before the market.
+
+188
+00:17:05,590 --> 00:17:13,061
+So let's look at how it works.
+What we do is again model the situation
+
+189
+00:17:13,061 --> 00:17:19,254
+with a graph.
+So we're going to have a vertex for every
+
+190
+00:17:19,254 --> 00:17:23,283
+currency.
+And then on the edge corresponding to
+
+191
+00:17:23,283 --> 00:17:29,247
+every transaction or every entry in the
+table so this is actually a complete
+
+192
+00:17:29,247 --> 00:17:33,739
+directed graph.
+And the weight is equal to the exchange
+
+193
+00:17:33,739 --> 00:17:36,915
+rate.
+And what we are trying to find is a
+
+194
+00:17:36,915 --> 00:17:41,950
+directed cycle whose product of edge
+weights is greater than one.
+
+195
+00:17:42,213 --> 00:17:48,618
+So that doesn't look like a shortest path
+problem although it's close.
+
+196
+00:17:48,881 --> 00:17:55,462
+And actually it's very close.
+To convert this to a shortest path problem
+
+197
+00:17:55,725 --> 00:18:04,110
+what we want to do is just take logs.
+If instead of using the exchange rate, we
+
+198
+00:18:04,110 --> 00:18:12,014
+take minus the log of the exchange rate.
+And then multiplying turns to addition for
+
+199
+00:18:12,014 --> 00:18:15,720
+looking for multiplying the exchange
+rates.
+
+200
+00:18:15,947 --> 00:18:21,656
+That's the same as summing the logs.
+And, we took minus log it means that what
+
+201
+00:18:21,656 --> 00:18:26,340
+we're looking for when we're trying to
+find products bigger than one.
+
+202
+00:18:26,570 --> 00:18:32,647
+We're looking for a directed cycle whose
+sum of edge weights is less than zero.
+
+203
+00:18:32,647 --> 00:18:39,032
+Find a directed cycle whose sum of edge
+weights is less than zero in a complete
+
+204
+00:18:39,263 --> 00:18:42,647
+digraph.
+That's the negative cycle detection
+
+205
+00:18:42,647 --> 00:18:49,186
+problem, and we just saw that, we can, do
+that with the, Bellman-Ford algorithm.
+
+206
+00:18:49,416 --> 00:18:56,109
+And again, in a huge, directed graph in a
+modern trading situation, that's an
+
+207
+00:18:56,109 --> 00:19:01,390
+extraordinarily valuable algorithm, and
+you can believe that you know,
+
+208
+00:19:01,390 --> 00:19:06,703
+There are people out there running these
+algorithms in order to detect and take
+
+209
+00:19:06,703 --> 00:19:11,585
+advantage of arbitrage opportunities.
+And if you don't have a fast algorithm, if
+
+210
+00:19:11,585 --> 00:19:16,344
+you're using a slow one it'll be gone
+before you can take advantage of it.
+
+211
+00:19:16,344 --> 00:19:21,227
+That's a fine example of the value of
+building efficient algorithm for a
+
+212
+00:19:21,227 --> 00:19:24,970
+practical problem.
+So here's our summary of short as fast
+
+213
+00:19:24,970 --> 00:19:28,139
+today.
+We've seen some great, classic algorithms
+
+214
+00:19:28,139 --> 00:19:31,444
+that are, important and extraordinarily
+useful.
+
+215
+00:19:31,646 --> 00:19:37,446
+First one is Dijkstra's algorithm which
+is, a fine, efficient workhorse algorithm
+
+216
+00:19:37,648 --> 00:19:42,706
+that you see used, every day.
+And it's a, a grass search algorithm that
+
+217
+00:19:42,706 --> 00:19:48,911
+is, similar to, Prim's, depth for search
+and rep for search that we've seen before
+
+218
+00:19:48,911 --> 00:19:54,860
+and we'll see again if the graphs are,
+have no cycles which is a situation that
+
+219
+00:19:54,860 --> 00:20:00,735
+arises in several important applications.
+We can do better than Dykstra's algorithm.
+
+220
+00:20:00,735 --> 00:20:04,699
+It's easier.
+And also, negative weights are no problem,
+
+221
+00:20:04,699 --> 00:20:10,271
+which enables us to solve scheduling
+problems in other examples If there's
+
+222
+00:20:10,271 --> 00:20:15,701
+negative weights and negative cycles we
+can detect negative cycles.
+
+223
+00:20:15,701 --> 00:20:20,684
+And if there aren't any negative cycles,
+we can find shortest paths.
+
+224
+00:20:21,130 --> 00:20:26,040
+In, the general problem is intractable,
+and we'll come back to that.
+
+225
+00:20:26,249 --> 00:20:31,684
+But the key point that I want people to
+remember from today's lecture is that
+
+226
+00:20:31,684 --> 00:20:37,328
+shortest path is our first real example of
+a general problem solving model where
+
+227
+00:20:37,328 --> 00:20:42,694
+there's a lot of important practical
+problems that we cast solve as shortest
+
+228
+00:20:42,694 --> 00:20:46,387
+path problems.
+Number one and number two we have fast
+
+229
+00:20:46,387 --> 00:20:52,101
+solutions to those problems, with these
+classic algorithms that we've talked about

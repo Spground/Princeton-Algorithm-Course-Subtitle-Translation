@@ -1,0 +1,266 @@
+Before we can get to the algorithm, we
+have to consider another abstract concept
+in the NFA and take a look at the NFA's
+now. first of all, there's a duality, a
+well-known duality between regular
+expressions and DFAs. DFA is a discrete,
+finite automaton. that's an abstract
+machine from, theoretical computer
+science. which is a very simple idea. It's
+a state machine for recognizing whether a
+given string is in a given set. And, if
+you're not familiar with those, they are
+very easy to understand and we'll, look at
+some examples. in a little summary from
+basic theoretical computer science,
+there's a very important theorem called
+Kleene's theorem that, was, developed
+actually here at Princeton in the 30's and
+it says that, for any discrete finite
+state automaton, there exists a regular
+expression that describes the same set of
+strings. And equivalently, for any regular
+expression, there's a DFA that recognizes
+the same set of strings. and this is just,
+an example. and if you have seen this,
+this sort, this sort of thing will be
+familiar and if we have, if you haven't
+you know, and you will understand better
+as we get into it. So, a discreet finite
+state machine is a machine that has states
+that are labeled and it has transitions
+from state to state that are labeled with
+characters. And, the way that it works is,
+if it's in a state and it reads like for
+every state is well defined is the next
+character is zero or one it's another
+state to go to. So for example at state
+zero if you see a zero you stay in state
+zero, if you see a one you go to state
+one. In state one if you see a zero you
+stay in state one, if you see a one you go
+to state two, and so forth. So at every
+state. read a character and go to the well
+defined next state. That's a discreet a
+deterministic final state automaton. and
+so, that's the machine you start it up on
+a string, and it reads all of the
+characters in the string. and then, if it,
+ends up in a state that's so called
+terminal state, and started on the start
+state the terminal state is just in
+dicated by this X that are on this
+example. It ends up in the right state you
+say that it recognizes a set of strings.
+and so that's a way to determine if a
+given string is in a specified set. The
+machine specifies the set. In an RE the,
+we specify the set by writing characters
+and stars and meta-characters in
+parenthesis and this regular expression
+recognizes these same set of strings.
+Describes these set of same, same set of
+strings that's recognized by this DFA.
+Hank Leany's theorem showed that it's
+always possible, to, construct such a
+machine. So that gives a, a basic plan for
+developing a pattern matching
+implementation. and this is developed by
+Ken Thompson at Bell labs, one of the
+developers of UNIX, and, and this facility
+was an important part of early UNIX and
+developed this idea based on the
+well-known theorem from theoretical
+computer science. is let's try to build a
+machine, the same way as we did for
+Knuth-Morris-Pratt, where we have no
+backup in the text input string. so we
+just got a finite state machine. With
+Knuth-Morris-Pratt we built a, a machine
+for recognizing the one string how about
+building one for multiple strings and that
+would give us a linear time guarantee. so
+the unruling extractions is determine if
+it's FSA or DFA and the basic plan is to
+just go ahead and take your pattern. It
+describes a set of strings and use that to
+build a DFA and then simulate the DFA with
+the Texas input, the same way we did for
+Knuth-Morris-Pratt And if it accepts, we
+say we have a match. If it rejects, we
+don't have a match. this is a, a fine plan
+but it's got a flaw. the bad news is that
+The plan is infeasible because the number
+of states in the DFA might be exponential
+in the length of the RE. So, for it's got
+too many states Kleene's, the proof of
+Kleene's theorem, standard proof of
+Kleene's theorem , involves the
+exponential number of states. and it's not
+that difficult to prove if you're
+interested be sure to look it up. But from
+a practical, standpoint, too many states,
+you can't use that as a basis for
+algorithm. But there's an easy revision.
+And again, this gets back. It will, it
+will give us a quadratic time guarantee,
+and actually, in, in real life, it's
+usually linear, and all we do is change
+the abstraction to use a non-deterministic
+finite state machine, an NFA, rather than
+a DFA. so, in the same basic plan, we're
+going to build an NFA. It's a, it's a
+different kind of machine, but actually,
+it's also the case that, that, oh yeah.
+For any regular expression we can build on
+NFA so and in vice versa cleaning stand to
+this and so we're going to simulate with
+the NFA with the text as input. And so,
+what do we, what do we mean by
+non-determined as a finite state machine?
+That's what we have to talk about next.
+and we'll just do it with this example
+that we used throughout this lecture. So,
+It's very similar to the DFA that we have
+before, now we're going to put the
+characters in the states and actually, the
+kind of NFA that we're going to build,
+we're going to have one state for every
+character in a regular expression. So this
+is an NFA, corres-, corresponding to this
+regular expression. just, to, We, we
+always enclose the regular expressions in
+parentheses. just to, make everything
+work. and then, Got this regular
+expression here. A star B or ACD. then,
+we're going show how to build, this NFA.
+and then, simulate it, to recognize the
+regular expression. And, how is it
+different than a DFA So, there's a
+character in every state, and if the
+character's a text character, it's the
+same as before. We read that text
+character and moved to the next state. But
+it's a more general kind of machine,
+because states also have what's called
+epsilon transition. And with an epsilon
+transition the machine is allowed to
+change the state without scanning any
+text. So, at the beginning the machine go
+from zero to one, to two, back to one, I'm
+sorry, two to three, back to two or it go
+from zero to one over to six there's lots
+of places the machine could go, without
+scanning any text character. but we do
+have the black matc h transitions that
+scan text characters and so those are the
+rules the machine operates by. And, the,
+final rule is when does it accept, when
+does it decide a strings in the pattern.
+It accepts if there's any sequence of
+transitions that scans all the text
+characters and ends in the accept case.
+it's a way of specifying an infinite set
+of strings. but it's got this
+non-determinism. It's not always
+determined what the machine, will do next.
+It's a little bit of a mind blowing
+concept in theoretical computer science.
+But this particular example actually shows
+how such, such a concept can be made
+concrete and actually give us a widely
+useful algorithm. One way to think of a
+non-deterministic machine is a machine
+that has super powers and can guess the
+proper sequence of state transitions to
+get to the end. Get to the accept state.
+another way to think about is the
+sequences if you provide us particular
+sequences that's a proof that the machine
+accepts the text. and so this is a real
+machine. We don't have a real machines
+that can guess the right answer but it's a
+completely well specified abstract
+machine, and we can write a program to
+stimulate it's operation, and that's what
+we are going to do. So let's just make
+sure that everyone's got the concept down.
+So, say we have the question is 4A is
+followed by BD, is that accepted by this
+NFA down here? and the answer is yes
+because there is a sequence of legal
+transitions that ends up in state eleven.
+So in this case, we'll take an epsilon
+transition from zero to one to two and
+then we'll... We've got 4A's so we'll chew
+up four A's, one, tw-, I'm sorry. One, and
+then go back. Two, and then go back.
+Three, and then go back. Four, and then
+we'll be in state three. And then at that
+point, we'll decide to take this epsilon
+transition. We'll assume your machine
+decides to take this one. then it
+recognizes the B and moves to state five.
+And then, at state five, it no place to go
+but to state eight. and then, takes the
+epsilon transition to the state nine. It
+recognizes the D that takes it out to ten
+and eleven. So, there is a sequence of
+state transitions that get to a eleven and
+recognizes all the characters and the
+strings, so therefore it's matched. what
+about So the, It's true that there is
+sequences that the machine might guess and
+go to the wrong state or stall, it doesn't
+matter as long as there's some sequence
+and we are going to assume that the
+machine always guesses the right one. So
+for example, if the machine just
+recognizes three A's, one, two, three, and
+then went to state four, it would get
+stuck because there's no way for it to get
+out of state four because state four is
+looking for a B, and it's sitting on an A,
+and so forth. So, there's definitely,
+things that the machine could do that
+would be wrong, but we don't care, as long
+as there's some way for it to get through.
+and then, what about if it's a string
+that's not in a language recognized by the
+state. the machine, well, so we have to
+argue about all possible sequences and,
+prove that, no sequence of legal
+transition, is transitions ends in state
+eleven. and that, seems to be, a fairly
+complicated sort of argument. So in this
+case the machine could recognize a bunch
+of A's, and then go to state four. But
+again, there's no B, so there's no way
+it's going to get out of state four. and,
+so you can make a general argument like
+looking at the machine that's any string
+that it recognizes, it has to end in D and
+this one doesn't end in D. that's a, much
+more complicated thing, than we're talking
+about, is to try to come up with, a,
+simple machine that will decide whether or
+not a string, is in the, language that it
+specifies. so the question, so question
+that we have is, we have this non
+deterministic machine, how are we going to
+decide whether a given string is in the
+language that it recognizes. So for
+deterministic machines, like we used for
+Knuth-Morris-Pratt it's very easy, because
+at every time, there's only one possible
+transition. But for non-deterministic, if
+you're, in some states, there's, multiple
+ways to go, and you have to, figure out
+the right transition. But actually, the
+situation isn't so bad. and what we can do
+is, to simulate the NFA, is just to make
+sure that we consider all possible,
+transition sequences. And that's what our
+algorithm for a regular expression pattern
+matching is going to be based on. that's
+what we will look at next.

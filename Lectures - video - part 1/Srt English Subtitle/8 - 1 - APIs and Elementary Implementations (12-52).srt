@@ -1,0 +1,644 @@
+1
+00:00:02,048 --> 00:00:07,034
+Welcome back. Today, we're going to look
+at Priority Queues which is a variant of
+
+2
+00:00:07,034 --> 00:00:12,051
+sorting that generalizes the idea to
+provide more flexible data structure that
+
+3
+00:00:12,051 --> 00:00:17,069
+we can use for all sorts of applications.
+To get started, we'll look at the API and
+
+4
+00:00:17,069 --> 00:00:24,820
+some elementary implementations. So at a
+week or so ago, we looked at collections
+
+5
+00:00:24,820 --> 00:00:29,813
+in Java and the idea of elementary data
+structures where we insert and delete
+
+6
+00:00:29,813 --> 00:00:34,900
+items. And then, the data structures
+differ on the basis of which item we choose
+
+7
+00:00:34,900 --> 00:00:39,863
+to delete. We looked to the push down
+stack where we removed the item that was
+
+8
+00:00:39,863 --> 00:00:44,776
+most recently added, And the queue where we
+remove the item that was least recently
+
+9
+00:00:44,776 --> 00:00:48,643
+added. And then, we talked about
+randomized queue or bag where we might
+
+10
+00:00:48,643 --> 00:00:53,580
+remove a random or an arbitrary item.
+Today, what we're going to talk about is
+
+11
+00:00:53,580 --> 00:00:58,247
+called the priority queue and for that, we
+insert items, but when it's time to
+
+12
+00:00:58,247 --> 00:01:03,059
+remove, we consider the items to have a
+total order and we want to remove the
+
+13
+00:01:03,059 --> 00:01:09,044
+largest or the smallest item. So this
+little example if we insert P, Q, and E
+
+14
+00:01:09,044 --> 00:01:15,190
+then when we do remove max, we want to get
+the Q out and for later, we insert X, A,
+
+15
+00:01:15,190 --> 00:01:21,144
+and M and then we removed max. The
+largest one in there is X. We'll insert P,
+
+16
+00:01:21,144 --> 00:01:26,069
+L, and E and then, after a while, we
+remove max P. So, that's our basic setup.
+
+17
+00:01:26,069 --> 00:01:32,064
+That's our definition of what a priority
+queue is. So, the API will look very
+
+18
+00:01:32,064 --> 00:01:39,719
+similar to our stack or queue API with a
+difference that we want to have generic
+
+19
+00:01:39,719 --> 00:01:46,919
+items that are comparable. So the Java
+language for that is in the class header.
+
+20
+00:01:47,127 --> 00:01:52,785
+We say that our generic type Key extends
+Comparable of Key. And that just means
+
+21
+00:01:52,785 --> 00:01:58,805
+that our keys must be Comparable and we
+must have a compareTo() method that will
+
+22
+00:01:58,805 --> 00:02:06,052
+compare it to another key. Otherwise we
+have a constructor and actually for some
+
+23
+00:02:06,052 --> 00:02:11,872
+applications, it's convenient to have a
+constructor that takes an array of keys as
+
+24
+00:02:11,872 --> 00:02:17,807
+argument. Then, an insert() that puts
+something in like push in a stack or
+
+25
+00:02:17,807 --> 00:02:24,142
+enqueue in a queue. Then delete the
+maximum. I referred to delete the minimum
+
+26
+00:02:24,383 --> 00:02:30,043
+just to avoid confusion, we have the
+implementation separate implementation
+
+27
+00:02:30,043 --> 00:02:36,284
+usually MinPQ, where we delete the
+minimum. Then test isEmpty() and we also
+
+28
+00:02:36,284 --> 00:02:42,908
+sometimes have extra method that just
+gives us the value of the largest key and
+
+29
+00:02:42,908 --> 00:02:49,602
+also size which is useful sometimes in
+collections. You might also want it to be
+
+30
+00:02:49,602 --> 00:02:55,675
+iterable but we'll skip that for now.
+There are lots and lots of applications of
+
+31
+00:02:55,675 --> 00:03:01,039
+priority queues. Even though it emerged as
+a data structure relatively late in the
+
+32
+00:03:01,039 --> 00:03:06,508
+game now that we see that there are many
+algorithms that are much easier to
+
+33
+00:03:06,508 --> 00:03:12,314
+implement when we think about the priority
+key abstraction. We have data that we are
+
+34
+00:03:12,314 --> 00:03:16,841
+processing we can't process it all at once.
+We have to save it some of way. And then,
+
+35
+00:03:16,841 --> 00:03:22,342
+what the priority queue tells us is - 
+let's organize it in some ways that we are
+
+36
+00:03:22,342 --> 00:03:27,657
+always taking the best one to process
+next. And it turns out to be very close to
+
+37
+00:03:27,657 --> 00:03:32,965
+a generic algorithmic design technique
+that we will be looking at in many, many
+
+38
+00:03:32,965 --> 00:03:38,286
+different applications. Today, we're going
+to talk about event-driven simulation
+
+39
+00:03:38,286 --> 00:03:44,500
+which is an interesting idea that is based
+on priority queues but it's also used in
+
+40
+00:03:44,500 --> 00:03:50,126
+numerical computation and we'll see in
+algorithms for data compression and graph
+
+41
+00:03:50,126 --> 00:03:56,048
+searching that it's useful. And in many
+other applications in Computer Science and
+
+42
+00:03:56,048 --> 00:04:02,277
+in scientific computing. It generalizes the
+stack and the queue and gives us a data
+
+43
+00:04:02,277 --> 00:04:09,783
+structure that we can use to effectively
+design algorithm of all sorts. So here's
+
+44
+00:04:10,046 --> 00:04:18,242
+just a particular client that will help
+explain the idea. So our, our challenge is
+
+45
+00:04:18,518 --> 00:04:26,215
+let's say this is on the web we have
+billions of transactions, you know, and they
+
+46
+00:04:26,215 --> 00:04:32,012
+are streaming through our data warehouse
+or processor in some way. And just a very,
+
+47
+00:04:32,012 --> 00:04:37,616
+very huge number of transactions. In fact,
+we couldn't possibly hope to even store
+
+48
+00:04:37,616 --> 00:04:43,299
+them all. There's trillions of them there
+coming through as fast as possible. But
+
+49
+00:04:43,299 --> 00:04:48,825
+we're interested in the biggest ones and
+so maybe it's the biggest amount of
+
+50
+00:04:48,825 --> 00:04:54,559
+dollars, or the biggest cost, or whatever
+it might happen to be. And so we can pick
+
+51
+00:04:54,559 --> 00:04:59,581
+some numbers that we can store. I would
+like to, to store the, the thousand
+
+52
+00:04:59,581 --> 00:05:04,986
+biggest ones. So, you can imagine a credit
+card company looking for fraud - it's going
+
+53
+00:05:04,986 --> 00:05:11,016
+to care about keeping track of the largest
+transactions. So, maybe we can store
+
+54
+00:05:11,016 --> 00:05:16,444
+millions or thousands of them. So that's
+our parameter M - that's the number we can
+
+55
+00:05:16,444 --> 00:05:21,606
+afford to store but the total number of
+items we couldn't possibly afford to store
+
+56
+00:05:21,606 --> 00:05:26,814
+them. So and this is just some test data
+where we've got all, all these
+
+57
+00:05:26,814 --> 00:05:32,653
+transactions and so we are going to be
+able to take in data like this and again
+
+58
+00:05:32,844 --> 00:05:38,610
+an unbounded stream of data. But let's
+say, we want to keep track of the top five
+
+59
+00:05:38,895 --> 00:05:46,723
+[cough] values using the third column as
+the value. So we're going to look at a
+
+60
+00:05:46,723 --> 00:05:52,023
+client program called TopM that takes the
+command-line argument, how many and
+
+61
+00:05:52,023 --> 00:05:58,026
+this case, it's going to say five and then
+it's going to take from standard input the
+
+62
+00:05:58,026 --> 00:06:03,914
+transactions and it will print out the top
+five. So, that's a canonical example of a,
+
+63
+00:06:03,914 --> 00:06:09,485
+a priority queue client that we need to
+design a program that can do that. So,
+
+64
+00:06:09,485 --> 00:06:17,909
+with the priority queue abstraction that's
+not too difficult to do. So we are going to
+
+65
+00:06:17,909 --> 00:06:25,799
+use a min-oriented priority queue so
+that's going to keep, it'll [cough] it'll
+
+66
+00:06:25,799 --> 00:06:31,420
+be one where we can delete the minimum
+and, and it'll be generic so we'll have a
+
+67
+00:06:31,420 --> 00:06:35,964
+transaction type that holds this
+information including natural ordering
+
+68
+00:06:36,152 --> 00:06:41,475
+where it's ordered by dollars that last
+column. So, we'll build a new priority
+
+69
+00:06:41,475 --> 00:06:46,625
+queue, min priority queue or we'll have
+the capability to delete the minimum. And
+
+70
+00:06:46,625 --> 00:06:52,449
+then we read from standard input. We read
+the line, build the transaction from the
+
+71
+00:06:52,449 --> 00:06:58,920
+information on that line. And that will
+fill in the fields and then, we put that
+
+72
+00:06:58,920 --> 00:07:04,950
+transaction on the priority queue. Now, if
+the priority queue has more than M items
+
+73
+00:07:04,950 --> 00:07:11,075
+because we inserted that one, then we want
+to delete the smallest one there and that
+
+74
+00:07:11,075 --> 00:07:17,193
+way, we're keeping track of the largest M.
+Whenever we get a new one, then we
+
+75
+00:07:17,193 --> 00:07:22,732
+throw away the smallest one that's there.
+So, even with this huge stream of items
+
+76
+00:07:22,732 --> 00:07:27,980
+coming through, we're only keeping track
+of the M largest items and that's a fine
+
+77
+00:07:27,980 --> 00:07:34,040
+canonical client for priority queue. Now
+how we are going implement or solve this
+
+78
+00:07:34,040 --> 00:07:39,081
+problem or you can think of lots of ways
+to go ahead and solve this problem of
+
+79
+00:07:39,081 --> 00:07:44,088
+finding the largest M items in the stream
+of N items. So, for example, you could
+
+80
+00:07:44,088 --> 00:07:51,832
+sort them. And then just look at the M at
+the end but by sending up the problem, I
+
+81
+00:07:51,832 --> 00:07:57,801
+already kind of ruled that one out because
+we don't have the space to sort them all,
+
+82
+00:07:57,801 --> 00:08:03,280
+to store them all. So sorting is out of
+the question. We'll look at couple of
+
+83
+00:08:03,280 --> 00:08:09,082
+elementary priority queue implementations
+that are straightforward. You know, keep
+
+84
+00:08:09,082 --> 00:08:14,309
+the items like we would in the stack and
+then when we need to find the smallest or
+
+85
+00:08:14,309 --> 00:08:20,425
+the largest look at, look at them all. But
+that's going to be too slow. M is large
+
+86
+00:08:20,425 --> 00:08:26,099
+and N is huge, and M<i>N is going to be too
+slow. What would what we we'll look at is</i>
+
+87
+00:08:26,099 --> 00:08:31,377
+very simple and practical implementation
+using a data structure called the binary
+
+88
+00:08:31,377 --> 00:08:36,838
+heap that gets the job done in time
+proportional to N log M and only M space.
+
+89
+00:08:36,838 --> 00:08:42,079
+And that's pretty close to the best that
+we could do in theory and is very
+
+90
+00:08:42,079 --> 00:08:47,010
+important and useful, practical
+implementation and data structure.
+
+91
+00:08:47,010 --> 00:08:56,344
+Alright. So here's just an overview of two
+elementary implementations for priority
+
+92
+00:08:56,344 --> 00:09:03,894
+queues using the example operations that I
+gave before. So you can imagine keeping
+
+93
+00:09:03,894 --> 00:09:09,361
+the item, say, in a linked list or in
+a doubling array and just keeping just an
+
+94
+00:09:09,361 --> 00:09:14,568
+order just as we would in the, in the
+stack just keeping in the way that they
+
+95
+00:09:14,568 --> 00:09:19,593
+come in. And we'll put a new item at the
+end of the array and remove it from the
+
+96
+00:09:19,593 --> 00:09:25,566
+end of the array. Or you could do it in a linked
+list, and then when it's time to find the,
+
+97
+00:09:25,566 --> 00:09:30,435
+remove the maximum, you have to scan
+through everything to find the maximum.
+
+98
+00:09:30,629 --> 00:09:37,014
+So, so, that's a one way you could
+implement this with, with a linked list or
+
+99
+00:09:37,014 --> 00:09:42,605
+with the resizing array. Or you might to
+say well let's try to keep things in
+
+100
+00:09:42,605 --> 00:09:48,009
+order. And then that might involve some
+work with the, it's like insertion sort,
+
+101
+00:09:48,009 --> 00:09:53,429
+you find a place to put the new item and
+then put it in the right place. And again,
+
+102
+00:09:53,429 --> 00:09:59,071
+you could do this with a linked list or with
+the resizing array but then, with array,
+
+103
+00:09:59,071 --> 00:10:04,568
+you'd have to move all the larger ones over
+one position to fit the new item in. When
+
+104
+00:10:04,568 --> 00:10:09,588
+we insert E and that's supposed to keep
+them in order, we have to move over L, M,
+
+105
+00:10:09,588 --> 00:10:14,906
+P, and P to get the E and then so forth.
+But the advantage of that might be that
+
+106
+00:10:14,906 --> 00:10:20,682
+removing the maximum is easy. We just take
+away the one at the end. To remove the
+
+107
+00:10:20,682 --> 00:10:26,650
+Q - we know it's at the end to remove
+the max. At this point, that's X - it's
+
+108
+00:10:26,650 --> 00:10:32,845
+right at the end, and P is right at the end.
+So you can imagine the implementations of
+
+109
+00:10:32,845 --> 00:10:38,971
+priority queues using these two basic
+strategies. Not much code involved. This
+
+110
+00:10:38,971 --> 00:10:45,098
+is a an ordered array implementation of
+priority queues and it's quite straight
+
+111
+00:10:45,098 --> 00:10:52,843
+forward. We didn't put in the this is the
+cheat version where we require the client
+
+112
+00:10:52,843 --> 00:10:59,282
+to provide a capacity but we could easily
+change this to a resizing array. So
+
+113
+00:10:59,482 --> 00:11:06,243
+insert() just puts it at the end, and since
+its unordered delete maximum has to go
+
+114
+00:11:06,243 --> 00:11:12,334
+through the entire array to try to find
+the maximum when it refines it and the
+
+115
+00:11:12,334 --> 00:11:18,583
+changes that we're the one at the end and
+then removes it the same way that we do
+
+116
+00:11:18,583 --> 00:11:24,536
+within the stack. It'll use less and
+exchange just like we would in sorting
+
+117
+00:11:24,536 --> 00:11:30,179
+methods. So that's a fine implementation if
+the priority queue was going to be tiny
+
+118
+00:11:30,179 --> 00:11:36,440
+all the time. So if you, without even
+implementing it, you can understand this
+
+119
+00:11:36,440 --> 00:11:42,949
+table that if we use an unordered array
+implementation we can get insertion done
+
+120
+00:11:42,949 --> 00:11:47,940
+in constant time but we have
+to look at everything to delete the
+
+121
+00:11:47,940 --> 00:11:54,343
+maximum or even find the maximum. If we
+keep it in order, we can find the maximum
+
+122
+00:11:54,343 --> 00:12:00,827
+or delete it at constant time but it takes us
+linear time to insert. And since as
+
+123
+00:12:00,827 --> 00:12:07,073
+with stack and queue operations, these
+insert and deletes might be intermixed in
+
+124
+00:12:07,073 --> 00:12:13,329
+arbitrary ways and there might be huge
+numbers of them either one of these is
+
+125
+00:12:13,329 --> 00:12:20,425
+very attractive because they're going to
+take N times the number of operations.
+
+126
+00:12:20,651 --> 00:12:28,096
+Whereas what we can hope for and what we
+actually will achieve is to get log N time
+
+127
+00:12:28,096 --> 00:12:34,936
+for all operations, time proportion to log N
+for all operations. With the clever data
+
+128
+00:12:34,936 --> 00:12:41,677
+structure and interesting implementation
+we can actually achieve that goal. That's
+
+129
+00:12:41,677 --> 00:12:47,032
+the basic API and some elementary
+implementations for priority queues.

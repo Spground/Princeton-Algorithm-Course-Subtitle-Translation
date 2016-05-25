@@ -1,0 +1,648 @@
+1
+00:00:03,740 --> 00:00:08,180
+Today we're gonna finish off our
+discussion of graph processing by looking
+
+2
+00:00:08,180 --> 00:00:11,910
+at Max Flow algorithms.
+This is another general problem solving
+
+3
+00:00:11,910 --> 00:00:15,995
+model for which we have efficient
+algorithms, so where at the difference
+
+4
+00:00:15,995 --> 00:00:20,613
+between having a good algorithm and not
+having one makes a difference between
+
+5
+00:00:20,613 --> 00:00:25,468
+being able to solve all kinds of practical
+problems and not being able to address
+
+6
+00:00:25,468 --> 00:00:28,547
+them at all.
+As an introduction we'll take a look at
+
+7
+00:00:28,547 --> 00:00:31,507
+what the problem is and some of it's
+implications.
+
+8
+00:00:31,507 --> 00:00:35,060
+So first we'll start with what's called
+the mincut problem.
+
+9
+00:00:35,060 --> 00:00:43,454
+So this is a. takes as input a Edge
+Weighted Digraph and now we are going to
+
+10
+00:00:43,454 --> 00:00:48,795
+assume that the edge weights are positive,
+and we referred to the weight as a
+
+11
+00:00:48,795 --> 00:00:52,188
+capacity and you will see why in just a
+minute.
+
+12
+00:00:52,404 --> 00:00:55,941
+And also we specify a source and a target
+vertex.
+
+13
+00:00:55,941 --> 00:01:01,788
+This is not an absolute requirement but it
+will simplify our discussion for the
+
+14
+00:01:01,788 --> 00:01:05,181
+lecture.
+So we have an edge weighted digraph where
+
+15
+00:01:05,181 --> 00:01:10,090
+the source and target vertex and every
+edge has a positive capacity.
+
+16
+00:01:10,090 --> 00:01:17,663
+Now a cut, an ST cut, S and T are
+specified remember? Is the partition of
+
+17
+00:01:17,663 --> 00:01:24,856
+the vertices into two disjoint sets,
+Where s is one set and t is in the other.
+
+18
+00:01:24,856 --> 00:01:31,336
+And we'll indicate a cut as we've done
+before by coloring the vertices in one
+
+19
+00:01:31,336 --> 00:01:35,075
+set.
+So in this case, the cut consists of s in
+
+20
+00:01:35,075 --> 00:01:39,062
+one set, and all the other vertices in the
+other.
+
+21
+00:01:39,062 --> 00:01:44,130
+So s is in, one set and t is in the other,
+that's an st cut.
+
+22
+00:01:44,130 --> 00:01:48,860
+Now given a cut.
+We talk about the capacity of the cut.
+
+23
+00:01:48,860 --> 00:01:54,645
+And that's gonna be the sum of the
+capacity of the edges that go from the set
+
+24
+00:01:54,645 --> 00:02:01,043
+containing s to the set containing b If
+you have edge going the other way we don't
+
+25
+00:02:01,043 --> 00:02:04,896
+count it.
+So in this case, the, this cut with the
+
+26
+00:02:04,896 --> 00:02:11,208
+vertex containing just s in one set has
+capacity 30 ten + five +fifteen.
+
+27
+00:02:11,217 --> 00:02:15,687
+Here's another cut this one contains three
+vertices,
+
+28
+00:02:15,687 --> 00:02:21,545
+S and two at the bottom there.
+Again it's an ST cut, cause s is colored t
+
+29
+00:02:21,699 --> 00:02:25,476
+is not.
+And then we can look at the capacity of
+
+30
+00:02:25,476 --> 00:02:29,070
+that cut.
+Again, we count the vertic, the edges that
+
+31
+00:02:29,070 --> 00:02:32,761
+go from to the cut containing s to the cup
+containing b, B.
+
+32
+00:02:32,761 --> 00:02:37,836
+In this case, is ten + eight + sixteen
+That's the edges going out is 34.
+
+33
+00:02:37,836 --> 00:02:41,857
+That's the capacity.
+We don't count the edges that go in from
+
+34
+00:02:41,857 --> 00:02:48,580
+the sec containing t to the sec containing
+s Capacity of the cut is the sum of the
+
+35
+00:02:48,580 --> 00:02:54,084
+capacities of the edges going out.
+Here's the third example, and this one's
+
+36
+00:02:54,084 --> 00:02:58,752
+got capacity 28.
+Now the three cuts that we've seen you
+
+37
+00:02:58,752 --> 00:03:02,317
+notice have different capacities: 30, 34,
+28.
+
+38
+00:03:02,317 --> 00:03:07,919
+So the mincut problem, clearly, is to find
+the minimum capacity cut.
+
+39
+00:03:07,919 --> 00:03:14,624
+Find a way to divide the vertices into two
+sets, one containing s and the other
+
+40
+00:03:14,624 --> 00:03:20,820
+containing t with the property that the
+capacity of the cut is minimized.
+
+41
+00:03:20,820 --> 00:03:26,239
+That's the mincut problem.
+And this an important practical problem
+
+42
+00:03:26,239 --> 00:03:32,670
+with all kinds of applications.
+Just for fun we take an application from
+
+43
+00:03:32,670 --> 00:03:36,614
+the 1950's.
+This is around time these sorts of
+
+44
+00:03:36,614 --> 00:03:42,701
+problems were first articulated.
+So this is, has to do with the cold war
+
+45
+00:03:42,701 --> 00:03:49,989
+and these are rail networks that connects
+the Soviet Union with countries in Eastern
+
+46
+00:03:49,989 --> 00:03:54,376
+Europe.
+This map actually wasn't declassified
+
+47
+00:03:54,376 --> 00:03:58,993
+until 1999.
+But it shows a graph with the vertices,
+
+48
+00:03:58,993 --> 00:04:06,842
+directed graph with vertices corresponding
+to cities and edges corresponding to rail
+
+49
+00:04:06,842 --> 00:04:11,182
+lines.
+And if you look closely, you can see that,
+
+50
+00:04:11,460 --> 00:04:14,990
+Each of the edges is labeled with a
+capacity.
+
+51
+00:04:15,231 --> 00:04:19,655
+The goal.
+So the goal of the free world say if there
+
+52
+00:04:19,655 --> 00:04:26,733
+was gonna be a real war was to find a way
+to cut the Soviet Union from Eastern
+
+53
+00:04:26,733 --> 00:04:29,387
+Europe.
+And they wanna do that.
+
+54
+00:04:29,628 --> 00:04:36,545
+You can assume maybe the cost of cutting a
+rail line is proportional to its capacity.
+
+55
+00:04:36,545 --> 00:04:41,050
+So they wanna find the cheapest way to cut
+off supplies.
+
+56
+00:04:41,050 --> 00:04:45,510
+From Soviet Union, Eastern Europe.
+That's an example of a min cut
+
+57
+00:04:45,510 --> 00:04:48,696
+application.
+We'll look at some other applications
+
+58
+00:04:48,696 --> 00:04:52,655
+later on.
+Well, look at a future, well maybe this is
+
+59
+00:04:52,655 --> 00:04:57,692
+a cut for today's world.
+So now you have a huge graph, maybe a
+
+60
+00:04:57,692 --> 00:05:02,233
+social network.
+And maybe there's a government and power
+
+61
+00:05:02,233 --> 00:05:09,004
+in some area of the world, and the goal of
+that government would be to cut off the
+
+62
+00:05:09,004 --> 00:05:15,115
+communication to some set of people.
+And again, they want to do that in the
+
+63
+00:05:15,115 --> 00:05:19,573
+cheapest way possible.
+Find the minimum way to cut off
+
+64
+00:05:19,573 --> 00:05:24,112
+communication.
+And certainly, people are writing programs
+
+65
+00:05:24,112 --> 00:05:28,622
+to process graphs like this with such
+goals in mind nowadays.
+
+66
+00:05:28,622 --> 00:05:34,260
+These are huge, huge graphs and certainly
+are going to need efficient algorithms.
+
+67
+00:05:34,477 --> 00:05:38,824
+In the 1950s, the graphs were pretty huge
+by 1950s standards.
+
+68
+00:05:39,041 --> 00:05:44,402
+And it wanted efficient algorithms then
+too, for sure, 'cause computers were
+
+69
+00:05:44,402 --> 00:05:46,805
+slower.
+Alright, that's one problem.
+
+70
+00:05:46,805 --> 00:05:51,578
+So let's talk about a different problem,
+called the max-flow problem.
+
+71
+00:05:51,578 --> 00:05:57,403
+And it's the same setup inputs and edge
+weighted digraphs, source for text s, and
+
+72
+00:05:57,403 --> 00:06:01,264
+a target for text t, every edge has a
+positive capacity.
+
+73
+00:06:01,264 --> 00:06:05,475
+And now what we're gonna talk about is
+what's called a flow.
+
+74
+00:06:05,475 --> 00:06:10,880
+It's a assignment of values to the edges.
+So, we have the capacities, and we're
+
+75
+00:06:10,880 --> 00:06:14,951
+gonna assign another integer to each edge,
+called its flow.
+
+76
+00:06:14,951 --> 00:06:18,040
+And then flow has to satisfy two
+properties.
+
+77
+00:06:18,230 --> 00:06:23,486
+The first one is that the flows have to be
+positive and they can't be greater than
+
+78
+00:06:23,486 --> 00:06:27,600
+the capacity.
+You can think of the, edges again as a
+
+79
+00:06:27,600 --> 00:06:32,535
+rail line containing some commodity or a
+pipe containing some fluid.
+
+80
+00:06:32,535 --> 00:06:37,022
+So the flow is how much stuff can you put
+through that edge?
+
+81
+00:06:37,022 --> 00:06:41,509
+You can more than zero but you can't put
+more than capacity.
+
+82
+00:06:41,734 --> 00:06:47,566
+The other thing about a flow is that there
+has to be local equilibrium at the
+
+83
+00:06:47,566 --> 00:06:51,727
+vertices.
+And again that's a natural constraint to
+
+84
+00:06:51,727 --> 00:06:57,869
+think about stuff flowing in on rail lines
+to a city and you want, you want to keep
+
+85
+00:06:57,869 --> 00:07:04,617
+things going the local elibrium constrains
+says that the stuff coming in has to equal
+
+86
+00:07:04,617 --> 00:07:11,289
+the stuff going out at every vertex except
+for the source everything leaves from the
+
+87
+00:07:11,289 --> 00:07:15,494
+source.
+And the target, everything goes to the
+
+88
+00:07:15,494 --> 00:07:20,243
+target.
+And those have the source has no inflow
+
+89
+00:07:20,243 --> 00:07:26,696
+and the target has no outflow.
+So what you want is the inflow at a
+
+90
+00:07:26,696 --> 00:07:33,924
+vertex, say, in this example inflow at v,
+there's five coming in on this edge and
+
+91
+00:07:33,924 --> 00:07:39,662
+five coming in on that edge. So that's a
+total of ten coming in and there has to be
+
+92
+00:07:39,662 --> 00:07:43,429
+just ten going out.
+So that's, happens on this one edge.
+
+93
+00:07:43,429 --> 00:07:46,388
+And that has to be satisfied at every
+vertex.
+
+94
+00:07:46,388 --> 00:07:50,257
+So this flow's got five coming in there
+and five going out.
+
+95
+00:07:50,257 --> 00:07:54,215
+Ten going in there and five going out each
+way and so forth.
+
+96
+00:07:54,215 --> 00:07:58,753
+Every vertex except S and T.
+And we can even make it true for S and T
+
+97
+00:07:58,753 --> 00:08:01,910
+by drawing an edge from T all the way back
+to S.
+
+98
+00:08:01,910 --> 00:08:07,390
+So that's the max flow problem, well, the,
+that's the definition of a flow, and of
+
+99
+00:08:07,390 --> 00:08:11,667
+course the max flow problem is to assign a
+value to the flow.
+
+100
+00:08:11,667 --> 00:08:15,210
+Well that's how much stuff you can get to
+the source.
+
+101
+00:08:15,446 --> 00:08:19,622
+To the target.
+Or equivalently, how much stuff can you
+
+102
+00:08:19,622 --> 00:08:25,139
+push out of the source.
+And so the value is how much can you get
+
+103
+00:08:25,139 --> 00:08:29,244
+into the target.
+There's lots of different ways to assign
+
+104
+00:08:29,244 --> 00:08:33,640
+flows to the network to satisfy the
+capacity equilibri-, equilibrium
+
+105
+00:08:33,640 --> 00:08:36,937
+constraint.
+Which one maximizes the flow, that's the
+
+106
+00:08:36,937 --> 00:08:40,040
+maximum ST flow problem, or the max flow
+problem.
+
+107
+00:08:40,040 --> 00:08:43,558
+So that's two different problems.
+The min cut problem.
+
+108
+00:08:43,558 --> 00:08:48,139
+How do we cut the graph efficiently, with
+a minimal amount of work.
+
+109
+00:08:48,139 --> 00:08:52,653
+And the max flow problem.
+What's the maximum amount of stuff that we
+
+110
+00:08:52,653 --> 00:08:57,101
+can get through the graph?
+And again, if we look at, the 1950's
+
+111
+00:08:57,101 --> 00:09:00,502
+graph.
+What the Soviet Union wanted to do was
+
+112
+00:09:00,502 --> 00:09:05,275
+find a way to maximize the flow of
+supplies to Eastern Europe.
+
+113
+00:09:05,275 --> 00:09:11,589
+Now that was their goal in this case, and
+again you can see in this whole map, this
+
+114
+00:09:11,589 --> 00:09:17,671
+is a assignment of a flow to this network
+that does maximize the flow for this
+
+115
+00:09:17,671 --> 00:09:20,058
+network,
+So they figured it out.
+
+116
+00:09:20,058 --> 00:09:25,986
+And nowadays in the huge graph, maybe the
+free world wants to do the opposite.
+
+117
+00:09:25,986 --> 00:09:31,242
+They want to maximize the flow of
+information to some specified set of
+
+118
+00:09:31,242 --> 00:09:33,669
+people.
+How do we get the most information in
+
+119
+00:09:33,669 --> 00:09:35,776
+there and is there another way to think of
+it?
+
+120
+00:09:35,776 --> 00:09:39,580
+And again, these are huge graphs and we
+want efficient algorithms.
+
+121
+00:09:39,580 --> 00:09:45,159
+So that's two problems both have an input
+weighted digraph with a specified source
+
+122
+00:09:45,159 --> 00:09:50,488
+and target and then cut problem is to find
+them in capacity cut and max flow problem
+
+123
+00:09:50,488 --> 00:09:54,751
+is find a maximum value flow.
+It's a lot of computation to do for
+
+124
+00:09:54,751 --> 00:09:59,203
+example in the max flow problem we have to
+assign a value to each edge.
+
+125
+00:09:59,391 --> 00:10:04,406
+So that's more work than just finding a
+path as we've done in other graph
+
+126
+00:10:04,406 --> 00:10:08,231
+processing problems.
+So it's more complicated and the amazing
+
+127
+00:10:08,231 --> 00:10:13,058
+thing about these two problems is that
+they're actually pretty much the same
+
+128
+00:10:13,058 --> 00:10:16,183
+problem.
+They're what we call dual.
+
+129
+00:10:16,428 --> 00:10:20,609
+If you solve one you're able to solve the
+other.
+
+130
+00:10:20,609 --> 00:10:23,724
+So that's an introduction to max flow

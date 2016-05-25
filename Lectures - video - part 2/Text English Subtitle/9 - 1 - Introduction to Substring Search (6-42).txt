@@ -1,0 +1,155 @@
+Today we're going to look at substring
+search algorithms.
+This is a really fascinating family of
+algorithms.
+The problem is very simple to state.
+And the algorithms we're going to look at
+are among the most ingenious that we've
+seen, so far.
+So it's useful to introduce the problem,
+very simple to state the problem.
+We have two strings, one we call the
+pattern and the other we call the text.
+And usually, it's good to think of the
+pattern as relatively small, and the text
+as relatively long.
+In fact, usually we want to think of text
+as unlimited length, coming in on an input
+stream.
+And we have a small pattern, we want to
+find out if the pattern occurs in the
+text.
+So you're doing this.
+All the time.
+When you do a, a simple search.
+On your computer or on the web.
+And there's practical applications where,
+for various reasons, people want to search
+the entire contents of memory or disc for
+a particular pattern, to make sure to
+check for whether there's something in the
+computer that's of interest.
+And again, you've got to, such an
+application you've got a small pattern and
+maybe a huge text.
+Or maybe you're looking for your e-mail
+which you can think of as a continuous
+stream of stuff coming in nowadays, and
+you want to look for patterns that might
+indicate that there's spam and certainly
+you're all familiar with these types of
+patterns.
+And so what we want is to be able to
+identify the pattern quickly and
+efficiently in a huge text file.
+That's the, one of the most important
+indicators of skipped spam, I guess.
+.
+Okay.
+So we'll try to set this up.
+This isn't really a real situation but
+it's not too far actually.
+And so we're going to have these few
+characters to try to point out the kinds
+of issues that might be involved.
+So imagine an Internet surveillance
+situation.
+Where there's a need to monitor what's on
+the Internet for needs of security.
+But there might be a, a judge saying, wait
+a minute, you can't be looking at all
+Internet traffic.
+That's private information particularly
+among private individuals in, in the U S
+for example.
+Well,
+So what about if we just look for this one
+pattern, that, we really need to know
+about and that, that, really shouldn't
+violate anybody's privacy, like tank or
+dorm.
+And the Judge can say, okay, how about if
+you build a machine that just looks for
+that?
+And that's what we're going to talk about
+today, actually.
+One of the techniques that we look at is
+perfect for, actually building hardware,
+that can, be, put on, a stream of data
+passing by, and just light the light if,
+that, particular pattern is seen.
+So you attach one of those machines, all
+over the web, and, if attack at dawn
+happens, then you find it.
+That's the I would say a simplified
+explanation of what it is that we're going
+to try to do.
+Here's another kind of application.
+This is called, screen scraping.
+So, we might want to and, and you can do
+this, write programs to do this for,
+extracting relevant data from a webpage.
+And the idea is that there's different
+institutions out there that are committed
+to providing information on the web.
+And they'll promise to, for example this
+is Yahoo's page that gives the stock price
+of Google.
+When you look at the page, it says last
+trade but if you write a program to look
+at the code that produces the page it also
+says last trade.
+And since this HTML code is produced by a
+program.
+It's always going to have the same
+structure.
+So if we want to find, write a program to
+find Google's stock price at any time what
+we can do is take this page put it on an
+input stream, and search for the pattern,
+last trade.
+And then just after last pray, trade,
+there's the price, in bold.
+So what we really want is the string
+between, B and backslash B, which delimits
+bold, after the first occurrence of the
+pattern last trade.
+And it's simple to write a Java program
+that, implements this.
+This is the program, and, the key is,
+well, number one, our input.
+Standard N, input stream methods.
+Allow a webpage, as argument.
+So in this case, we provide a command line
+argument, which is whatever company you
+want the quote for.
+And we simple read in the whole webpage.
+So now you have the webpage in a long
+string.
+And then Java.
+Has a, what's, index of method for every
+string.
+And it tells you, where that particular
+string occurs.
+And so, we'll start at index of last, last
+trade.
+And then, what we wanna do is find the
+first B.
+In brackets after that position.
+And the first being closed with backslash
+being brackets, starting from that
+position.
+And skipping over the, angle bracket b
+closed bracket.
+You get the price, and you can print it
+out.
+Now this is a little utility that screen
+scraps from Yahoo's website.
+So sub string searching is quite in quite
+useful in it's built in as a method in
+Java's string data type.
+So it's practically useful that's an
+introduction.
+So now let's look at algorithms for
+implementing.
+String searching.

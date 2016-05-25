@@ -1,0 +1,421 @@
+Now, we're going to finish up by looking
+at some extra operations that are
+supported for string keys when we use
+Tries.
+So, we're going to look at a couple of
+character based operations that can, that
+are quite useful and, and can be supported
+by the string symbol table API with tries.
+One important one is a prefix match.
+So that's given a prefix, like say sh,
+What we want is the method to return all
+the keys.
+Let's start with that prefix.
+In this case, it'll be shells, shore and
+she.
+Another one is so-called wild card match.
+So that's when we don't specify one of the
+characters, or multiple characters.
+So we put a dot to say we'll take any key
+that matches the other characters and we
+don't care what that one is.
+So he. would match she and the.
+And another one is so-called longest
+prefix.
+So now we've got a long key and we want to
+find the best match that's in our symbol
+table that matches that key.
+The key in the symbol table that has the
+longest match with our key.
+So going, in this case, the ones that's
+the longest prefix of shells sort is
+shells.
+Later on we're going to see applications
+of some of these and the important idea
+for now is that these are easy to
+articulate.
+And not only that, they're easy to
+implement with tries.
+Nts tr, and Turner research tree.
+So, we're going to take our standard API
+and add these four methods.
+So, while there's keys that returns all
+keys.
+And, and, as is our usual practice.
+When we have a lot of things to return,
+we're going to return'em as a, as an
+iterable.
+So the clients can just, iterate through
+the what's returned.
+And that's usually what clients want to
+do.
+And then we have keys with prefix.
+Give a string s, and the iterable will
+return all the keys in the symbol table
+that have s as a prefix.
+If the client wants to find the associated
+values, they can do gets to get the
+values.
+And then we have keys that match so that's
+where we allowed dot to be a wild card, in
+S, and we want to return all the keys
+that, match, S, taking dot to be a wild
+card.
+And then longest prefix of S is the key in
+there that's the longest prefix of S.
+We're gonna see later on.
+This particular one plays, an important,
+role in a, in a more complicated
+algorithm.
+We could also go ahead and add all the
+ordered symbol table methods that we
+considered when we looked at binary search
+trees like floor, and, and rank.
+And, we're not going to take time to do
+that right now.
+It's very straightforward.
+So one thing that we haven't really talked
+about but it's a good warm up for the
+kinds of methods that we're going to look
+up.
+Look at for these implementations is
+ordered iteration.
+And this is trie-traversal, so we are
+going to do an in-order traversal of the
+trie, that is, visit the left, now visit
+the middle, visit the right.
+In that traversal, we can maintain the
+sequence of characters on the path from
+the root to the current node just by
+adding an, adding a character when we go
+down and removing a character when we go
+up.
+And when we encounter values,
+Then we can put out this, the characters
+that we have, and that's the way to pull
+out all the keys in the trie.
+So, for example, in this case we go down
+and we have b, and then we hit the y's.
+So we can output,.
+Say onto a queue we can output by.
+And then we go back, we have s, e and a.
+And, we find a value, so we go ahead and
+put out the a.
+Now we drop the a and do the l, and that's
+the l, l, l, l,. and then we get to that
+s, we have a value we can put ourselves.
+And then we can drop these, get back to
+the s, and get the sh.
+She, finite value, and put, put the she in
+the queue.
+Lls and put shells on the queue.
+Drop all those values down to the h, and
+get us sho, shor, shore,
+Find the value and drop shore onto the
+queue.
+And then finally, t, th, the and, find a
+value and put the, down the queue.
+So it's easy to, very easy to keep track
+of the sequence of characters on the path
+from the rout to every node and every node
+check for value and programmer key.
+That's a ordered iteration and
+implementations of these extra operations
+are just based on multiplying ordered
+iteration.
+So this is a implementation of keys with,
+which is essentially of the operation that
+I was tracing on the last slide.
+So if client wants keys, we make a queue.
+Then we call a recursive routine that
+collects all the keys in the try, starting
+at that node.
+And, given a null string, which is, the,
+sequence of characters on the path to the
+given node.
+When that recursive routine, returns, then
+we just return the queue.
+And the recursive routine does encode what
+I said in words, most of the time.
+This is for a try.
+You can do the same thing for a Turner
+research tree with just a little more
+code.
+So for every character we just move down
+the trie for that character add the
+character to the prefix and also pass the
+queue along.
+If we get a null value, we put what we
+have on the queue when we get null when we
+return. So a very simple implementation of
+ordered iteration of the recursive.
+So that's the implementation of the keys
+method.
+So prefix matches an other things like
+that going to work.
+Are going to work, just by modifying that,
+and you're familiar with, prefix matches,
+When you type, nowadays, in your browser,
+a search, function, you're getting, a
+prefix match of all the things that you
+typed or other people have typed, that,
+matches those strings.
+And you find that also nowadays when
+searching in your address books.
+It's a quite, common function nowadays.
+So let's look at how that looks, in an
+R-way trie.
+So what about finding all the keys in a
+symbol table that start with a given,
+prefix.
+Well, we just search for that prefix.
+And then, then just do a collect at the
+keys in that sub tri.
+So that's, very straightforward.
+So you get the node.
+That is the one you get to by starting
+with that prefix and then you just call
+the recursive collect and boom you're
+done.
+Extremely simple, implementation of keys
+with a prefix in an R-way trie..
+What about longest prefix?
+And here's one that, is, is, very,
+actually very heavily used, in the
+internet.
+If your query strings are IP addresses on
+the internet and you have some given
+destination IP address, the router has a
+lot of IP addresses in a routing table.
+An it wants to choose the one that will
+get you as far as close to the destination
+as you can.
+So it's going to choose the longest
+prefix.
+So if you want to get to 128 by 112, you
+can think of these as hops on the way to
+where you want to get, where eleven is the
+final destination.
+And essentially this table says, it knows
+how to get this far and so that's what it
+wants is the longest prefix.
+The longest prefix matches this one. Well,
+it doesn't know how to get any further
+than 112 and this other one only to 128.
+I, and this operation gets performed
+extremely often on the internet nowadays.
+Just a quick note,
+It's not the same as the floor function
+and it actually is a kind of a string
+operation.
+These things actually, usually on the
+internet, they're not represented as
+strings.
+They're represented as binary numbers.
+But in machine or assembly language
+implementation tries are even easier.
+You can just take a bunch of bits and use
+them as index into a table to move down
+the try.
+And actually tries are pretty old because
+so easy to implement data structures in
+that way in the past.
+You'd be surprised at how much of our
+computational infrastructure is built by
+Program or consists of programs that are
+written in machine or assembly language
+that can make use, efficient, really
+efficient use of low level representations
+like this.
+But it's also useful in higher-level
+languages.
+So what does it look like in an R-way
+trie..
+Well, all we're going to do is just do a
+search and then we're going to keep track
+of the longest key that we encountered.
+So, we have a path.
+And on that path there is the most
+recently seen value that's the longest key
+that we found If we end that at no link
+that's fine.
+It's the, if there is a value on that node
+that's kind of a no link that's the value
+we're going to return.
+So that's a very straightforward
+implementation.
+Just keeping track of the longest key
+encountered on the search for our key.
+That's implementation of longest prefix of
+and the usual set up of, of making
+recursive calls.
+And this code is quite straightforward.
+And application of this one and so-called
+T9 texting.
+And now you know, when we do a course like
+this, we try to keep up with modern
+technology.
+And modern technology is moving almost as
+fast as we can.
+There are lots of young people who really
+don't know about texting with keypads
+anymore.
+But there's a certain range of, you know,
+five or ten years where people got
+extremely adept at doing so called
+multi-tap input, where the only keys on
+the phone were the nine keys to dial
+numbers.
+And then you had three letters associated
+with each number,
+Like on old dial telephones.
+And to enter a letter you had to like to
+enter an H you had to tap twice, cuz
+that's the second letter on the four key
+you had to tap four twice or something
+like that.
+So,
+The so-called T9 text input would use the
+kinds of algorithms that we're talking
+about to make it so that maybe you didn't
+have to do multi-tap.
+So rather than type two 4's, you would do
+a tries type search to figure out which
+word that you typed.
+And that now looked,
+It'll look good to us as a potential
+application for a while.
+Glad we didn't spend too much time on it.
+If you study this keyboard, maybe you'll
+see, see why.
+Well you think about how to implement it.
+But once we get into it, we realize, Kevin
+realized there's no S in this sample
+keypad, what happened to the S?
+So what are we going to implement because
+even if there's no S there, so what
+exactly are they doing and well maybe this
+is a bit of a fantasy that this is the
+response that, maybe these people lived in
+a world with no S's.
+Mmm.
+Well anyway, we've moved on from tries
+from, from that type of, way of entering
+text.
+But I still want to mention a few more
+ideas because the basis behind tries and
+Turner research trees is still out there
+and is still really an important part of
+our infrastructure.
+And there's some really great algorithms
+that we just don't have time to cover.
+Now one of them's an old algorithm called
+Patricia.
+And, This one, is a really interesting and
+intricate algorithm.
+Particularly when implemented for binary
+tries, where you just do a bit at a time.
+And people, again, implemented this kind
+of algorithm in machine language.
+And got extremely efficient performance.
+If we cast it in, in, our way tries that
+we've talked about it's really the best
+way to think about it is, a way to remove
+one way branching.
+It seems wasteful, to have, all these
+nodes that just have one branch.
+And so one of the main ideas behind
+Patricia there's others that, don't
+really, show up, in the level, high level
+representation we're using.
+But one of the main ideas behind Patricia
+was rather than associate a character with
+each node,
+Associated sequence of characters with
+each node, so you just don't have any one
+way branching.
+Implementing this is maybe one step beyond
+this course but maybe it's within what we
+could do in this course.
+Where just not going to take the time to
+do so.
+And you'll find implementations that in
+practice avoid the one-way branching that
+are used in many, many applications,
+performance critical applications for
+searching nowadays, I already mentioned IP
+routing tables.
+There's probably, you know, no piece of
+code that's executed more often than that
+one.
+That's based on a trie type algorithm.
+And we have these other applications
+listed as well.
+It's got some other names too.
+Another thing, is, so called, suffix tree.
+So, that's, building a tree from a suffix
+table.
+So, we talked about having, for suffix
+sorting, we talk about applications.
+You can also build a search structure from
+suffixes of a string.
+That admits, all kinds of, fast string
+processing application.
+And again, usually, eliminate on way
+branching in suffix trees, and also
+amazing, amazingly you can get'em
+constructed in linear time.
+And there's all kinds of interesting
+applications of suffix trees probably the
+most important now a days are in
+computation biology databases.
+Again extensions of the kinds of
+algorithms that we've talked about today.
+So I think the bottom line for considering
+string search trees is that it's a real
+success story in algorithm design and
+analysis.
+It's a number of clever algorithms that
+really have made a difference in the kinds
+of operations that we can perform in the
+amount of data that we can handle in
+modern applications.
+We, we started with red-black BST's which
+is a pretty good solution for a general
+symbol table.
+And also hash tables, which are also
+widely used.
+But with tries, and Turner research tries
+we have a performance guarantee where
+we'll only have to really access log-in
+characters.
+And when you think about that, that's,
+even when N is huge, that's going to be a
+pretty small number.
+Say we're looking among billions, billions
+of things log in, even in you only have
+two wave branching would be 30.
+And when we have 256 way branching, it's
+way, way smaller.
+And that's just the number of, so it's the
+number of characters accessed.
+And the, really the bottom line is, if
+you, you can set things up nowadays even
+on the internet when there's huge, huge
+amounts of data out there you can set
+things up so that you can only need to
+look at maybe 100 bits to get at anything.
+We think about 100 bits, that's specifies
+two to the 100th of possibilities.
+And two to the 100th is a huge number.
+There are not two to the 100th pieces of
+information, even on the internet, even
+will ever exist on the internet in the.
+Into this galaxy.
+But with just 100 bits, which really isn't
+too much, we can search for anything
+efficiently.
+And that's an amazing success story for
+algorithm design and analysis.
+So that completes our look at tries and
+Turner research tries.

@@ -1,0 +1,243 @@
+Now, if we put the last two sections
+together it gives us a way to start to
+think about how to classify problems
+according to their difficulty. Let's look
+at how that works. so what we're always
+looking for is a problem that where the
+algorithm matches the, the, lower bound.
+and so, one way to do that is just use
+reduction. so, in order to, we want to
+prove that two problems X and Y, have the
+same complexity or the same research
+requirements. First, we show that X linear
+time reduces to Y. And then we show that Y
+linear time reduces to X. and then with
+that way, even if we don't know what the
+complexity is at all, we know that X and Y
+are, have the same computational
+requirements. And this is what we just did
+for sorting in convex hull. In this case,
+we know that both of them take time
+proportional to N log N but the reducing
+one to the other in both directions shows
+us their, their equivalent with respect to
+computational requirements. in the one
+case reducing sorting to convex hull gave
+us a lower bound. In the other case,
+reducing convex hull to sorting gave us a
+useful algorithm. but together they're
+useful because it helps classify those
+problems. now, there is a bit of a caveat
+to this and this is a little bit of an
+idealized situation. But it actually is,
+is something that can lead to trouble in
+the real world. So, we have these two
+problems. and we have the, these two
+propositions, that they, in linear time,
+reduce to one another. now, it could be
+that in a big software engineering effort
+there there's a lot of people making
+decisions. and well, so we found out they
+have the same complexity. But maybe some
+system designer has a big project and
+there's a lot, a lot of things, so they
+need both sort and convex hull. And one
+programmer is charged with a job of
+implementing sort. and understands that
+well, you could do that using convex hull.
+I learned this cool trick. And the other
+one knows the Graham scan, says, okay, I'm
+going to index convex hull using sort. and
+that's in a big system. and that's going
+to lead to a problem. It's an infinite
+reduction loop which certainly is going to
+lead to problems. whose fault, well that
+would be the boss. Alice and Bob just did
+what they were suppose to. and it's, they
+were all, somebody could argue Alice maybe
+could have used a library routine for the
+sort but you, you get the point for a
+complex situation. this definitely could
+have come up just to show the power of
+this kind of technique and how it relates
+to research that's still ongoing in
+Computer Science. let's look at some
+simple examples from Arithmetic. So here's
+the grade school integer nullification.
+let's do it with bits. So, I have two N
+bit integers I want to compute the
+product. and this is the way you learned
+to do it in grade school. For every bit in
+the bottom you multiply it by the top and
+then you add them all together. and that's
+going to take time proportional to N^2.
+You have N bits and you have N rows. and
+so that's time proportional to N^2.
+And but now, nowadays, people are doing
+integer multiplication on huge integers
+because mathematical properties of
+integers play an important role in
+cartography and other applications. so,
+people are interested in algorithms that
+are faster than quadratic for something
+like integer multiplication. now one, one
+thing that you can do, first you can do
+with reduction is people have figured out
+that you can take integer division or
+square or square root and all different
+other integer operations and reduce them
+to integer multiplication. So, you can
+show that all of these and, and vice
+versa. And so, you can show that all of
+these things have the same complexity,
+even though we all know what it is just by
+simple reductions one to the other. so and
+you can imagine how to do divide to
+multiply and so forth. These have been
+done in all different directions. so now,
+the question is that so now, they're all
+the same difficulty as the Brute force
+algorithm and how hard is the Brute force
+algorithm. well, people have studied that
+for a long time and actually one of the,
+the earliest divide and conquer algorithm
+by Karatsuba and Ofman showed that the
+integer multiplication could be done in
+time into the 1.585. and it was divide and
+conquer, we divide the integers in half
+and then find a clever way to combine it
+to reduce the exponents. And people have
+been working on this. you can see through
+the decades, actually, there's a big
+breakthrough just in 2007 that is going to
+get much closer to N log N. Although
+there's no known lower bound for this
+problem could be linear. And some people
+are still going to work on it. so, and all
+these different algorithms, they get more
+complicated and may be, you know, useful
+for very large N or for different ranges
+of N. and actually in practice there's the
+Multi Precision Library that's used in
+many symbolic mathematics packages has one
+of five different algorithms that it uses
+for integer multiplication, depending on
+the size of the operands. And, and again,
+in applications such as cryptography the N
+can be truly huge. And people want to do
+this computation. so we don't know what
+the difficulty of integer multiplication
+is, we just know that all the integer
+operations are described by this one
+thing. And it's similar for a matrix
+multiplication. one of the, another famous
+problem that people are still trying to
+understand. and again, the secondary
+school algorithm to compute the entry in
+row I and column J, you compute the dot
+product of the Ith row of one argument,
+and the Jth column of the other and the
+dot product of that, that fills that
+entry, and you do that for every entry, so
+that's going to be time proportional to N
+cube, because you have to do N
+multiplications for each of the N^2
+entries in the result matrix. and again
+there's all different kinds of matrix
+operations that can be proven to be
+equivalent in difficulty to the matrix
+multiplication through reduction. and so,
+that's the you know, of called matrix
+multiplication as all these other things
+like solving systems of linear equations
+and determine and, and other things. bu t
+how difficult is it to multiply two
+matrices. So again, reduction gives us a
+big class of problems to make it even more
+interesting to know the difficulty of this
+one problem. and then, research on the
+difficulty of this one problem has been
+ongoing. in this case running time is N
+cube for the brute force algorithm and who
+knows when that was discovered I don't
+know, eighteenth century or fifteenth or
+something. and then but, when, once
+computers got involved the Strassen's
+famous divide and conquer algorithm like
+you know, integer multiplication breaks it
+down through divide and conquer and gets
+the exponent down to 2.808. And people
+have been working through the years to
+find successive improvements to this. The
+last one went from 2.3737 to 2.3727 which
+doesn't seem like much, but maybe one of
+these research results will be a
+breakthrough that will give us an
+efficient new algorithm for all of these
+problems involving matrices. so again,
+it's very useful to have classified all
+these problems and make the even increase
+the leverage of the research even more.
+So, when we started this lecture we
+started with the idea that it would be
+good to classify problems. but it's, it's
+tough to actually classify them because
+there's new research involved, even for
+things as simple as integer or matrix
+multiplication but at least what we can do
+is put the defined complexity classes.
+even though we don't want to know what it
+is, we know there's a lot of important
+problems that have that same complexity.
+and there's a really important one that
+we're going to talk about in the last
+lecture, called the NP-complete problems,
+and all kinds of important problems that
+fall into that but as the time wears on,
+researchers have found ways to put many,
+many problems into, into, into equivalence
+classes. so, at least we know that there's
+those problems are have the same
+difficulty even, even if we don't know
+what it is. this is actually called the,
+the complexity zoo there's really a large
+number of complexity classes. now a lot of
+these are de finitely theoretical devices
+that are only important in filling in our
+understanding of some, some important part
+of the theory. but many of them like, like
+matrix multiplication, integer
+multiplication, are very important to
+practical algorithms. So there's certainly
+a huge amount of research, I guess, still
+going on into trying to understand
+computational difficulty of the problems.
+So, in summary, we use reductions to
+design algorithms, to establish lower
+bounds, and to help us classify problems.
+but in practice, we've been using them
+already. we, we designed algorithms that
+made use of priority queues in effective
+ways. That's a reduction and lots of
+algorithms for sorting, and really that's
+the idea of reusable software modules. We
+find, you know, fundamental problems, and
+we develop implementations that can be
+used by clients. Every client using an
+implementation is doing a reduction. and
+the other thing is that reductions help us
+determine the difficulty of our problem
+and guide our search towards finding
+efficient solution for it. so in
+particular, when we get to extremely
+difficult problems, we'll know whether or
+not we should look for an exact algorithm
+or we should find something that doesn't
+quite solve the problem. And we'll talk a
+lot more about that in the last lecture.
+And then all of these studies, in the
+complexity zoo and in any algorithm that
+we're going to develop for a complicated
+problem, what we're going to want is
+reduction to link the new problem to
+problems that we know how to solve.

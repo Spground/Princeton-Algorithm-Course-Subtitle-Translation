@@ -1,0 +1,474 @@
+1
+00:00:00,000 --> 00:00:06,785
+.
+So Knuth-Morris-Pratt is a linear time
+
+2
+00:00:06,785 --> 00:00:11,721
+algorithm, we can't, surely we can't do
+better than that, can we?
+
+3
+00:00:11,721 --> 00:00:03,586
+Well, it's not the end of the story.
+Now we're going look at the Boyer-Moore
+
+4
+00:00:17,692 --> 00:00:23,504
+algorithm. And it's also a very simple
+idea that's extremely effective in
+
+5
+00:00:23,504 --> 00:00:25,734
+practice.
+So here's the idea.
+
+6
+00:00:25,734 --> 00:00:32,762
+Instead of matching the pattern against
+the text moving from left to right in both
+
+7
+00:00:32,762 --> 00:00:37,376
+pattern and text.
+Boyer-moore said, what, what if we try to
+
+8
+00:00:37,607 --> 00:00:46,080
+scan the characters in the pattern from
+right to left?" so, then, when we find a
+
+9
+00:00:46,080 --> 00:00:50,458
+mismatch we can skip, we know all the
+characters in the pattern.
+
+10
+00:00:50,458 --> 00:00:55,393
+So, for example, if we're looking for a
+needle in the, in a haystack, if we first
+
+11
+00:00:55,393 --> 00:01:01,092
+look at the last character in the pattern,
+which is an E, and we find that N in the
+
+12
+00:01:01,092 --> 00:01:04,715
+text.
+Now then, it's clear that the next
+
+13
+00:01:04,715 --> 00:01:11,146
+possible match is when the Ns lined up,
+Cuz if it was any other lineup, it'd be
+
+14
+00:01:11,146 --> 00:01:16,630
+all these characters that we know are not
+N, compared against N, so we might as well
+
+15
+00:01:16,630 --> 00:01:21,784
+just move it so the Ns are lined up.
+And that's good but that's not as good as
+
+16
+00:01:21,784 --> 00:01:25,154
+the next case.
+If we happen to run into a character
+
+17
+00:01:25,154 --> 00:01:29,448
+that's not in the pattern, then we can
+just skip all the way over.
+
+18
+00:01:29,448 --> 00:01:34,139
+We don't have to compare any of our
+pattern character against that one.
+
+19
+00:01:34,139 --> 00:01:37,641
+So we can just add m if we have m-pattern
+characters.
+
+20
+00:01:38,413 --> 00:01:43,075
+And so then in this case we have a more
+complicated situation.
+
+21
+00:01:43,075 --> 00:01:49,098
+We match the E, and we have a bunch of Es,
+And so, part of the algorithm is to figure
+
+22
+00:01:49,098 --> 00:01:54,190
+out, when you do match a character that's
+in the pattern and that what do you do.
+
+23
+00:01:54,190 --> 00:01:59,855
+But the intuition is, it's fast, because
+you're often going to have this kind of
+
+24
+00:01:59,855 --> 00:02:05,090
+case where you find a mismath.
+And since you're going from right to left,
+
+25
+00:02:05,090 --> 00:02:10,002
+that's you know, that, there's character
+in the text that's not in the pattern at
+
+26
+00:02:10,002 --> 00:02:12,615
+all, you can shift over N characters at a
+time.
+
+27
+00:02:12,615 --> 00:02:15,740
+And that's a huge win in a lot of
+practical situation.
+
+28
+00:02:16,090 --> 00:02:19,475
+So,
+So how much do we skip?
+
+29
+00:02:19,475 --> 00:02:25,079
+So the, the first case is clear.
+If there's,
+
+30
+00:02:25,430 --> 00:02:32,252
+If you run into a text character that's
+not in the pattern, then you just move I
+
+31
+00:02:32,252 --> 00:02:39,159
+from wherever it was to one character
+beyond the current one that you're looking
+
+32
+00:02:39,159 --> 00:02:42,741
+at.
+So, and that's an easy, easy calculation,
+
+33
+00:02:42,741 --> 00:02:49,734
+it's just increment it by the number of
+pattern characters that you've not looked
+
+34
+00:02:49,734 --> 00:02:53,710
+at.
+Now, but if you have a character in a
+
+35
+00:02:53,710 --> 00:02:59,130
+pattern then,
+You want to align the text and in this
+
+36
+00:02:59,130 --> 00:03:04,713
+case, with the rightmost pattern, and, and
+that's pretty good.
+
+37
+00:03:04,713 --> 00:03:10,030
+But you don't always want to do that.
+If you for example,
+
+38
+00:03:10,268 --> 00:03:15,271
+We have a mismatch on E.
+If you were to say, oh, let's line up on
+
+39
+00:03:15,271 --> 00:03:19,798
+the rightmost most E on the pattern, that
+would involve backup.
+
+40
+00:03:19,798 --> 00:03:25,198
+So you don't want to do backup.
+In that case, you just move on by one.
+
+41
+00:03:25,198 --> 00:03:29,089
+So there are times when the heuristic is
+no help.
+
+42
+00:03:29,089 --> 00:03:34,490
+So what you really want to do is just
+increment by one in that case.
+
+43
+00:03:34,826 --> 00:03:45,587
+So just given, those basic preliminaries,
+It's, clear that it's, actually easy to go
+
+44
+00:03:45,587 --> 00:03:52,089
+ahead and precompute, how much, you might
+want to skip.
+
+45
+00:03:52,425 --> 00:04:03,299
+So, you start out with, with -one.
+So this is the, amount, that, you're going
+
+46
+00:04:03,299 --> 00:04:12,396
+to increment the, the text pointer.
+N - one means you just it's not in the
+
+47
+00:04:12,396 --> 00:04:15,871
+pattern, so you're just going to move on
+one.
+
+48
+00:04:15,872 --> 00:04:20,060
+And so all you do is go through the
+pattern,
+
+49
+00:04:20,306 --> 00:04:26,219
+And so let's start with N.
+So we want too fill in this table for N.
+
+50
+00:04:26,465 --> 00:04:32,953
+And it says, so if we, if we are going to
+find an N in the text, what do we want to
+
+51
+00:04:32,953 --> 00:04:36,895
+do.
+Well we want to move to the next text
+
+52
+00:04:36,895 --> 00:04:43,794
+character sorry, we want to co, compare
+the next text character against this one,
+
+53
+00:04:43,794 --> 00:04:48,557
+which is zero.
+And so right of path.charAt j = j.
+
+54
+00:04:48,557 --> 00:04:51,841
+It's going to, just going to fill in that
+zero.
+
+55
+00:04:51,842 --> 00:05:03,207
+Then we go to j = one for the E,
+E, D, L. it's same, so for what happens is
+
+56
+00:05:03,207 --> 00:05:08,882
+for if you do that for every letter in the
+pattern, if you have a letter that appears
+
+57
+00:05:08,882 --> 00:05:13,869
+more often it gets overwritten until the
+right most occurrence is the one that's
+
+58
+00:05:13,869 --> 00:05:16,563
+there.
+So, that precomputation is just one path
+
+59
+00:05:16,563 --> 00:05:22,156
+through the pattern.
+And then giving that precomputation and,
+
+60
+00:05:22,466 --> 00:05:31,876
+again we're going to implement, this is an
+implementation of Boyer-Moore, for using
+
+61
+00:05:31,876 --> 00:05:39,853
+for loop incrementing in the text
+characte. And so we, are going to have the
+
+62
+00:05:39,853 --> 00:05:43,880
+text pointer I.
+I in the course of the algorithm, we're
+
+63
+00:05:43,880 --> 00:05:49,574
+going to compute a value skip which is the
+amount that we're going to move the text
+
+64
+00:05:49,574 --> 00:05:53,324
+character.
+So we go all the way through the pattern
+
+65
+00:05:53,324 --> 00:05:57,768
+from right to left.
+If we get all the way through the pattern
+
+66
+00:05:57,976 --> 00:06:03,323
+and we find a match, and we don't change
+the value of skip, then we've found a
+
+67
+00:06:03,323 --> 00:06:06,884
+match.
+If we don't, sorry, if we get all the way
+
+68
+00:06:06,884 --> 00:06:10,247
+through the pattern and don't find a
+mismatch.
+
+69
+00:06:10,466 --> 00:06:15,950
+It's all matches we don't change the value
+of skip and we found a match.
+
+70
+00:06:15,950 --> 00:06:22,165
+If we do find a mismatch than we're going
+to compute the value that we skip, which
+
+71
+00:06:22,165 --> 00:06:26,626
+is where we are minus that table that
+thing that we computed.
+
+72
+00:06:26,845 --> 00:06:33,279
+And that's the amount that now that we're
+going to add to the text character to take
+
+73
+00:06:33,279 --> 00:06:41,081
+care of the mismatch for the right to left
+mismatch. and if it's, it's, always going
+
+74
+00:06:41,081 --> 00:06:47,081
+to be at least one, but if this thing is
+negative, we're not going to back up.
+
+75
+00:06:47,081 --> 00:06:51,678
+That's, that's it.
+So it's a very simple implementation based
+
+76
+00:06:51,678 --> 00:06:57,207
+on this idea of moving from right to left
+and skipping over the whole thing if we
+
+77
+00:06:57,207 --> 00:07:00,914
+find a mismatch.
+And the key thing about Boyer-Moore you
+
+78
+00:07:00,914 --> 00:07:06,003
+can study that implementation and figure
+it out easily, but the key thing is that
+
+79
+00:07:06,192 --> 00:07:10,590
+this mismatched character here is, takes
+time proportional to N over M.
+
+80
+00:07:10,590 --> 00:07:14,522
+That's kind of amazing.
+We had started out with a brute force
+
+81
+00:07:14,522 --> 00:07:18,455
+which was N  N,
+And then we got linear time, we were happy
+
+82
+00:07:18,455 --> 00:07:23,549
+with N, but actually there's a lot of
+practical situations where you can do the
+
+83
+00:07:23,549 --> 00:07:27,288
+search in N over M.
+The longer the pattern gets, the faster
+
+84
+00:07:27,288 --> 00:07:31,544
+the search gets.
+It's not only sublinear, it gets better.
+
+85
+00:07:31,775 --> 00:07:37,380
+That's kind of amazing.
+Now there's a caveat there because there
+
+86
+00:07:37,380 --> 00:07:41,910
+is a worse case that could be as bad as
+the brute force.
+
+87
+00:07:42,111 --> 00:07:47,811
+So this is just a example of the worst
+case where you go from right to left,
+
+88
+00:07:47,811 --> 00:07:53,377
+let's say, and always get to the first
+character before finding the mismatch, and
+
+89
+00:07:53,377 --> 00:07:56,796
+you can't do anything better than move
+over one.
+
+90
+00:07:56,797 --> 00:08:02,766
+But actually, what you can do is build
+something kind of like Knuth-Morris-Pratt
+
+91
+00:08:02,967 --> 00:08:09,338
+to make sure that you don't do something
+like this with a, repetitive pattern.
+
+92
+00:08:09,338 --> 00:08:13,026
+And you, you can get the worst case to the
+linear,
+
+93
+00:08:13,227 --> 00:08:19,496
+But it's really of importance for, for
+intermediate length patterns with, because
+
+94
+00:08:19,496 --> 00:08:24,325
+you so often are going to be able to get
+this N over M performance.
+
+95
+00:08:24,532 --> 00:08:28,740
+And that's a widely used algorithm.
+The Boyer-Moore algorithm.

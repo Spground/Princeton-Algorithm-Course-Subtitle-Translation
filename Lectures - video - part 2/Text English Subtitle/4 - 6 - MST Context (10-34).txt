@@ -1,0 +1,226 @@
+So we're going to complete our study of
+MST algorithms by considering some context
+both as an unsolved problem in theoretical
+computer science and as a practical
+problem.
+So the unsolved problem in theoretical
+computer science that has defied
+researchers for many decades is, it is
+possible to find a linear-time MST
+algorithm?
+Is there an algorithm that only examines
+each edge at most once on the average?
+Now, this doesn't have.
+That much practical comp.
+Consequence since the versions of Primm's
+algorithm that we've talked about can get
+the running time down quite low for the
+sparse graphs, the huge sparse graphs that
+we encounter in practice.
+But it's still, its...
+Like union find, it's a tantalizing
+problem.
+Unlike union find, it hasn't been resolved
+yet.
+Union find remember, we couldn't get a
+linear algorithm but at least Tarjan
+proved that no such algorithm exists.
+For MST, we're not even there yet.
+And a lot of people have worked on it.
+So let's go with the simple model where
+what you get to do is compare edges.
+Compare weights on edges.
+In 1975 Yao proved that there exists an
+algorithm that's worst case running time
+is e log, log v.
+In 1976, Cheriton and Tarjan came up with
+another such algorithm.
+And then Fredman and Tarjan found the e
+plus e log v algorithm or e log star v For
+MST's in'84.
+Here's another one.
+E log, log star v.
+Now remember, log star v is the number of
+times you take log to get to one.
+So it's, less than, six, in the natural
+universe.
+So these are very, very close to linear
+algorithms.
+The names in orange are people who work at
+Princeton.
+So, we're now trumpeting Princeton a
+little bit here.
+In'97, Chazelle showed that, its close to
+the, inverse Ackerman function.
+That, even more slowly growing than log
+star v.
+In 2000, got rid of the log factor, so
+very, very close to linear.
+That now.
+In 2002, Optimal, well, let's, talk about
+that.
+They, they, they showed an, an algorithm
+that it, better not to talk about the
+theory of that.
+[laugh].
+And that the, still, the open question is,
+is there, an algorithm whose worst case
+running time is guaranteed to be
+proportional to e?
+Or could, someone prove that no such
+algorithm exists?
+It's one of the most, tantalizing open
+questions in computer science.
+As we get into, graph algorithms in more
+detail.
+We'll see some other examples of problems
+for which we know pretty good algorithms
+but would like to know whether there are
+better algorithms or not.
+And MST is a fine example of that.
+That's the orange means Princeton.
+There is a randomized linear time
+algorithm that was discovered in 1995, but
+that's not the same as solving it worst
+case in linear time.
+So that's one context.
+Mxt is an important problem that's still
+been studied by theoretical computer
+scientist and we still don't know the best
+algorithm.
+Here's another one, So-called Euclidean
+MST.
+And this one is what's appropriate in some
+practical situations.
+So now you have points in the plane and
+the graph is an implicit dense graph.
+That is, we take as an edge in the graph,
+the distance between this point and every
+other point.
+So if there's n points there's n squared
+edges because every point's connected to
+every other point.
+And what we want is, in that graph, we
+want to find the subset of edges that
+connects all the points, that's minimal.
+That's actually, in a lot of practical
+problems, that's what you want.
+So as it stands, the algorithms that we've
+talked about are not useful for this
+beacause they're going to take quadratic
+time, because e's quadratic.
+That's how many edges there are in the
+graph.
+So you know, you could just go ahead and
+build the graph with the N squared over
+two distances and run Prim's algorithm.
+But that's not very satisfying for a huge
+number of points.
+It's actually not
+Too difficult to exploit the geometry of
+the situation.
+And get it done in time proportional to N
+log N.
+What is typically done is to build a sub
+graph, where each point is connected to a
+certain number of points that are close to
+it.
+There's a particular graph called the
+Voronoi diagram, or the Delaunay
+triangulation, that does that.
+And it's been proved, number one that,
+that graph has linear number of edges not,
+quadratic, and it's also the MST is a sub
+graph of the d-linear triangulation.
+So you can get it done in linear
+arrhythmic time for Euclidean MST.
+Separate problem related but still a very
+interesting in many practical
+applications.
+Here's another application in se, several
+scientific studies, there's the idea of
+clustering.
+And so what we wanna do is, we have a set
+of objects and they're related by a
+distance function that specifies how close
+they are and what we wanna do is divide
+the objects into a given number k of
+coherent groups so that objects in
+different clusters are far apart.
+So wanna see how things cluster together.
+And here's a really old example of a
+application of this where there was an
+outbook, outbreak of cholera deaths in.
+London in the 1850s and, if you plot where
+all of the deaths happened, scientific
+study could find that they were clustered
+around certain places.
+And, actually they were able to identify
+well pumps that were leading to the, the
+cholera just by doing clustering study.
+And, that is a very special case.
+There are many, many other applications
+where clustering is an important process,
+an important thing to be able to compute.
+So like mobile networks for web search
+there's an idea of the distance between
+doc, documents and you wanna categorize
+them in clusters.
+There's the, all the objects that have
+been discovered in the sky, you wanna
+cluster them together in a reasonable way.
+And all kinds of. Of processing having to
+do with huge data bases, trying to get
+information that seems close together to
+be close together into a relatively small
+number of clusters.
+So there's, a, a approach called single
+link clustering.
+Where you talk about the single length,
+the distance between two clusters equaling
+the distance between the two closest
+objects, one in each cluster.
+And so, so-called single length clustering
+is given at integer K.
+Find the K clustering that maximizes the
+distance between the two closest clusters.
+So that's a well defined computational
+problem.
+And there's a very well-known algorithm,
+in the science literature for this
+problem, signal, signal-link clustering.
+Form of e-clusters, find the closest pair
+of objects such that each object's in a
+different cluster, and merge the two
+clusters.
+And repeat until they're exactly
+k-clusters.
+You'll find this algorithm in the
+scientific literature.
+What's amazing is that, this is
+Crussical's algorithm, just stop when you
+found the k-connected components, so that,
+the, Or another thing you could do is just
+run Prim's algorithm and then after you've
+run Prim's algorithm get rid of the
+largest edges until you're left with
+k-clusters.
+So out of all the efficient Algorithms
+that we've talked about are gonna apply
+for single-link clustering.
+And actually scientists who also know some
+computer science now are able to handle
+huge problems that would not be possible
+without efficient algorithms.
+This is just one, one example where a, a
+cancer study where experiments are
+connecting genes with the way they're
+expressed in different parts of the body,
+and trying to cluster together tumors in
+similar tissues.
+And again, such experimental results can
+amount, result in huge amounts of data,
+and MST algorithms are playing a role in
+scientific research of this type.
+That's our context for minimal spanning
+trees.

@@ -1,0 +1,608 @@
+1
+00:00:03,060 --> 00:00:08,964
+Now, if we put the last two sections
+together it gives us a way to start to
+
+2
+00:00:08,964 --> 00:00:14,868
+think about how to classify problems
+according to their difficulty. Let's look
+
+3
+00:00:14,868 --> 00:00:21,756
+at how that works. so what we're always
+looking for is a problem that where the
+
+4
+00:00:21,756 --> 00:00:27,433
+algorithm matches the, the, lower bound.
+and so, one way to do that is just use
+
+5
+00:00:27,433 --> 00:00:34,013
+reduction. so, in order to, we want to
+prove that two problems X and Y, have the
+
+6
+00:00:34,013 --> 00:00:40,502
+same complexity or the same research
+requirements. First, we show that X linear
+
+7
+00:00:40,502 --> 00:00:47,298
+time reduces to Y. And then we show that Y
+linear time reduces to X. and then with
+
+8
+00:00:47,298 --> 00:00:53,800
+that way, even if we don't know what the
+complexity is at all, we know that X and Y
+
+9
+00:00:53,800 --> 00:00:59,500
+are, have the same computational
+requirements. And this is what we just did
+
+10
+00:00:59,500 --> 00:01:05,601
+for sorting in convex hull. In this case,
+we know that both of them take time
+
+11
+00:01:05,601 --> 00:01:13,771
+proportional to N log N but the reducing
+one to the other in both directions shows
+
+12
+00:01:13,771 --> 00:01:21,960
+us their, their equivalent with respect to
+computational requirements. in the one
+
+13
+00:01:21,960 --> 00:01:28,933
+case reducing sorting to convex hull gave
+us a lower bound. In the other case,
+
+14
+00:01:28,933 --> 00:01:35,073
+reducing convex hull to sorting gave us a
+useful algorithm. but together they're
+
+15
+00:01:35,073 --> 00:01:40,928
+useful because it helps classify those
+problems. now, there is a bit of a caveat
+
+16
+00:01:41,142 --> 00:01:47,140
+to this and this is a little bit of an
+idealized situation. But it actually is,
+
+17
+00:01:46,925 --> 00:01:52,637
+is something that can lead to trouble in
+the real world. So, we have these two
+
+18
+00:01:52,637 --> 00:01:57,885
+problems. and we have the, these two
+propositions, that they, in linear time,
+
+19
+00:01:57,885 --> 00:02:03,489
+reduce to one another. now, it could be
+that in a big software engineering effort
+
+20
+00:02:03,685 --> 00:02:09,093
+there there's a lot of people making
+decisions. and well, so we found out they
+
+21
+00:02:09,093 --> 00:02:14,763
+have the same complexity. But maybe some
+system designer has a big project and
+
+22
+00:02:14,763 --> 00:02:19,781
+there's a lot, a lot of things, so they
+need both sort and convex hull. And one
+
+23
+00:02:19,781 --> 00:02:25,080
+programmer is charged with a job of
+implementing sort. and understands that
+
+24
+00:02:25,080 --> 00:02:31,185
+well, you could do that using convex hull.
+I learned this cool trick. And the other
+
+25
+00:02:31,185 --> 00:02:37,799
+one knows the Graham scan, says, okay, I'm
+going to index convex hull using sort. and
+
+26
+00:02:38,138 --> 00:02:44,752
+that's in a big system. and that's going
+to lead to a problem. It's an infinite
+
+27
+00:02:44,752 --> 00:02:51,882
+reduction loop which certainly is going to
+lead to problems. whose fault, well that
+
+28
+00:02:51,882 --> 00:02:58,084
+would be the boss. Alice and Bob just did
+what they were suppose to. and it's, they
+
+29
+00:02:58,084 --> 00:03:04,505
+were all, somebody could argue Alice maybe
+could have used a library routine for the
+
+30
+00:03:04,505 --> 00:03:09,831
+sort but you, you get the point for a
+complex situation. this definitely could
+
+31
+00:03:09,831 --> 00:03:15,876
+have come up just to show the power of
+this kind of technique and how it relates
+
+32
+00:03:15,876 --> 00:03:21,038
+to research that's still ongoing in
+Computer Science. let's look at some
+
+33
+00:03:21,237 --> 00:03:26,995
+simple examples from Arithmetic. So here's
+the grade school integer nullification.
+
+34
+00:03:27,194 --> 00:03:32,025
+let's do it with bits. So, I have two N
+bit integers I want to compute the
+
+35
+00:03:32,025 --> 00:03:37,849
+product. and this is the way you learned
+to do it in grade school. For every bit in
+
+36
+00:03:37,849 --> 00:03:43,948
+the bottom you multiply it by the top and
+then you add them all together. and that's
+
+37
+00:03:43,948 --> 00:03:51,351
+going to take time proportional to N^2.
+You have N bits and you have N rows. and
+
+38
+00:03:51,351 --> 00:03:57,241
+so that's time proportional to N^2.
+And but now, nowadays, people are doing
+
+39
+00:03:57,478 --> 00:04:03,694
+integer multiplication on huge integers
+because mathematical properties of
+
+40
+00:04:03,694 --> 00:04:09,611
+integers play an important role in
+cartography and other applications. so,
+
+41
+00:04:09,865 --> 00:04:16,712
+people are interested in algorithms that
+are faster than quadratic for something
+
+42
+00:04:16,712 --> 00:04:26,177
+like integer multiplication. now one, one
+thing that you can do, first you can do
+
+43
+00:04:26,177 --> 00:04:35,050
+with reduction is people have figured out
+that you can take integer division or
+
+44
+00:04:35,050 --> 00:04:41,678
+square or square root and all different
+other integer operations and reduce them
+
+45
+00:04:41,678 --> 00:04:47,201
+to integer multiplication. So, you can
+show that all of these and, and vice
+
+46
+00:04:47,201 --> 00:04:52,902
+versa. And so, you can show that all of
+these things have the same complexity,
+
+47
+00:04:52,902 --> 00:04:59,450
+even though we all know what it is just by
+simple reductions one to the other. so and
+
+48
+00:04:59,450 --> 00:05:04,850
+you can imagine how to do divide to
+multiply and so forth. These have been
+
+49
+00:05:04,850 --> 00:05:11,051
+done in all different directions. so now,
+the question is that so now, they're all
+
+50
+00:05:11,051 --> 00:05:16,743
+the same difficulty as the Brute force
+algorithm and how hard is the Brute force
+
+51
+00:05:16,743 --> 00:05:23,290
+algorithm. well, people have studied that
+for a long time and actually one of the,
+
+52
+00:05:24,073 --> 00:05:30,477
+the earliest divide and conquer algorithm
+by Karatsuba and Ofman showed that the
+
+53
+00:05:30,690 --> 00:05:37,527
+integer multiplication could be done in
+time into the 1.585. and it was divide and
+
+54
+00:05:37,527 --> 00:05:44,104
+conquer, we divide the integers in half
+and then find a clever way to combine it
+
+55
+00:05:44,320 --> 00:05:50,981
+to reduce the exponents. And people have
+been working on this. you can see through
+
+56
+00:05:50,981 --> 00:05:56,747
+the decades, actually, there's a big
+breakthrough just in 2007 that is going to
+
+57
+00:05:56,747 --> 00:06:03,524
+get much closer to N log N. Although
+there's no known lower bound for this
+
+58
+00:06:03,524 --> 00:06:08,807
+problem could be linear. And some people
+are still going to work on it. so, and all
+
+59
+00:06:08,807 --> 00:06:13,885
+these different algorithms, they get more
+complicated and may be, you know, useful
+
+60
+00:06:13,885 --> 00:06:20,609
+for very large N or for different ranges
+of N. and actually in practice there's the
+
+61
+00:06:20,609 --> 00:06:26,990
+Multi Precision Library that's used in
+many symbolic mathematics packages has one
+
+62
+00:06:26,990 --> 00:06:32,754
+of five different algorithms that it uses
+for integer multiplication, depending on
+
+63
+00:06:32,754 --> 00:06:39,583
+the size of the operands. And, and again,
+in applications such as cryptography the N
+
+64
+00:06:39,583 --> 00:06:46,987
+can be truly huge. And people want to do
+this computation. so we don't know what
+
+65
+00:06:46,987 --> 00:06:52,322
+the difficulty of integer multiplication
+is, we just know that all the integer
+
+66
+00:06:52,322 --> 00:06:57,450
+operations are described by this one
+thing. And it's similar for a matrix
+
+67
+00:06:57,450 --> 00:07:02,659
+multiplication. one of the, another famous
+problem that people are still trying to
+
+68
+00:07:02,659 --> 00:07:07,744
+understand. and again, the secondary
+school algorithm to compute the entry in
+
+69
+00:07:07,744 --> 00:07:12,768
+row I and column J, you compute the dot
+product of the Ith row of one argument,
+
+70
+00:07:12,768 --> 00:07:17,667
+and the Jth column of the other and the
+dot product of that, that fills that
+
+71
+00:07:17,667 --> 00:07:22,530
+entry, and you do that for every entry, so
+that's going to be time proportional to N
+
+72
+00:07:22,530 --> 00:07:26,845
+cube, because you have to do N
+multiplications for each of the N^2
+
+73
+00:07:26,845 --> 00:07:33,097
+entries in the result matrix. and again
+there's all different kinds of matrix
+
+74
+00:07:33,097 --> 00:07:39,160
+operations that can be proven to be
+equivalent in difficulty to the matrix
+
+75
+00:07:39,160 --> 00:07:45,449
+multiplication through reduction. and so,
+that's the you know, of called matrix
+
+76
+00:07:45,449 --> 00:07:51,812
+multiplication as all these other things
+like solving systems of linear equations
+
+77
+00:07:52,037 --> 00:07:57,876
+and determine and, and other things. bu t
+how difficult is it to multiply two
+
+78
+00:07:57,876 --> 00:08:03,953
+matrices. So again, reduction gives us a
+big class of problems to make it even more
+
+79
+00:08:04,175 --> 00:08:10,319
+interesting to know the difficulty of this
+one problem. and then, research on the
+
+80
+00:08:10,319 --> 00:08:17,439
+difficulty of this one problem has been
+ongoing. in this case running time is N
+
+81
+00:08:17,439 --> 00:08:24,239
+cube for the brute force algorithm and who
+knows when that was discovered I don't
+
+82
+00:08:24,239 --> 00:08:30,652
+know, eighteenth century or fifteenth or
+something. and then but, when, once
+
+83
+00:08:30,652 --> 00:08:37,375
+computers got involved the Strassen's
+famous divide and conquer algorithm like
+
+84
+00:08:36,448 --> 00:08:43,093
+you know, integer multiplication breaks it
+down through divide and conquer and gets
+
+85
+00:08:43,093 --> 00:08:49,567
+the exponent down to 2.808. And people
+have been working through the years to
+
+86
+00:08:49,773 --> 00:08:57,531
+find successive improvements to this. The
+last one went from 2.3737 to 2.3727 which
+
+87
+00:08:57,780 --> 00:09:04,098
+doesn't seem like much, but maybe one of
+these research results will be a
+
+88
+00:09:04,098 --> 00:09:10,832
+breakthrough that will give us an
+efficient new algorithm for all of these
+
+89
+00:09:10,832 --> 00:09:18,698
+problems involving matrices. so again,
+it's very useful to have classified all
+
+90
+00:09:18,698 --> 00:09:26,560
+these problems and make the even increase
+the leverage of the research even more.
+
+91
+00:09:26,560 --> 00:09:32,240
+So, when we started this lecture we
+started with the idea that it would be
+
+92
+00:09:32,240 --> 00:09:38,546
+good to classify problems. but it's, it's
+tough to actually classify them because
+
+93
+00:09:38,746 --> 00:09:43,880
+there's new research involved, even for
+things as simple as integer or matrix
+
+94
+00:09:43,880 --> 00:09:50,213
+multiplication but at least what we can do
+is put the defined complexity classes.
+
+95
+00:09:50,413 --> 00:09:55,546
+even though we don't want to know what it
+is, we know there's a lot of important
+
+96
+00:09:55,546 --> 00:10:01,480
+problems that have that same complexity.
+and there's a really important one that
+
+97
+00:10:01,480 --> 00:10:06,680
+we're going to talk about in the last
+lecture, called the NP-complete problems,
+
+98
+00:10:06,680 --> 00:10:13,231
+and all kinds of important problems that
+fall into that but as the time wears on,
+
+99
+00:10:13,231 --> 00:10:20,149
+researchers have found ways to put many,
+many problems into, into, into equivalence
+
+100
+00:10:20,149 --> 00:10:26,579
+classes. so, at least we know that there's
+those problems are have the same
+
+101
+00:10:26,579 --> 00:10:33,091
+difficulty even, even if we don't know
+what it is. this is actually called the,
+
+102
+00:10:33,091 --> 00:10:40,660
+the complexity zoo there's really a large
+number of complexity classes. now a lot of
+
+103
+00:10:40,660 --> 00:10:49,625
+these are de finitely theoretical devices
+that are only important in filling in our
+
+104
+00:10:49,625 --> 00:10:56,394
+understanding of some, some important part
+of the theory. but many of them like, like
+
+105
+00:10:56,394 --> 00:11:01,324
+matrix multiplication, integer
+multiplication, are very important to
+
+106
+00:11:01,545 --> 00:11:08,020
+practical algorithms. So there's certainly
+a huge amount of research, I guess, still
+
+107
+00:11:08,020 --> 00:11:13,760
+going on into trying to understand
+computational difficulty of the problems.
+
+108
+00:11:13,760 --> 00:11:19,714
+So, in summary, we use reductions to
+design algorithms, to establish lower
+
+109
+00:11:19,714 --> 00:11:25,028
+bounds, and to help us classify problems.
+but in practice, we've been using them
+
+110
+00:11:25,741 --> 00:11:31,683
+already. we, we designed algorithms that
+made use of priority queues in effective
+
+111
+00:11:31,683 --> 00:11:37,783
+ways. That's a reduction and lots of
+algorithms for sorting, and really that's
+
+112
+00:11:37,783 --> 00:11:43,408
+the idea of reusable software modules. We
+find, you know, fundamental problems, and
+
+113
+00:11:43,408 --> 00:11:49,508
+we develop implementations that can be
+used by clients. Every client using an
+
+114
+00:11:49,508 --> 00:11:55,773
+implementation is doing a reduction. and
+the other thing is that reductions help us
+
+115
+00:11:55,966 --> 00:12:01,312
+determine the difficulty of our problem
+and guide our search towards finding
+
+116
+00:12:01,505 --> 00:12:06,191
+efficient solution for it. so in
+particular, when we get to extremely
+
+117
+00:12:06,191 --> 00:12:12,143
+difficult problems, we'll know whether or
+not we should look for an exact algorithm
+
+118
+00:12:12,143 --> 00:12:18,023
+or we should find something that doesn't
+quite solve the problem. And we'll talk a
+
+119
+00:12:18,023 --> 00:12:23,115
+lot more about that in the last lecture.
+And then all of these studies, in the
+
+120
+00:12:23,115 --> 00:12:28,995
+complexity zoo and in any algorithm that
+we're going to develop for a complicated
+
+121
+00:12:28,995 --> 00:12:34,230
+problem, what we're going to want is
+reduction to link the new problem to
+
+122
+00:12:34,230 --> 00:12:36,740
+problems that we know how to solve.

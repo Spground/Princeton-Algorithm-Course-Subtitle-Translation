@@ -1,0 +1,518 @@
+1
+00:00:03,008 --> 00:00:07,072
+So let's just look at a little bit of the
+context of hashing in practical
+
+2
+00:00:07,072 --> 00:00:12,067
+applications. As I mentioned, it's very
+widely used. So here's an, here's an
+
+3
+00:00:12,067 --> 00:00:17,077
+example right from Java. The first.
+Implementation of Java 1.1. The designers
+
+4
+00:00:17,077 --> 00:00:22,090
+found that the cost of computing the hash
+function for strings seemed to be
+
+5
+00:00:22,090 --> 00:00:28,011
+excessive, particularly for long strings.
+And that was one of the main uses of
+
+6
+00:00:28,011 --> 00:00:32,306
+hashing, was just to be able to do
+searching with string keys. And so what
+
+7
+00:00:32,306 --> 00:00:37,883
+they decided in the first implementation
+was let's just look at every eighth or
+
+8
+00:00:37,883 --> 00:00:43,020
+ninth character, and that way, we don't
+have to spend a lot of time computing the
+
+9
+00:00:43,020 --> 00:00:48,859
+hash function. So they had a hash function
+pretty much like the one that we use.
+
+10
+00:00:48,859 --> 00:00:54,173
+Except that it compute a skip that would
+mean that, that only look at about every
+
+11
+00:00:54,173 --> 00:00:59,232
+eight key and they wouldn't have to do
+quite so much work performing the hash
+
+12
+00:00:59,232 --> 00:01:05,414
+function. And that's diffidently one thing
+to consider when using hashing is that the
+
+13
+00:01:05,414 --> 00:01:11,000
+cost of computing the hash function for a
+complicated key might exceed the cost of
+
+14
+00:01:11,000 --> 00:01:16,026
+searching and using a simpler structure
+like a binary search tree. And anyway for
+
+15
+00:01:16,026 --> 00:01:23,039
+Java 1.1 what happened was that there was
+a huge potentail for really bad collision
+
+16
+00:01:23,039 --> 00:01:28,594
+patterns on typical data. So here's the
+example of typical data, which is a URL.
+
+17
+00:01:28,594 --> 00:01:33,581
+All of these keys, which are totally
+different, would wind up having the same
+
+18
+00:01:33,581 --> 00:01:39,319
+collision. And so client programs and
+system programs on the Java system were
+
+19
+00:01:39,319 --> 00:01:44,059
+having terrible performance on their
+symbol table because of the shortcut in
+
+20
+00:01:44,059 --> 00:01:50,749
+hashing. So this well illustrates that you
+need to use all of the data in the hash
+
+21
+00:01:50,749 --> 00:01:56,692
+function and sometime we do a closer
+analysis. The cost of computing the hash
+
+22
+00:01:56,692 --> 00:02:02,845
+function can mean that something like red
+black trees will even outperform hashing
+
+23
+00:02:02,845 --> 00:02:08,982
+even for just searching and insert. So
+there is another thing about the uniform
+
+24
+00:02:08,982 --> 00:02:15,310
+hashing assumption is that it is an
+assumption and if you are writing code
+
+25
+00:02:15,310 --> 00:02:22,015
+where we have to have guaranteed
+performance like when your aircraft is
+
+26
+00:02:22,015 --> 00:02:29,593
+landing or you are controlling a nuclear
+reactor or somebody's pa cemaker. That, if
+
+27
+00:02:29,593 --> 00:02:35,374
+that assumption doesn't hold and you get
+bad performance you're going to have
+
+28
+00:02:35,374 --> 00:02:41,131
+disastrous consequences. So that's another
+reason to think about maybe paying a
+
+29
+00:02:41,131 --> 00:02:46,084
+little extra and using to guarantee that
+you get with red black search trees.
+
+30
+00:02:47,006 --> 00:02:52,059
+Instead of hashing. And there's another
+surprising situation that happens in
+
+31
+00:02:52,059 --> 00:02:59,620
+today's world. For example Java publishes
+its hash function. And so if you're trying
+
+32
+00:02:59,620 --> 00:03:06,423
+to provide a service over the web. An
+adversary can learn your hash function and
+
+33
+00:03:06,423 --> 00:03:13,074
+just send you data that causes huge
+performance problem by just making all
+
+34
+00:03:13,074 --> 00:03:21,002
+that data hash to one particular item. And
+that's definitely something to worry
+
+35
+00:03:21,002 --> 00:03:27,081
+about. And, and in the real world you can
+nowadays find on the web particular
+
+36
+00:03:27,081 --> 00:03:34,037
+sequences of keys that will cause
+particular services to crash. And again,
+
+37
+00:03:34,037 --> 00:03:39,093
+that's a little harder to do with
+something like a red black tree where we
+
+38
+00:03:39,093 --> 00:03:44,095
+have performance guarantees. When you make
+an assumption you better be sure and
+
+39
+00:03:44,095 --> 00:03:50,034
+you're depending on that assumption, you
+better be sure that it holds somehow. This
+
+40
+00:03:50,034 --> 00:03:55,029
+is different than for example for quick
+sort when we, our assumption was we're
+
+41
+00:03:55,029 --> 00:03:59,073
+going to create randomness and we are
+going to depend on that randomness. In
+
+42
+00:03:59,073 --> 00:04:04,042
+this care we're kind of hoping for
+randomness and maybe that doesn't really
+
+43
+00:04:04,042 --> 00:04:09,081
+always hold. So that's certainly something
+to be aware of when using hashing in
+
+44
+00:04:09,081 --> 00:04:15,445
+practice. So here's just simple example on
+hashing in java. So what we can do is it's
+
+45
+00:04:15,445 --> 00:04:21,509
+pretty easy to find a family of strings
+that have the same hash code for example
+
+46
+00:04:21,509 --> 00:04:26,668
+with just a little fooling around now days
+you can just look it up on the web, you
+
+47
+00:04:26,668 --> 00:04:32,439
+can see that these two character keys,
+both have the same hash code because when
+
+48
+00:04:32,439 --> 00:04:38,369
+you just do the math in a base 31 hash
+code it'll tell you that answer. Well what
+
+49
+00:04:38,369 --> 00:04:43,755
+that means is that actually, just like
+working in binary you got, you can combine
+
+50
+00:04:43,755 --> 00:04:50,438
+those things. In all possible ways, and
+you can get two to the N strings, for any
+
+51
+00:04:50,438 --> 00:04:57,526
+N of length to N that all hash to the same
+value. And somebody's implemented a
+
+52
+00:04:57,526 --> 00:05:05,380
+service in Java that it uses a simp le
+table that takes string keys, you can
+
+53
+00:05:05,380 --> 00:05:12,212
+cause that to crash in this way. Little
+bit scary for some systems designers. At
+
+54
+00:05:12,212 --> 00:05:19,163
+least reason for pause in using hashing.
+Now, hashing also has a extremely
+
+55
+00:05:19,163 --> 00:05:28,292
+important application in today's Internet
+commerce. And so the, it's the concept of
+
+56
+00:05:28,292 --> 00:05:37,164
+so called one way hash functions which
+mean that we, we, use it for secure to try
+
+57
+00:05:37,164 --> 00:05:45,889
+to be, have some secure fingerprints for
+use on the web. And there's been a lot
+
+58
+00:05:45,889 --> 00:05:52,772
+research done to develop functions that
+take keys as input, and then produce
+
+59
+00:05:52,772 --> 00:05:58,638
+values that look random. In such a way
+that, it's hard for someone else to find
+
+60
+00:05:58,638 --> 00:06:04,241
+another key that collides with that. This
+technology is, is useful for storing
+
+61
+00:06:04,241 --> 00:06:09,703
+passwords and digital fingerprints and
+things. But it's too expensive for use, in
+
+62
+00:06:09,703 --> 00:06:15,584
+a symbol table. So the bottom line is
+separate chaining versus linear probin
+
+63
+00:06:15,584 --> 00:06:21,995
+collision resolution message methods. Now
+there's a number of considerations to take
+
+64
+00:06:21,995 --> 00:06:28,974
+into account. Separate chaining is really
+easy to implement both insert and delete
+
+65
+00:06:28,974 --> 00:06:35,098
+it performs, it degrades, it does so
+gracefully and the clustering is, is maybe
+
+66
+00:06:35,098 --> 00:06:42,050
+less of a problem if you have a bad hash
+function. Linear probing tends to make
+
+67
+00:06:42,050 --> 00:06:47,747
+better use of space. And also it'll
+perform better for huge tables whereas
+
+68
+00:06:47,747 --> 00:06:52,885
+caching is involved. And if, in the
+classic algorithm or computer science
+
+69
+00:06:52,885 --> 00:06:58,695
+problems for people to think about is what
+do we do to delete in these two situations
+
+70
+00:06:58,695 --> 00:07:03,496
+and exactly how do we resize. Those are
+all at the level of exercises in the
+
+71
+00:07:03,496 --> 00:07:09,138
+context of the kinds of algorithms that
+we've seen. And as I mentioned, there's
+
+72
+00:07:09,138 --> 00:07:14,227
+been many, many improved versions of
+hashing that have been studied. I
+
+73
+00:07:14,227 --> 00:07:19,598
+mentioned the two probe, or double hashing
+version. Another way to use two hash
+
+74
+00:07:19,598 --> 00:07:24,600
+functions is just to hash the two
+positions and put the key in the shorter
+
+75
+00:07:24,600 --> 00:07:29,802
+of the two chains. In, in that case, then
+the expected length of the longest chain
+
+76
+00:07:29,802 --> 00:07:34,635
+will be lg, lg N which is quite an
+improvement. You get constant time
+
+77
+00:07:34,635 --> 00:07:40,078
+expected and lg, lg N worst case. Double
+hashing is the variant of layer probing
+
+78
+00:07:40,078 --> 00:07:45,930
+where you just skip a variable amount, not
+one each time. And that pretty much wipes
+
+79
+00:07:45,930 --> 00:07:51,106
+out clustering but it, it is more
+difficult to implement delete for that
+
+80
+00:07:51,106 --> 00:07:56,280
+one. In a new method called, relatively
+new method called Cuckoo Hashing. It's
+
+81
+00:07:56,280 --> 00:08:02,061
+another variant of linear probing where we
+hash a key to two positions and insert the
+
+82
+00:08:02,061 --> 00:08:06,807
+key in either one. If occupied you, you
+reinsert the displaced key into its
+
+83
+00:08:06,807 --> 00:08:11,753
+alternative. It was in one, each one can
+go to two. And that one actually gives
+
+84
+00:08:11,753 --> 00:08:17,154
+constant worst case time for search.
+That's another variation on the team. And
+
+85
+00:08:17,154 --> 00:08:22,296
+all of these things allow us to make
+better use of memory, allows the table to
+
+86
+00:08:22,296 --> 00:08:27,434
+become nearly full. It would have been
+very exciting. Thing to be researchers in
+
+87
+00:08:27,434 --> 00:08:32,684
+the 1950's who cared so much about memory
+and nowadays a little extra memory is not
+
+88
+00:08:32,684 --> 00:08:37,391
+something that people care about so much
+and most people just go with the easy
+
+89
+00:08:37,391 --> 00:08:42,814
+algorithm except for really performance
+critical applications. What about hash
+
+90
+00:08:42,814 --> 00:08:48,640
+tables versus balance search trees? Well
+hash tables are really simple to code
+
+91
+00:08:48,640 --> 00:08:54,576
+usually if you don't have to do the hash
+function. And if you don't have order in
+
+92
+00:08:54,576 --> 00:09:00,108
+the keys at all then you need the compare
+to, to implement balance search trees. So
+
+93
+00:09:00,108 --> 00:09:05,751
+you have to use hashing if you don't have
+the comparison. And it'll probably be
+
+94
+00:09:05,751 --> 00:09:11,798
+faster for simple keys to use hashing.
+It's a few arithmetic operations to do the
+
+95
+00:09:11,798 --> 00:09:16,852
+hash versus lg N and compares for the
+balance tree. And there's some better
+
+96
+00:09:16,852 --> 00:09:22,020
+system support in Java for strings that
+cache hash code means that you don't even
+
+97
+00:09:22,020 --> 00:09:27,010
+have to compute the hash if your, your
+simple table for strings is in an inner
+
+98
+00:09:27,010 --> 00:09:32,179
+loop. On the other hand, balanced search
+trees have a much stronger performance
+
+99
+00:09:32,179 --> 00:09:37,376
+guarantee. It, you don't have to assume
+anything. It's going to be less than lg N
+
+100
+00:09:37,376 --> 00:09:42,877
+and compares and it's got support for all
+those ordered ST operations, and compared
+
+101
+00:09:42,877 --> 00:09:48,175
+to and is pretty easy and natural function
+to implement. So it's more flexible and
+
+102
+00:09:48,175 --> 00:09:54,660
+more broadly useful. And actually the Java
+system and other systems include both so
+
+103
+00:09:54,660 --> 00:10:01,902
+that programmers can make use of either
+one in diff erent situations. That's our
+
+104
+00:10:01,902 --> 00:10:04,082
+context for hashing algorithms.

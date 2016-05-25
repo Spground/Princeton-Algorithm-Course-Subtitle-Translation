@@ -1,0 +1,1687 @@
+1
+00:00:03,230 --> 00:00:04,080
+Welcome back.
+
+2
+00:00:04,080 --> 00:00:07,380
+Today we're going to look at Mergesort,
+which is one of two
+
+3
+00:00:07,380 --> 00:00:09,880
+classic sorting algorithms that are
+critical
+
+4
+00:00:09,880 --> 00:00:12,340
+components in the world's computational
+infrastructure.
+
+5
+00:00:13,824 --> 00:00:16,398
+We have a full scientific understanding of
+the
+
+6
+00:00:16,398 --> 00:00:19,896
+properties of these algorithms, and
+they've been developed
+
+7
+00:00:19,896 --> 00:00:23,130
+as practical system sorts and application
+sorts that
+
+8
+00:00:23,130 --> 00:00:26,560
+have been heavily used over the past 50
+years.
+
+9
+00:00:26,560 --> 00:00:28,550
+In fact Quicksort, which we'll consider
+
+10
+00:00:28,550 --> 00:00:30,470
+next time, was honored as one of the top
+
+11
+00:00:30,470 --> 00:00:33,990
+10 algorithms of the 20th century in
+science and engineering.
+
+12
+00:00:35,190 --> 00:00:38,540
+On this lecture we're going to look in
+Mergesort, which is
+
+13
+00:00:38,540 --> 00:00:43,629
+the basic sort in plenty of different
+programming systems including Java.
+
+14
+00:00:44,730 --> 00:00:46,750
+Next time we'll look at Quicksort which
+
+15
+00:00:46,750 --> 00:00:49,520
+is also used in Java for different
+applications.
+
+16
+00:00:52,720 --> 00:00:56,320
+Alright, so basic Mergesort algorithm.
+What's it going to look like?
+
+17
+00:00:57,870 --> 00:00:59,530
+The idea is very simple.
+
+18
+00:00:59,530 --> 00:01:02,820
+What we're going to do is divide an array
+into two halves.
+
+19
+00:01:02,820 --> 00:01:06,200
+Recursively, recursively sort each of the
+halves.
+
+20
+00:01:06,200 --> 00:01:07,840
+And then merge the result.
+
+21
+00:01:07,840 --> 00:01:09,720
+That's the over-view of Mergesort.
+
+22
+00:01:11,480 --> 00:01:14,240
+It was actually one of the first
+
+23
+00:01:14,240 --> 00:01:17,270
+non trivial algorithms I implemented on a
+computer.
+
+24
+00:01:18,300 --> 00:01:22,450
+John Von Norman realized that the
+development of
+
+25
+00:01:22,450 --> 00:01:25,300
+the EDVAC, his EDVAC computer, one of the
+first
+
+26
+00:01:25,300 --> 00:01:28,080
+general purpose computers that is going to
+need
+
+27
+00:01:28,080 --> 00:01:31,230
+a sorting method and he came up with
+Mergesort.
+
+28
+00:01:31,230 --> 00:01:33,951
+He's widely accredited as being the
+inventor of Mergesort.
+
+29
+00:01:36,230 --> 00:01:40,220
+So the idea of Mergesort is, is based on
+the idea of merging.
+
+30
+00:01:41,328 --> 00:01:44,982
+And so to understand how merging works
+we'll
+
+31
+00:01:44,982 --> 00:01:48,730
+think about the idea of an abstract in
+place merge.
+
+32
+00:01:49,810 --> 00:01:54,470
+So, we've got an array A and its first
+half is sorted and its second half is
+
+33
+00:01:54,470 --> 00:02:01,420
+sorted and the computation we need to
+perform is to replace that with the sorted
+
+34
+00:02:01,420 --> 00:02:04,880
+array where those two sub-halves are
+merged together.
+
+35
+00:02:04,880 --> 00:02:05,855
+Let's look at a demo.
+
+36
+00:02:05,855 --> 00:02:11,290
+[COUGH]
+
+37
+00:02:11,290 --> 00:02:13,200
+The method that we're going to use is
+based
+
+38
+00:02:13,200 --> 00:02:17,880
+on taking an auxiliary array to hold the
+data.
+
+39
+00:02:17,880 --> 00:02:21,100
+This is a, one of the easiest ways to
+implement the merge.
+
+40
+00:02:21,100 --> 00:02:24,890
+So the first thing we do is copy
+everything over to the auxiliary array.
+
+41
+00:02:27,080 --> 00:02:31,580
+Now, once that's done, what we'll want to
+do is copy
+
+42
+00:02:31,580 --> 00:02:36,160
+back to the original array to get it in
+sorted order.
+
+43
+00:02:36,160 --> 00:02:39,930
+In order to do that, we're going to
+maintain three indices.
+
+44
+00:02:39,930 --> 00:02:46,320
+I, the current entry in the left half, j,
+the current entry on the right half and
+
+45
+00:02:46,320 --> 00:02:52,100
+k, the current entry in the sorted result.
+[COUGH] so the first thing we
+
+46
+00:02:52,100 --> 00:03:00,000
+do is, take the smaller of the two entries
+pointed to by i and j, and compare
+
+47
+00:03:00,000 --> 00:03:06,210
+those, and take the smallest one, and move
+that one to be the next item output.
+
+48
+00:03:06,210 --> 00:03:09,170
+And whichever one is taken, we increment
+its pointer.
+
+49
+00:03:10,330 --> 00:03:13,450
+Now we compare the minimum again, again,
+the one pointed group
+
+50
+00:03:13,450 --> 00:03:17,030
+by j is smaller, so we move that one to k.
+
+51
+00:03:17,030 --> 00:03:19,810
+Increment that pointer j and also
+increment k.
+
+52
+00:03:20,850 --> 00:03:25,050
+Now there's two E's, equal we always take
+the first.
+
+53
+00:03:25,050 --> 00:03:29,570
+So the one on the left array goes to k's
+position.
+
+54
+00:03:29,570 --> 00:03:31,200
+And now we increment i and k.
+
+55
+00:03:32,440 --> 00:03:36,300
+And again, it's an E and they're equal.
+
+56
+00:03:36,300 --> 00:03:40,120
+We'll take the first one so we move that
+one up increment i and k.
+
+57
+00:03:41,470 --> 00:03:42,034
+And now
+
+58
+00:03:42,034 --> 00:03:44,020
+j's E is smaller than g.
+
+59
+00:03:44,020 --> 00:03:46,860
+It's the next thing that has to go in the
+output.
+
+60
+00:03:46,860 --> 00:03:49,510
+So we move that one up and increment j and
+k.
+
+61
+00:03:50,710 --> 00:03:52,770
+Now the one pointed to my i, the G
+
+62
+00:03:52,770 --> 00:03:56,480
+is smallest so move that and increment i
+and k.
+
+63
+00:03:56,480 --> 00:04:04,040
+Move the M up and increment i and k.
+Now the last element in the left sub array
+
+64
+00:04:04,040 --> 00:04:07,310
+is the one that's going to get moved next.
+And now
+
+65
+00:04:07,310 --> 00:04:12,790
+that first subarray is exhausted so really
+all we need to do is take
+
+66
+00:04:12,790 --> 00:04:16,120
+the rest of the elements from the right
+part and move them back in.
+
+67
+00:04:17,680 --> 00:04:21,680
+Actually since we copied, we could
+optimize by avoiding these moves.
+
+68
+00:04:22,860 --> 00:04:28,860
+That's an abstract in-place merge for
+taking the two sorted sub-halves
+
+69
+00:04:28,860 --> 00:04:32,660
+of an array using an auxiliary array, move
+them out, and
+
+70
+00:04:32,660 --> 00:04:36,450
+then put them back in in sorted order.
+Alright, so here's the
+
+71
+00:04:36,450 --> 00:04:40,650
+code for merging, which is quite
+straightforward from the demo.
+
+72
+00:04:42,060 --> 00:04:47,290
+We first in order to sort an array of
+
+73
+00:04:47,290 --> 00:04:52,610
+comparables in this implementation we pass
+a link to
+
+74
+00:04:52,610 --> 00:04:57,840
+the auxiliary array, in as well.
+And we have three arguments
+
+75
+00:04:57,840 --> 00:04:59,410
+lo, mid, and hi.
+
+76
+00:04:59,410 --> 00:05:02,840
+So lo is the first part of the array to be
+sorted.
+
+77
+00:05:02,840 --> 00:05:06,350
+Mid's the midpoint that divides the first
+
+78
+00:05:06,350 --> 00:05:09,320
+part from the second, so our conditions
+are
+
+79
+00:05:09,320 --> 00:05:12,830
+that from lo to mid is sorted, and from
+mid plus 1 to hi is sorted.
+
+80
+00:05:13,966 --> 00:05:17,278
+[COUGH] so the merge implementation then,
+the first thing
+
+81
+00:05:17,278 --> 00:05:20,600
+it does is copy everything over to the
+auxiliary array.
+
+82
+00:05:21,650 --> 00:05:23,220
+And then that sets up for
+
+83
+00:05:23,220 --> 00:05:27,470
+this four loop that accomplishes the
+merge.
+
+84
+00:05:27,470 --> 00:05:30,970
+We start our I pointer at the left heart
+on the left half.
+
+85
+00:05:30,970 --> 00:05:33,430
+The J pointer on the left part of the
+right half.
+
+86
+00:05:33,430 --> 00:05:34,480
+That's mid plus one.
+
+87
+00:05:34,480 --> 00:05:37,690
+And we start the k Pointer at the
+beginning lo.
+
+88
+00:05:37,690 --> 00:05:43,000
+And for every value of k what we're most
+
+89
+00:05:43,000 --> 00:05:48,400
+often doing is comparing whether aux of j
+is less than aux
+
+90
+00:05:48,400 --> 00:05:48,900
+of i.
+
+91
+00:05:50,780 --> 00:05:55,730
+And if it is, we move the element of j
+over in increment j.
+
+92
+00:05:56,780 --> 00:06:00,490
+If it's greater we move the element i over
+in increment i.
+
+93
+00:06:00,490 --> 00:06:02,690
+And then in both cases, we increment a,
+
+94
+00:06:02,690 --> 00:06:06,910
+not imple, increment k, and that
+implements the merge.
+
+95
+00:06:06,910 --> 00:06:12,250
+If the i pointer is exhausted, then we
+just move over the j, next jth element.
+
+96
+00:06:12,250 --> 00:06:13,650
+If the j pointer is exhausted
+
+97
+00:06:13,650 --> 00:06:18,680
+we move over the next ith element.
+So every time we're moving
+
+98
+00:06:18,680 --> 00:06:23,790
+a new element into k and that's the code
+that impelements the
+
+99
+00:06:23,790 --> 00:06:28,812
+abstract in place merge.
+Now with this code,
+
+100
+00:06:28,812 --> 00:06:33,896
+we're also introducing the idea of making
+assertions just to make it
+
+101
+00:06:33,896 --> 00:06:38,900
+easier to debug our code and to have
+confidence that it's correct.
+
+102
+00:06:40,530 --> 00:06:46,410
+In this case, this insertion just says we
+want to
+
+103
+00:06:46,410 --> 00:06:51,710
+be sure that a of lo to mid assorted and
+that mid plus
+
+104
+00:06:51,710 --> 00:06:55,050
+one to high is sorted before our code and
+then we
+
+105
+00:06:55,050 --> 00:06:58,580
+want to check that, the whole thing is
+sorted after our code.
+
+106
+00:06:59,976 --> 00:07:05,664
+And generally programmers, Java
+programmers know that it's a good idea to
+
+107
+00:07:05,664 --> 00:07:08,766
+try to do these assertions.
+
+108
+00:07:08,766 --> 00:07:11,112
+Not only does it help detect bugs, but it
+
+109
+00:07:11,112 --> 00:07:13,880
+also documents what the code is supposed
+to do.
+
+110
+00:07:13,880 --> 00:07:17,190
+And that merge code is a good example of
+this.
+
+111
+00:07:17,190 --> 00:07:20,052
+If you put at the beginning of the code
+what you expect
+
+112
+00:07:20,052 --> 00:07:24,180
+in the, in the form of an assertion, which
+is code itself.
+
+113
+00:07:24,180 --> 00:07:25,730
+And you put at the end of the code what
+you
+
+114
+00:07:25,730 --> 00:07:28,820
+think it's going to do, again in the form
+of an assertion.
+
+115
+00:07:28,820 --> 00:07:31,010
+You're both testing that these conditions
+
+116
+00:07:31,010 --> 00:07:35,150
+hold, and also telling someone reading the
+code, what you're trying to do with it.
+
+117
+00:07:36,930 --> 00:07:42,990
+So Java is just an assert statement.
+It takes it, boolean condition.
+
+118
+00:07:42,990 --> 00:07:47,830
+In this case, we're using that method is
+sorted that we were before.
+
+119
+00:07:47,830 --> 00:07:52,880
+That returns true if the ported is sorted
+and false if it's not.
+
+120
+00:07:52,880 --> 00:07:56,280
+And what assert will do is it will throw
+an exception
+
+121
+00:07:56,280 --> 00:07:57,850
+unless that condition is true.
+
+122
+00:07:58,950 --> 00:08:00,852
+Now the thing about assertions in Java is
+
+123
+00:08:00,852 --> 00:08:04,250
+that you can enable or disable them at
+runtime.
+
+124
+00:08:04,250 --> 00:08:07,850
+And that's really important, because it
+means you can
+
+125
+00:08:07,850 --> 00:08:11,550
+put them into your code to check while
+developing.
+
+126
+00:08:11,550 --> 00:08:16,870
+But it doesn't incur any extra cost at all
+in production code.
+
+127
+00:08:16,870 --> 00:08:20,310
+So by default, insertions are disabled.
+
+128
+00:08:20,310 --> 00:08:21,480
+Something goes wrong
+
+129
+00:08:22,590 --> 00:08:26,830
+somebody analyzing the situation can
+enable insertions and they
+
+130
+00:08:28,270 --> 00:08:30,960
+often will help find out where, what the
+problem is.
+
+131
+00:08:32,060 --> 00:08:36,980
+So, the best practice is to use insertions
+just as we did in that
+
+132
+00:08:36,980 --> 00:08:39,870
+example with merge and to assume that
+
+133
+00:08:39,870 --> 00:08:42,010
+they're not going to be there in
+production codes.
+
+134
+00:08:42,010 --> 00:08:44,240
+You shouldn't use them for the things like
+checking
+
+135
+00:08:44,240 --> 00:08:45,825
+if the input is the way you like it.
+
+136
+00:08:45,825 --> 00:08:50,990
+Alright, so with that merge
+implementation, then
+
+137
+00:08:50,990 --> 00:08:56,020
+the sort implementation is a quite simple,
+recursive procedure shown here.
+
+138
+00:08:57,840 --> 00:09:03,390
+So we use the merge procedure we just
+showed, and then our sort procedure.
+
+139
+00:09:03,390 --> 00:09:07,250
+It's recursive so, checks that we have
+something to do first.
+
+140
+00:09:07,250 --> 00:09:10,960
+Then it computes the value of the midpoint
+same way as we did
+
+141
+00:09:10,960 --> 00:09:14,990
+for a binary search.
+Sort the first half.
+
+142
+00:09:14,990 --> 00:09:17,810
+Sort the second half, and then merge them
+together.
+
+143
+00:09:18,830 --> 00:09:24,080
+And then the actual sort is takes just the
+one argument
+
+144
+00:09:24,080 --> 00:09:29,370
+of the array creates the auxiliary array
+and then uses that.
+
+145
+00:09:30,390 --> 00:09:36,300
+Now, it's important to not create the
+auxiliary array in the re in
+
+146
+00:09:36,300 --> 00:09:38,840
+the recursive routine because that could
+lead
+
+147
+00:09:38,840 --> 00:09:43,460
+to extensive cost of extra array creation.
+
+148
+00:09:43,460 --> 00:09:48,720
+And you'll sometimes see Mergesort
+performing poorly because of that bug.
+
+149
+00:09:48,720 --> 00:09:53,170
+Otherwise this is a very straight forward
+implementation.
+
+150
+00:09:53,170 --> 00:09:56,890
+And it's actually a prototype for
+algorithm design
+
+151
+00:09:56,890 --> 00:09:58,510
+that we'll see come up again and again.
+
+152
+00:09:58,510 --> 00:10:00,450
+It's called divide and conquer.
+
+153
+00:10:00,450 --> 00:10:01,460
+Solve a problem
+
+154
+00:10:01,460 --> 00:10:04,370
+by dividing it into two halves, solving
+the two halves,
+
+155
+00:10:04,370 --> 00:10:07,420
+and then putting the solutions together to
+get the appropriate answer.
+
+156
+00:10:10,675 --> 00:10:15,450
+[COUGH] here's a trace of what Mergesort
+does and if you haven't studied a
+
+157
+00:10:15,450 --> 00:10:22,590
+recursive program before it's worthwhile
+studying this thing in, in some detail.
+
+158
+00:10:22,590 --> 00:10:28,550
+This gives exactly what happens during
+each of the calls to merge.
+
+159
+00:10:28,550 --> 00:10:31,740
+We start out with a big problem to solve
+but we divide it in half,
+
+160
+00:10:31,740 --> 00:10:34,660
+then we divide that one in half, and then
+we divide that one in half.
+
+161
+00:10:34,660 --> 00:10:35,710
+And the very first thing
+
+162
+00:10:35,710 --> 00:10:38,110
+that we actually do is just compare
+
+163
+00:10:38,110 --> 00:10:41,150
+and exchange if necessary the first two
+elements.
+
+164
+00:10:41,150 --> 00:10:43,960
+And then we do the same thing for the next
+two elements.
+
+165
+00:10:43,960 --> 00:10:48,040
+Then merge those two together to get the
+first four done.
+
+166
+00:10:48,040 --> 00:10:50,300
+And then we do the same thing for the next
+four in the array.
+
+167
+00:10:50,300 --> 00:10:53,790
+So now we have two sorted sub-arrays at
+size four.
+
+168
+00:10:53,790 --> 00:10:56,330
+And we merge those together to get one of
+size eight.
+
+169
+00:10:56,330 --> 00:10:57,840
+And then we do the same thing on the
+right,
+
+170
+00:10:57,840 --> 00:11:00,890
+and eventually we have two eights that we
+merge together
+
+171
+00:11:00,890 --> 00:11:03,250
+to get the final result.
+
+172
+00:11:03,250 --> 00:11:06,110
+Very instructive to study this trace to
+
+173
+00:11:06,110 --> 00:11:09,850
+really understand what this recursive
+algorithm is doing.
+
+174
+00:11:11,350 --> 00:11:14,080
+So now we can animate and again
+Mergesort's more
+
+175
+00:11:14,080 --> 00:11:16,149
+efficient, so we can do more and more
+items.
+
+176
+00:11:17,800 --> 00:11:20,820
+You can see it's got the first half
+
+177
+00:11:20,820 --> 00:11:23,040
+sorted, now it's working on the second
+half.
+
+178
+00:11:24,160 --> 00:11:26,100
+And then once it gets the second half
+sorted,
+
+179
+00:11:26,100 --> 00:11:29,430
+then it's going to go ahead and merge them
+right together to get the sorted result.
+
+180
+00:11:30,530 --> 00:11:34,490
+It's got a little extra [COUGH] dynamics
+
+181
+00:11:34,490 --> 00:11:37,319
+in the animation because of the auxiliary
+array.
+
+182
+00:11:38,710 --> 00:11:41,010
+Let's look at it when it's in reverse
+order
+
+183
+00:11:43,680 --> 00:11:49,590
+again it gets the first half done now it's
+working on the second half once
+
+184
+00:11:49,590 --> 00:11:54,100
+it gets the second half done then it goes
+ahead and merges together the whole thing
+
+185
+00:11:54,100 --> 00:11:58,180
+it's just as fast in reverse order as as
+in auditory order.
+
+186
+00:11:59,910 --> 00:12:04,210
+So you can run a Mergesort on huge
+problems.
+
+187
+00:12:04,210 --> 00:12:09,520
+It's a very efficient algorithm.
+And so, for example,
+
+188
+00:12:09,520 --> 00:12:16,140
+what this table shows, if you were to try
+to use a insertion sort for a huge
+
+189
+00:12:16,140 --> 00:12:18,660
+file, say a file with a billion elements,
+on
+
+190
+00:12:18,660 --> 00:12:21,770
+your PC it'd take a few centuries to
+finish.
+
+191
+00:12:23,380 --> 00:12:26,300
+Even on a super computer, if you're using
+insertion
+
+192
+00:12:26,300 --> 00:12:30,380
+sort nowadays it'd maybe take a week or
+more.
+
+193
+00:12:30,380 --> 00:12:32,150
+But if you have a good algorithm like
+
+194
+00:12:32,150 --> 00:12:34,540
+Mergesort, and you're trying to do a
+billion items,
+
+195
+00:12:34,540 --> 00:12:39,150
+you can do it in just less than half an
+hour on your PC.
+
+196
+00:12:39,150 --> 00:12:42,880
+And a supercomputer can do it in an
+instant.
+
+197
+00:12:42,880 --> 00:12:46,150
+And smaller problems only take an instant
+even on your PC.
+
+198
+00:12:46,150 --> 00:12:52,890
+So you can spend a lot of money or a lot
+of time, or you can use a good algorithm.
+
+199
+00:12:52,890 --> 00:12:56,750
+And that's one of our main themes in this
+course.
+
+200
+00:12:56,750 --> 00:13:00,770
+A good algorithm is much more effective
+than spending
+
+201
+00:13:00,770 --> 00:13:03,990
+money or time wasting money or time using
+a bad one.
+
+202
+00:13:06,750 --> 00:13:11,950
+So let's look at the analysis of
+Mergesort, that's a bit of math but very
+
+203
+00:13:11,950 --> 00:13:21,040
+instructive because this really shows the
+power of the divide and conquer method.
+
+204
+00:13:21,040 --> 00:13:26,900
+And allow us to take a problem that was
+taking us quadratic time with methods
+
+205
+00:13:26,900 --> 00:13:33,200
+like insertion and selection sort, and get
+it done in, in log N time with Mergesort.
+
+206
+00:13:33,200 --> 00:13:37,000
+So that's the proposition Mergesort uses
+at most N lg N
+
+207
+00:13:37,000 --> 00:13:41,050
+compares and 6 N lg N array accesses to
+sort any array of size N.
+
+208
+00:13:42,310 --> 00:13:48,190
+And the way to prove this proposition is
+to from
+
+209
+00:13:48,190 --> 00:13:53,900
+examining the code, to write down what's
+called a recurrence relation.
+
+210
+00:13:53,900 --> 00:13:59,140
+And all that is, it's a mathematical
+reflection of what's going on in the code.
+
+211
+00:13:59,140 --> 00:14:04,220
+If we're sorting N items then let C of N
+denote
+
+212
+00:14:04,220 --> 00:14:07,610
+the number of compares that we need to
+sort the N items.
+
+213
+00:14:08,620 --> 00:14:14,740
+In order to get that done, we're sorting
+the left half and the right half and
+
+214
+00:14:14,740 --> 00:14:20,100
+this notation ceiling of N over 2 and
+floor of N over 2 that's the N over
+
+215
+00:14:20,100 --> 00:14:25,450
+2 round up and N over 2 round down, that's
+the size of the two sub-arrays, and
+
+216
+00:14:25,450 --> 00:14:27,410
+we're going to call the same routine for
+that
+
+217
+00:14:27,410 --> 00:14:29,460
+size, so the number of compares you need
+to.
+
+218
+00:14:29,460 --> 00:14:33,060
+For that is C of N over 2, ceiling of N
+over 2
+
+219
+00:14:33,060 --> 00:14:35,737
+for the left and ceiling of, floor of N
+over 2 for the right.
+
+220
+00:14:35,737 --> 00:14:40,450
+And then for the merge, we need at least,
+at most N compares.
+
+221
+00:14:41,690 --> 00:14:45,940
+If neither one exhausts, we need exactly N
+compares.
+
+222
+00:14:45,940 --> 00:14:49,300
+And so and that's true as long as N is
+bigger than 1.
+
+223
+00:14:49,300 --> 00:14:50,530
+If there's only one thing, we're not
+
+224
+00:14:50,530 --> 00:14:55,580
+doing any compares at all.
+So this is a mathematical formula that we
+
+225
+00:14:55,580 --> 00:15:02,830
+derive by examining the code but it
+completely describes mathematically
+
+226
+00:15:02,830 --> 00:15:07,200
+what we an upper bound on the number of
+compares that are going to be needed.
+
+227
+00:15:07,200 --> 00:15:11,170
+And similarly for the number of array
+accesses, if you count up the number of
+
+228
+00:15:11,170 --> 00:15:15,930
+times you're accessing an array for a
+merge you could be at most six in.
+
+229
+00:15:17,040 --> 00:15:20,800
+So these are mathematical formulas and
+there's techniques
+
+230
+00:15:20,800 --> 00:15:23,240
+for solving them and we won't go into
+that.
+
+231
+00:15:23,240 --> 00:15:25,610
+This is not a course on discrete
+mathematics.
+
+232
+00:15:27,940 --> 00:15:34,820
+But what we then do is show how to solve
+the recurrence when N is a power of 2.
+
+233
+00:15:34,820 --> 00:15:36,530
+And then it turns out that it holds for
+all
+
+234
+00:15:36,530 --> 00:15:39,090
+N, which we can prove by induction from
+the recurrence.
+
+235
+00:15:40,280 --> 00:15:45,040
+So if you have this recurrence [COUGH]
+which
+
+236
+00:15:45,040 --> 00:15:47,540
+is similar to the ones that we're talking
+about.
+
+237
+00:15:47,540 --> 00:15:52,840
+It's exactly the same when N is a power of
+2 let's, let's look at this one.
+
+238
+00:15:52,840 --> 00:15:53,010
+If
+
+239
+00:15:53,010 --> 00:16:00,520
+D of N is 2D of N over 2 plus N with D of
+1 equals 0, then D of N equals N log N.
+
+240
+00:16:00,520 --> 00:16:04,800
+We'll look at three proofs of that, just
+assuming that N is a power of 2.
+
+241
+00:16:04,800 --> 00:16:07,140
+If N is a power of 2, then N over 2
+
+242
+00:16:07,140 --> 00:16:10,350
+is also a power of two, so the recurrence
+makes sense.
+
+243
+00:16:11,510 --> 00:16:15,310
+So this is just a graphical representation
+if we
+
+244
+00:16:15,310 --> 00:16:18,140
+want to compute D of N we want to compute
+D
+
+245
+00:16:18,140 --> 00:16:24,470
+of N over 2 twice.
+So that's 2 and then the extra cost
+
+246
+00:16:24,470 --> 00:16:30,285
+for the merge is N, but if we're going to
+do this twice then we have 2N over 2.
+
+247
+00:16:30,285 --> 00:16:34,590
+So let's, we have 2N over 2s and then for
+
+248
+00:16:34,590 --> 00:16:38,110
+each one of these we have divided into N
+over
+
+249
+00:16:38,110 --> 00:16:43,130
+4s and each one of those 4N over 4s has an
+extra cross for the merge of N over 4.
+
+250
+00:16:43,130 --> 00:16:48,980
+Well 2N over 2 is N, 4N over 4 is N and we
+keep going down, doing that til
+
+251
+00:16:48,980 --> 00:16:54,660
+we get down to D of 2 and we always for
+the extra cross for the merge, we have N.
+
+252
+00:16:54,660 --> 00:16:56,940
+And how many stages do we have here?
+
+253
+00:16:56,940 --> 00:17:00,740
+Well, it's the number of times you divide
+N by 2 to get down to 2.
+
+254
+00:17:00,740 --> 00:17:04,630
+That's exactly log base 2 of N, so the
+grand total of
+
+255
+00:17:04,630 --> 00:17:08,220
+all the costs for the merge, which is
+where the compares are,
+
+256
+00:17:08,220 --> 00:17:12,950
+is log N times N, N log N.
+It's kind of a graphical
+
+257
+00:17:12,950 --> 00:17:17,550
+proof or a proof by picture that that
+recurrence has that solution.
+
+258
+00:17:18,600 --> 00:17:24,110
+Here's a little bit more mathematical one:
+we write the recurrence down,
+
+259
+00:17:24,110 --> 00:17:28,880
+and then we divide both sides by N.
+
+260
+00:17:32,090 --> 00:17:38,640
+So then this is D of N over N equals D of
+N over 2 over N over 2 plus 1.
+
+261
+00:17:38,640 --> 00:17:40,480
+So it's dividing by N.
+
+262
+00:17:40,480 --> 00:17:43,670
+So now, this is a recurrence that
+telescopes.
+
+263
+00:17:43,670 --> 00:17:47,780
+The first term on the right hand side is
+exactly the same
+
+264
+00:17:47,780 --> 00:17:51,710
+as the left hand side so we can apply the
+same formula.
+
+265
+00:17:51,710 --> 00:17:55,140
+And all it does is divides by 2 again and
+then throws out another 1.
+
+266
+00:17:55,140 --> 00:17:57,570
+And we keep doing that until
+
+267
+00:17:57,570 --> 00:18:00,450
+we get down to D of 1 which is 0.
+
+268
+00:18:00,450 --> 00:18:02,990
+And when we've done that, we've thrown out
+lg N 1s.
+
+269
+00:18:02,990 --> 00:18:09,510
+So we get D of N over N equals log N, or D
+of N equals N log N.
+
+270
+00:18:09,510 --> 00:18:11,560
+That's another proof by expansion.
+
+271
+00:18:14,180 --> 00:18:20,560
+Or using either one of those techniques
+you could just get the idea that D of N is
+
+272
+00:18:20,560 --> 00:18:28,890
+close to Log N or you can write a program
+to expand the recurrence and find that.
+
+273
+00:18:28,890 --> 00:18:33,130
+And then once we have the idea that D of N
+
+274
+00:18:33,130 --> 00:18:39,700
+equals N lg N, we can plug back into the
+original formula.
+
+275
+00:18:39,700 --> 00:18:43,100
+With the inductive hypothesis that D of N
+equals
+
+276
+00:18:43,100 --> 00:18:45,395
+N lg N, we want to show that D of 2N
+
+277
+00:18:45,395 --> 00:18:52,210
+equals 2N lg 2N, using the recurrence D of
+2N equals 2D of N plus throw out the 2N.
+
+278
+00:18:52,210 --> 00:18:56,290
+Plugging in N log N we get the desired
+result.
+
+279
+00:18:56,290 --> 00:19:00,190
+We use this same idea on our initial
+recurrences
+
+280
+00:19:00,190 --> 00:19:04,770
+for comparison array accesses to show that
+the running,
+
+281
+00:19:04,770 --> 00:19:10,030
+the number of comparison array accesses is
+proportional to N log N for Mergesort.
+
+282
+00:19:10,030 --> 00:19:14,365
+So that's the running time Mergesort is
+fast
+
+283
+00:19:14,365 --> 00:19:18,370
+other thing that we usually want to know
+is memory.
+
+284
+00:19:18,370 --> 00:19:21,060
+And one of Mergesort's characteristics is
+that in
+
+285
+00:19:21,060 --> 00:19:25,810
+practical applications, it uses extra
+space proportional to N.
+
+286
+00:19:25,810 --> 00:19:29,550
+That is, we need that extra auxiliary
+array for the last merge.
+
+287
+00:19:30,880 --> 00:19:34,510
+We took two sorted subarrays and we talked
+about an abstract
+
+288
+00:19:34,510 --> 00:19:37,610
+in place merge but we didn't have an
+actual in place merge.
+
+289
+00:19:37,610 --> 00:19:39,410
+We were using an extra subarray.
+
+290
+00:19:40,948 --> 00:19:44,846
+So N place is important.
+
+291
+00:19:44,846 --> 00:19:47,630
+A lot of times, we're sorting everything
+we have.
+
+292
+00:19:47,630 --> 00:19:50,590
+We want to fill up the memory with stuff
+to sort and then sort it.
+
+293
+00:19:51,620 --> 00:19:57,380
+And search and selection in shellsort are
+in place, they don't use any extra memory.
+
+294
+00:19:57,380 --> 00:20:00,500
+But Mergesort you can only sort really
+half of what you can
+
+295
+00:20:00,500 --> 00:20:05,920
+fit in memory, because you need that
+auxiliary array for the other half.
+
+296
+00:20:05,920 --> 00:20:08,910
+If you want, again, if you think that the
+things we're studying
+
+297
+00:20:08,910 --> 00:20:13,800
+are easy, think about the idea of actually
+doing an in-place merge.
+
+298
+00:20:13,800 --> 00:20:16,530
+People have come up with methods for
+getting this done.
+
+299
+00:20:16,530 --> 00:20:19,420
+So it's theoretically possible, but the
+methods are
+
+300
+00:20:19,420 --> 00:20:22,980
+generally too complex to be useful in
+practice and
+
+301
+00:20:22,980 --> 00:20:24,310
+their not used.
+
+302
+00:20:24,310 --> 00:20:28,060
+But there could be out there some easy way
+to doing in place merge.
+
+303
+00:20:28,060 --> 00:20:31,500
+That's another great algorithm waiting to
+be discovered.
+
+304
+00:20:31,500 --> 00:20:34,480
+Now there's a, a number of practical
+improvements that we can
+
+305
+00:20:34,480 --> 00:20:39,690
+use to make Mergesort even more efficient
+than the simple one
+
+306
+00:20:39,690 --> 00:20:41,930
+that we've looked at and we'll take a look
+of those
+
+307
+00:20:41,930 --> 00:20:48,150
+because they're examples of techniques
+that we can use for other algorithms.
+
+308
+00:20:48,150 --> 00:20:53,640
+First thing is that Mergesort is too
+complicated to use for tiny arrays.
+
+309
+00:20:53,640 --> 00:20:58,880
+So say the subarrays are only of two, or
+three, or four there's too
+
+310
+00:20:58,880 --> 00:21:03,950
+much overhead with the recursive calls and
+so forth to get that done efficiently.
+
+311
+00:21:03,950 --> 00:21:09,660
+And what's worse is, the recursive nature
+of the sort definitely
+
+312
+00:21:09,660 --> 00:21:13,480
+means that there's going to be lots of
+subarrays to be sorted.
+
+313
+00:21:13,480 --> 00:21:17,290
+So, one improvement that we can make is to
+use insertion sort, and just
+
+314
+00:21:17,290 --> 00:21:22,510
+cut off and use insertion sort which is
+simple and efficient for small subarrays.
+
+315
+00:21:22,510 --> 00:21:26,790
+So that's adding this one line of code to
+Mergesort will make it quite a bit faster.
+
+316
+00:21:26,790 --> 00:21:27,490
+Maybe 20% faster.
+
+317
+00:21:29,140 --> 00:21:33,330
+The second improvement that we can make
+that'll improve the performance
+
+318
+00:21:33,330 --> 00:21:38,520
+for cases when the array is partly sorted,
+is to just
+
+319
+00:21:38,520 --> 00:21:40,950
+stop if it's already sorted.
+
+320
+00:21:40,950 --> 00:21:44,120
+And that's going to happen in the case
+where the biggest element in the
+
+321
+00:21:44,120 --> 00:21:48,190
+first half is less or equal to the
+smallest item in the second half.
+
+322
+00:21:48,190 --> 00:21:49,990
+That means it's done.
+
+323
+00:21:49,990 --> 00:21:51,080
+So that's easy.
+
+324
+00:21:51,080 --> 00:21:53,860
+We just put a test in the recursive
+Mergesort for that,
+
+325
+00:21:53,860 --> 00:21:57,880
+through this one line of code, to check
+whether we're done.
+
+326
+00:21:57,880 --> 00:22:00,160
+That way, for example, if you were to call
+
+327
+00:22:00,160 --> 00:22:03,560
+Mergesort for an array that's already in
+order it would
+
+328
+00:22:03,560 --> 00:22:09,880
+just do this test every time and it would
+be done in linear time.
+
+329
+00:22:09,880 --> 00:22:13,520
+That's pretty helpful although not, not
+totally helpful
+
+330
+00:22:13,520 --> 00:22:15,490
+but there's a lot of situations where
+that's helpful.
+
+331
+00:22:18,120 --> 00:22:23,470
+The other thing that's possible to do and
+it's a little mind bending so recommended
+
+332
+00:22:23,470 --> 00:22:28,370
+only for experts.
+Is to save a
+
+333
+00:22:28,370 --> 00:22:33,320
+little bit of time you don't really have
+to copy over into the auxiliary array.
+
+334
+00:22:33,320 --> 00:22:36,650
+You can kind of switch the role of the
+input
+
+335
+00:22:36,650 --> 00:22:40,520
+and the auxiliary array every time you
+make a recursive call.
+
+336
+00:22:40,520 --> 00:22:43,120
+You still need that array but
+
+337
+00:22:43,120 --> 00:22:48,160
+you can set up the code in this way which
+[COUGH]
+
+338
+00:22:48,160 --> 00:22:52,240
+sort, to sort an array, put the result in
+the other one.
+
+339
+00:22:52,240 --> 00:22:55,240
+To merge an array, put the result back in
+the first one.
+
+340
+00:22:55,240 --> 00:22:59,930
+So it's recursive argument switchery to
+get the job done.
+
+341
+00:22:59,930 --> 00:23:02,490
+And it's effective, it means you don't
+have to actually
+
+342
+00:23:02,490 --> 00:23:04,890
+move items, and that saves a little bit of
+time.
+
+343
+00:23:06,870 --> 00:23:09,630
+So here's a visualization
+
+344
+00:23:09,630 --> 00:23:15,110
+of what the practical Mergesort might look
+like, and this is with
+
+345
+00:23:15,110 --> 00:23:19,770
+big cutoff to small subfiles.
+So you
+
+346
+00:23:19,770 --> 00:23:25,360
+got a visual feeling of how this sort gets
+the job done.
+
+347
+00:23:25,360 --> 00:23:28,828
+So it's the first little chunck and then
+the next little
+
+348
+00:23:28,828 --> 00:23:32,429
+chunk and then merges those together, and
+so forth and so on.
+
+349
+00:23:32,429 --> 00:23:34,765
+It's a good visual representation of
+
+350
+00:23:34,765 --> 00:23:40,577
+how Mergesort gets its job done.
+That's the basic Mergesort algorithm
+
+351
+00:23:40,577 --> 00:23:45,650
+that we're going to look at different
+versions of in the next.
+

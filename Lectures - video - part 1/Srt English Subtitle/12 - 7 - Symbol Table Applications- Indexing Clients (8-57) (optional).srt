@@ -1,0 +1,548 @@
+1
+00:00:01,740 --> 00:00:06,480
+Here's another simple client program for
+symbol tables related to indexing.
+
+2
+00:00:06,480 --> 00:00:09,710
+Again, another common function that's
+easily handled by symbol tables.
+
+3
+00:00:11,420 --> 00:00:17,240
+There's all kinds of cases where we just
+have a lot of information, maybe on our PC
+
+4
+00:00:17,240 --> 00:00:24,430
+or all over the web, and we want to create
+an index that allows us to specify.
+
+5
+00:00:24,430 --> 00:00:28,180
+A search key and get all the associated
+information.
+
+6
+00:00:28,180 --> 00:00:30,540
+And you've, you've used programs like this
+
+7
+00:00:30,540 --> 00:00:33,445
+on, on your computer many instances, most
+likely.
+
+8
+00:00:34,630 --> 00:00:37,780
+So, more generally, here's the goal.
+
+9
+00:00:37,780 --> 00:00:42,950
+So, we're going to list of files that are
+specified.
+
+10
+00:00:42,950 --> 00:00:45,210
+And then, and maybe it's all files on the
+
+11
+00:00:45,210 --> 00:00:48,870
+computer, or maybe it's specified in, in
+some other way.
+
+12
+00:00:48,870 --> 00:00:53,930
+And what we want to do is create an index,
+so that we can efficiently
+
+13
+00:00:53,930 --> 00:00:57,040
+find all the files that contain a given
+query.
+
+14
+00:00:57,040 --> 00:00:57,540
+String.
+
+15
+00:00:58,590 --> 00:01:00,690
+so, in this small example.
+
+16
+00:01:00,690 --> 00:01:02,960
+So, our client is going to called file
+index.
+
+17
+00:01:04,070 --> 00:01:08,440
+And in this small example say we are going
+to have five text files.
+
+18
+00:01:08,440 --> 00:01:10,740
+And these are just pieces of literature.
+
+19
+00:01:12,220 --> 00:01:17,450
+And so what we want to do is, build and
+index from that set of text files.
+
+20
+00:01:19,520 --> 00:01:22,880
+And then given a key, a string key, we
+want
+
+21
+00:01:22,880 --> 00:01:26,830
+it to print out the files that might
+contain that key.
+
+22
+00:01:26,830 --> 00:01:29,200
+So, for example, the word freedom appears
+in the
+
+23
+00:01:29,200 --> 00:01:31,730
+Magna Ca, Carta and in Moby Dick and A
+Tale
+
+24
+00:01:31,730 --> 00:01:36,290
+of Two Cities [COUGH] in all three of them
+
+25
+00:01:36,290 --> 00:01:41,020
+but not in Tom Sawyer and not in Aesop's
+Fables.
+
+26
+00:01:41,020 --> 00:01:44,460
+The word whale is only in, Moby Dick.
+
+27
+00:01:44,460 --> 00:01:48,520
+The word lamb appears both in Tom Sawyer
+and Aesop's Fables, and so forth.
+
+28
+00:01:48,520 --> 00:01:52,230
+So we're looking for a piece of
+information somewhere in a computer,
+
+29
+00:01:52,230 --> 00:01:56,300
+and it'll give us the names of the files
+that contain that information.
+
+30
+00:01:56,300 --> 00:02:02,290
+so, with the, more [COUGH] complex user
+interface, this is, very
+
+31
+00:02:02,290 --> 00:02:06,270
+much what the spotlight or find function
+on your computer is doing.
+
+32
+00:02:07,290 --> 00:02:09,610
+And a programmer might use the same
+
+33
+00:02:09,610 --> 00:02:15,180
+program, to find places where certain,
+Programming
+
+34
+00:02:15,180 --> 00:02:18,430
+terms are used in a bunch of programs.
+
+35
+00:02:18,430 --> 00:02:20,590
+So, normally we have a bunch of dot
+
+36
+00:02:20,590 --> 00:02:22,980
+java files when we're working on an
+application.
+
+37
+00:02:22,980 --> 00:02:24,820
+Like these are all the ones associated
+with
+
+38
+00:02:24,820 --> 00:02:28,100
+this, lecture, so we might build an index
+from
+
+39
+00:02:28,100 --> 00:02:30,360
+that set of files, and then we might
+
+40
+00:02:30,360 --> 00:02:32,620
+wonder well where do we use the import
+statements.
+
+41
+00:02:32,620 --> 00:02:34,820
+So we just search for import and it'll
+tell us,
+
+42
+00:02:34,820 --> 00:02:39,300
+look in those three files.
+Or, did we use comparators anywhere here?
+
+43
+00:02:39,300 --> 00:02:42,690
+In, this Index will tell us no.
+
+44
+00:02:42,690 --> 00:02:47,450
+So again, a very general capability that's
+got lots and lots of
+
+45
+00:02:47,450 --> 00:02:53,870
+applications and easy to implement with
+our symbol table api.
+
+46
+00:02:53,870 --> 00:02:57,470
+And the idea is, that what we're going to
+do is associate.
+
+47
+00:02:57,470 --> 00:02:59,860
+On keys with values well the key is
+
+48
+00:02:59,860 --> 00:03:02,200
+the string we type what's the value?
+
+49
+00:03:02,200 --> 00:03:04,670
+Well what we're going to use for value is
+a
+
+50
+00:03:04,670 --> 00:03:08,100
+set of files, the files that contain the
+query string.
+
+51
+00:03:08,100 --> 00:03:12,980
+So just given that high level description
+then the implimintation is pretty direct.
+
+52
+00:03:12,980 --> 00:03:18,190
+Here's the implementation of file index
+using our symbol file implimintation.
+
+53
+00:03:18,190 --> 00:03:20,920
+So now we're going to build a symbol
+table.
+
+54
+00:03:20,920 --> 00:03:24,540
+That associates string keys with sets of
+files.
+
+55
+00:03:25,660 --> 00:03:27,460
+So this creates a new symbol table
+
+56
+00:03:27,460 --> 00:03:30,430
+associating string keys with sets of
+files.
+
+57
+00:03:31,600 --> 00:03:35,790
+So first thing we do, as before, is build
+the index.
+
+58
+00:03:35,790 --> 00:03:38,860
+So we're going to take, this time we're
+going to take
+
+59
+00:03:38,860 --> 00:03:42,470
+the list of file names from the command
+line.
+
+60
+00:03:42,470 --> 00:03:47,590
+And [COUGH] for each file we're going to
+create an input stream.
+
+61
+00:03:47,590 --> 00:03:51,380
+We're going to read every word in the file
+if
+
+62
+00:03:51,380 --> 00:03:55,590
+the symbol contains does not contain the
+word.
+
+63
+00:03:55,590 --> 00:04:00,450
+Will create a new set for that word and
+put that in the symbol table,
+
+64
+00:04:01,490 --> 00:04:06,410
+and then, we simply get the set
+
+65
+00:04:06,410 --> 00:04:11,530
+associated with the key and add the new
+word to that set, the new file
+
+66
+00:04:11,530 --> 00:04:16,990
+name to that set.
+So, this one, for each word in the file.
+
+67
+00:04:16,990 --> 00:04:21,520
+It'll add that file name to the
+corresponding set for that word.
+
+68
+00:04:21,520 --> 00:04:26,170
+That's building a symbol table associating
+keys with sets of files.
+
+69
+00:04:26,170 --> 00:04:29,210
+And then processing queries is the same as
+before, as
+
+70
+00:04:29,210 --> 00:04:31,890
+long as standard in is not empty we take a
+query.
+
+71
+00:04:31,890 --> 00:04:36,850
+And then simply print out the set of
+strings associated
+
+72
+00:04:36,850 --> 00:04:39,300
+with that word which is a list of file
+names.
+
+73
+00:04:40,870 --> 00:04:41,870
+So again,
+
+74
+00:04:41,870 --> 00:04:45,280
+our symbol table API gives a very easy way
+to
+
+75
+00:04:45,280 --> 00:04:49,200
+implement this file indexing function,
+which is very widely useful.
+
+76
+00:04:50,250 --> 00:04:53,480
+And similarly, maybe we want to build a, a
+book
+
+77
+00:04:53,480 --> 00:04:57,900
+index, maybe for a real book, or maybe for
+an ebook.
+
+78
+00:04:57,900 --> 00:05:03,460
+Or more generally, people want to often
+process,
+
+79
+00:05:03,460 --> 00:05:07,120
+preprocess text to, maybe a huge amount of
+text,
+
+80
+00:05:07,120 --> 00:05:10,370
+to support, so called, concordance
+queries.
+
+81
+00:05:10,370 --> 00:05:12,600
+So what you want to do, is given a word,
+
+82
+00:05:12,600 --> 00:05:17,810
+find all occurrences of that word along
+with immediate contexts.
+
+83
+00:05:17,810 --> 00:05:22,580
+And context just means a few words before
+and a few words after.
+
+84
+00:05:22,580 --> 00:05:32,430
+So for example, in tail of two cities.
+The words cities actually only appears in
+
+85
+00:05:32,430 --> 00:05:38,660
+this one place and this is [COUGH] Context
+that it appears.
+
+86
+00:05:38,660 --> 00:05:43,930
+With the forwards tongues of the two
+before and that were blended in after.
+
+87
+00:05:43,930 --> 00:05:49,120
+The word majesty appears in three places,
+and there's, there's the context.
+
+88
+00:05:49,120 --> 00:05:53,540
+In well, this is, the very special case
+that you're very familiar with.
+
+89
+00:05:53,540 --> 00:05:54,920
+In web searches.
+
+90
+00:05:54,920 --> 00:05:57,520
+You type in a word, and then you get
+
+91
+00:05:57,520 --> 00:06:01,600
+places that, where that word appears in
+context.
+
+92
+00:06:01,600 --> 00:06:07,410
+Again, our symbol table API provides for
+an easy way to implement this.
+
+93
+00:06:07,410 --> 00:06:08,828
+This is a, a.
+
+94
+00:06:08,828 --> 00:06:14,150
+[COUGH] concordance client that that does
+the job.
+
+95
+00:06:14,150 --> 00:06:19,950
+Now what we want to do is read text, and
+we want to build an index for each word.
+
+96
+00:06:19,950 --> 00:06:22,812
+So this is a
+
+97
+00:06:22,812 --> 00:06:29,360
+[COUGH] a, a java construct for.
+Reading all the strings
+
+98
+00:06:29,360 --> 00:06:34,630
+on an input stream, on standard input,
+and, splitting em by
+
+99
+00:06:34,630 --> 00:06:39,410
+blank space and putting em into array, so
+now all the words, are, in the an array.
+
+100
+00:06:40,770 --> 00:06:41,780
+On standard input.
+
+101
+00:06:41,780 --> 00:06:48,460
+And then we're going to create a new
+symbol table that associates
+
+102
+00:06:48,460 --> 00:06:51,130
+strings with sets of integers.
+
+103
+00:06:51,130 --> 00:06:54,410
+And again the string is the key and the
+sets of integers
+
+104
+00:06:54,410 --> 00:07:00,990
+are going to be the places in the array
+where the given work appears.
+
+105
+00:07:00,990 --> 00:07:06,280
+So, we go through.
+All the words, pick out our key, s, and
+
+106
+00:07:06,280 --> 00:07:13,520
+again, if, it's not there yet, we create a
+new set associated with that s, and,
+
+107
+00:07:13,520 --> 00:07:16,240
+then, afterwards, we go ahead and.
+
+108
+00:07:16,240 --> 00:07:20,470
+Get that set, and put the new index on
+that set.
+
+109
+00:07:20,470 --> 00:07:24,060
+And then that allows us to process
+queries, where we take a
+
+110
+00:07:24,060 --> 00:07:30,230
+query, and then get the set of indices
+associated with that query.
+
+111
+00:07:30,230 --> 00:07:32,430
+And then we left out, left out the code
+
+112
+00:07:32,430 --> 00:07:35,160
+where you print out the nine words that
+you want.
+
+113
+00:07:35,160 --> 00:07:38,160
+The four to the left and the four to the
+right.
+
+114
+00:07:38,160 --> 00:07:43,290
+Again, quite useful and familiar
+functionality and very
+
+115
+00:07:43,290 --> 00:07:46,010
+easy to implement with our simul table
+client.
+

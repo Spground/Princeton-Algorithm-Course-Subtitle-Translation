@@ -1,0 +1,331 @@
+Okay.
+Now that we, that we've discussed
+breadth-first search and depth-first
+search in connected components three.
+Very useful graph processing algorithm for
+all sorts of real applications.
+Now we're gonna go back to the idea of the
+different problems that might arise when
+doing graph processing,
+And what are, what are our intuition I-,
+with this experience?
+And what types of problems are difficult,
+and what types of problems are easy?
+It's not that I have any real answers to
+that but we wanna keep coming back to this
+issue,
+So that we can appreciate a great
+algorithm when we see it.
+So, here's a challenger or an example of a
+challenge.
+So, here's a problem that comes up in
+plenty of applications.
+So you want to know if a given graph is
+bipartite.
+So what bipartite means is you can divide
+the edges into two subsets, divide the
+vertices into two subsets with the
+property that every edge connects a vertex
+in one subset to a vertex in another.
+So in this case, we can assign zero,
+three, and four to be red vertices.
+And if we do that, then every edge
+connects a red to a white vertex.
+That's a bipartite graph and we saw an
+example of bipartite graph the Kevin Bacon
+graph.
+We had movies and performers, two
+different types of vertices, and every
+edge went from a movie to a performer.
+And in general and other applications, so
+we want to know is a graph bipartite.
+So by graph processing challenge, I mean
+is how difficult is this problem?
+And so what do you think, based on our
+experience?
+Is this a problem that any programmer
+could do?
+Or maybe you need to be a typical diligent
+student in this course,
+Or maybe it's difficult enough that you
+ought to pay somebody to do it.
+Or, actually maybe it's even an expert
+couldn't do it, and we'll talk about the
+precise meaning of that later on.
+Or maybe we don't even know how difficult
+it is, or maybe we can show that it's
+impossible to solve this problem.
+These are pretty broad categories, and
+you'd like to think that we could
+categorize problems in these kinds of
+categories.
+So what about biparting? We'll do this for
+a bunch of problems, but what about
+bipartitenes?.
+Well the answer for that one is that you
+can use DFS to get this done.
+I wouldn't think that any programmmer can
+do it.
+Ask a friend.
+But with DFS, you can see in the book, a
+pretty simple DFS based solution, that to
+this problem.
+That'll tell you whether a graph is
+bipartite, by labeling vertices in such a
+way.
+If it is bipartite, that, all the edges
+have the property to go from one set, one
+vertex to another.
+So definitely a good exercise after this
+lecture is to try to write a program that
+test whether a graph is bipartites or not.
+Okay, let's, oh, here's another
+application of this by the way.
+That dating graph for the sexual
+transmitted diseases so there's males and
+females, is that one gonna be bipartite?
+I think maybe this one is but, nowadays
+maybe not in general.
+Okay, what about this one, Does a graph
+contain a cycle or not?
+So in this case, there's a cycle, zero to
+five to four to six back to zero, and this
+other cycle's two, zero, one, three, two
+there are two, four, six those are all
+cycles.
+So how hard is it to find a cycle in a
+graph in these categorizations well that
+one, It's very simple.
+This one, maybe any programmer could do.
+Maybe.
+You have to have the graph representation,
+But you have to use DFS.
+Well, you could figure out a way to do it
+without, probably,
+But anyway it's really simple with DFS.
+You, you don't even need to hire an expert
+for finding a cycle.
+Alright here's a classic graph processing
+problem that dates back to the eighteenth
+century.
+So it's this town in Konigsberg in Prussia
+at the time where there's an island,
+And the river kinda comes in and branches
+around the island and then goes out in two
+branches.
+And there's a bunch of bridges, five
+bridges onto the island, two from the
+banks and one across, to the this third
+peninsula and then there's two bridges
+crossing that way,
+So a total of seven bridges one, two,
+three, four, five, six, seven.
+And Euler who's a famous mathematician
+would go out on Sunday stroll in this
+place and came up with the idea.
+You know could anyone find a way to go on
+a Sunday stroll and cross each one of
+these bridges exactly once.
+So that's, often talked of as, the,
+original graph processing problem.
+So, in terms of graphs, it's is there a
+cycle that uses every edge exactly once.
+Given a graph, is there a cycle that uses
+every edge exactly once?
+A and actually, a Euler, proved, a let's
+say first theorem in graph theory, a if
+its connected, and all the vertices have
+even degree, you can always do it.
+In this case you can't because there's a
+vertex with odd degree.
+So that's, that's the answer to the
+existence, is there a cycle.
+But suppose you wanted to find the cycle.
+So you can go ahead and check the degree
+of every vertex.
+We looked at easy code for that to know
+that there exists a cycle but how about
+finding one that uses every edge exactly
+once.
+So in this case, here's the cycle that
+uses every edge exactly once.
+And this graph every vertex has even
+degree, and if you go zero, one, two,
+three, four, two, zero, six, four, five,
+zero you get to every edge exactly once.
+That's an Eulerian Cycle. so how about
+that one?
+Is that any programer a or do you have to
+hire an expert, or is it impossible?
+Well this one we have it listed as a
+typical, diligent algorithm student can do
+it.
+But it's a, it's a, a bit of a challenge.
+It's a, an interesting program and again
+once you get through the bipartite graph
+on you can think about this one.
+A it makes some sense what the algorithm
+does, but it might take you a few tries to
+get the code debugged,
+Let's say then you'll find code for it, it
+looks like.
+Alright.
+So that's a Eulerian Cycle What about if
+you want to visit every vertex exactly
+once?
+So, you don't care about going over all
+the edges, you just want to get to all the
+places.
+That's called the, in this case there is a
+way.
+For this graph zero, five, three, four,
+six, two, one, zero.
+So that's a way to get to every vertex
+exactly once.
+This is sometimes called the traveling
+salesperson problem on graphs.
+If the sales, traveling salesperson has to
+get to every city and wants to just go
+there once without retracing steps.
+So how about that one?
+The, every edge is more to visit, it might
+seem more challenging.
+And, actually, maybe if you have any
+experience with this, you realize that
+this one is intractable.
+That's called the Hamiltonian Cycle
+problem, and it's a classical NP-Complete
+problem.
+We'll be talking about NP-Complete
+problems at the end of the course, but
+basically the idea is that nobody knows an
+efficient solution to this problem for
+large graphs.
+And it's a frustrating situation that
+we'll talk about.
+But, you definitely not gonna, solve it by
+just being a diligent algorithm student a
+and not even hiring an expert will get it
+solved, no matter how much the expert
+charges.
+So the intuition on finding a cycle that
+visits every edge once.
+Yeah, you could do it.
+Find a cycle that visits every vertex
+once, probably not.
+That's the kind of challenge that we face
+when addressing applications of graph
+processing.
+Here's another example.
+Problem is, given two graphs you want to
+know are they identical except for the way
+that we need the vertex.
+So here's an example of, a these two
+graphs don't look all that identical, at
+all.
+But if you, take zero here and rename it
+four and one and rename it three and like
+that,
+Then sorry zero here and name it four and
+one and rename it three and like that.
+Then you'll see that they are the same
+graph.
+They represent the same connections.
+And in so many applications where, maybe
+the vertex names are, are a bit arbitrary
+or you just wanna know.
+Really the interest is in the structure of
+the connections, you might wanna know if
+just the way that I name the vertex makes
+the graph different?
+Or if I have two classes that have two
+different kinds of interactions, is it the
+same interactions that's independent of
+the people or scientific experiment
+studying a property of the universe or
+whatever, you might wanna know, is that
+connection structure the same or not?
+That's called the Graph Isomorphism
+Problem.
+How difficult you think that one is?
+So, you know, you could, there you can try
+all possible ways of renaming the
+vertices,
+But there's really a lot of ways, in
+factorial ways.
+Way too many to try for a huge graph.
+Is there efficient way to do it,
+Or is it intractable like the Hamiltonian
+Path Problem.
+Where it's in this category that nobody
+knows an efficient algorithm for but there
+could be one.
+Actually for Graph Isomorphism, that's one
+that's stumped mathematicians and computer
+scientists for many years.
+Nobody knows even how to classify this
+problem.
+We don't know if it's easy or if it's in a
+class of problems that are, we don't know
+how to solve but there could be a
+solution.
+We can't show that it's impossible or
+guaranteed to be difficult.
+Nobody knows how to classify this problem.
+Again, pointing out that, even for a
+relatively simple problem to state.
+The state of our knowledge and
+understanding the properties of algorithms
+to solve such problems, is, it's
+incomplete for sure.
+So one last one, here's a graph processing
+challenge.
+So this graph, when it's laid out it's got
+two edges that cross between, between
+three and four and zero and five.
+And in general if you have a graph that
+you've got, so say the social networking
+graph of a small class, you want to study
+that graph and look at it, you want to
+draw it on the plane and maybe you don't
+want, you want to do it without having
+edges crossed.
+So in this case there is a way to place
+the vertices in the plain so that when you
+draw the edges no two of them cross.
+So, how difficult is that problem, even is
+it possible to do or not.
+So, that's a classic problem in
+graph-processing that, came up, from, the
+first time that people were ever sending
+graphs in computers.
+And the answer to this one is also,
+interesting to contemplate.
+There's a linear time algorithm known for
+this based on DFS.
+So that means the running times, you could
+run it on huge graphs.
+You could know, whether or not you could
+lay it out in the plane.
+It was discovered, by Tarjan in the
+1970's.
+And you heard that name come up again, in
+graph processing.
+Based on DFS,
+But, if you really wanna get this done,
+you need to hire an expert, 'cause that is
+quite a complex algorithm,
+And probably, beyond, what a diligent
+algorithm student, or a professor, might
+accomplish.
+So, that's the kind of another point on
+this range of difficulty of graph
+processing problems.
+So there's no question that graph
+processing is challenging.
+And this introductory lecture gave us
+numerous useful graph processing
+algorithms.
+But still leaves us with the feeling that
+there's plenty more to know and we'll
+cover some more in later lectures.

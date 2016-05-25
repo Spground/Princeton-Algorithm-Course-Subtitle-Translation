@@ -1,0 +1,599 @@
+1
+00:00:03,380 --> 00:00:09,605
+Now we're going to look at MP
+completeness, which is, another idea that
+
+2
+00:00:09,605 --> 00:00:17,432
+gives us even, even stronger, evidence
+that the problems that we can reduce that
+
+3
+00:00:17,432 --> 00:00:25,614
+to are difficult. and MP completeness is a
+simple idea. it sounds almost, crazy.
+
+4
+00:00:25,614 --> 00:00:33,352
+It's, asking for a lot. an MP problem is
+MP complete if every single problem in MP
+
+5
+00:00:33,352 --> 00:00:40,385
+polynomial time reduces to that problem.
+that sounds like a fairly abstract
+
+6
+00:00:40,385 --> 00:00:48,800
+concept, but in 1970's, right about the
+time Ed Karp was working Cook proved, just
+
+7
+00:00:48,800 --> 00:00:56,208
+before actually Cook proved, and later
+Levine, a few years later, independently
+
+8
+00:00:56,483 --> 00:01:05,549
+that sat is MP complete. so every problem
+in NP polynomial time reduces to sat. Hm.
+
+9
+00:01:05,549 --> 00:01:11,755
+Well, that has profound implications that
+I'll talk about on the next slide. But
+
+10
+00:01:11,755 --> 00:01:18,034
+first let's take a look at the Cook Levin
+theorem. Mm, this is an extremely brief
+
+11
+00:01:18,253 --> 00:01:24,824
+proof sketch, but the idea of the theorem
+is. I can, I can describe the idea of the
+
+12
+00:01:24,824 --> 00:01:30,884
+theorem. The execution of it is a tour de
+force in both cases, but the idea I can
+
+13
+00:01:30,884 --> 00:01:37,065
+describe. the, so, a problem in NP. NNP is
+one that can be solved in polynominal time
+
+14
+00:01:37,065 --> 00:01:42,605
+by a non-determinate Turing machine. Well,
+what's a non-determinate Turing machine
+
+15
+00:01:42,605 --> 00:01:48,008
+exactly? Well, it's just a set of states
+and symbols and, if you in a table
+
+16
+00:01:48,008 --> 00:01:53,412
+basically that says if you have a certain
+symbols or a certain state, you go to
+
+17
+00:01:53,412 --> 00:01:59,153
+another table. Out of state. so actually,
+and actually at the beginning the way
+
+18
+00:01:59,153 --> 00:02:05,602
+mathematicians thought of turing machines
+was not with diagrams but just as topals,
+
+19
+00:02:05,602 --> 00:02:11,472
+as a list of every state, it's a list of
+other states and symbols and things, just
+
+20
+00:02:11,472 --> 00:02:17,922
+following certain rules. so description of
+a Turing machine is a formal description
+
+21
+00:02:17,922 --> 00:02:23,937
+of a bunch of rules with logically saying
+what happens and, and there's not much
+
+22
+00:02:23,937 --> 00:02:29,925
+that happens. if you're in a state and you
+see a symbol, go to another state, move
+
+23
+00:02:29,925 --> 00:02:35,979
+the tape head, and so forth. simple formal
+rules. so what Cook found was that, so
+
+24
+00:02:36,195 --> 00:02:42,600
+anything that you can compute in, with a
+non-deterministic Turing machine, anything
+
+25
+00:02:42,600 --> 00:02:49,001
+that you can compute you can write down on
+non deterministic turing machine for, and
+
+26
+00:02:49,001 --> 00:02:54,868
+what Co okay found was a way to encode a
+non deterministic turing machine as an
+
+27
+00:02:54,868 --> 00:03:00,964
+instance of SAT and so what does that
+mean. It's just writing down what a Turing
+
+28
+00:03:00,964 --> 00:03:07,061
+machine is in kind of a different notation
+as an instance of SAT. What does that
+
+29
+00:03:07,061 --> 00:03:12,521
+imply? Well if you could solve that
+instance of sat in polynomial time. you're
+
+30
+00:03:12,521 --> 00:03:17,320
+simulating operation of that Turing
+machine. and you could solve, the
+
+31
+00:03:17,320 --> 00:03:22,347
+computation that Turing machine's trying
+to do in polynomial time. That's the
+
+32
+00:03:22,347 --> 00:03:27,713
+sketch of, the Cook-Levin theorem.
+anything that you can compute in a, on a
+
+33
+00:03:27,713 --> 00:03:33,011
+non-deterministic Turing Machine in
+polynomial time. you can write as a SAT
+
+34
+00:03:33,011 --> 00:03:38,105
+instance that you could solve in
+polynomial time. if you could solve the
+
+35
+00:03:38,105 --> 00:03:43,743
+SAT instance quickly, you could do the non
+deterministic Turing Machine computation
+
+36
+00:03:43,743 --> 00:03:48,565
+quickly. So any problem in NP, polynomial
+time reduces to SAT. That's the,
+
+37
+00:03:48,769 --> 00:03:56,800
+Cook-Levin theorem. And if you combine
+that which was done immediately with
+
+38
+00:03:56,800 --> 00:04:03,976
+Karp's observation, well first of all it
+means that, that there's a polynomial time
+
+39
+00:04:03,976 --> 00:04:09,414
+algorithm for SAT, if and only if P equals
+NP. so that is non-determined, only if
+
+40
+00:04:09,414 --> 00:04:14,454
+it's non-determined, doesn't help. You
+have the polynomial time algorithm for
+
+41
+00:04:14,454 --> 00:04:21,164
+SAT. because polynomial time algorithm for
+SAT immediately means you could solve, all
+
+42
+00:04:21,164 --> 00:04:27,683
+problems, in NP in polynomial time. That's
+what, that's what Cook's Theorem's about.
+
+43
+00:04:27,908 --> 00:04:34,651
+so, and NP completes getting into the
+popular culture, as well. but what is the
+
+44
+00:04:34,651 --> 00:04:40,646
+implications? It's means all of these
+thousands and thousands of problems all of
+
+45
+00:04:40,646 --> 00:04:48,114
+a sudden reduce to SAT. and that means
+they're all equivalent. they're all
+
+46
+00:04:48,114 --> 00:04:54,235
+manifestations of the, of the same
+problem. if you could solve any one of
+
+47
+00:04:54,235 --> 00:05:00,341
+these problems in polynomial time, then it
+means that you can solve them all in
+
+48
+00:05:00,341 --> 00:05:07,005
+polynomial time. That's a very profound
+result. particularly because thousands and
+
+49
+00:05:07,005 --> 00:05:13,076
+thousands and thousands of important
+scientific problems, all the problems that
+
+50
+00:05:13,076 --> 00:05:18,999
+we aspire to compute with feasible,
+feasible algorithms, they're all in the
+
+51
+00:05:18,999 --> 00:05:25,070
+same class. if we could solve any one of
+them in polynomial time, we could solve
+
+52
+00:05:25,070 --> 00:05:31,821
+all of them in polynomial time. so, what
+are the implications of MP completeness?
+
+53
+00:05:31,821 --> 00:05:38,939
+So, it's the idea that SAT captures the
+difficulty of the whole class, NP. and if,
+
+54
+00:05:38,939 --> 00:05:45,053
+either way, if you can prove that there's
+some problem, in NP, that there's no
+
+55
+00:05:45,053 --> 00:05:51,289
+polynomial time algorithm for, then it's
+not going to be first half. And the other
+
+56
+00:05:51,289 --> 00:05:57,733
+thing as I mentioned you can replace SAT
+with any problem that has been reduced
+
+57
+00:05:57,733 --> 00:06:03,428
+down from SAT. Not just Karp's problems,
+but any of the thousands. so, so now,
+
+58
+00:06:03,428 --> 00:06:09,798
+nowadays proving a problem in p-complete
+was actually many examples where it's
+
+59
+00:06:09,798 --> 00:06:17,067
+actually guided what scientists do because
+it is saying something profound about the,
+
+60
+00:06:17,067 --> 00:06:24,804
+profoundly important about the problem. so
+here's an example. I. I'm getting to that
+
+61
+00:06:24,804 --> 00:06:31,372
+Ising spin model that I referred to. it
+was introduced in the'20s and people liked
+
+62
+00:06:31,372 --> 00:06:37,263
+the model and they wanted to apply it and
+trying to compute with it but it's one
+
+63
+00:06:37,263 --> 00:06:42,747
+thing to have a model, it's another thing
+to apply the model, try to say something
+
+64
+00:06:42,747 --> 00:06:48,096
+about the real world that might involve
+some computation. so in the'40s a
+
+65
+00:06:48,096 --> 00:06:53,378
+mathematical solution was found tour de
+force paper, which is fine, but in the
+
+66
+00:06:53,378 --> 00:07:00,137
+real world it's 3D and a lot of smart
+people looked for. 3D solution to this
+
+67
+00:07:00,137 --> 00:07:08,774
+problem. turns out to be In 2000 it was
+proven to be MP complete. And people work
+
+68
+00:07:08,774 --> 00:07:18,122
+for 50 years trying to solve this problem.
+and . now we understand why they were
+
+69
+00:07:18,122 --> 00:07:25,741
+unsuccessful. Because if they had been
+successful it would imply that, all those,
+
+70
+00:07:25,741 --> 00:07:32,668
+all those other problems are going to be
+running in polynomial time. Or it would
+
+71
+00:07:32,668 --> 00:07:35,958
+imply that PNP.
+Equals NP, and nobody believes that PNP.
+
+72
+00:07:35,958 --> 00:07:44,165
+Equals NP. . So here we are. We're still
+with this, overwhelming consensus that P
+
+73
+00:07:44,165 --> 00:07:50,482
+is not equal to MP. and not only that if P
+is not equal to MP, then MP complete
+
+74
+00:07:50,482 --> 00:07:57,500
+problems are some other subset, of MP, and
+there's as I mentioned a zoo of complexity
+
+75
+00:07:57,500 --> 00:08:04,129
+classes, at the, end of the reduction
+lecture a lot of them are, starting from
+
+76
+00:08:04,129 --> 00:08:10,601
+this diagram, you can come up with, many,
+many other ideas to try to get at it and
+
+77
+00:08:10,601 --> 00:08:16,762
+there's not a lot of problems that people
+ev en have any kind of conjecture for
+
+78
+00:08:16,762 --> 00:08:22,976
+falling outside. Even though it seems like
+obvious there ought to be lots of problems
+
+79
+00:08:22,976 --> 00:08:28,446
+in MP that are not in. It's quite a
+frustrating situation for people working
+
+80
+00:08:28,446 --> 00:08:34,204
+in the field. So the right hand diagram's
+simple. The left hand diagram gets more
+
+81
+00:08:34,204 --> 00:08:40,250
+and more complicated as people work on it.
+But really, the fundamental reason that we
+
+82
+00:08:40,250 --> 00:08:46,080
+believe that p equals, not equals MP, gets
+back to that creativity. And I'd like to
+
+83
+00:08:46,080 --> 00:08:52,195
+read a quote from Avi Gregerson, who have
+at the Institute for Advance Science here
+
+84
+00:08:52,195 --> 00:08:57,262
+in Princeton, We admire Wiles' proof of
+Fermat's last theorem, and the scientific
+
+85
+00:08:57,262 --> 00:09:02,281
+theories of Newton, Einstein, Darwin,
+Watson and Crick. The design of the Golden
+
+86
+00:09:02,281 --> 00:09:07,560
+Gate Bridge and the Pyramids, precisely
+because they seem to require a leap which
+
+87
+00:09:07,560 --> 00:09:12,905
+cannot be made by everyone, let alone by a
+simple mechanical device. It's all about,
+
+88
+00:09:12,905 --> 00:09:18,201
+it's a lot more difficult to create
+something than to check that it's good. So
+
+89
+00:09:18,413 --> 00:09:24,556
+here's the summary P's the class of search
+problems that are solvable in polynomial
+
+90
+00:09:24,556 --> 00:09:30,345
+time. Np's the class of all search
+problems and some of which seem pretty
+
+91
+00:09:30,345 --> 00:09:36,629
+hard and people have tried really hard to
+work on'em. NP complete in a sense are
+
+92
+00:09:36,629 --> 00:09:42,630
+the, the hardest problems in NP'cause you
+know, all the problems in NP reduce to
+
+93
+00:09:42,630 --> 00:09:49,989
+those problems. we talk about a problem
+having no polynomial prime algorithm, that
+
+94
+00:09:49,989 --> 00:09:56,484
+is intractable, er, you know. And. we know
+that, lots and lots of fundamental
+
+95
+00:09:56,484 --> 00:10:03,277
+problems are NP complete. so what we want
+to do is use theory as a guide, when we're
+
+96
+00:10:03,277 --> 00:10:09,344
+confronting problems. everyone has to
+realize that a polynomial time for
+
+97
+00:10:09,344 --> 00:10:14,918
+algorithm for an NP complete problem would
+be a stunning. Scientific breakthrough win
+
+98
+00:10:14,918 --> 00:10:21,125
+a million dollars in this video thinks he
+can do it. certainly you will confront NP
+
+99
+00:10:21,332 --> 00:10:27,194
+complete problems sometimes there's
+thousands and thousands and thousand of
+
+100
+00:10:27,194 --> 00:10:33,062
+them out there. and probably a good idea,
+safe bet is to assume that P is not equal
+
+101
+00:10:33,062 --> 00:10:38,729
+to NP because almost everyone believes
+that and therefore that there is NP comply
+
+102
+00:10:38,729 --> 00:10:44,188
+problems are very intractable. You're not
+going to be able to guarantee polynomial
+
+103
+00:10:44,188 --> 00:10:49,440
+running time for an algorithm. So, you
+better know about those situations and
+
+104
+00:10:49,440 --> 00:10:55,967
+proceed accordingly. And, and we'll look
+at a couple of things to do. around in the
+
+105
+00:10:55,967 --> 00:11:01,590
+1980s came to Princeton to start their
+computer science department and we built
+
+106
+00:11:01,590 --> 00:11:07,017
+this building. And they asked you know, a
+lot of the buildings there, nobody asked.
+
+107
+00:11:07,017 --> 00:11:12,379
+A lot of the buildings at Princeton have
+gargoyles, and I wanted to have something
+
+108
+00:11:12,379 --> 00:11:17,740
+on our building that could stand the test
+of time, and this is what we wound up
+
+109
+00:11:17,740 --> 00:11:22,644
+with, in a pattern on the brick up on the
+top of the building. Now I could just
+
+110
+00:11:22,644 --> 00:11:28,398
+leave that there and maybe these count,
+the solution will get edited out. And so
+
+111
+00:11:28,398 --> 00:11:33,910
+the, you can work on figuring out what
+that means. But, you know, anyway, here's
+
+112
+00:11:33,910 --> 00:11:39,790
+the solution. the indented bricks are
+ones. I mean, ones that aren't indented
+
+113
+00:11:39,790 --> 00:11:46,444
+are zeros in this little pattern. and
+they're just asking. encoding. So the top
+
+114
+00:11:46,444 --> 00:11:54,888
+row is asking for P. and then the second
+one is asking for equal and then N. and
+
+115
+00:11:54,888 --> 00:12:01,274
+then another P. and then, a question mark.
+so it seemed to me like that pattern,
+
+116
+00:12:01,505 --> 00:12:07,968
+would span the test of time and that was
+that was over 25 years ago. now if,
+
+117
+00:12:08,199 --> 00:12:14,662
+everyone asks, what do you do, if somebody
+proves that in fact P equals NP. Well in
+
+118
+00:12:14,662 --> 00:12:21,125
+that case we can put an exclamation point
+on there. If somebody proves that P is not
+
+119
+00:12:21,125 --> 00:12:26,815
+equivalent P then we're going to have to
+remove a lot of bricks. that's an, an
+
+120
+00:12:26,815 --> 00:12:30,260
+introduction to the theory of
+intractability.

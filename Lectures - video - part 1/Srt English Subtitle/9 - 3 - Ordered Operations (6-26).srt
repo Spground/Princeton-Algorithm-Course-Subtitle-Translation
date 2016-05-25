@@ -1,0 +1,308 @@
+1
+00:00:01,086 --> 00:00:08,032
+When keys are comparable and we can put
+them in order. We saw that we can use
+
+2
+00:00:08,032 --> 00:00:14,014
+binary search to get an efficient symbol
+table implementation. But we can also
+
+3
+00:00:14,014 --> 00:00:20,026
+provide a lot of convenient functionality
+for the client that's what we are going to
+
+4
+00:00:20,026 --> 00:00:26,016
+look at next. So this is just an example
+of an application that might try to
+
+5
+00:00:26,016 --> 00:00:30,093
+associate keys with values. An
+illustration of all the different
+
+6
+00:00:30,093 --> 00:00:37,020
+operations that a client might want. So we
+already looked at the Get operation so we
+
+7
+00:00:37,020 --> 00:00:43,050
+might want to know what city is associated
+with the event that happened at time nine
+
+8
+00:00:43,050 --> 00:00:49,058
+o'clock, thirteenth and so that should
+return that value. But there's plenty of
+
+9
+00:00:49,058 --> 00:00:56,743
+other things that we might want. Like, for
+example, what's the earliest time? That's
+
+10
+00:00:56,743 --> 00:01:03,394
+the min or what's the latest time? That's
+the max. What about, being able to iterate
+
+11
+00:01:03,394 --> 00:01:09,463
+between, among all the keys between two
+given times? That, certainly is
+
+12
+00:01:09,463 --> 00:01:17,044
+convenient. Then there's, what's the
+seventh largest times, that's select that
+
+13
+00:01:17,044 --> 00:01:24,489
+like a median, it generalizes min or max?
+Which key is that, happens second or
+
+14
+00:01:24,489 --> 00:01:31,006
+seventh? So that's, order statistics, a
+dynamic thing what happened, whats the
+
+15
+00:01:31,006 --> 00:01:38,143
+closest time, thing that happened just
+before, five past nine. Certainly, plenty
+
+16
+00:01:38,143 --> 00:01:43,472
+of clients might want, want that. So this
+one is, I've only got ten tickets to sell.
+
+17
+00:01:43,684 --> 00:01:49,129
+So that's the cut off point for, selling,
+seven tickets that's the cut off point.
+
+18
+00:01:49,129 --> 00:01:53,813
+For, anybody after that time doesn't get a
+ticket. And, and this one might be, if
+
+19
+00:01:53,813 --> 00:01:58,827
+there's a time cut off. I'm not going to
+sell tickets to anyone that came after
+
+20
+00:01:58,827 --> 00:02:03,466
+that time. And then the corresponding one
+is, what's the first thing that happened
+
+21
+00:02:03,466 --> 00:02:09,359
+after that time? That's call in to the
+radio show, I'm going to take that caller,
+
+22
+00:02:09,359 --> 00:02:16,330
+the first call that comes at nine:30. And
+so forth. So then see how many things
+
+23
+00:02:16,330 --> 00:02:21,787
+happen between nine:15 and nine:25. And
+how many calls were there before
+
+24
+00:02:21,787 --> 00:02:27,550
+nine:10:25? So you can see that there's,
+all of these operations are quite natural
+
+25
+00:02:27,550 --> 00:02:34,473
+when we have the, table in sorted order.
+And that's what we have for our binary
+
+26
+00:02:34,473 --> 00:02:41,128
+search implementation. So we can,
+implement these, efficiently and they are,
+
+27
+00:02:41,128 --> 00:02:49,841
+convenient and useful for the clients. So
+typically for ordered simple tables, when
+
+28
+00:02:49,841 --> 00:02:57,753
+keys are comparable will provide a much
+wider interface it's very useful for many
+
+29
+00:02:57,753 --> 00:03:06,548
+clients. So we say that we're dealing with
+keys that are comparable by simply adding
+
+30
+00:03:06,548 --> 00:03:13,746
+this extents comparable key to our
+declaration. Same way we did for sorting
+
+31
+00:03:13,746 --> 00:03:20,179
+methods. So all that means is that our
+implementations can use compared to but
+
+32
+00:03:20,179 --> 00:03:25,501
+for the client it means that all these
+operations have meaning. Give me the
+
+33
+00:03:25,501 --> 00:03:30,921
+minimum key, give me the largest key, and
+then I can get the value associated with
+
+34
+00:03:30,921 --> 00:03:36,883
+that using that. Give me the largest key
+less than or equal to this key value or
+
+35
+00:03:36,883 --> 00:03:42,531
+the smallest key greater than that key
+value, give me the number of keys less
+
+36
+00:03:42,531 --> 00:03:47,897
+than that key. You can actually implement
+priority queues this way. Delete the
+
+37
+00:03:47,897 --> 00:03:55,323
+minimum key, delete the largest key. Now
+usually we argue against why the interface
+
+38
+00:03:55,323 --> 00:04:02,534
+is just adding operations to an interface,
+usually our reason for doing so is that we
+
+39
+00:04:02,534 --> 00:04:08,644
+can't guarantee that all the operations
+can be performing efficiently. In this
+
+40
+00:04:08,644 --> 00:04:14,077
+case, as we'll see, ultimately we have
+ways to guarantee that all the operations
+
+41
+00:04:14,077 --> 00:04:19,267
+can be formed efficiently. And they're so
+convenient for clients. It's certainly
+
+42
+00:04:19,267 --> 00:04:24,594
+worth adding them. So we have iterate
+through all the keys, and iterate through
+
+43
+00:04:24,594 --> 00:04:30,268
+all the keys in a given range, and count
+the number of keys in a given range. All
+
+44
+00:04:30,268 --> 00:04:35,876
+of these operations are very useful for
+clients and we'll see plenty of examples
+
+45
+00:04:36,067 --> 00:04:41,280
+later on. So we have to greatly expand
+our, our table. What, what are going to be
+
+46
+00:04:41,280 --> 00:04:46,615
+the cost of all of these things. And this
+is a big difference between the binary
+
+47
+00:04:46,615 --> 00:04:51,746
+search implementation where the keys are
+kept in order in an array, in the
+
+48
+00:04:51,746 --> 00:04:56,483
+sequential search implementation, when
+they're all in a link list. So, for
+
+49
+00:04:56,483 --> 00:05:01,875
+example, to provide order and iteration,
+you have to get them sorted. And that's,
+
+50
+00:05:01,875 --> 00:05:07,204
+going to be a lot of work, and take N lg N
+time. Whereas binary search, you just
+
+51
+00:05:07,204 --> 00:05:14,275
+iterate through, the things in order. The
+give me the seventh key we just go and
+
+52
+00:05:14,275 --> 00:05:21,611
+look there, they are in order. Rank
+operation, that is essentially what binary
+
+53
+00:05:21,611 --> 00:05:28,433
+search provides. That's the, our basic
+implementation is providing rank. Floor
+
+54
+00:05:28,433 --> 00:05:35,290
+and ceiling that's again is an outgrowth
+of the rank operation. Minimum and maximum
+
+55
+00:05:35,510 --> 00:05:41,414
+well again those are like select. Their
+just right there, you look at the first or
+
+56
+00:05:41,414 --> 00:05:47,711
+the last. To insert or delete however
+takes linear time. To maintain the sorted
+
+57
+00:05:47,711 --> 00:05:53,664
+array in dynamic fashion is going to take
+linear time you have to go through the
+
+58
+00:05:53,664 --> 00:05:59,775
+whole thing. And so that's really are the
+key to thinking about what are symbol
+
+59
+00:05:59,775 --> 00:06:06,117
+table and symbol tables in general. How
+could we guarantee that all operations are
+
+60
+00:06:06,117 --> 00:06:12,042
+fast? Binary research is pretty good but
+that's a major flaw. It can't maintain a
+
+61
+00:06:12,042 --> 00:06:17,559
+dynamic table efficiently with binary
+search and that's going to be your focus
+
+62
+00:06:17,757 --> 00:06:19,078
+in the next lecture

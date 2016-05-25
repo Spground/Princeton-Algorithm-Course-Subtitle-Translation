@@ -1,0 +1,308 @@
+Next, we're going to look at Java code for
+solving the max flow problem.
+This is the most complex.
+Graph processing algorithm we have seen so
+far but it's relatively a small amount of
+curve that builds upon the mechanisms that
+we have been studying for the last couple
+of lectures.
+So now, the graph that we are working with
+little more complicated because we have to
+associate with each edge not just the
+capacity but also a flow.
+So, we'll build a slightly more
+complicated data type for edges called a
+flow edge.
+Where, for each edge, we can keep track of
+that information.
+So, we not only have to keep the from
+vertex V and the to vertex W.
+The weight or the capacity C, associated
+with the edge but, and also the flow cuz
+that's a flow edge.
+And then the flow network.
+Since we're going to go through edges in
+the wrong direction we're going to have to
+put every flow edge, kind of like an
+undirected graph in both adjacency lists.
+And then we're going to test whether we're
+going, which direction we're going through
+an edge.
+It's kind of like using an undirected
+graph.
+But the flow network, anyway, has to have
+edges in both places so it can do backward
+edges.
+A simple way to arrange for this is to
+compute for the edges what's called the
+residual capacity, and that's just what
+we're going to use to compute the
+bottleneck value, the only max amount of
+flow we can pull through.
+So for the backward edge, we'll assign the
+residualCapacityTo be the amount of flow.
+And for the forward edge, it'll be the
+capacity minus the flow.
+So, that's the maximum amount of stuff we
+can get through the edge when we're
+augmenting its residual capacity. so and
+to actually do the augmentation, you will
+have a value which is your maximum that
+you're going to, that you're going to
+augment and so if you are on the forward
+edge, you add it and if you're on a
+backward edge, you subtract it.
+And so, that's the basic idea and its just
+quite natural from the graph
+representation we've been using and the
+way that the codes focus on how algorithm
+woks.
+So one way to think of this is to little
+bit closer to the representation that
+we're using, is to consider what's called
+a residual network that for every edge
+every forward edge in the network, it has
+the, the in, forward edge going that has
+the amount of flow left and a backward
+edge with the amount of flow that's there.
+And if you have a, a full forward edge, or
+a, or an empty backward edge then you only
+have one such.
+So this an example of the residual network
+for this amount of flow.
+You can't put any more flow through from
+this vertex to this vertex, so there's no
+edge going that way.
+But you can remove four units of flow
+going that way.
+So, that's because of the backward edge.
+So and in this case we have a full forward
+edge.
+So, there's no edge going this way, cuz we
+can't put any more flow through.
+But there's nine going that way,
+That's another example of a full forward
+edge.
+This empty one you can put eight units of
+flow that way, so we have an edge in the
+residual network going that way.
+But no way to go that way, because there's
+no flow, there's no backward edge.
+And so this network is just a natural way
+to look at the network while the flow is
+being computed cause it's a digraph that
+we're going to search to find the
+augmenting path.
+If a directed path in this network that's
+from s to t, that's an augmenting path.
+And that's a simple mechanism that helps
+us write compact and elegant code.
+So that's an augmenting path in the
+original network and that just turns out
+to be a directed path in the residual
+network.
+So then, we can just use our algorithms
+that we've already studied for finding
+directed paths in the residual network.
+Alright, so here's the API for flow edges.
+And they just have the few extra methods
+to allow us to compute and make decisions
+based on the amount of flow and capacity
+in the edge.
+These are the computations that we need to
+implement the forward focus in algorithm.
+So every edge has a from and a to.
+If you have one point, it gives you the
+other one which we need just as we did in
+undirected graphs.
+Every edge has capacity and a flow and a
+residual capacity, which we compute from a
+capacity in flow, then we want to be an
+addResidualFlow to any edge, and its added
+and if its forward, and it gets subtracted
+if it's forward.
+So those are the basic methods in the API
+for a flow edge and, and the
+implementation of all of them is
+straightforward.
+So notice that one thing that's a little
+different from many othe, you know,
+classes is that actually the goal of our
+computation is to fill in these values
+flow.
+So, they're not final variables that's
+what we're computing.
+Now. we do it through addResidualFlow but
+still it's not a final.
+So, create an edge, just with a V to W
+given capacity, just fill in the instance
+variables and all these other ones are
+just getters.
+Others just like in an undirected graph.
+And then, residualCapacity and
+addResidualFlow are also easy to
+implement.
+So, residualCapacity if it's on the from
+edge, you return the flow, if it's on the
+to edge or it's the backward edge, you
+return capacity minus flow, just as we
+said.
+And addResidualFlow makes the same test to
+decide whether to add or subtract the
+flow.
+So very simple implementations of all
+those operations for our flow edges in a
+flow network.
+So, what about the floor network, API?
+it's again going to be our standard API,
+just that floor graph, flow networks are
+built from flow edges.
+And they're going to be built for the
+client which is going to be the max flow
+algorithm. it's going to have a method
+that gives an interval for every vertex of
+all the forward and backward edges instant
+on that vertex and sh, so that client is
+going to use these basic things.
+And given everything we've seen this
+implementation is pretty straightforward.
+It's pretty much just like edge-weighted
+graph, except we use low edges now.
+And then, when we add an edge even though
+it's kind of a directed network to handle
+flow and forward and backward edges,
+We add every edge to both adjacency lists.
+But simple code, quite similar to what
+we've seen before.
+So we'll, again network is usually huge
+and sparse.
+So, we use a vertex index array and each
+entry associated with each vertex will
+contain references to all the edges that
+are incident on that vertex whether
+they're forward or backwards.
+So, just like an un-directed graph, you
+might have to, you'll have two references
+to the same edge.
+One and it's a from and the other and it's
+to and then rather than just to wait, they
+have a flow and a capacity.
+So from zero to two, it's got capacity
+three and one unit of flow in it.
+So, that's an example of, of how to
+represent that edge.
+So, flow network has got flows in it,
+that's the grey and it's got capacities,
+and that's the white.
+And otherwise, it's kind of similar to our
+undirected graph representation.
+I've got one more processing, the,,
+processing the graph.
+We use residualCapacity to make that kind
+of work in the residual path in natural
+way.
+So, this is the implementation of the
+forward focus in algorithm.
+And again h, pretty straightforward to
+given the description that we've done, and
+the graph processing code that we've
+written up to this time.
+So it's got you have an array of vertices
+that we've been to.
+It's got an edge two array which is the
+how do we get to each vertex so we can
+provide the client with the flow so that
+we can process paths in the graph you
+know, it's got the value of the flow.
+So, let's look at the code, it's kind of
+self-documenting.
+So what we'll do is we'll set the value of
+the flow to zero.
+So we're going to find out if it has a
+augmenting path and we'll look at that
+method in a minute.
+As long as it has an augmenting path then
+when we call, it has augmenting path,
+basically what that's going to do is
+that's going to do a graph search and mark
+the verticies that it visits and if it
+gets to this target, it's going to leave
+that path and now the edge to array in the
+standard way. the edge to of t contains
+the, the edge that, that contains the
+vertex that took us to t and so forth.
+And so we'll use that edge to, to go back
+through the path and to figure out the
+bottleneck capacity,
+Which is the minimum of the bottleneck
+capacity and the residual capacity in the
+high edge that we're processing.
+So that's the, the maximum amount of flow
+that we can push through the network does
+go through the path and find the minimum
+of either the unused capacity in some
+forward edge or the available flow in some
+backward edge.
+So once we have the bottleneck capacity,
+then we just go back through the path
+again and addResidualFlow to every edge in
+that path.
+So that's augment the flow.
+And then, once we've augment the flow,
+then we update the value.
+Notice that, when this terminates it
+terminated because we couldn't find an
+augmenting path, and we couldn't find an
+augmenting path meant that, essentially,
+we did a graph search that got stuck with
+finding all full-forward edges or empty
+backward edges before getting to the
+target and that's precisely the
+computation that we needed to do to
+compute the cut.
+So to tell whether a vertex is reachable
+from s.
+We just checkmarked v so we can tell the
+client which vertices are in the cut.
+And then we can find the, the edges that
+leave that vertex with the edges that
+comprise the cut. so now, all we have to
+do to finish is to look that it has
+augmenting path, which is the graph search
+in the residual network.
+And for this example we'll use
+breadth-first search although the other
+search algorithms that we've studied can
+be adapted in the same way depth-first
+search or using a priority queue as in
+Prim's algorithm or Dijkstra's algorithm.
+So we have our standard edge to in marked
+arrays and so we already have a queue
+which is going to contain the vertices
+that we've encountered but not yet
+visited.
+We'll put the source on there while the
+queue is not empty, we'll take a vertex
+off.
+And so, we'll go through everybody
+associated that's connected to that
+vertex, that's a flow edge.
+And then, you check the residual capacity.
+And if, if it's bigger than zero that
+means h, you have a way to get to w, and
+if it's not marked,
+You haven't been there yet then you go
+ahead and go there and mark it.
+It's essentially a breadth-first search.
+So that's the code for has augmenting
+path.
+And that essentially completes the
+implementation of breadth-first search.
+And mark t tells the, tells the returns
+true or false.
+If you can get from t to s after that
+search is gone, then t will be marked, and
+you can return true.
+This method can return true.
+That's a Java implementation of the max
+flow.

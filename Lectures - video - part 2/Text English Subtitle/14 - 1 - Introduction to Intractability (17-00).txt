@@ -1,0 +1,344 @@
+. Today, we're going to talk about
+intractability in our last lecture. this
+is an appropriate topic to close the
+course on because it really lays out for
+us some of the big challenges of the
+future. most people are taking this course
+because they're going to want to be
+involved with algorithms, algorithms in
+the future. and this topic really helps us
+lay out what's ahead. As an introduction,
+we'll review some very, very basic
+questions about computation. Some of you
+may be familiar with this subject area
+others may not be at all. So, it will just
+be a brief review in either case. But some
+of the concepts are relatively easy to
+understand and so, and they lay a good
+background for starting with computation
+with intractability. We need to think
+about computation itself first. There are
+these kinds of questions that came up
+actually about the same time or even
+before computers actually were invented or
+came into use. Now, what is a general
+purpose computer? What does that mean? are
+there limits on the power of digital
+computers? That's another interesting
+question. Are there limits on the power of
+any machine that we can build? this kind
+of question with the outgrowth of similar
+questions on mathematics that was posed by
+David Hilbert in the beginning of the
+twentieth century. and there were some
+very profound thinking going around
+Hilbert's questions, and later, around the
+questions on computers that initially were
+related, but then took on a new life of
+their own. To take a look at the idea of
+what these mathematicians were thinking
+about in the middle of the twentieth
+century that we call the simple model of
+computation that we looked at when we were
+working with the KnuthMorrisPratt
+algorithm. so what we did was we imagined
+a, a machine, an abstract machine called a
+discrete finite automaton or an FSA, a
+finite state automaton. that is a very
+simple machine where we imagine that it's
+got a tape that has the input. that's just
+a long strip that's divided into cells.
+It's got a finite alph, alphabet of
+symbols and it had a tape head that could
+read one symbol from one cell of the, of
+the tape. And then, based on what it saw,
+it would move to a different state. It
+would move one cell at a time, read up all
+the tape, all the input, and if it got to
+the right state, we'd say it'd accept it.
+That's what we did with KnuthMorrisPratt
+was we imagined this machine and then we
+built a program that now constructed a
+table which just said what to do, which
+state to go to for each symbol on the each
+possible symbol on the tape for each
+state. and then that was a way that we got
+this problem solved. in, a natural
+question arises when mathematicians and
+theoretical computer scientists first
+started taking a look at abstract models
+of computation like this is, can you make
+them more powerful, is there a more
+powerful model of computation than DFA?
+Well, it didn't, it didn't take long to
+realize, of course the, there's a more
+powerful model. And actually, the progress
+was almost incremental. You can think of
+it as being almost incremental where you
+just add a little bit of power to the DFA
+that we can show, that makes that more
+powerful but, but what's the limit? and
+actually the, the limit was proposed very
+early on by Turing in here at Princeton in
+the 1930s. it's a universal model of
+computation where just like the DFA, we
+imagine a machine that has a finite set of
+states. but instead of just reading the
+tape, it can write on the tape as well and
+it can move in both directions. so, it, it
+can store intermediate results on the
+tape. but, other than that, it's very
+similar to what we imagined for the FSA.
+And now the question is, is there a more
+powerful model of computation than this
+one? and the remarkable fact is that
+Turing answered this question in the
+1930s. Actually, he did the work just
+before he got here to Princeton, and then
+finished the paper. He said, no, there's
+no more powerful model of computation. In
+fact, many of hailed this as the most
+important scientific result of the
+twentieth century. because it, it tells us
+really wha t we need to know about the
+power of the machines that we build. so
+with Church, who was Turing's adviser here
+at Princeton, the we have the thesis that
+there's no more powerful machine. Turing
+machines can compute any function that can
+be computed by a physically harnessable
+process of the natural world. Now, this is
+not a mathematical theorem because it's a
+statement about the natural world. It's,
+it's not something that you can prove from
+basic principles. but it is something that
+you can falsify, you can run an experiment
+that shows it not to be true. And the
+whole idea behind this thesis and, and
+behind Turing's proof about abstract
+models of computation is that and we've
+seen it many, many times. So, we can use
+simulation to prove model equivalence. So,
+we wrote a Java program to simulate a
+discrete finite automaton, and that means
+that Java's at least as powerful as that.
+you can write people have shown you can
+write Turing machines that simulate the
+operation of, of store program computers,
+like the one's that we use. Or if you use
+an iPhone and you're running an app that's
+written for the Android or vice versa,
+that simulation that proves models that
+are equivalent, demonstrates that models
+are equivalent. And that's been an
+extremely effective way for us to
+understand that different computers have
+similar capabilities. That, you know,
+you're not going to compute more by build,
+building some new machine. so these had
+profound implications. And, it's, it's
+really amazing that Turing came up with
+this so long ago really before computers
+came into use at all. and it means that we
+don't have to try to invent a more
+powerful machine, or, or language and it
+really enables rigorous study of the
+computation that we can expect to do in
+the natural world. so that's the basis for
+the theory of computation. And it's, it's
+related to the study of algorithms. but,
+because it gives us a simple and universal
+model of computation. But we haven't
+talked about efficiency. how long does it
+take to simulate an Android to s imulate
+an iPhone and so forth? So, what about
+cost? what about time? That's been our
+focus when developing algorithms. and what
+we want to think about next is how to deal
+with that cost. but first, I just want to
+lay out the evidence that we have for the
+Church-Turing thesis. That is, it's been
+eight, eight decades and nobody's found a
+machine that can compete more than we've
+been computing with the machines that we
+have. And the other thing that was really
+convincing to the mathematicians in the
+mid-20th century is that people tried all
+different types of models of computation.
+Church was working on something called the
+un-typed lambda calculus, which actually
+is the basis for modern programming
+languages. And there are other
+mathematicians working on recursive
+function theory and grammars and other
+things. And eventually, essentially, they
+were all able to use these languages to
+express the formalism of another one, and
+then therefore, prove them to be all
+equivalent. And that comes in through to
+the modern day with all programming
+languages. You can write a simulator or a
+compiler for one programming language and
+another, or a different random access
+machines, simple machines, like cellular
+automaton. and even computing using
+biological operations on DNA. or quantum
+computers that you may have heard about.
+all of these things have turned out to be
+equivalent. So, there's a, a lot of
+confidence that the Church-Turing thesis
+holds. but what about efficiency? So, this
+is a similar starting point for the study
+of algorithms. What algorithms are useful
+in practice? so in order to know what the,
+what useful we're going to consider time
+and we're going to say that it's an
+algorithm that it's not just that it's in
+theory, would, would complete the problem
+is that it actually would solve the
+problem in the time that we have
+available. and just to set a dividing
+line, it a, a, a clear bright line it, it,
+we're going to say is that we'll consider
+it to be useful in practice or efficient.
+If it's running time is guaran teed to be
+bounded by some polynomial in the size of
+the input for all inputs. and for the
+purpose of this theory, we don't even care
+of what the exponent is, could be n to the
+100th. now you might argue that's not a
+very useful dividing line but it is a
+useful starting point. and as you'll see,
+even the starting point has told us a
+great deal about the kinds of algorithms
+useful in practice. and, this was, this
+work was started in the 50s.' also, here
+at Princeton. and many, many people looked
+at models for trying to understand what,
+what this meant. the dividing line is
+between polynomial as, as I've said, and
+exponential. Exponential is a two the, the
+n-th power of some constant of greater
+than one to the n-th power. And we'll talk
+about that in just a second. so sorting is
+useful. It, so anytime it's bounded by a
+polynomial or, but here's another one
+which is finding the best traveling
+salesperson tour on endpoints. if you're
+going to try all possible tours that
+algorithm is not useful in practice
+because n factorial is not bounded by a
+polynomial in n. Its running time actually
+grows like n to the n-th. so, this is a
+useful starting point for our theory
+because it's very broad and robust. and if
+we can put some algorithms in the class
+with sorting and other algorithms in the
+class with traveling salesperson using
+brute, brute force search, that's going to
+be useful. It'll tell us which algorithms
+we want to use. We definitely can use the,
+think about using the first but we can't
+think about using the second. and, and
+actually, unlike turing machines, where we
+wouldn't actually kinda play turing
+machine to solve a practical problem. in
+this theory, it's often the case that the
+polynomial time algorithms will scale to
+help us solve large problems because the
+constants usually tend to be small. but
+the, the key is the idea of exponential
+growth and I just want to be sure to
+convince everybody that it's not about,
+when it comes to exponential growth, it's
+not about the technology. That is a
+dividing line th at no matter how fast
+your computer is, you can't be running an
+exponential algorithm and expect to be
+solving a large problem, in just a thought
+experiment to reconvince everybody of
+that. So let's suppose that, imagine that
+we had a huge, giant, parallel computing
+devices. This thing is so big that it's
+got as many processes, processors as there
+are electrons in the universe. So, we have
+a supercomputer on every electron and
+we'll put the most powerful super computer
+we can imagine today on every electron in
+the universe. and then, we'll also run
+each processor for the lifetime, estimated
+lifetime of the universe. so, how big a
+problem can we solve? Well, it's estimated
+there's ten to the 79th electrons in the
+universe and supercomputers. Nowadays,
+maybe can do ten to the thirteenth
+instructions per second. and you can
+quibble about these numbers and make it
+ten to the twentieth if you want. it's
+estimated the age of the universe in
+seconds is ten to the seventeenth.
+And if you don't like that, make it ten to
+the thirtieth.
+You multiply all those numbers together
+you're going to get a, a relatively small
+number to say a thousand factorial. ten to
+the seventeenth times ten to the
+thirteenth times ten to the 79th is only
+ten to the 109th or something.
+Whereas a thousand factorial is way bigger
+than ten to the 1000th. It's more like
+1000 to the 1000th, alright? So, there's
+no way that you can imagine solving a
+thousand city TSP problems using that
+brute force algorithm. You can let your
+computer run but it's not going to finish.
+technology is out of the picture when we
+have exponential growth. So, that's why
+it's so important to know algorithms are
+going to require exponential time and
+which ones aren't. in this theory it would
+seem. let's at least get that
+classification done. so which problems can
+we solve in practice? We're just going to
+say that the polynomial time algorithms
+are the ones that we can solve in practice
+that guaranteed polynomial time
+performance. so that brings us right to
+the question, which problems have
+polynomial time algorithms? and
+unfortunately, it's not so easy to know
+that. get stuck right away on trying to do
+that classification, and that's what
+today's lecture is all about. so, this is
+a similar bird's eye view to when we
+introduced the classifying algorithms when
+we're talking about reduction. And
+reduction's a very important tool in this
+theory as well. So, what we're going to
+say is a problem is intractable if you
+can't guarantee that you can solve it in
+polynomial time. so what we want to do is
+prove that the problem's intractable.
+there have been a couple of problems that
+have been proven to require exponential
+time. but they are a bit, artificial.
+well, so here's one. Given a constant size
+program, does it halt, and in most case
+that's or here's another one. Given an N
+by N checkers board, can the first player
+force a win if you have the force capture
+rule? Well, N by N checkers board for
+large N is again, that's a, certainly a
+toward problem. But for the many real
+problems that we actually would write
+this, like to solve, unfortunately,
+there's been very few successes in proving
+that a problem is intractable. So even
+though it would seem that you would be
+able to be able to separate problems that
+can guarantee problems polynomial times
+solutions from problems that require
+exponential time for some input, there's
+been very little success in proving that.
+but that's an introduction in a motivation
+for the theory of intractability.

@@ -1,0 +1,1663 @@
+1
+00:00:02,062 --> 00:00:09,074
+Now, we'll look at red black BSTs which is
+a simple data structure that allows us to
+
+2
+00:00:09,074 --> 00:00:16,886
+implement 2-3 tree with very little extra
+code beyond the basic binary search tree
+
+3
+00:00:16,886 --> 00:00:23,022
+code. So this is, and actually the version
+that we're going to, looking at is called
+
+4
+00:00:23,022 --> 00:00:29,166
+left-leaning red-black BSTs. On a personal
+note, I wrote a research paper on this
+
+5
+00:00:29,166 --> 00:00:34,484
+topic in 1979 with Leo Givas and we
+thought we pretty well understood these
+
+6
+00:00:34,484 --> 00:00:41,097
+data structures at that time and people
+around the world use them in implementing
+
+7
+00:00:41,097 --> 00:00:47,760
+various different systems. But just a few
+years ago for this course I found a much
+
+8
+00:00:47,760 --> 00:00:52,949
+simpler implementation of red-black trees
+and this is just the a case study showing
+
+9
+00:00:52,949 --> 00:00:58,175
+that there are simple algorithms still out
+there waiting to be discovered and this is
+
+10
+00:00:58,175 --> 00:01:02,761
+one of them that we're going to talk
+about. So, the idea is that we are, are
+
+11
+00:01:02,761 --> 00:01:09,585
+going to represent every two, three tree
+as a binary search tree. And in order to
+
+12
+00:01:09,585 --> 00:01:14,418
+get that done, we just need a simple
+representation for three notes. So, what
+
+13
+00:01:14,418 --> 00:01:20,061
+we are going to do is use internal
+left-leaning links to glue the three nodes
+
+14
+00:01:20,061 --> 00:01:26,026
+together. So, the larger of the two nodes
+in the tree node will always be the root
+
+15
+00:01:26,026 --> 00:01:32,019
+of a little binary search tree of size two
+for the three node and the link between
+
+16
+00:01:32,019 --> 00:01:37,084
+the two nodes, the left link that links
+the larger key to the smaller one we'll
+
+17
+00:01:37,084 --> 00:01:43,077
+color red. And that's to distinguish those
+links from the other links in the binary
+
+18
+00:01:43,077 --> 00:01:49,039
+tree so that we can tell when we're
+inserting things which nodes belong to
+
+19
+00:01:49,039 --> 00:01:55,371
+tree nodes and which ones don't. And you
+can see from this transformation that it's
+
+20
+00:01:55,371 --> 00:02:01,036
+easy to perform this, see this
+correspondence the middle link between A
+
+21
+00:02:01,036 --> 00:02:06,801
+and B, those are the keys that are less
+than B and larger than A. So, that takes
+
+22
+00:02:07,028 --> 00:02:12,449
+two comparisons to get to them the ones
+that are less than A, less than, less than
+
+23
+00:02:12,449 --> 00:02:18,565
+A, that's two comparisons for that and the
+ones that are greater than B are the right
+
+24
+00:02:18,565 --> 00:02:23,572
+link of B. So, just following those three
+cases, I see t hat this correspondence is
+
+25
+00:02:23,572 --> 00:02:29,547
+going to work. So, any 2-3 tree
+corresponds to a left leaning red-black
+
+26
+00:02:29,547 --> 00:02:37,951
+BST in this way. Just take the three nodes
+and split them into little binary search
+
+27
+00:02:37,951 --> 00:02:44,803
+tree of size two held together by a red
+link. And correspondingly given a
+
+28
+00:02:44,803 --> 00:02:51,249
+red-black BST then you can get the 2-3
+tree if you wanted it. But just look at
+
+29
+00:02:51,249 --> 00:02:57,341
+the properties of looking at the
+properties over a left leaning red-black
+
+30
+00:02:57,341 --> 00:03:03,748
+BST. You know, with reference to what we
+know about 2-3 trees. First of all no node
+
+31
+00:03:03,748 --> 00:03:09,693
+has two red links connected to it cuz the
+only red links are internal to three
+
+32
+00:03:09,693 --> 00:03:15,816
+nodes. And those have to have ex, external
+links or tree links connecting them to
+
+33
+00:03:15,816 --> 00:03:22,148
+some other node. Every path from the root
+down to a null link has the same number of
+
+34
+00:03:22,148 --> 00:03:28,020
+black links that just follows directly
+from the corresponding property for 2-3
+
+35
+00:03:28,020 --> 00:03:33,525
+trees. A left-leaning red-black BST has
+perfect black balance. And all the red
+
+36
+00:03:33,525 --> 00:03:39,553
+links lean left. So, given a BST with some
+of the links colored red that has those
+
+37
+00:03:39,553 --> 00:03:45,934
+properties that's going to correspond to a
+2-3 tree. And that's a key property is
+
+38
+00:03:45,934 --> 00:03:51,514
+this one-to-one correspondence between 2-3
+trees and left-leaning red-black trees.
+
+39
+00:03:51,707 --> 00:03:56,936
+Given a 2-3 tree, we saw how to do it.
+Given a, a, given a red-black tree, we
+
+40
+00:03:56,936 --> 00:04:02,974
+just make the red links horizontal, and
+merge the nodes together to be three
+
+41
+00:04:02,974 --> 00:04:08,647
+nodes. So, all of the operations that
+we're going to look at for red-black trees
+
+42
+00:04:08,647 --> 00:04:14,106
+can be understood in terms of the
+corresponding operations on 2-3 trees. Now
+
+43
+00:04:14,325 --> 00:04:20,079
+the first, and really one of the most
+critical observations, is that search in a
+
+44
+00:04:20,079 --> 00:04:25,971
+red-black BST is exactly the same as for
+an elementary BST, we just ignore the
+
+45
+00:04:25,971 --> 00:04:32,195
+color. Now, it's going to be much faster
+because of better balance in the tree, but
+
+46
+00:04:32,195 --> 00:04:37,997
+in terms of the code, we don't have to
+change the code at all. Our regular search
+
+47
+00:04:37,997 --> 00:04:44,520
+code doesn't examine the color of a link
+and so we can just use it exactly as is.
+
+48
+00:04:44,520 --> 00:04:49,909
+And in fact, most of the other operations
+that we implemented on BSTs are also
+
+49
+00:04:49,909 --> 00:04:55,203
+identical. They d on't need the colors,
+but they can all benefit from the fact
+
+50
+00:04:55,203 --> 00:05:00,743
+that the trees are much better balanced.
+So this aspect of red-black BSTs is an
+
+51
+00:05:00,743 --> 00:05:06,231
+extremely nice one because of the
+operations that we implemented for regular
+
+52
+00:05:06,231 --> 00:05:11,537
+BSTs that involves some complicated code
+for floor and ceiling and rank and so
+
+53
+00:05:11,537 --> 00:05:17,096
+forth, and we don't have to change that
+code at all. We just during the insertion,
+
+54
+00:05:17,096 --> 00:05:23,269
+make sure that we, we [cough] maintain the
+properties the balance properties and by
+
+55
+00:05:23,269 --> 00:05:28,884
+doing that, we wind up with balance trees
+and we make all the operations quick and
+
+56
+00:05:28,884 --> 00:05:35,411
+we don't have to re-implement, we don't
+have to change it at all. So first before
+
+57
+00:05:35,411 --> 00:05:42,227
+we get to the code for insertion, we have
+to look at the representation. We don't
+
+58
+00:05:42,227 --> 00:05:49,308
+actually have explicit representation of
+links or links in trees or just references
+
+59
+00:05:49,308 --> 00:05:56,131
+to nodes. You could implement this by
+building explicit links but the an easier
+
+60
+00:05:56,131 --> 00:06:03,284
+thing to do is to know that every node is
+referenced by just one link in a tree the
+
+61
+00:06:03,284 --> 00:06:09,986
+one from it's parent. So, you can put the
+color of a link in the node that it
+
+62
+00:06:09,986 --> 00:06:18,812
+references. So, in this case we have a red
+link connecting E and C. What we do is put
+
+63
+00:06:18,812 --> 00:06:26,549
+a bit, a color bit in each in the node
+class. And then, if the link coming into a
+
+64
+00:06:26,549 --> 00:06:35,158
+node is red we set that to true. So this
+simple thing just tests is a node red. We
+
+65
+00:06:35,158 --> 00:06:42,271
+consider all null nodes to be black null
+links to be black, we don't have red links
+
+66
+00:06:42,271 --> 00:06:48,753
+dangling off, that would be incomplete
+pre-nodes. And [cough] otherwise if the
+
+67
+00:06:48,753 --> 00:06:54,557
+color's red, we return true otherwise
+return false to test whether a node is
+
+68
+00:06:54,557 --> 00:07:01,509
+red. So in this tree, the color of h.left
+is red, the color of h.right is black and
+
+69
+00:07:01,509 --> 00:07:07,608
+so forth. So, that's the way we represent
+colors by putting the, a color bit in the
+
+70
+00:07:07,608 --> 00:07:12,602
+node for the color of the length that
+points to it. [cough] Alright, so now,
+
+71
+00:07:12,602 --> 00:07:18,742
+there's a couple of elementary operations
+that we have to perform on red-black
+
+72
+00:07:18,742 --> 00:07:24,666
+trees, called rotations. And the idea is
+that during the construction of a tree, or
+
+73
+00:07:24,666 --> 00:07:31,003
+during an insertion operation, sometimes
+we wind up with red links that are leaning
+
+74
+00:07:31,003 --> 00:07:37,960
+in the wrong direction. And so we'll need
+what's called a left rotation, and the job
+
+75
+00:07:37,960 --> 00:07:44,335
+of that operation is to take a, a right
+leaning red link that is there for
+
+76
+00:07:44,335 --> 00:07:50,638
+whatever reason and reorient it to lean to
+the left. [cough] so, in this case, we
+
+77
+00:07:50,638 --> 00:07:57,760
+have the right link of E points to S and S
+is red so that's a right-leaning red link
+
+78
+00:07:58,039 --> 00:08:05,032
+and so now that's the before and what we
+want to do is reorient things so that it
+
+79
+00:08:05,032 --> 00:08:11,764
+leans to the left. And again, that has to
+be a local operation that only changes a
+
+80
+00:08:11,764 --> 00:08:19,783
+few links and just from the diagram it's
+not difficult to see that this little bit
+
+81
+00:08:19,783 --> 00:08:27,833
+of code will do the job. If we start with
+a right-leaning red link. So, first thing
+
+82
+00:08:27,833 --> 00:08:35,441
+we do is take the reference of h.right,
+and save that in x. So, that's the node
+
+83
+00:08:35,441 --> 00:08:44,057
+that's going to be the new root of the
+three nodes so to speak. And, and then,
+
+84
+00:08:44,057 --> 00:08:51,915
+x.left after the rotation is going to be
+h. And also whatever color h was, well, it
+
+85
+00:08:51,915 --> 00:08:56,835
+looks like it should be black. But
+actually this situation is where it could
+
+86
+00:08:56,835 --> 00:09:03,318
+be red. Then x is going to have that color
+cuz the link coming into h is going to be
+
+87
+00:09:03,318 --> 00:09:09,232
+the link coming into x. And then h's color
+is going to be black afterwards. And then,
+
+88
+00:09:09,232 --> 00:09:15,039
+we return x to link further up the tree
+which happens during our standard
+
+89
+00:09:15,268 --> 00:09:24,481
+recursive insert. So, that's a rotate left
+operation. Now, the property of this
+
+90
+00:09:24,481 --> 00:09:30,817
+operation that's very important is it
+maintains a symmetric order. The keys
+
+91
+00:09:30,817 --> 00:09:36,085
+between E and S are still there. We just
+changed the way we get to them. And the
+
+92
+00:09:36,085 --> 00:09:42,480
+keys less than E and so forth. And also we
+maintain perfect black balance because we
+
+93
+00:09:42,480 --> 00:09:48,349
+didn't change the black height, height of
+anything by doing this transformation. All
+
+94
+00:09:48,349 --> 00:09:54,564
+those subtrees, those three subtrees are
+exactly the same relative to the top and
+
+95
+00:09:54,564 --> 00:10:05,861
+bottom of the tree, as they were before
+the rotation. Now paradoxically and you'll
+
+96
+00:10:05,861 --> 00:10:13,138
+see why very soon it also turns out that
+to get the insertion done properly we
+
+97
+00:10:13,138 --> 00:10:19,158
+sometimes need to take a left-leaning red
+link and temporarily make it lean right.
+
+98
+00:10:19,393 --> 00:10:25,520
+And later on, we'll get it back to the
+left again. But anyway, that's a basic
+
+99
+00:10:25,520 --> 00:10:32,745
+operation that we sometimes need. And so
+that's just the symmetric code to the code
+
+100
+00:10:32,745 --> 00:10:39,609
+that we just did. Now again, now x is
+h.left. And h.left is going to be x.right
+
+101
+00:10:39,609 --> 00:10:45,301
+after the rotation. X's color is still
+going to be h's color. And h's color is
+
+102
+00:10:45,301 --> 00:10:52,072
+going to be red. And the right rotation
+implements this and again that's going to
+
+103
+00:10:52,072 --> 00:10:58,695
+maintain a, a symmetric order in perfect
+black balance we change the way the red
+
+104
+00:10:58,695 --> 00:11:06,336
+goes but we didn't change anything about
+the black. Okay, that's a right rotation.
+
+105
+00:11:06,625 --> 00:11:12,094
+Now, here's the third elementary operation
+that we're going to perform. It's called a
+
+106
+00:11:12,094 --> 00:11:17,911
+color flip. Sometimes during the
+insertion, we might wind up with a node
+
+107
+00:11:18,147 --> 00:11:23,459
+that's got two red links coming out of it.
+That's corresponds precisely to our
+
+108
+00:11:23,459 --> 00:11:30,035
+temporary four node when we're doing 2-3
+trees. And what we wanted to do with the
+
+109
+00:11:30,035 --> 00:11:35,092
+temporary four node was to split it and
+pass the center node up to the root. Well,
+
+110
+00:11:35,092 --> 00:11:41,002
+you can see from this structure that we're
+all set to do that all we need to do
+
+111
+00:11:41,002 --> 00:11:46,037
+actually is not change any links, just
+change all the colors. And so, that is, we
+
+112
+00:11:46,037 --> 00:11:53,001
+change the link from E to A and from E to
+S to be black. That essentially splits the
+
+113
+00:11:53,001 --> 00:12:00,006
+four node. And then, we want to insert the
+E into its parent. And we just do that by
+
+114
+00:12:00,006 --> 00:12:05,059
+changing its link to be red. So, that's
+flipping the colors. And that's the way we
+
+115
+00:12:05,059 --> 00:12:09,605
+split a temporary four node in a
+left-linear red-black tree. And again,
+
+116
+00:12:09,605 --> 00:12:14,452
+that's just flipping colors. It doesn't
+change any links so it still, of course,
+
+117
+00:12:14,452 --> 00:12:19,007
+maintains symmetric order and perfect
+black balance. So, those are the three
+
+118
+00:12:19,007 --> 00:12:24,151
+basic operations we're going to use.
+Rotate left, rotate right and flip colors.
+
+119
+00:12:24,151 --> 00:12:30,173
+So, the basic s trategy is, with those
+operations, maintain one-to-one
+
+120
+00:12:30,173 --> 00:12:38,932
+correspondence with 2-3 trees when we do
+insertions. So, here's an example. If we
+
+121
+00:12:38,932 --> 00:12:47,262
+want to insert C into this red black tree
+which is a representation of this 2-3
+
+122
+00:12:47,262 --> 00:12:54,240
+tree, then C is going to be less than E
+greater than A. So, it will get added to,
+
+123
+00:12:54,240 --> 00:13:01,233
+as the right link of A and every time we
+add a node we just create a red link to
+
+124
+00:13:01,233 --> 00:13:07,210
+its parents and so, that's changing the
+two node into a three node. In this case
+
+125
+00:13:07,420 --> 00:13:14,159
+it's three nodes that's oriented the wrong
+way so we need to do a left rotate. After
+
+126
+00:13:14,159 --> 00:13:19,151
+we do the left rotate, we have a legal
+left-leaning red-black tree, and it
+
+127
+00:13:19,151 --> 00:13:24,124
+exactly corresponds to that 2-3 tree, so
+the insertion of C gives us exactly what
+
+128
+00:13:24,124 --> 00:13:28,775
+we would want, that correspondence with
+the 2-3 tree. We have to work through
+
+129
+00:13:28,967 --> 00:13:35,551
+other cases that can arise but there's not
+too many so we'll work through and we have
+
+130
+00:13:35,551 --> 00:13:40,529
+the basic operations, left rotate, right
+rotate, and flip colors. Alright, so
+
+131
+00:13:40,716 --> 00:13:46,112
+first, warm up, insert into a tree with
+exactly one node. Well, if it goes on the
+
+132
+00:13:46,112 --> 00:13:52,010
+left, then we just make a red link and add
+it on then we're done. If it goes on the
+
+133
+00:13:52,010 --> 00:13:57,520
+right, then we attach a new node with the
+red link on the right but we have to
+
+134
+00:13:57,520 --> 00:14:03,131
+rotate it to the left to make a legal
+three node. So, that's inserting to a tree
+
+135
+00:14:03,131 --> 00:14:09,822
+with the one node and make it a tree with
+two nodes. And that one generalizes to
+
+136
+00:14:09,822 --> 00:14:18,033
+help us insert into a two node at the
+bottom. So, we do the standard BST insert
+
+137
+00:14:18,379 --> 00:14:26,085
+color the new link red and then if that
+[cough] new three node happens to lean
+
+138
+00:14:26,085 --> 00:14:31,863
+right, rotated to the left. That's the
+case that we just did. So now, let's look
+
+139
+00:14:31,863 --> 00:14:38,233
+at the second warm-up. So, say, we have
+just two nodes in the tree, so it's we
+
+140
+00:14:38,233 --> 00:14:43,569
+have two nodes and that means it's a
+single three node. Then there's three
+
+141
+00:14:43,569 --> 00:14:49,130
+cases. So, one is that the new one is
+larger than both of the keys. If that's
+
+142
+00:14:49,130 --> 00:14:55,387
+true, then we attach the new node with the
+red link as always. And that gives us a
+
+143
+00:14:55,387 --> 00:15:01,091
+temporary four node. And what we want to
+do is split that four node and in this
+
+144
+00:15:01,091 --> 00:15:06,645
+case, since we are at the root that's all
+so that just flips the colors. Now, the
+
+145
+00:15:06,645 --> 00:15:12,053
+color of the root in our code will
+temporarily turn red and then we turn it
+
+146
+00:15:12,053 --> 00:15:18,000
+black again. So, that's inserting into a
+tree that's a single three node a node
+
+147
+00:15:18,000 --> 00:15:22,083
+that's larger than both of them, a key
+that is larger than both of them and we
+
+148
+00:15:22,083 --> 00:15:27,444
+get wind up with a four node. Well, let's
+look at the other two cases and these
+
+149
+00:15:27,444 --> 00:15:32,493
+understanding needs is crucial to
+understanding the whole algorithm. Let's
+
+150
+00:15:32,493 --> 00:15:38,846
+say, the new key is smaller than both of
+the keys in our three node. Now, we attach
+
+151
+00:15:38,846 --> 00:15:45,455
+a new link at the left of the smaller
+node. And now, we've gotta find BST. But
+
+152
+00:15:45,455 --> 00:15:51,072
+it has two red links in a row. And that's
+something that's not allowed. So, what
+
+153
+00:15:51,072 --> 00:15:57,780
+we're going to do is we're going to rotate
+the top link to the right. So that puts B
+
+154
+00:15:57,780 --> 00:16:05,371
+at the root. And now, it's got two red
+children. It reduces to this case. And we
+
+155
+00:16:05,371 --> 00:16:13,564
+flip the colors and we have a single four
+node. Sorry a, a red black. A tree that's
+
+156
+00:16:13,564 --> 00:16:19,235
+got three two-nodes and no red links so
+same situation as before. So, we had a
+
+157
+00:16:19,235 --> 00:16:25,035
+single temporary four note and we split it
+up into a two, two note not connected to a
+
+158
+00:16:25,035 --> 00:16:31,018
+four note. And then, so that's the case
+when it's smaller. Now, we have to look at
+
+159
+00:16:31,018 --> 00:16:37,030
+the third case, which is, when it's, the
+new node inserted this in between and
+
+160
+00:16:37,030 --> 00:16:42,373
+comes out of this link here. Again, we
+just had a red link and now we have a BST
+
+161
+00:16:42,373 --> 00:16:48,096
+with two red links along the path
+connected to A and that's not allowed. In
+
+162
+00:16:48,096 --> 00:16:55,001
+this case it's a bit trickier to affix the
+situation, what we do is we rotate the
+
+163
+00:16:55,001 --> 00:17:01,097
+bottom link left. So, and that gives us
+this and reduce it to the other situation
+
+164
+00:17:01,097 --> 00:17:09,324
+that we had before. And then we rotate the
+top link right and then, we flip the
+
+165
+00:17:09,324 --> 00:17:15,429
+colors. So, this one we used all three of
+our operations, rotate left rotate right
+
+166
+00:17:15,429 --> 00:17:21,468
+and flip the colors. And that gets us an
+insertion into a tree that has from a tree
+
+167
+00:17:21,468 --> 00:17:26,930
+that i s a single three node to a tree
+that is three two nodes that is containing
+
+168
+00:17:26,930 --> 00:17:34,150
+three keys. So that sort of operation is
+going to work in a big tree when we insert
+
+169
+00:17:34,150 --> 00:17:40,068
+into a new three node at the bottom. We do
+the standard BST insert, color the new
+
+170
+00:17:40,068 --> 00:17:45,988
+link red, and we do the rotations that we
+need, either one or two rotations to
+
+171
+00:17:45,988 --> 00:17:52,207
+balance the temporary four node, and then
+we flip colors to pass the red link up one
+
+172
+00:17:52,207 --> 00:17:58,402
+level and then remind me to rotate to that
+to make that one lean left. So, for
+
+173
+00:17:58,402 --> 00:18:05,212
+example if we insert h in to this tree
+here, it comes off as the left link of R
+
+174
+00:18:05,447 --> 00:18:11,689
+so that gives us a temporary four node
+that's not balanced so we need to rotate
+
+175
+00:18:11,919 --> 00:18:18,395
+the link from S to the right and that
+gives us now temporary four node that is
+
+176
+00:18:18,395 --> 00:18:24,498
+balanced and again, these are all local
+transformation it's not changing the rest
+
+177
+00:18:24,498 --> 00:18:31,641
+of the tree. Now, we flip colors and that
+gives us a, a good red-black tree, except
+
+178
+00:18:31,641 --> 00:18:37,637
+that, that one red link that we just is
+leaning the wrong way. So, now we need to
+
+179
+00:18:37,637 --> 00:18:44,398
+rotate left and then once we've done that,
+now we have a legal left-leaning red-black
+
+180
+00:18:44,398 --> 00:18:53,099
+tree. So [cough] that's a insertion into a
+three node at the bottom. So, here's
+
+181
+00:18:53,099 --> 00:19:00,078
+another one that involves, remember, we
+passed that red link up. There might, if
+
+182
+00:19:00,078 --> 00:19:07,073
+that gets passed up to a three node, then
+we have to continue moving up the tree and
+
+183
+00:19:07,073 --> 00:19:14,059
+just treat it in the same way as we just
+treated inserting at the bottom. We have a
+
+184
+00:19:14,059 --> 00:19:21,014
+new red link appearing into some three
+node. There's the three cases that could
+
+185
+00:19:21,014 --> 00:19:25,942
+happen and here's an, an a, an example.
+So, say, we're inserting P into this
+
+186
+00:19:25,942 --> 00:19:32,489
+left-leaning red black tree it goes to the
+right event so we get a temporary four
+
+187
+00:19:32,489 --> 00:19:37,879
+node that's got two red links both
+children are red in that thing so we want
+
+188
+00:19:37,879 --> 00:19:43,990
+to flip the colors. We flipped the colors
+and now our temporary 4-node is up higher
+
+189
+00:19:43,990 --> 00:19:49,451
+in the tree but it's not balanced so we
+are going to have to do two rotations to
+
+190
+00:19:49,451 --> 00:19:56,199
+make that balanced. First one is to make
+the bottom link left-leaning and then the
+
+191
+00:19:56,199 --> 00:20:01,605
+second one is to make the top link
+right-leaning so that we can have the
+
+192
+00:20:01,605 --> 00:20:07,344
+temporary four node balance. And then the
+last thing we do is flip the colors and
+
+193
+00:20:07,344 --> 00:20:12,798
+now that's the result of that insertion.
+It's a bunch of transformations but
+
+194
+00:20:12,798 --> 00:20:18,264
+they're all simple using our flip colors
+or left or right rotation. And [cough]
+
+195
+00:20:18,264 --> 00:20:23,738
+that one happened to be at the root. If
+that red link were, were way down in the
+
+196
+00:20:23,738 --> 00:20:28,762
+tree and there were another three node
+about it, we might have to do it again.
+
+197
+00:20:28,762 --> 00:20:34,399
+Again, exactly as what would happen in a
+2-3 tree. So, let's do a demo of
+
+198
+00:20:34,399 --> 00:20:42,380
+constructing the red-black BST from our
+standard set of keys. So, we start with a
+
+199
+00:20:42,380 --> 00:20:49,563
+single key. Now, if we want to insert E,
+if it goes to the left, that's fine.
+
+200
+00:20:49,563 --> 00:20:56,384
+That's a legal left-leaning red-black
+tree. A would go to the left of E two
+
+201
+00:20:56,384 --> 00:21:02,545
+lefts in a row so we have to rotate that
+to right. And then we have to flip the
+
+202
+00:21:02,545 --> 00:21:09,760
+colors. And that's a legal red-black BST.
+So now, if we insert R into this one then
+
+203
+00:21:09,996 --> 00:21:16,356
+it goes on a red link to the left of X, S
+and that's fine, it's a red-black BST. And
+
+204
+00:21:16,356 --> 00:21:22,764
+now, if we insert C into this one, it goes
+less than E, greater than A it's a red
+
+205
+00:21:22,764 --> 00:21:29,330
+link connecting A and C but it's leaning
+the wrong way. So, we have to do a left
+
+206
+00:21:29,330 --> 00:21:37,166
+rotation, legal-red black BST. And you
+want to insert h that goes to the left of
+
+207
+00:21:37,166 --> 00:21:44,272
+R, two reds in a row, rotate the top.
+Rotate the top, our temporary four node is
+
+208
+00:21:44,272 --> 00:21:51,803
+balanced, flip colors. Now, we have a
+three node, but the red link is leaning
+
+209
+00:21:51,803 --> 00:21:59,588
+right so we have to rotate. And now, we
+have a legal red-block BST. Insert x into
+
+210
+00:21:59,588 --> 00:22:08,020
+that one that goes to the right of S, it's
+leaning the wrong way, rotate left. Insert
+
+211
+00:22:08,020 --> 00:22:15,466
+M into this one, goes to the right of h,
+leaning the wrong way, rotate left. Most
+
+212
+00:22:15,466 --> 00:22:21,595
+of the operations are simple ones like
+this happening at the bottom. Insert P,
+
+213
+00:22:21,595 --> 00:22:27,246
+that goes to the right of M that makes M a
+temporary four node that happens to be
+
+214
+00:22:27,246 --> 00:22:33,459
+balanced, so flip the colors. Flip the
+colors, now we h ave a temporary four node
+
+215
+00:22:33,459 --> 00:22:39,504
+that's out of balance so we need a double
+rotation. First rotate E to make that link
+
+216
+00:22:39,504 --> 00:22:45,524
+point lean to the left, then rotate R to
+make the, bring the temporary four node
+
+217
+00:22:45,524 --> 00:22:52,515
+into balance. And then, flip the colors
+and that's a legal red-black BST. Insert L
+
+218
+00:22:52,515 --> 00:23:00,908
+into that one. It goes to the right of H,
+leading the wrong way rotate left. [cough]
+
+219
+00:23:00,908 --> 00:23:08,612
+And that's an example of building a
+red-black BST from our standard set of
+
+220
+00:23:08,612 --> 00:23:15,003
+keys. Now, we're ready to look at the
+implementation for, of the code for
+
+221
+00:23:15,003 --> 00:23:20,455
+inserting into a left-leaning red-black
+tree. And the key to understanding this
+
+222
+00:23:20,455 --> 00:23:26,454
+code is to realize that the same code,
+code handles all of the cases. And the way
+
+223
+00:23:26,454 --> 00:23:32,220
+that it works is we are always reducing
+one case to another. We get this most
+
+224
+00:23:32,220 --> 00:23:38,595
+complicated case we did a left rotate on
+the bottom node and that, that transformed
+
+225
+00:23:38,595 --> 00:23:43,645
+it to this case where they're both leaning
+left. And then we did a right rotate on
+
+226
+00:23:43,645 --> 00:23:48,549
+the top node, and that transformed to the
+case where our temporary four node is
+
+227
+00:23:48,549 --> 00:23:54,526
+balanced. And then we flipped colors on
+that. So, for a particular insertion, we
+
+228
+00:23:54,526 --> 00:24:01,480
+can take advantage of this reduce one case
+to another by, in, in the way that we're
+
+229
+00:24:01,480 --> 00:24:09,050
+moving in the tree, not to get everything
+happen with just a, a few extra lines of
+
+230
+00:24:09,050 --> 00:24:15,173
+code in our standard binary search tree.
+So, in gray is our, standard insertion
+
+231
+00:24:15,173 --> 00:24:23,142
+code for binary search trees. And remember
+we took some pains to think about the
+
+232
+00:24:23,142 --> 00:24:29,158
+recursive implementation where when we go
+down a link we replace that link by
+
+233
+00:24:29,158 --> 00:24:35,151
+whatever the recursive routine gives us
+back and that strategy is going to pay off
+
+234
+00:24:35,151 --> 00:24:41,378
+in giving us a really simple code. [cough]
+and because in this implementation for
+
+235
+00:24:41,378 --> 00:24:47,357
+left-leaning red-black trees we're going
+to return the link whenever we're done,
+
+236
+00:24:47,357 --> 00:24:53,886
+and then that will get that link installed
+up in the node above whether it be left or
+
+237
+00:24:53,886 --> 00:24:59,227
+right. Typical implementations of
+red-black trees that do not use this
+
+238
+00:24:59,227 --> 00:25:05,385
+recursive strategy wind u p having lots of
+cases depending on whether left or right
+
+239
+00:25:05,385 --> 00:25:11,224
+or double rotate to the left or double
+rotate to the right can be critical of
+
+240
+00:25:11,224 --> 00:25:17,253
+this code because my own was this way for
+the first three editions of the book. And
+
+241
+00:25:17,253 --> 00:25:22,654
+it's only in this edition that we figured
+out how to make the code this simple.
+
+242
+00:25:22,837 --> 00:25:28,593
+Okay. So what are the things left to be
+done? Let's just check. When we insert a
+
+243
+00:25:28,593 --> 00:25:35,145
+new node all we want to do is create a new
+node with the, I've given, associating the
+
+244
+00:25:35,145 --> 00:25:40,897
+given value with a given key, as before
+but now we just make that node red. So,
+
+245
+00:25:40,897 --> 00:25:48,744
+that's adding a new node with a red link
+at the bottom inserting that into whatever
+
+246
+00:25:49,243 --> 00:25:56,079
+the two or three node it's attached to.
+And then we do the comparisons as, as
+
+247
+00:25:56,079 --> 00:26:03,716
+before and that, and that's all fine. Now,
+when it's returned then that's the point
+
+248
+00:26:03,716 --> 00:26:12,534
+at which we're going to check whether the
+left, the links are leaning to the left as
+
+249
+00:26:12,534 --> 00:26:20,246
+they are suppose to and whether or not
+there are any double links or not. So the
+
+250
+00:26:20,246 --> 00:26:28,441
+first thing is if, if is red h.right and
+not is red h.left? So, that means H is
+
+251
+00:26:28,750 --> 00:26:36,519
+h.right is red so that means the right
+link of H is leaning the wrong way. So, H
+
+252
+00:26:36,519 --> 00:26:43,327
+is a three node leaning the wrong way. So
+we just rotate left H. So, whenever we
+
+253
+00:26:43,327 --> 00:26:50,274
+find a right link, we're sitting on a
+right red link we just rotate it left and
+
+254
+00:26:50,274 --> 00:26:56,328
+return that. So, that would be in this
+case here, we'd rotate it left and reduce
+
+255
+00:26:56,328 --> 00:27:02,172
+it to that one. [cough] or in, in you
+know, in the case when we're just
+
+256
+00:27:02,411 --> 00:27:10,227
+inserting a new node and it's turns out to
+be the right red link attached to a black
+
+257
+00:27:10,227 --> 00:27:17,724
+one, if that handles that case. Now, if
+h.left is red and h.left is also red
+
+258
+00:27:17,996 --> 00:27:25,400
+that's this case here where we have two
+left-leaning red links. And then in that
+
+259
+00:27:25,400 --> 00:27:31,951
+case, we just rotate the top one right and
+that brings us to this one. So, notice,
+
+260
+00:27:31,951 --> 00:27:38,018
+we're in this case we do this rotation
+first, we're on this node and then , that
+
+261
+00:27:38,018 --> 00:27:43,642
+returns and we come up to deal with the
+situation on this node after the return,
+
+262
+00:27:43,642 --> 00:27:49,202
+and then we do that rotation. And then
+after that rotation, or if there were no
+
+263
+00:27:49,202 --> 00:27:54,889
+rotations at all, if the insertion
+happened over here then we'd test and flip
+
+264
+00:27:54,889 --> 00:28:00,219
+the colors. It's a little mind bending at
+first because of the recursive structure
+
+265
+00:28:00,400 --> 00:28:05,493
+but it won't take you long to convince
+yourself that this little bit of extra
+
+266
+00:28:05,493 --> 00:28:11,438
+code completes the implementation of
+left-leaning red-black trees. It's quite
+
+267
+00:28:11,438 --> 00:28:17,738
+remarkable, actually. So, let's look at a
+visualization. Watching the [unknown],
+
+268
+00:28:17,738 --> 00:28:23,060
+this is a balanced tree getting
+constructed in the worst case where
+
+269
+00:28:23,060 --> 00:28:29,069
+everything that comes in is in ascending
+order. A regular binary search tree will
+
+270
+00:28:29,069 --> 00:28:35,763
+just be all strung out in a single line
+and wouldn't have quadratic time for this
+
+271
+00:28:36,008 --> 00:28:41,834
+input but a left-leaning red-black tree
+actually when, whenever it becomes a power
+
+272
+00:28:41,834 --> 00:28:47,496
+of two is completely balanced as you can
+see from this example. Even though they
+
+273
+00:28:47,496 --> 00:28:53,310
+came in, in ascending order, the tree
+winds up being perfectly balanced. And
+
+274
+00:28:53,310 --> 00:28:59,868
+what about descending order. Well, it's
+left leaning and the process is a little
+
+275
+00:28:59,868 --> 00:29:07,312
+bit different and sometimes the left path
+can get long but not that long. The worse
+
+276
+00:29:07,312 --> 00:29:14,031
+that can happen is that it alternates red
+and black. And then after it gets to that
+
+277
+00:29:14,031 --> 00:29:20,070
+worse case it also winds up being
+completely balanced when we have a power
+
+278
+00:29:20,070 --> 00:29:26,714
+of two. Interesting to think just, just
+about this case and to prove to yourself
+
+279
+00:29:26,714 --> 00:29:33,407
+that it's always going to be perfectly
+balanced when it's descending. And this is
+
+280
+00:29:33,407 --> 00:29:41,124
+just for random insertions. The tree stays
+very balanced. It's guaranteed that the
+
+281
+00:29:41,124 --> 00:29:49,876
+longest path which is alternating red and
+black can be no more than twice as long as
+
+282
+00:29:49,876 --> 00:30:01,409
+the shortest path which is all blacks. And
+so in this case the longest path is ten
+
+283
+00:30:01,780 --> 00:30:11,711
+and the average path is seven for 255.
+Very close to log based two of N. So easy
+
+284
+00:30:11,711 --> 00:30:20,258
+to prove by correspondence with 2-3 trees
+that t he height is guaranteed to be less
+
+285
+00:30:20,258 --> 00:30:27,098
+than two log base two N. Every search in
+left-leaning red black three is guaranteed
+
+286
+00:30:27,098 --> 00:30:33,139
+to take less than two log base two of N
+cuz every path gets the same number of
+
+287
+00:30:33,139 --> 00:30:39,098
+black links so you never have two red
+links in a row. [cough] And actually, in
+
+288
+00:30:39,098 --> 00:30:46,791
+typical applications with any kind of
+randomness or even if there is a lot of
+
+289
+00:30:46,791 --> 00:30:54,249
+order its difficult to find situations
+orders of keys that build the trace of
+
+290
+00:30:54,249 --> 00:31:01,076
+height is bigger than actually one log N
+in, in a real application, its very close
+
+291
+00:31:01,076 --> 00:31:08,099
+to fully balanced all the time. So, that
+completes our summary for a symbol table
+
+292
+00:31:08,099 --> 00:31:15,465
+implementations with red-black BSTs. We
+have full code it's the regular BST code
+
+293
+00:31:15,465 --> 00:31:22,044
+with the couple of lines adding the calls
+and the basic operations. She rotate
+
+294
+00:31:22,044 --> 00:31:28,431
+right, rotate left. In color flip, we
+could guarantee logarithmic performance
+
+295
+00:31:28,677 --> 00:31:35,338
+not just research, insert, in delete code.
+Delete code is a bit more complicated but
+
+296
+00:31:35,338 --> 00:31:41,638
+it's on the book side and in the book. But
+also, since it's the compare-to interface,
+
+297
+00:31:41,638 --> 00:31:46,048
+and since it's a binary tree
+representation all the other comparable
+
+298
+00:31:46,048 --> 00:31:51,732
+operations extended operations for ordered
+symbol tables are going to be implemented
+
+299
+00:31:51,732 --> 00:31:56,673
+and take time proportional to the log N. A
+lot of people ask why use the name
+
+300
+00:31:56,877 --> 00:32:02,598
+red-black. Well we invented this data
+structure this way of looking at balance
+
+301
+00:32:02,598 --> 00:32:08,390
+trees at, at Xerox PARC which was the home
+of the personal computer and many other
+
+302
+00:32:08,570 --> 00:32:13,071
+innovations that we live with today
+entering graphic user interface and
+
+303
+00:32:13,071 --> 00:32:18,099
+internet and object oriented programmings
+and many other things. But one of the
+
+304
+00:32:18,099 --> 00:32:24,087
+things that was invented there, was the
+laser printing and we were very excited to
+
+305
+00:32:24,087 --> 00:32:30,045
+have nearby color laser printer that could
+print things out in color and out of the
+
+306
+00:32:30,045 --> 00:32:35,237
+colors, the red looked the best. So,
+that's why we picked the color red to
+
+307
+00:32:35,237 --> 00:32:40,272
+distinguish red links the types of links
+in three nodes. So, that's an answer to
+
+308
+00:32:40,272 --> 00:32:45,846
+the question for people t hat have been
+asking. Now, here's another war story
+
+309
+00:32:45,846 --> 00:32:52,759
+about red-black BSTs. As I mentioned
+they're widely used. And there was an
+
+310
+00:32:52,759 --> 00:32:58,770
+example not that long ago, where a
+telephone company contracted with a
+
+311
+00:32:58,770 --> 00:33:06,105
+database provider to build a database that
+could store customer information and the
+
+312
+00:33:06,105 --> 00:33:12,708
+provider implemented the database using
+red-black BSTs for search and insert. Now,
+
+313
+00:33:12,708 --> 00:33:18,975
+our, our original paper on red black trees
+was the way the paper was laid out, it
+
+314
+00:33:18,975 --> 00:33:25,255
+turned out that the delete implementation
+happened to be placed after all the
+
+315
+00:33:25,255 --> 00:33:31,178
+references. So, a lot of people didn't see
+the delete implementation. And also we
+
+316
+00:33:31,178 --> 00:33:36,995
+didn't have the simple left-leaning
+representation. So it was more complicated
+
+317
+00:33:36,995 --> 00:33:42,933
+and involved a lot more cases and so
+usually not all the cases were put in the
+
+318
+00:33:42,933 --> 00:33:48,714
+text books. So, people found deletion more
+difficult. In fact, that's what lead to
+
+319
+00:33:48,714 --> 00:33:54,809
+[unknown] analyze the situation then come
+up with a left-leaning variant. So, what
+
+320
+00:33:54,809 --> 00:34:02,115
+they did in this implementation was they
+just put in regular Hibbard deletion in
+
+321
+00:34:02,115 --> 00:34:09,367
+the binary search in the red-black BST.
+Not the deletion algorithm that's
+
+322
+00:34:09,367 --> 00:34:17,044
+guaranteed to keep the constant black
+height all the time. And so but, but they
+
+323
+00:34:17,044 --> 00:34:24,663
+still thought that it should be balanced
+and it shouldn't matter much. And they had
+
+324
+00:34:24,663 --> 00:34:31,480
+a complex error recovery process that,
+that got triggered if the height limit got
+
+325
+00:34:31,480 --> 00:34:37,961
+too big. And they rebuild the whole tree
+and, and then because of the way they did
+
+326
+00:34:37,961 --> 00:34:44,401
+this deletion, well, the end of the story
+was that they had extended the client had
+
+327
+00:34:44,401 --> 00:34:51,500
+extended outage because the implementer
+didn't use the full algorithm. And there
+
+328
+00:34:51,500 --> 00:34:58,356
+was a lawsuit and some legal testimony and
+I am happy to report that, that it was
+
+329
+00:34:58,356 --> 00:35:04,413
+clear that Hibbard deletion was the
+problem once the expert analyzed it and
+
+330
+00:35:04,413 --> 00:35:11,005
+the expert witness, who's a colleague of
+mine, said if implemented properly, the
+
+331
+00:35:11,005 --> 00:35:16,811
+height of a red-black BST with N keys is
+at most two log N. And so that's the st
+
+332
+00:35:16,811 --> 00:35:27,474
+ory of red-black BST's guaranteed
+logarithmic performance for all symbol
+
+333
+00:35:27,474 --> 00:35:30,043
+table operations.

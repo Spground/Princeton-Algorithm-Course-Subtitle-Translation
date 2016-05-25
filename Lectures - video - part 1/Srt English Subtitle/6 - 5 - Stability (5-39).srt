@@ -1,0 +1,279 @@
+1
+00:00:01,065 --> 00:00:07,024
+Finally, we talk about stability. This is
+really one of the rules of the game but
+
+2
+00:00:07,024 --> 00:00:11,029
+it's much easier to talk about in the
+context of the real algorithms that we've
+
+3
+00:00:11,029 --> 00:00:15,068
+seen so far. And really it doesn't make
+sense if you don't know about comparators
+
+4
+00:00:15,068 --> 00:00:21,022
+which we just introduced. So, the typical
+application that I just used as an example
+
+5
+00:00:21,022 --> 00:00:26,098
+is say the set of student records. So we
+have them sorted by name and this is say,
+
+6
+00:00:26,098 --> 00:00:31,884
+something that we do just before assigning
+final grades. Maybe the third line there
+
+7
+00:00:31,884 --> 00:00:38,026
+is the final grade. So it's all fine
+sorted by name and but then in order to
+
+8
+00:00:38,026 --> 00:00:44,009
+distribute it out to the people leading it
+to the sections, what we want to do is
+
+9
+00:00:44,009 --> 00:00:50,625
+sort by the second fields, sort by
+section. The problem is that when we do
+
+10
+00:00:50,625 --> 00:00:57,945
+that, it messes up the sort by name and
+that's annoying. You might assume that
+
+11
+00:00:57,945 --> 00:01:04,329
+once you have it sorted by name, then when
+you sorted by the second field then it
+
+12
+00:01:04,329 --> 00:01:10,742
+should maintain the sort of by name for
+all that have equal keys in that second
+
+13
+00:01:10,742 --> 00:01:17,191
+field. Actually not all sorts preserve
+that property that is called stability.
+
+14
+00:01:17,191 --> 00:01:22,726
+And clearly, it's worthwhile to think
+about for your application whether you
+
+15
+00:01:22,726 --> 00:01:28,039
+want or need a stable sort. And so, it's
+an annoying surprise for many people and
+
+16
+00:01:28,039 --> 00:01:33,659
+many applications. So a stable sort is a
+sort that preserves the relative order of
+
+17
+00:01:33,659 --> 00:01:38,956
+items with equal keys. Whichever sort are
+stable? That's an interesting question
+
+18
+00:01:38,956 --> 00:01:44,879
+that we'll take a look at now. The quick
+bottom line is that insertion sort and
+
+19
+00:01:44,879 --> 00:01:52,238
+mergesort are stable but not selection
+sort or Shellsort. And even within that
+
+20
+00:01:52,238 --> 00:01:58,477
+bottom line, there's implementations that
+maybe are not stable. You have to
+
+21
+00:01:58,477 --> 00:02:04,158
+carefully check the code to be sure.
+Always, in this class, we have an exercise
+
+22
+00:02:04,158 --> 00:02:10,834
+or exam question is this version of this
+sort stable or not? So, students learn to
+
+23
+00:02:10,834 --> 00:02:16,709
+recognize whether the code is stable. So
+this is just another typical example where
+
+24
+00:02:16,905 --> 00:02:21,879
+we've got things sorted by time, and then
+what we want to do is maybe these are
+
+25
+00:02:22,050 --> 00:02:27,435
+important events. People buying tickets to
+a rock concert and I'm going to sort by
+
+26
+00:02:27,435 --> 00:02:31,702
+location what we'd hope is that it would
+keep the sort by time but this is a
+
+27
+00:02:31,702 --> 00:02:36,640
+non-stable sort that doesn't do bad so
+then out in the location they're going to
+
+28
+00:02:36,640 --> 00:02:41,725
+have to resort it if they use one of
+these. But if they use a stable sort, then
+
+29
+00:02:41,725 --> 00:02:47,692
+it stay sorted by time and lots of
+applications you want stability. Alright,
+
+30
+00:02:47,692 --> 00:02:54,015
+so let's just look at each of the
+algorithms that we've considered so far.
+
+31
+00:02:54,207 --> 00:02:59,097
+Insertion Sort. Insertion Sort is stable.
+Why is it stable? Well, we never move
+
+32
+00:02:59,097 --> 00:03:05,633
+equal items pass one another. In this
+example here, when we get A1, well that's
+
+33
+00:03:05,866 --> 00:03:12,141
+so in this case, the index is just one
+that appears in the array, it's just A's
+
+34
+00:03:12,141 --> 00:03:18,763
+and B's. When we get our second A, we stop
+the sort as long as we're not less. We're
+
+35
+00:03:18,763 --> 00:03:24,911
+equal, we're not less, we stop it so we
+never move an equal item pass another one.
+
+36
+00:03:24,911 --> 00:03:30,488
+If this less or less than or equal, then
+it wouldn't work. Or if we did the other
+
+37
+00:03:30,488 --> 00:03:35,818
+way around and proceeded accordingly. So,
+equal items never move past each other in
+
+38
+00:03:35,818 --> 00:03:41,997
+this code so therefore insertion sort is
+stable. But selection sort is not stable.
+
+39
+00:03:42,298 --> 00:03:49,529
+Usually way, the way to show that a sort
+is not stable and it's just to see if it
+
+40
+00:03:49,529 --> 00:03:55,875
+has a long distance exchange that might
+move an item pass some equal item. So,
+
+41
+00:03:56,163 --> 00:04:02,245
+[cough] in this case, for example, for
+selection sort, when we do that first
+
+42
+00:04:02,245 --> 00:04:08,471
+exchange oops, [cough] where we found the
+minimum A and B is in position zero. We
+
+43
+00:04:08,471 --> 00:04:14,951
+did a long distance exchange and that
+catapulted that first item past any item
+
+44
+00:04:14,951 --> 00:04:21,249
+that it might be equal putting them out of
+order. And that's may not get fixed so
+
+45
+00:04:21,249 --> 00:04:26,524
+that sort is not stable. It might move
+items past some equal item and leave a
+
+46
+00:04:26,524 --> 00:04:32,601
+result where items that are equal or in
+different order than they were originally
+
+47
+00:04:32,601 --> 00:04:39,016
+in the file. Selection Sort is not stable.
+Shellsort also has long distance exchange
+
+48
+00:04:39,016 --> 00:04:45,479
+and so it's not stable. It moves keys past
+other keys that could be equal and so its
+
+49
+00:04:45,479 --> 00:04:51,024
+easy to construct examples showing that
+Selection Sort is not stable. And what
+
+50
+00:04:51,024 --> 00:04:57,527
+about Mergesort? Mergesort is stable well,
+it's stable as long as the merge operation
+
+51
+00:04:57,527 --> 00:05:02,923
+is stable and that operation is going to
+be stable depending on how we code it.
+
+52
+00:05:03,118 --> 00:05:09,232
+And, and in our code, if the two keys are
+equal, it takes from the left subarray so
+
+53
+00:05:09,232 --> 00:05:15,670
+that means that, it will always take the,
+if there's a two sets of equal keys, it
+
+54
+00:05:15,670 --> 00:05:21,112
+will preserve the relative order and
+that's enough to show that the merge
+
+55
+00:05:21,112 --> 00:05:26,672
+operation is stable and then therefore
+Mergesort is stable. Stability is an
+
+56
+00:05:26,672 --> 00:05:38,905
+important property in sorting algorithms.
+Mergesort is not only efficient, it's also

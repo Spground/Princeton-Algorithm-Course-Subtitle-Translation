@@ -1,0 +1,453 @@
+1
+00:00:09,035 --> 00:00:15,063
+Okay, so the first step is to be able to
+make some observations about the running
+
+2
+00:00:15,063 --> 00:00:22,004
+time of the programs. And for analysis of
+algorithms that's easier than in a lot of
+
+3
+00:00:22,026 --> 00:00:27,096
+scientific disciplines, as we'll see. For
+a running example we're going to use the
+
+4
+00:00:27,096 --> 00:00:34,016
+so-called 3-sum problem. And it's an easy
+to state problem. If you've got N distinct
+
+5
+00:00:34,016 --> 00:00:40,254
+integers, how many triple sum to exactly
+zero? For example in this file 8ints.text.
+
+6
+00:00:40,254 --> 00:00:48,096
+Text which has eight integers in it.
+There's four triples that sum to zero. 30
+
+7
+00:00:48,096 --> 00:00:56,832
+- 40, ten. 30 - twenty - ten and so forth
+and so our goal is to write a program that
+
+8
+00:00:56,832 --> 00:01:03,554
+can compute this quantity for any input
+file, any set of N integers. This is
+
+9
+00:01:03,554 --> 00:01:09,796
+actually a, an extremely important
+computation that's deeply related to many
+
+10
+00:01:09,796 --> 00:01:16,446
+problems in computational geometry which
+is a branch of computer science that
+
+11
+00:01:16,446 --> 00:01:24,536
+covers the algorithms and underlying
+science related to graphics and movies and
+
+12
+00:01:24,536 --> 00:01:32,040
+geometric models of all sort. So this is a
+actually an important practical problem.
+
+13
+00:01:32,040 --> 00:01:40,459
+But it's a simple one to write code for in
+a view you could write down this program
+
+14
+00:01:40,759 --> 00:01:49,583
+without much effort. It's a, got a static
+method count that is going to go ahead and
+
+15
+00:01:49,583 --> 00:01:56,317
+take a integer array as an argument. And,
+is that, that's a number of integers,
+
+16
+00:01:56,317 --> 00:02:02,660
+that's the length of the array. We will
+start with a variable count equals zero,
+
+17
+00:02:02,660 --> 00:02:09,363
+and then a triple for loop, that checks
+each triple I j k, we go I from one and j
+
+18
+00:02:09,363 --> 00:02:15,181
+from I+1 to n, and k from j+1 to n, so
+that we get each triple just once. And
+
+19
+00:02:15,181 --> 00:02:19,818
+then if I+j, ai + aj + ak = zero, we
+increment the count. Alright. And after
+
+20
+00:02:19,818 --> 00:02:25,093
+that triple four loop, we return the
+count. And then the main method, in this
+
+21
+00:02:25,093 --> 00:02:30,769
+simple class just reads in, all the
+integers, and prints out the count. So
+
+22
+00:02:30,769 --> 00:02:35,696
+that's a brute force algorithm that is a
+fine method for solving the three sum
+
+23
+00:02:35,696 --> 00:02:41,615
+problem, now what we're interested in is
+how much time does this take as a function
+
+24
+00:02:41,615 --> 00:02:47,808
+of' n? Well, one to time our program is to
+is just look at the watch. If you have a
+
+25
+00:02:47,808 --> 00:02:54,925
+stopwatch, or look at the clock or your
+phone, or whatever you might need you can
+
+26
+00:02:54,925 --> 00:03:02,164
+just go ahead and time it if you want or
+we have, Java has this part of it's
+
+27
+00:03:02,164 --> 00:03:09,024
+standard library, a stopwatch class that
+will go ahead and compute a lapse time.
+
+28
+00:03:09,024 --> 00:03:15,968
+So, in order, anytime you run a program,
+if it is setup to easily take input of
+
+29
+00:03:15,968 --> 00:03:23,990
+different sizes, a natural thing to do, is
+just run it for bigger sizes. So for eight
+
+30
+00:03:23,990 --> 00:03:32,381
+ints this program takes not too much time,
+for 1000 ints it takes half a second. For
+
+31
+00:03:32,381 --> 00:03:42,303
+2,000. Takes more time. That's 3.7 seconds
+run it again, still takes 3.7 seconds for
+
+32
+00:03:42,303 --> 00:03:50,231
+4,000, so each time we're doubling the
+size of the input and it's definitely
+
+33
+00:03:50,231 --> 00:03:58,930
+taking more time each time. And actually
+as we'll see if programmers who get in the
+
+34
+00:03:58,930 --> 00:04:05,490
+habit of testing or any time on their
+program in this way can get so that you
+
+35
+00:04:05,490 --> 00:04:13,038
+can actually pretty easily and quickly
+evaluate when it's going to finish. In
+
+36
+00:04:13,038 --> 00:04:20,010
+fact. While you're waiting for it to
+finish you can often figure it out. So
+
+37
+00:04:20,010 --> 00:04:27,000
+that one took 30 seconds for 4K and
+definitely we could figure it out how long
+
+38
+00:04:27,000 --> 00:04:33,047
+it's going to take for 8K before it
+finishes, and you'll see how in just a
+
+39
+00:04:33,047 --> 00:04:40,037
+second. I'm not going to wait right now.
+You can think about what you think. Okay
+
+40
+00:04:40,037 --> 00:04:45,203
+so [cough] that's empirical analysis,
+analysis. Run it for various input sizes
+
+41
+00:04:45,203 --> 00:04:51,869
+and measure their running time. Now if
+this were some scientific problem where we
+
+42
+00:04:51,869 --> 00:04:57,320
+were counting something that happen in the
+natural world. The number of ants in an
+
+43
+00:04:57,320 --> 00:05:03,255
+ant hill or whatever then we'd have only a
+few data points and we would try to
+
+44
+00:05:03,255 --> 00:05:08,837
+understand whats was going on by doing a
+plot of or running time with quite
+
+45
+00:05:08,837 --> 00:05:15,240
+interested in on the Y axis and problem
+size with the X axis. Hit a curve like
+
+46
+00:05:15,240 --> 00:05:21,767
+this and actually whats science usually do
+because of some many problems fall into
+
+47
+00:05:21,767 --> 00:05:29,001
+out of this class is do the plot as a lg,
+lg plot. If you do it as a lg, lg plot
+
+48
+00:05:29,001 --> 00:05:36,320
+very often you'll get a straight line. And
+the slope of the straight line is the key
+
+49
+00:05:36,320 --> 00:05:41,582
+to what's going on. In this case, the
+slope of the straight line is three and so
+
+50
+00:05:41,582 --> 00:05:49,272
+you can run what's called a regression to
+fit a late, the straight line through the
+
+51
+00:05:49,272 --> 00:05:55,078
+data points. And then, it's not difficult
+to show to do the math to show that if you
+
+52
+00:05:55,078 --> 00:06:01,409
+get a straight line and the slope is B,
+then your function is proportional to A,
+
+53
+00:06:01,409 --> 00:06:06,799
+N^B. That's called the power law. And
+that's true of many, many scientific
+
+54
+00:06:06,799 --> 00:06:13,633
+problems including most algorithms. So
+here's a little bit of the math for that.
+
+55
+00:06:13,633 --> 00:06:22,794
+So the straight line means that since we
+did a lg, lg plot with powers of two, that
+
+56
+00:06:22,794 --> 00:06:29,850
+lg(T(N) = B lg N + C. And we have our
+empirical values of B and C and then if
+
+57
+00:06:29,850 --> 00:06:37,950
+you raise both sides of that equation to
+two to that power then you get T(N) = a
+
+58
+00:06:37,950 --> 00:06:44,422
+constant times N^B. So right away just
+from observation we have a pretty good
+
+59
+00:06:44,422 --> 00:06:50,512
+model for the running time for our
+program, we can figure and do the math and
+
+60
+00:06:50,512 --> 00:06:59,028
+figure out that it seems as though the
+running time is about ten^-10 N^3 seconds.
+
+61
+00:06:59,028 --> 00:07:05,053
+We can use that hypothesis to go ahead and
+make predictions. Just plug in for
+
+62
+00:07:05,053 --> 00:07:11,067
+different values of N and it says it will
+take us 400 seconds for 16,000. 400
+
+63
+00:07:11,067 --> 00:07:16,059
+seconds is plenty of time but now we can
+go ahead and invest and run that
+
+64
+00:07:16,059 --> 00:07:22,611
+experiment and sure enough we're pretty
+close to that 408 seconds when we run it.
+
+65
+00:07:22,611 --> 00:07:27,109
+And now we can make a prediction for
+32,000 or for or for whatever else we
+
+66
+00:07:27,109 --> 00:07:32,219
+might be interested in. The model helps us
+do predictions without investing the
+
+67
+00:07:32,219 --> 00:07:38,927
+expense to run the experiments. In fact,
+in this situation if there is a power law,
+
+68
+00:07:38,927 --> 00:07:45,689
+and again in a very great majority of
+computer algorithm running times is going
+
+69
+00:07:45,689 --> 00:07:51,812
+to be a power law. What we can do is just
+double the size of the input each time the
+
+70
+00:07:51,812 --> 00:07:58,009
+way we were and take the ratio of the
+running times for N and 2N. And if you do
+
+71
+00:07:58,009 --> 00:08:04,713
+that, that ratio going to converge to a
+constant. And in fact the log of the ratio
+
+72
+00:08:04,713 --> 00:08:10,258
+is going to converge to that constant,
+which is the exponent of N and the running
+
+73
+00:08:10,258 --> 00:08:16,342
+time. And you just need a little math to
+check that one, but that's a very easy and
+
+74
+00:08:16,342 --> 00:08:21,460
+natural way to go ahead and predict
+running times. So that's what I said
+
+75
+00:08:21,460 --> 00:08:26,756
+before is, so we have this quick way to
+estimate B in the power law relationsh ip.
+
+76
+00:08:26,767 --> 00:08:33,342
+How do we estimate A? Well we can just run
+it and solve for A. So once we've decided
+
+77
+00:08:33,342 --> 00:08:41,138
+that, that exponent is three let's run it
+for some big N and we get pretty close
+
+78
+00:08:41,138 --> 00:08:48,197
+model to the one we had from plotting
+things. So it's almost identical
+
+79
+00:08:48,197 --> 00:08:56,197
+hypothesis and we just got it by running
+the program double N each time. Okay so
+
+80
+00:08:56,522 --> 00:09:04,905
+there is a lot of effects in trying to
+understand the running time of a program
+
+81
+00:09:04,905 --> 00:09:10,182
+on, on your machine. [cough] So. Key
+effects are independent of what computer
+
+82
+00:09:10,182 --> 00:09:15,004
+it is. And that's the algorithm you're
+using and what's the data. And that's
+
+83
+00:09:15,004 --> 00:09:20,269
+going to really determine the exponent in
+the power law. And then there's a lot of,
+
+84
+00:09:20,269 --> 00:09:25,632
+system dependent effects. What kind of
+hardware do you have? Do you have a fast
+
+85
+00:09:25,632 --> 00:09:30,056
+computer or a slow one? What kind of
+software? What's going on in your
+
+86
+00:09:30,056 --> 00:09:35,095
+computer? All of those things really
+determine the constant A in the power law.
+
+87
+00:09:35,095 --> 00:09:40,894
+So. In modern systems it is so much going
+on in the hardware and software, it's
+
+88
+00:09:40,894 --> 00:09:46,288
+sometimes difficult to get really precise
+measurements. But on the other hand we
+
+89
+00:09:46,288 --> 00:09:52,050
+don't have to sacrifice animals, or fly to
+another planet the way they do in other
+
+90
+00:09:52,050 --> 00:09:57,304
+sciences, we can just run a huge number of
+experiments and usually take care of
+
+91
+00:09:57,304 --> 00:10:00,032
+understanding these kind of effects.

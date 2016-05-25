@@ -1,0 +1,196 @@
+Today, we're, we're going to look at the
+vector graphs, which is another graph
+processing model that's very useful in
+many applications.
+It's very similar to the undirected grpah
+model that we looked at last time, but
+there are some really profound
+differences.
+After introducing the concept and looking
+at the API, we'll look at three important
+classic algorithms for processing directed
+graphs.
+The intro, introduction has to deal with
+just explaining the concept and seeing
+what it does to our graph processing
+problems like the ones that we talked
+about for undirected graphs last time.
+So, the idea isn't that the edges now have
+direction.
+A directed graph or a digraph is a set of
+vertices that are connected pairwise by
+directed edges.
+So, it's list of pairs of vertices where
+the order of the pair matters.
+So, an edge we say an edge goes from one
+vertex to another one. whereas, in
+undirected graphs, we just talked about
+connections.
+When we're processing such graphs or
+travelling around them, we have to follow
+edges in the given direction.
+So, for example, if we talk about a path
+in the diagram there's, it looks like
+there's a connection between two and zero,
+but it only goes from two to zero.
+If you want to go from zero to two, you
+have to follow the edges in direction
+going from zero to five to four and then
+to two.
+In the directed graph, in this digraph you
+can see two directly from zero.
+Similarly, a directed cycle follows the
+edges around the direction to get back to
+the original vertex. also vertices have
+in-degree and out-degree in digraphs.
+And the out-degree, obviously, is the
+number of variables leaving the vertex and
+in the in-degree is the number of
+variables coming into the vertex.
+Those are the basic definitions. let's
+look at a couple of applications one
+obvious one is road networks where we put
+a vertex according to intersection in an
+edge for roads.
+And we look at a situation where most,
+where the roads are one way or can be one
+way.
+So, if you've driven in lower Manhattan,
+you're very familiar with this map, which
+has lots of one-way streets.
+And it's not always clear how to get from
+one place to another.
+You can have some two-way streets that
+have edges in both directions.
+But with digraphs, we allow the
+abstraction of one-way streets.
+Here's another more abstract example.
+This is the political blogosphere with
+connections.
+If, If blogs have links to one another as
+you can see, most of the links go from
+blue to blue or from red to red.
+Although there are some orange links that
+go from blue to red and a few purple ones
+that go from red to blue.
+And this gives some insight to the in the
+political blogosphere at least in 2004.
+Here's another one.
+This is a study of the crash in 2008, and
+it was a graph that showed the structure
+of banks lending to one another.
+An edge corresponds from an overnight loan
+and a vertex corresponds to the bank.
+And from studying this diagram, experts
+can see how the banks divided into groups
+and were therefore vulnerable in these
+groups and we'll look at a more detailed
+definitions of how these groups are
+defined a little later on.
+This is just an example of the use of a
+digraph.
+And it's a digraph, the bank.
+One bank lends money to another, that's
+not the same as the banks being connected,
+in some as in an undirected graph.
+The direction really matters.
+This is another one from logic where the
+vertices correspond to Boolean variables
+and the edges correspond to implication.
+And people use graphs like this to study
+in, in logical verification, and also
+studying electric circuits.
+Electric circuits themselves can be
+diagraphs where circuit elements have
+input and output.
+And so, the edge of course takes the
+output of one element to the input of
+another.
+Trying to understand the behavior of such
+a circuit involves processing a digraph.
+Here's another abstraction so-called
+wordnet graph.
+Where vertices correspond in what is
+called synsets and edges correspond to
+hypernym relationships where a, a word is
+an instance of another one.
+So, there's a lot of different events like
+a miracle or human activity and so forth.
+And graphs of this type are very useful in
+studying applications involving meanings,
+meanings in human languages.
+Here's a famous one.
+General McChrystal said that once we
+understand this graph the war in
+Afghanistan will be over.
+So, with all these types of applications
+and there's many, many others just as with
+graph processing.
+Now, the digraph as it, as it is modeled
+distinct from graph processing is
+important.
+There's many direct applications where we
+have connections between objects but the
+direction of the connection matters.
+So, what about digraph processing
+algorithms.
+Well, we're going to look at many problems
+that are very similar to the ones that we
+looked at for undirected graphs.
+But you can see that they are going to be
+a bit more complicated.
+Even a human has trouble looking at a
+diagraph trying to figure out a simple
+problem like, is there a path from s to t
+in this, in this diagraph.
+Seems like there's quite a few
+possibilities to consider to convince
+yourself whether or not there's a path.
+And for the huge diagraphs examples that I
+looked at before obviously we're going to
+need a computer program.
+And we're going to have a bit of a
+challenge figuring what's going on.
+Of course, you might want to know the
+shortest directed path from s to t for
+example, if you are driving around lower
+Manhattan and certainly, I want to have a
+solution to that problem.
+Then, there's another problem called the
+topological sort problem which is a
+general model that's useful in all kinds
+of applications where were scheduling
+events that involve precedence
+constraints.
+In the graph obstruction or the digraph
+obstruction, it amounts to the problem of
+trying to draw the digraph so that all the
+edges point up.
+That's called topological sorting.
+And then, connectivity is more complicated
+for digraphs than for undirected graphs.
+There's the concept of strong
+connectivity, which means for any given
+pair of vertices u and v, you want to know
+is there going to be a directed path from
+u to v and another directed path from v to
+u.
+That's a much more complicated problem
+than connectivity in undirected graphs.
+And, a generalization of, of that or a
+query related to strong connectivities,
+so-called transitive closure.
+And for that, you just want to be able
+answer the query given vertices v and w as
+their path from w to v, a transitive
+closure.
+And actually, you're familiar with the web
+is a gigantic directed graph.
+If there's a link from page a to page b,
+B, that's a directed edge.
+And digraph processing is used in famous
+page rank algorithm to determine the
+importance of a web page.
+Those are just a couple of examples of
+digraph processing problems that introduce
+the idea.

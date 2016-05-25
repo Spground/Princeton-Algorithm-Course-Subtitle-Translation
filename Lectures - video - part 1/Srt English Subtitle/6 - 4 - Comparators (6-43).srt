@@ -1,0 +1,344 @@
+1
+00:00:01,072 --> 00:00:07,043
+Next we'll take a look at comparators
+which is a Java mechanism that helps us
+
+2
+00:00:07,043 --> 00:00:12,034
+sort. The same data on different sort
+keys, different orders. And you're
+
+3
+00:00:12,034 --> 00:00:18,001
+familiar with this. Your music library
+maybe I, at one point, you sort it by the
+
+4
+00:00:18,001 --> 00:00:23,177
+artist's name. In this case we're looking
+at the b's. But in another situation, you
+
+5
+00:00:23,177 --> 00:00:29,190
+might want to sort it by song names to
+look through it by song names. That's the
+
+6
+00:00:29,190 --> 00:00:34,799
+same data using different sort keys. How
+do we arrange to do something is natural
+
+7
+00:00:34,799 --> 00:00:40,286
+as this in our Java sorts? Now, we use the
+fourth in order to be able to implement
+
+8
+00:00:40,286 --> 00:00:45,839
+sorts that can sort any type of data, we
+use Java's Comparable interface. And that
+
+9
+00:00:45,839 --> 00:00:50,578
+concept is that there's some natural
+ordering of the data that you'll want to
+
+10
+00:00:50,578 --> 00:00:55,542
+use most of the time, that's what the
+Comparable interface is all about. But
+
+11
+00:00:55,542 --> 00:01:01,385
+there's a different interface called the
+Comparator Interface which is a way to
+
+12
+00:01:01,385 --> 00:01:06,958
+help a sort, using some alternate order or
+many different orders on the same data.
+
+13
+00:01:07,196 --> 00:01:14,036
+And the Comparator interface again just
+says that it's going to implement a method
+
+14
+00:01:14,036 --> 00:01:19,882
+compare() that compares two different keys
+of the given type, of the generic type.
+
+15
+00:01:19,882 --> 00:01:25,524
+Again it has to be a total order and this
+is very familiar for example with strings.
+
+16
+00:01:25,524 --> 00:01:30,594
+There's many different ways that we might
+want to sort strings. We might want to use
+
+17
+00:01:30,594 --> 00:01:35,974
+the natural alphabetic order or we might
+want to make it case insensitive or maybe
+
+18
+00:01:35,974 --> 00:01:41,034
+there is just different languages that
+have different rules of the ordering.
+
+19
+00:01:41,034 --> 00:01:45,767
+We're sorting strings but we're
+implementing a different ordering, various
+
+20
+00:01:45,767 --> 00:01:51,807
+different orderings on that same data.
+That's what the Comparator interface is
+
+21
+00:01:51,807 --> 00:01:59,635
+for. So the Java system sort will have a
+different. [cough] method to implement
+
+22
+00:01:59,635 --> 00:02:06,183
+comparators. The idea is that you create a
+comparator object and then pass that as a
+
+23
+00:02:06,183 --> 00:02:12,679
+second argument to Java's sort routine and
+we can do the same thing for our sorts.
+
+24
+00:02:12,679 --> 00:02:17,494
+The idea is when a decouple, the
+definition of the data type from the
+
+25
+00:02:17,494 --> 00:02:22,139
+definition of what it means to compare to
+items of that type. With the natural
+
+26
+00:02:22,144 --> 00:02:26,412
+order, we had to put the definition
+compared to within the data type. With
+
+27
+00:02:26,412 --> 00:02:31,181
+comparators, we can do that outside of the
+data type even at some later time. Strings
+
+28
+00:02:31,181 --> 00:02:35,642
+were defined and as part of the Java
+system but we can define our own ordering
+
+29
+00:02:35,642 --> 00:02:42,255
+on strings with the comparator. So in our
+sort implementations we can change them as
+
+30
+00:02:42,255 --> 00:02:47,963
+shown in this example to support
+comparators. To support comparators in our
+
+31
+00:02:47,963 --> 00:02:53,398
+sort implementations we'll pass an array
+of objects and instead of an array of
+
+32
+00:02:53,398 --> 00:02:58,787
+comparable and then, there's a second
+argument passed a comparator. Then, the
+
+33
+00:02:58,787 --> 00:03:04,323
+less method will take that comparator as
+an argument and this is the one that
+
+34
+00:03:04,323 --> 00:03:09,380
+actually invokes the method compare two
+different keys. This is a straightforward
+
+35
+00:03:09,380 --> 00:03:14,134
+modification to our sorts. And then
+exchange of course rather doing comparable
+
+36
+00:03:14,134 --> 00:03:18,810
+has to use object. So with these
+straightforward changes at the comparator
+
+37
+00:03:18,810 --> 00:03:24,201
+as argument to the sort and to less and
+make array to be sorted array of objects,
+
+38
+00:03:24,201 --> 00:03:29,202
+it's easy to convert any of our
+implementations to support comparators. To
+
+39
+00:03:29,202 --> 00:03:35,969
+implement a comparator you can use this
+code as a model. I won't go through it all
+
+40
+00:03:35,969 --> 00:03:41,673
+in detail just to point out that this
+implements two different comparators as
+
+41
+00:03:41,673 --> 00:03:47,074
+nested classes. Say, for this fictional
+class Student, that's got two instance
+
+42
+00:03:47,074 --> 00:03:53,996
+variables - name and section. And the first
+one called by name implements a comparator
+
+43
+00:03:53,996 --> 00:03:59,671
+for students and when you compare two
+students by name, it's going to use the
+
+44
+00:03:59,671 --> 00:04:05,749
+string comparative method. If you're going
+to implement it compared to students by
+
+45
+00:04:05,749 --> 00:04:10,878
+section, then it'll return just the
+difference of the sections which is my
+
+46
+00:04:11,093 --> 00:04:17,511
+minus if less zero if equal then plus if
+greater. And this code is straight forward
+
+47
+00:04:17,511 --> 00:04:25,185
+way to implement comparators that you can
+use as a model. If you need to be able to
+
+48
+00:04:25,185 --> 00:04:32,643
+sort data on two different keys. So
+[cough] here is just an example of what
+
+49
+00:04:32,643 --> 00:04:38,629
+happens if would those implemented
+comparators for that class student using
+
+50
+00:04:38,629 --> 00:04:44,890
+the Java system sort, if you call array
+that sort with your a rray of students and
+
+51
+00:04:44,890 --> 00:04:50,686
+you give it this by name comparator, it
+will put them in order alphabetical order
+
+52
+00:04:50,686 --> 00:04:56,137
+by the name field. And if you give it to
+by section comparator, it will them in
+
+53
+00:04:56,137 --> 00:05:02,148
+order by the second field very convenient
+for all kinds of data processing
+
+54
+00:05:02,148 --> 00:05:07,342
+applications. And we came up with that
+before when we're talking about using a
+
+55
+00:05:07,342 --> 00:05:13,226
+sort for the Graham scan. We needed to
+have a comparison for points that orders
+
+56
+00:05:13,226 --> 00:05:19,020
+them by the polar angle they make, make
+with the given point p. That's what we
+
+57
+00:05:19,020 --> 00:05:25,028
+needed for the Graham scan algorithm for
+the convex hull. Points are defined data
+
+58
+00:05:25,028 --> 00:05:31,381
+type for geometric objects and so what we
+need is code that will compute the polar
+
+59
+00:05:31,381 --> 00:05:37,269
+angle and use that as the basis for
+comparison. There's an easy way to do this
+
+60
+00:05:37,269 --> 00:05:45,249
+based on CCW that is described here in
+this text. Most of the time all you need
+
+61
+00:05:45,249 --> 00:05:53,308
+to do is do the CCW of the two points. You
+either have to check whether [cough] the,
+
+62
+00:05:53,308 --> 00:05:59,167
+one of the points is above p and the other
+one is below. But otherwise, usually it's
+
+63
+00:05:59,167 --> 00:06:05,001
+a CCW call in this code which again I
+won't go through in detail as an
+
+64
+00:06:05,001 --> 00:06:10,082
+implementation of a comparator for two D
+points. It implements the compare method
+
+65
+00:06:10,082 --> 00:06:16,085
+that takes two points as argument and with
+just a little bit of calculation is able
+
+66
+00:06:16,085 --> 00:06:22,322
+to do the compare. So this code is the
+basis for applying the sort, system sort
+
+67
+00:06:22,322 --> 00:06:27,048
+method or any sort method for the Graham
+scan for the convex hull that we did at
+
+68
+00:06:27,048 --> 00:06:32,424
+the end of the last lecture. So that's the
+basis for the Graham scan method for the
+
+69
+00:06:32,424 --> 00:06:38,025
+convex hull that we used at the last, at
+the end of the last lecture.

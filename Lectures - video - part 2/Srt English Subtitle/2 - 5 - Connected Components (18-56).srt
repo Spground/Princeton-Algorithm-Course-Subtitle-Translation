@@ -1,0 +1,1123 @@
+1
+00:00:03,740 --> 00:00:08,502
+Next we're going to look at a slightly
+different graph processing application.
+
+2
+00:00:08,693 --> 00:00:13,328
+But it's a, a, a graph processing
+algorithm that's useful in many
+
+3
+00:00:13,328 --> 00:00:18,535
+applications we'll see in a minute.
+And slightly different than, depth and
+
+4
+00:00:18,535 --> 00:00:21,901
+breadth first search.
+It's called computing connected
+
+5
+00:00:21,901 --> 00:00:25,688
+components.
+Now I mentioned this a little bit when we
+
+6
+00:00:25,688 --> 00:00:31,043
+talked about basic definitions.
+So the idea is that if there's a path
+
+7
+00:00:31,043 --> 00:00:34,406
+between two vertices we say they're
+connected.
+
+8
+00:00:34,406 --> 00:00:41,262
+And what we want to do is reprocess the
+graph that is, build a data type that can
+
+9
+00:00:41,262 --> 00:00:47,084
+answer queries of the form, is V connected
+to W in constant time.
+
+10
+00:00:47,084 --> 00:00:53,906
+Now, we want to be able to do that for a
+huge, sparse graph of the type that
+
+11
+00:00:53,906 --> 00:00:59,364
+appears in practice.
+So we can't use the, if we could use the
+
+12
+00:00:59,364 --> 00:01:05,550
+adjacency matrix data structure, maybe we
+could do that but we can't.
+
+13
+00:01:05,550 --> 00:01:11,104
+So we're going to build a class that uses
+our standard representation, that will
+
+14
+00:01:11,104 --> 00:01:14,228
+enable clients to find connective
+components.
+
+15
+00:01:14,228 --> 00:01:17,561
+It's really interesting to think about
+this one.
+
+16
+00:01:17,561 --> 00:01:23,185
+We're getting the job done that we could
+get done if we get a huge, sparse matrix.
+
+17
+00:01:23,185 --> 00:01:28,183
+But if we have billions of vertices,
+there's no way we can have billions
+
+18
+00:01:28,183 --> 00:01:32,488
+squared in the matrix.
+So we have to find another way to do it.
+
+19
+00:01:32,488 --> 00:01:35,960
+So here's the data type that we want to
+implement.
+
+20
+00:01:35,960 --> 00:01:42,360
+So it's called and it's going to the
+constructor is going to build the data
+
+21
+00:01:42,360 --> 00:01:48,597
+structure that finds the connected
+components in the given graph to be able
+
+22
+00:01:48,597 --> 00:01:52,618
+to efficiently answer these connectivity
+queries.
+
+23
+00:01:52,618 --> 00:01:57,870
+It'll also be able to count the number of
+connective components.
+
+24
+00:01:57,870 --> 00:02:04,352
+And it also assigns an identifier from
+zero to count minus one, that identifies
+
+25
+00:02:04,352 --> 00:02:08,373
+the connective component that every vertex
+is in.
+
+26
+00:02:08,878 --> 00:02:16,621
+Now if you maybe, this sounds a little bit
+similar to what we did for the union sign
+
+27
+00:02:16,621 --> 00:02:20,517
+problem.
+So when you union find problem we're,
+
+28
+00:02:20,517 --> 00:02:26,336
+we're taking edges and we wanted to have
+queries that, that, well, well union is
+
+29
+00:02:26,336 --> 00:02:32,229
+like adding edge to the graph and then
+find is like are these things connected
+
+30
+00:02:32,229 --> 00:02:35,511
+yet.
+Now with union find, we found that we
+
+31
+00:02:35,511 --> 00:02:39,166
+couldn't quite answer the thing in
+constant time.
+
+32
+00:02:39,166 --> 00:02:45,134
+Are members are very slow growing on
+questions constant practical terms, but
+
+33
+00:02:45,134 --> 00:02:49,300
+not, not really.
+So it's less efficient than the algorithm
+
+34
+00:02:49,484 --> 00:02:53,710
+that we're going to talk about cause it
+doesn't quite get constant time.
+
+35
+00:02:53,710 --> 00:02:58,733
+On the other hand in another way it's
+better than the algorithm we're going to
+
+36
+00:02:58,733 --> 00:03:02,347
+talk about because you can either mix the
+unions and fines.
+
+37
+00:03:02,347 --> 00:03:06,207
+And in this case, because we're working
+with the graph it's like we're taking all
+
+38
+00:03:06,207 --> 00:03:09,270
+the unions and then we are handling fine
+requests.
+
+39
+00:03:09,456 --> 00:03:14,551
+So anyway what we're going to use to
+implement this is a depth first search
+
+40
+00:03:14,551 --> 00:03:17,844
+approach.
+So we'll do the depth first search, we'll
+
+41
+00:03:17,844 --> 00:03:22,380
+just keep different data then we did, than
+when we were findings paths.
+
+42
+00:03:22,685 --> 00:03:31,439
+So the algorithm is based on the notion
+that connection is an equivalence
+
+43
+00:03:31,439 --> 00:03:36,834
+relation.
+So recall an equivalence relation has
+
+44
+00:03:36,834 --> 00:03:42,840
+these three properties.
+Every vertex is connected to itself.
+
+45
+00:03:42,840 --> 00:03:46,724
+If v is connected to w then w is connected
+to v.
+
+46
+00:03:46,724 --> 00:03:52,065
+And if v is connected to w and w to x then
+v is connected to x.
+
+47
+00:03:52,065 --> 00:03:58,376
+And those basic operations underlie the
+algorithm that we're going to talk about.
+
+48
+00:03:58,619 --> 00:04:05,578
+So the equivalence relation is a, a
+general mathematical concept that implies,
+
+49
+00:04:05,821 --> 00:04:11,809
+in graph theory in this case.
+And as I already mentioned, in the case of
+
+50
+00:04:11,809 --> 00:04:16,773
+graph, it implies that.
+The vertices divide up into connected
+
+51
+00:04:16,773 --> 00:04:21,121
+components which are maximal sets of
+connected vertices.
+
+52
+00:04:21,121 --> 00:04:25,082
+So our sample graph has three connected
+components.
+
+53
+00:04:25,082 --> 00:04:31,759
+And what we'll do is assign identifiers to
+each one of the components in that will
+
+54
+00:04:31,759 --> 00:04:36,565
+for every vertex.
+Give us an identifier number for that
+
+55
+00:04:36,565 --> 00:04:40,198
+vertex.
+And that's the data structure then our
+
+56
+00:04:40,198 --> 00:04:46,131
+depth for search is going to built, and
+that immediately gives the constant time
+
+57
+00:04:46,131 --> 00:04:49,320
+implementation of the connectivity
+queries.
+
+58
+00:04:49,320 --> 00:04:55,303
+Given two vertices you look up their ID
+and if they're equal, they're in the same
+
+59
+00:04:55,303 --> 00:04:59,155
+connected component, if they're different
+they're not.
+
+60
+00:04:59,361 --> 00:05:05,345
+So that's the data structure that we're
+going to build it's like a unifying tree,
+
+61
+00:05:05,345 --> 00:05:08,440
+where there's just, all the trees are
+flat.
+
+62
+00:05:09,406 --> 00:05:14,352
+So that's where I just said, given
+connected components, we can answer
+
+63
+00:05:14,352 --> 00:05:20,505
+queries in constant time.
+So here's a big graph, a big grid graph
+
+64
+00:05:20,801 --> 00:05:29,672
+that we use in when we're talking about
+union find And turns out that this one's
+
+65
+00:05:29,672 --> 00:05:36,168
+got 63 connected components.
+And again when you really think about it
+
+66
+00:05:36,377 --> 00:05:42,645
+it's kind of amazing that we can do this
+computation in linear time even for a huge
+
+67
+00:05:42,645 --> 00:05:46,057
+graph.
+And it's really important to be able to do
+
+68
+00:05:46,057 --> 00:05:51,071
+so for the very huge graph that we talked
+about in so many applications.
+
+69
+00:05:51,280 --> 00:05:56,921
+If you can process all the edges you can
+also find out the connective components
+
+70
+00:05:56,921 --> 00:06:00,821
+and be set up to answer connect,
+connectivity queries.
+
+71
+00:06:00,821 --> 00:06:04,930
+This is a simple algorithm but really it's
+ingenious.
+
+72
+00:06:04,930 --> 00:06:08,774
+Okay.
+So let's look at the implementation.
+
+73
+00:06:08,774 --> 00:06:14,962
+So our goal is to petition the vertices
+into connected components.
+
+74
+00:06:14,962 --> 00:06:21,097
+So we're going to use DFS in marking.
+And so what we're going to do is for a
+
+75
+00:06:21,097 --> 00:06:25,237
+general graph.
+For every unmarked vertex, we'rere going
+
+76
+00:06:25,237 --> 00:06:30,453
+to run DFS to find all the vertices that
+are connected to that one.
+
+77
+00:06:30,453 --> 00:06:33,848
+They are going to be part of the same
+component.
+
+78
+00:06:34,074 --> 00:06:40,485
+So we used the marking to help control the
+DFS but also to control the connective
+
+79
+00:06:40,485 --> 00:06:47,425
+components that the vertices that already
+have been processed and known to be in a
+
+80
+00:06:47,425 --> 00:06:52,856
+given connective component.
+So let's look at a demo to understand how
+
+81
+00:06:52,856 --> 00:06:57,942
+this algorithm works.
+So again, we're going to use depth for
+
+82
+00:06:57,942 --> 00:07:02,742
+search and there, summary of depth for
+search, divisative vertex, we mark it as
+
+83
+00:07:02,742 --> 00:07:07,730
+visitive and then recursively visit all
+the unmarked vertices that are adjacent.
+
+84
+00:07:08,516 --> 00:07:15,018
+So in this case so we'll start we're going
+to visit all the vertices in the graph in
+
+85
+00:07:15,018 --> 00:07:20,859
+order to identify the connected component.
+So we'll start by visiting zero.
+
+86
+00:07:21,102 --> 00:07:27,350
+To visit zero, we have to check six, two,
+one, and five so we start by checking six.
+
+87
+00:07:27,585 --> 00:07:32,853
+We mark it as visited.
+So that's entry six in the ray and now
+
+88
+00:07:32,853 --> 00:07:38,751
+we're going to keep this other vertex
+indexed array which is the ID the
+
+89
+00:07:38,751 --> 00:07:44,569
+connected component number.
+So or we're saying by putting a zero and
+
+90
+00:07:44,569 --> 00:07:49,916
+that entry is that six and zero are in the
+same connected component.
+
+91
+00:07:49,916 --> 00:07:56,599
+Every vertex that we encounter during the
+depth per search from zero we're going to
+
+92
+00:07:56,835 --> 00:08:02,661
+assign a value of zero.
+Okay so, so what do we have to do to visit
+
+93
+00:08:02,661 --> 00:08:06,778
+six.
+We have to check zero and then we have to
+
+94
+00:08:06,778 --> 00:08:14,004
+check four so and four is unmarked so
+we're going to recourse and visit four.
+
+95
+00:08:14,004 --> 00:08:18,710
+To visit four, we have to check five, five
+is unmarked.
+
+96
+00:08:18,952 --> 00:08:25,082
+So we recourse to visit five.
+And to visit five we have to check three,
+
+97
+00:08:25,082 --> 00:08:27,664
+four, and zero.
+Three is unmarked.
+
+98
+00:08:27,906 --> 00:08:31,940
+This is same depth per search that we did
+before.
+
+99
+00:08:31,940 --> 00:08:37,481
+But now we're just keeping track of the
+connective component number, and we're
+
+100
+00:08:37,481 --> 00:08:42,880
+assigning every vertex that we encounter
+with the same idea as zero.
+
+101
+00:08:43,906 --> 00:08:49,764
+Okay so, now, we have to visit three.
+To visit three we have to check five and
+
+102
+00:08:49,764 --> 00:08:52,451
+four.
+Five was marked and nothing to do.
+
+103
+00:08:52,451 --> 00:08:56,448
+Four was marked, nothing to do.
+So we're done with three.
+
+104
+00:08:56,655 --> 00:09:01,134
+Done with three, we can continue the depth
+per search from five.
+
+105
+00:09:01,134 --> 00:09:04,373
+We have to check four and zero.
+Four was marked.
+
+106
+00:09:04,580 --> 00:09:06,854
+Zero was marked.
+So we're done.
+
+107
+00:09:07,061 --> 00:09:11,333
+And now we could continue with the depth
+per search of four.
+
+108
+00:09:11,333 --> 00:09:14,625
+We have to check six- three.
+Six was marked.
+
+109
+00:09:14,625 --> 00:09:18,259
+Three was marked and we're done.
+And we can,
+
+110
+00:09:18,259 --> 00:09:23,077
+Now six is done.
+And now we can continue with zero and we
+
+111
+00:09:23,077 --> 00:09:26,796
+have to check two.
+Check two it's not marked.
+
+112
+00:09:26,796 --> 00:09:32,122
+So we mark it and give it a connected
+component number of zero.
+
+113
+00:09:32,122 --> 00:09:37,785
+To visit two, all we do is check zero
+which is marked, so we're done.
+
+114
+00:09:37,785 --> 00:09:41,420
+And then we do the same thing with one,
+Unmarked.
+
+115
+00:09:41,420 --> 00:09:46,092
+So we visit it, I guess assign it zero.
+And then visit one.
+
+116
+00:09:46,301 --> 00:09:49,439
+And to do that, we check zero, which is
+marked.
+
+117
+00:09:49,439 --> 00:09:54,321
+So we're done with one.
+And then, to finish zero we have to check
+
+118
+00:09:54,321 --> 00:09:57,738
+five.
+And that's, marked so we don't have to do
+
+119
+00:09:57,738 --> 00:10:00,110
+anything.
+And we're done with zero.
+
+120
+00:10:00,110 --> 00:10:03,936
+So, now we're done with the first
+connected component.
+
+121
+00:10:03,936 --> 00:10:10,000
+But, we're not done with the whole graph.
+So what we want to do is, Go look for, so
+
+122
+00:10:10,000 --> 00:10:13,898
+that's a connected component,
+corresponding to zero.
+
+123
+00:10:14,115 --> 00:10:18,879
+Now we want, what we want to do is go look
+for an unmarked vertex.
+
+124
+00:10:19,096 --> 00:10:23,933
+So, we started at zero and we check one,
+two, three, four, five, and six.
+
+125
+00:10:24,149 --> 00:10:29,323
+And they're all marked.
+And so the next unmarked vertex that we
+
+126
+00:10:29,323 --> 00:10:36,921
+find in the graph is seven.
+So once we return from the depth first
+
+127
+00:10:36,921 --> 00:10:42,742
+search for zero, we Increment, counter.
+Which is our, how many connected
+
+128
+00:10:42,742 --> 00:10:46,370
+components have we seen.
+And now, we're going to assign that number
+
+129
+00:10:46,370 --> 00:10:50,690
+to everything that's connected to seven on
+the depth-first search on seven.
+
+130
+00:10:50,690 --> 00:10:55,239
+So what do we do to depth per research and
+sum we check eight.
+
+131
+00:10:55,239 --> 00:10:57,819
+8s on the mark.
+And so we go visit it.
+
+132
+00:10:58,023 --> 00:11:02,708
+So we assign it, connect the component of
+number of one same as seven.
+
+133
+00:11:02,911 --> 00:11:06,850
+And mark it.
+And then go ahead and recourse to visit
+
+134
+00:11:06,850 --> 00:11:09,362
+eight.
+We check seven which is marked.
+
+135
+00:11:09,362 --> 00:11:12,621
+So there is nothing to do.
+We're done with eight.
+
+136
+00:11:12,825 --> 00:11:17,578
+And then we're done with seven.
+So now we're done with all the vertices
+
+137
+00:11:17,578 --> 00:11:22,014
+that were connected to seven.
+We increment our counter of number of
+
+138
+00:11:22,014 --> 00:11:25,060
+components to two, and look for another
+vertex.
+
+139
+00:11:25,060 --> 00:11:30,288
+So now we check eight, which we already
+know is marked, connected to seven.
+
+140
+00:11:30,288 --> 00:11:34,657
+So now nine is unmarked so we're going to
+do a DFS from nine.
+
+141
+00:11:34,657 --> 00:11:40,745
+So everybody connected to nine is going to
+get assigned a connected component number
+
+142
+00:11:40,745 --> 00:11:44,040
+of two.
+So at nine, we have to check eleven and
+
+143
+00:11:44,040 --> 00:11:46,285
+that was unmarked.
+So we visit it.
+
+144
+00:11:46,476 --> 00:11:50,169
+Give it a two.
+To visit eleven, we have to check nine,
+
+145
+00:11:50,169 --> 00:11:52,270
+which is marked.
+So nothing to do.
+
+146
+00:11:52,270 --> 00:11:56,791
+And twelve, which is unmarked.
+So we visit it and, give it a number of
+
+147
+00:11:56,791 --> 00:11:59,593
+two.
+To visit twelve, we have to check eleven,
+
+148
+00:11:59,593 --> 00:12:02,522
+which is marked and nine which is also
+marked.
+
+149
+00:12:02,522 --> 00:12:07,426
+And then we're done with twelve.
+And then we're done with eleven.
+
+150
+00:12:07,652 --> 00:12:12,330
+And then, to finish doing nine, we have to
+check ten and twelve.
+
+151
+00:12:12,565 --> 00:12:17,123
+Ten is unmarked.
+So we mark it and give it a number of two.
+
+152
+00:12:17,359 --> 00:12:21,838
+To visit ten, we check nine which is
+marked, so we're done.
+
+153
+00:12:21,838 --> 00:12:28,438
+And then finally, to finish, the DFS.
+We check, twelve from nine, and that's
+
+154
+00:12:28,438 --> 00:12:31,110
+marked.
+So we're done with nine.
+
+155
+00:12:31,110 --> 00:12:36,532
+And now we keep looking.
+And we find that, ten, eleven, twelve, are
+
+156
+00:12:36,532 --> 00:12:39,440
+all marked.
+So we've completed the.
+
+157
+00:12:39,635 --> 00:12:43,082
+Computation.
+And for every vertex we have a connected
+
+158
+00:12:43,082 --> 00:12:46,530
+component number.
+And for any given query we can test
+
+159
+00:12:46,530 --> 00:12:51,668
+whether their in the same connected
+component simply by looking up that number
+
+160
+00:12:51,668 --> 00:12:57,180
+and seeing if it's equal.
+That's a demo of connected components
+
+161
+00:12:57,180 --> 00:13:01,440
+computation.
+Okay, so here's the code for finding
+
+162
+00:13:01,440 --> 00:13:07,624
+connected components with DFS.
+Which is, another straightforward DFS
+
+163
+00:13:07,624 --> 00:13:11,335
+implementation.
+Just like the other one.
+
+164
+00:13:11,335 --> 00:13:16,724
+And it just keeps, slightly, different,
+data structure.
+
+165
+00:13:16,989 --> 00:13:25,785
+So, The We keep the marked data structure,
+which is the vertices that we visited.
+
+166
+00:13:25,785 --> 00:13:32,410
+And then we keep this vertex index array
+ID which gives the identifier, the
+
+167
+00:13:32,410 --> 00:13:37,887
+component containing V, I think we call it
+on the demo.
+
+168
+00:13:37,887 --> 00:13:43,276
+And then a count of the number of
+components that we've seen.
+
+169
+00:13:43,541 --> 00:13:50,469
+So the constructor creates, the, marked
+array and it creates this idea array.
+
+170
+00:13:50,701 --> 00:13:55,719
+But now the constructor does more work
+than a single call on DFS.
+
+171
+00:13:55,950 --> 00:14:00,274
+What it does is it goes through, this is
+the constructor.
+
+172
+00:14:00,274 --> 00:14:04,520
+Goes through every vertex in the array in
+the graph.
+
+173
+00:14:04,755 --> 00:14:10,809
+And if it's not marked, it does the DFS.
+And that DFS will mark a lot of other
+
+174
+00:14:10,809 --> 00:14:15,133
+vertices.
+But when it's done that's all of those are
+
+175
+00:14:15,133 --> 00:14:21,344
+going to get assigned a value of count.
+And we're going to increment count, then
+
+176
+00:14:21,344 --> 00:14:27,791
+go and look for another unmarked vertex.
+Anything that wasn't marked by that first
+
+177
+00:14:27,791 --> 00:14:33,844
+DFX, DFS, we'll do a DFS from that one,
+and mark all its vertices with the next
+
+178
+00:14:33,844 --> 00:14:38,865
+value for the ID.
+So now let's look at the implementation of
+
+179
+00:14:38,865 --> 00:14:44,898
+DFS.
+It's recursive array just like the one
+
+180
+00:14:44,898 --> 00:14:48,963
+that we did.
+For, for path finding.
+
+181
+00:14:49,244 --> 00:14:53,651
+Except all that we do, when we mark a
+vertex.
+
+182
+00:14:53,932 --> 00:14:59,464
+We also simply set its ID to the current
+component name.
+
+183
+00:14:59,464 --> 00:15:07,060
+So all the vertices that are discovered in
+the same call of DFS have the same ID.
+
+184
+00:15:07,060 --> 00:15:13,070
+And to visit a vertex you go through all
+its adjacent vertices.
+
+185
+00:15:13,302 --> 00:15:18,040
+And any that are not marked you give a
+recursive DFS call.
+
+186
+00:15:18,040 --> 00:15:22,311
+Again, this code is amazingly compact and
+elegant.
+
+187
+00:15:22,544 --> 00:15:29,300
+When we're going through the demo step by
+step maybe you, you can see that the
+
+188
+00:15:29,300 --> 00:15:33,726
+underlying computation is actually kind of
+complex.
+
+189
+00:15:33,726 --> 00:15:39,007
+But, but, recursion and the
+graph-processing API that we set up
+
+190
+00:15:39,240 --> 00:15:43,900
+provides a compact and easy to understand
+implementation.
+
+191
+00:15:43,900 --> 00:15:50,176
+So that's using DFS to find connector
+components and then to return the idea of
+
+192
+00:15:50,176 --> 00:15:56,088
+a given vertex, just look at up in the
+array and to return then our components
+
+193
+00:15:56,088 --> 00:16:02,657
+just you can count and then you can build
+up the needed connectivity API from those.
+
+194
+00:16:02,876 --> 00:16:07,110
+So that's depth first search to find
+connected components.
+
+195
+00:16:07,110 --> 00:16:14,405
+I will just talk briefly about two
+applications from scientific applications.
+
+196
+00:16:14,678 --> 00:16:21,518
+So here's an application of sexually
+transmitted diseases at a high school.
+
+197
+00:16:21,518 --> 00:16:27,628
+And, simply the vertices are people, blue
+are men and pink are women.
+
+198
+00:16:27,901 --> 00:16:33,979
+And you I have an edge between if there
+was a contact.
+
+199
+00:16:33,979 --> 00:16:40,568
+And so it's obvious that you're going to
+be interested in connective components of
+
+200
+00:16:40,568 --> 00:16:44,457
+this graph.
+To be able to properly study sexually
+
+201
+00:16:44,457 --> 00:16:49,141
+transmitted diseases.
+These individuals had no contact with
+
+202
+00:16:49,141 --> 00:16:52,713
+these.
+Then, the, whichever one has the disease,
+
+203
+00:16:52,713 --> 00:16:57,635
+maybe it won't spread.
+Or if you add a new edge, then maybe you
+
+204
+00:16:57,635 --> 00:17:02,001
+have a problem.
+That's just one example of studying the
+
+205
+00:17:02,001 --> 00:17:08,367
+spread of disease.
+Here's another example that we use, for,
+
+206
+00:17:08,367 --> 00:17:14,437
+for that's similar to the flood fill
+example.
+
+207
+00:17:14,726 --> 00:17:20,790
+And this is processing data from a
+scientific experiment.
+
+208
+00:17:21,078 --> 00:17:26,836
+And in, in this case this image is comes
+from a photograph.
+
+209
+00:17:26,836 --> 00:17:30,986
+And the white things are particles that
+are moving.
+
+210
+00:17:30,986 --> 00:17:35,542
+And all we get is a image where it's a
+grey scale image.
+
+211
+00:17:35,542 --> 00:17:41,237
+And so, what we'll do to do this
+processing is, we want to identify the
+
+212
+00:17:41,237 --> 00:17:47,340
+movement of these particles over time.
+And the way we do it is build a grid
+
+213
+00:17:47,340 --> 00:17:53,849
+graph, like the one for the flood fill
+application and do an edge connecting two
+
+214
+00:17:53,849 --> 00:17:56,290
+vertices.
+If they're different,
+
+215
+00:17:56,290 --> 00:18:00,290
+He said their gray scale values is greater
+than less than some threshold.
+
+216
+00:18:00,290 --> 00:18:06,228
+And so then if you do that, and then find
+the connective components, then you can
+
+217
+00:18:06,228 --> 00:18:11,351
+identify blobs which correspond to real
+particles in this simulation.
+
+218
+00:18:11,351 --> 00:18:17,364
+And they do that every frame in a movie,
+then you can track moving particles over
+
+219
+00:18:17,364 --> 00:18:20,853
+time.
+So these are maybe fairly high resolution
+
+220
+00:18:20,853 --> 00:18:24,268
+images.
+These are graphs with lots and lots of
+
+221
+00:18:24,268 --> 00:18:30,281
+edges, and you need to be able to do this
+computation quickly in order to do this
+
+222
+00:18:30,281 --> 00:18:34,290
+scientific experiment.
+And we'd use this as an example.
+
+223
+00:18:34,290 --> 00:18:40,380
+Example in our first year programming
+course it is based on computing connected
+
+224
+00:18:40,380 --> 00:18:45,588
+components using depth-first search.
+So that's our third example of a graph
+
+225
+00:18:45,588 --> 00:18:47,020
+processing algorithm.

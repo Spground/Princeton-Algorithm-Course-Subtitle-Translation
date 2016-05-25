@@ -1,0 +1,499 @@
+1
+00:00:01,019 --> 00:00:06,056
+Okay, our basic array implementation of
+stacks had the defect where we required
+
+2
+00:00:06,056 --> 00:00:11,610
+clients to provide us the maximum capacity
+of the stack ahead of time. Now, we're
+
+3
+00:00:11,610 --> 00:00:17,020
+going to look at technique for resolving
+that problem. How do we, we do not
+
+4
+00:00:17,020 --> 00:00:22,033
+implementing the API. The API says we
+should just be able to create a stack and
+
+5
+00:00:22,033 --> 00:00:27,021
+it should be able to grow and shrink to
+any size. So, how do we going to go and
+
+6
+00:00:27,021 --> 00:00:31,632
+shrink the array? Well, first thing you
+might think of is when the client pushes a
+
+7
+00:00:31,632 --> 00:00:36,530
+new item onto the stack increase the size
+of the array by one and when pops,
+
+8
+00:00:36,530 --> 00:00:41,225
+decrease the array by one. That's easy to
+code up but not worth it because it's much
+
+9
+00:00:41,225 --> 00:00:46,533
+too expensive to do that. The reason is
+that you have to create a new array, size
+
+10
+00:00:46,533 --> 00:00:52,290
+one bigger and copy all the items to that
+new array. So inserting the first N items
+
+11
+00:00:52,290 --> 00:00:58,361
+would take time proportional if the text,
+stacks is size N - one, it's going to take
+
+12
+00:00:58,361 --> 00:01:04,148
+time N. And when it's two time N - one so
+the first N items will take the sum of the
+
+13
+00:01:04,148 --> 00:01:10,953
+first N integers which we know is about
+N^2 / two. Quadratic time to insert N
+
+14
+00:01:10,953 --> 00:01:16,623
+items into a stack that kind of
+performance is unacceptable for large
+
+15
+00:01:16,623 --> 00:01:22,693
+problems as we've seen, as we will see
+many times. So, the challenge is to do the
+
+16
+00:01:22,693 --> 00:01:29,227
+resizing. But somehow ensured that it
+happens and frequently. So, the well end
+
+17
+00:01:29,227 --> 00:01:35,995
+technique for doing that called repeated
+doubling is to when the array fills up,
+
+18
+00:01:35,995 --> 00:01:43,088
+create a new array of twice the size and
+copy all the items over. Then we don't
+
+19
+00:01:43,088 --> 00:01:50,773
+create new arrays all that often so here's
+the implementation of that. We start with
+
+20
+00:01:50,773 --> 00:01:57,049
+an array of size one. If we have a full
+stack, which we know by testing N which is
+
+21
+00:01:57,049 --> 00:02:03,038
+the number of items in the stack versus
+the rail length, then we just re-size the
+
+22
+00:02:03,038 --> 00:02:09,066
+array into one of twice the length before
+inserting the item. And how do we re-size
+
+23
+00:02:09,323 --> 00:02:16,312
+to a new capacity? We create a new array
+of that capacity and just go ahead and
+
+24
+00:02:16,312 --> 00:02:22,803
+copy our current stack into that, into the
+first half of that and then retu rn it.
+
+25
+00:02:23,029 --> 00:02:30,211
+And that will reset our instance variable
+which is our stack to this new bigger
+
+26
+00:02:30,211 --> 00:02:37,570
+array. So, the idea and the consequence of
+this is if you insert N items into an
+
+27
+00:02:37,570 --> 00:02:43,675
+array, into a stack with this array
+representation, the time will be
+
+28
+00:02:43,675 --> 00:02:50,712
+proportional to N not N^2. And the reason
+is that you only create a new array every
+
+29
+00:02:50,712 --> 00:02:57,203
+time it doubles but by the time that it
+doubles, you've inserted that many items
+
+30
+00:02:57,203 --> 00:03:04,514
+into the stack so on average, it's just
+like adding one operation to cost of one
+
+31
+00:03:04,514 --> 00:03:10,977
+to each operation. So, if we just, if we
+just calculate the cost and inserting the
+
+32
+00:03:10,977 --> 00:03:16,179
+first N items you're going to have,
+instead of the sum of the integers from
+
+33
+00:03:16,179 --> 00:03:21,689
+one end, you're going to have the sum of
+the powers of two from one to end and that
+
+34
+00:03:21,689 --> 00:03:27,284
+will give a total cost of about 3N. So,
+that's an array axises. For the copy,
+
+35
+00:03:27,284 --> 00:03:33,009
+there's two array axis. So, to insert an
+item, its about three array axises. This
+
+36
+00:03:33,009 --> 00:03:38,623
+plot is another way of looking at it which
+is the number of array axis its taken as
+
+37
+00:03:38,623 --> 00:03:43,883
+you implement push operations. Every time
+you hit a power of two, you take that many
+
+38
+00:03:43,883 --> 00:03:48,801
+array axises but in the sense you've
+already paid for them by putting those
+
+39
+00:03:48,801 --> 00:03:54,871
+items on the stack. So that's called
+amortize analysis, where we consider the
+
+40
+00:03:54,871 --> 00:04:01,343
+total cost averaged overall operations and
+this is a, a fine example and useful
+
+41
+00:04:01,574 --> 00:04:07,377
+example of amortize analysis to get
+efficiency in a stack implementation. Now
+
+42
+00:04:07,377 --> 00:04:12,402
+we, we have, what about the pop? We have
+to think about how to shrink the array.
+
+43
+00:04:12,598 --> 00:04:17,589
+So, we might think, well, we doubled it
+when it was full, when do we cut it in
+
+44
+00:04:17,589 --> 00:04:23,074
+half when it gets to be half full. We
+don't want to get the array to get two
+
+45
+00:04:23,074 --> 00:04:28,934
+empty. Well, that one, one doesn't exactly
+work because of a, a phenomenon called
+
+46
+00:04:28,934 --> 00:04:34,553
+trashing. If you, if the client happens to
+do push, pop, push, pop alternating when
+
+47
+00:04:34,553 --> 00:04:40,208
+the array is full then, it's going to be
+doubling, halving, doubling, halving and
+
+48
+00:04:40,208 --> 00:04:45,308
+creating new arrays on every operation to
+take time proportional to N for every
+
+49
+00:04:45,308 --> 00:04:51,069
+operation and therefore, quadratic time
+for everything so I don't want to do that.
+
+50
+00:04:51,268 --> 00:04:56,810
+The efficient solution is to wait until
+the array gets one quarter full before you
+
+51
+00:04:56,810 --> 00:05:02,074
+have it. And that's very easy to
+implement. We'll just test if the arrays
+
+52
+00:05:02,074 --> 00:05:08,091
+one quarter full, if it is, we re-size it
+to half full. And so, then at that point,
+
+53
+00:05:08,091 --> 00:05:15,000
+it's half full and you can either grow by
+adding stuff or shrink by subtracting
+
+54
+00:05:15,000 --> 00:05:21,009
+stuff but there won't be another resizing
+array operation until, I guess totally
+
+55
+00:05:21,009 --> 00:05:26,880
+full or half again full. So the invariant
+of that is the arrays always between 25
+
+56
+00:05:26,880 --> 00:05:31,390
+percent and a 100 percent full, number one
+and number two that every time you
+
+57
+00:05:31,390 --> 00:05:37,887
+re-size, you've already paid for it in the
+amortize sense by inserting pushing or
+
+58
+00:05:37,887 --> 00:05:44,791
+popping. So, here's just a what happens to
+the array for our small client example and
+
+59
+00:05:44,791 --> 00:05:50,139
+you can see at the beginning, it doubles
+from one to two to four but once it gets
+
+60
+00:05:50,139 --> 00:05:55,736
+to four, it stays once it gets to eight,
+it stays to that size for a while even
+
+61
+00:05:55,736 --> 00:06:01,632
+though there's some of the operations it
+doesn't shrink back to four until after
+
+62
+00:06:01,816 --> 00:06:07,036
+there's only two items in there and then
+it shrinks and so forth. So, array
+
+63
+00:06:07,036 --> 00:06:13,130
+resizing doesn't happen that often but
+it's a very effective a way of
+
+64
+00:06:13,394 --> 00:06:20,500
+implementing the stack API with an array
+where the client does not have to provide
+
+65
+00:06:20,500 --> 00:06:27,707
+this maximum capacity of the stack but
+still were guaranteed that the amount of
+
+66
+00:06:27,707 --> 00:06:34,110
+memory that we use is always only a
+constant multiple of the number of items
+
+67
+00:06:34,110 --> 00:06:41,570
+actually on the stack. So the analysis now
+says that the average running time per
+
+68
+00:06:41,570 --> 00:06:48,896
+operation for whatever the sequence of
+operations is the average running time is
+
+69
+00:06:48,896 --> 00:06:55,489
+going to be proportional to a constant.
+Now, there is a worst case that is at the
+
+70
+00:06:55,489 --> 00:07:01,048
+point when the stack doubles, it takes
+time proportional to N so it's not quite
+
+71
+00:07:01,048 --> 00:07:07,823
+as good performance as we might like but
+it's what we the advantage that we get is
+
+72
+00:07:07,823 --> 00:07:13,470
+ve ry fast pushes and pops just access
+array and increment it and very efficient
+
+73
+00:07:13,681 --> 00:07:19,851
+for most operations. And for many, many
+clients that's an effective trade off to
+
+74
+00:07:19,851 --> 00:07:27,065
+make. So what about memory usage? Well,
+this is the analysis of memory usage for
+
+75
+00:07:27,065 --> 00:07:35,113
+stacks and it's actually less memory than
+for strings the amount used is between 8n
+
+76
+00:07:35,113 --> 00:07:42,528
+and 32n depending on how full the array is
+and just a quick analysis of the amount of
+
+77
+00:07:42,528 --> 00:07:50,452
+space that arrays take in Java. So, again
+this analysis is just for the stack itself
+
+78
+00:07:50,452 --> 00:07:57,009
+not for the strings which the client
+wants. So, what are the trade offs between
+
+79
+00:07:57,238 --> 00:08:01,906
+using a re-sizing array versus a link
+list. There's a two different
+
+80
+00:08:01,906 --> 00:08:07,771
+implementations and the same API and the
+client can use them interchangeably, which
+
+81
+00:08:07,771 --> 00:08:13,295
+one is better? In many situations, we're
+going to have multiple implementation of
+
+82
+00:08:13,295 --> 00:08:19,117
+APIs and depending on properties of the
+client program you're going to have to
+
+83
+00:08:19,117 --> 00:08:24,520
+choose which one is the better one to use.
+So, for link list every operation takes
+
+84
+00:08:24,520 --> 00:08:30,091
+constant time in the worst case that's a
+guarantee but we have to use a little
+
+85
+00:08:30,091 --> 00:08:36,001
+extra time and space to deal with the
+links. So, it's going to be slower.
+
+86
+00:08:36,232 --> 00:08:42,888
+Resizing array implementation we have a
+good amortized time so total average over
+
+87
+00:08:42,888 --> 00:08:48,514
+the whole process is good. We have less
+wasted space and probably faster
+
+88
+00:08:48,514 --> 00:08:53,946
+implementation of each operation. And so,
+for some clients, maybe that makes a
+
+89
+00:08:53,946 --> 00:08:58,192
+difference perhaps, you wouldn't want to
+use a re-sizing array implementation at
+
+90
+00:08:58,192 --> 00:09:02,950
+the moment that your plane is coming in
+for a landing and you wouldn't wanted to
+
+91
+00:09:02,950 --> 00:09:06,929
+all of the sudden, not implement some
+operations quickly. If you need that kind
+
+92
+00:09:06,929 --> 00:09:11,403
+or maybe in an Internet switch where
+packets are coming through at a great
+
+93
+00:09:11,403 --> 00:09:15,312
+rate, you wouldn't want to be in the
+situation where you're missing some data
+
+94
+00:09:15,312 --> 00:09:19,314
+because something got slow all of the
+sudden. So, that's a trade off that the
+
+95
+00:09:19,314 --> 00:09:24,109
+client can make if I want that guaranteed,
+if I want to be sure that eve ry operation
+
+96
+00:09:24,109 --> 00:09:29,595
+is going to be fast use a link list and if
+I don't need that guarantee, if I just
+
+97
+00:09:29,595 --> 00:09:34,684
+care about the total amount of time I'll
+probably use the resizing array because
+
+98
+00:09:34,892 --> 00:09:40,379
+the total will be much less because
+individual operations are fast. So, even
+
+99
+00:09:40,379 --> 00:09:49,271
+with these simple data structures, we have
+really important trade offs that actually
+
+100
+00:09:49,271 --> 00:09:56,043
+make a difference in lots of practical
+situations.

@@ -1,0 +1,573 @@
+1
+00:00:01,087 --> 00:00:07,024
+In fact the order of growth
+classifications are so important they've
+
+2
+00:00:07,024 --> 00:00:13,038
+led to enormous amount of research in
+recent years and just talk briefly about
+
+3
+00:00:13,038 --> 00:00:19,692
+that now. So there is, life is a little
+bit more complicated than pointed out in
+
+4
+00:00:19,692 --> 00:00:25,747
+the last example and one problem is that
+the inputs can cause the performance of
+
+5
+00:00:25,747 --> 00:00:31,076
+the algorithm to vary widely. So often we
+have to think about different ways of
+
+6
+00:00:31,076 --> 00:00:37,001
+analyzing the algorithm depending on the
+input. So, the running time is going to be
+
+7
+00:00:37,001 --> 00:00:42,014
+somewhere between the best case and the
+worst case. Best case is the lower bound
+
+8
+00:00:42,014 --> 00:00:48,008
+on cost it. It provides something that the
+running time is going to be bigger than
+
+9
+00:00:48,008 --> 00:00:53,368
+that always or not less than that and then
+there's the worst case which is the most
+
+10
+00:00:53,368 --> 00:00:58,562
+difficult input. If we analyze that then
+we can guarantee that the running time in
+
+11
+00:00:58,562 --> 00:01:04,327
+the algorithms not going to be bigger than
+that. And then in a lot of situations we
+
+12
+00:01:04,327 --> 00:01:11,078
+might consider our input to be random.
+Well we need to, someway to model, what we
+
+13
+00:01:11,078 --> 00:01:17,577
+mean by random for the problem that we're
+solving but there is a lot of situations
+
+14
+00:01:17,577 --> 00:01:24,680
+where we can do that and then we have a
+way to predict performance even when the
+
+15
+00:01:24,680 --> 00:01:33,369
+input might vary widely. So for example
+for 3-sum, it's kind of always the same.
+
+16
+00:01:33,617 --> 00:01:39,441
+With the tilde notation, the only
+variability in that algorithm is the
+
+17
+00:01:39,441 --> 00:01:46,514
+number of times the counter is incremented
+and that's in low order terms so it
+
+18
+00:01:46,514 --> 00:01:53,318
+doesn't need to chew up in our analysis.
+For binary search it's, you might find the
+
+19
+00:01:53,318 --> 00:02:00,553
+thing right away in which case is constant
+time and we can show that the average and
+
+20
+00:02:00,553 --> 00:02:08,205
+the worst case are both lg based two(N).
+There's other, in another examples that be
+
+21
+00:02:08,205 --> 00:02:17,256
+much more variability even. So, we have
+this different types of analysis depending
+
+22
+00:02:17,256 --> 00:02:22,398
+on the input. And but the question is,
+what about the actual problem that the
+
+23
+00:02:22,398 --> 00:02:28,543
+client is trying to solve? So we have to
+understand that two in order to be able to
+
+24
+00:02:28,543 --> 00:02:33,933
+understand performance of the algorithm.
+And there's two approaches that are, or
+
+25
+00:02:33,933 --> 00:02:40,346
+successful in this. One is to design for
+the worst case. Just to make sure that
+
+26
+00:02:40,346 --> 00:02:45,403
+your algorithm are, always runs quickly
+and that's definitely ideal. Another is
+
+27
+00:02:45,403 --> 00:02:50,794
+to, if you can't do that is to randomize
+and then depend on some kind of
+
+28
+00:02:50,794 --> 00:02:55,769
+probabilistic guarantee and we'll see
+examples of both of these as we go through
+
+29
+00:02:55,769 --> 00:03:00,546
+the course. Now, those kinds of
+considerations, you know the idea of order
+
+30
+00:03:00,546 --> 00:03:06,058
+of growth leads to discussion of, what's
+called, what I call the theory of
+
+31
+00:03:06,058 --> 00:03:12,022
+algorithms. And here our goals are, we
+have a problem to solve like solve the
+
+32
+00:03:12,022 --> 00:03:17,500
+3-sum problem and we want to know how
+difficult it is. We want to find the best
+
+33
+00:03:17,500 --> 00:03:24,302
+algorithm for solving that problem. The
+approach that the computer scientist use
+
+34
+00:03:24,302 --> 00:03:30,091
+for this is to try to suppress as many
+details as possible in the analysis. And
+
+35
+00:03:30,091 --> 00:03:37,015
+so just analyze the running time to or
+within a constant factor. That's what
+
+36
+00:03:37,015 --> 00:03:42,831
+order of growth is getting at and also I
+want to, not worry about the input model
+
+37
+00:03:42,831 --> 00:03:48,070
+at all. And so we focused on worst case
+design and we can talk about performance
+
+38
+00:03:48,090 --> 00:03:54,372
+of algorithms just in turn of the order of
+growth and it's actually possible, it's
+
+39
+00:03:54,372 --> 00:03:59,357
+actually possible to do that in a very
+rigorous way that it's taught us a lot
+
+40
+00:03:59,357 --> 00:04:04,692
+about the difficulty of solving problems.
+And our goal is to find an optimal
+
+41
+00:04:04,692 --> 00:04:11,326
+algorithm where we can guarantee to within
+a constant factor certain performance for
+
+42
+00:04:11,326 --> 00:04:17,735
+any input cuz we discovered the worst case
+but we also can have approved that didn't
+
+43
+00:04:17,735 --> 00:04:24,022
+know algorithm could provide a better
+performance guarantee. I'll give a couple
+
+44
+00:04:24,022 --> 00:04:31,549
+of easy examples of this. Now in order to
+do this they're, these commonly used
+
+45
+00:04:31,549 --> 00:04:39,745
+notations called the big theta, big O and
+big omega notations. So the and those
+
+46
+00:04:40,033 --> 00:04:47,396
+definitions are given here. So big theta
+notation is just the way to describe the
+
+47
+00:04:47,396 --> 00:04:53,733
+order of growth. Theta(N)^2 is kind of
+short hand for anything N^2. It's bounded
+
+48
+00:04:53,733 --> 00:05:00,393
+above and below by constant time N^2 and
+that's what we really use to classify
+
+49
+00:05:00,393 --> 00:05:05,730
+algorithms. And then, there is big O
+notation which is upper bounds on
+
+50
+00:05:05,730 --> 00:05:11,360
+performance. When we say O(N^2), we mean
+that it's less than some constant time N^2
+
+51
+00:05:11,360 --> 00:05:17,569
+as N grows. And big omega is used for
+lower bounds means greater than some
+
+52
+00:05:17,569 --> 00:05:23,694
+constant time N^2 as N grows. So those
+three notations were able to use to
+
+53
+00:05:23,918 --> 00:05:30,113
+classify algorithms and I'll show them in
+the following. So, examples from our
+
+54
+00:05:30,113 --> 00:05:36,725
+1-sum, 2-sum, and 3-sum are easy to
+articulate so our goals are to establish
+
+55
+00:05:36,725 --> 00:05:42,829
+the difficulty of the problem and to
+develop an optimal algorithm. So, the
+
+56
+00:05:42,829 --> 00:05:48,999
+1-sum problem is 00 in the array. Well, an
+upper bound on the difficulty of the
+
+57
+00:05:48,999 --> 00:05:54,299
+problem is some specific algorithm. So,
+for example, the brute force algorithm
+
+58
+00:05:54,299 --> 00:06:00,049
+that looked, that looks at every array
+entry is a specific algorithm and it means
+
+59
+00:06:00,049 --> 00:06:06,490
+that and that takes O(N) time. We have to
+look at every, it's less than a constant
+
+60
+00:06:06,490 --> 00:06:12,307
+time N for some constant. So, the running
+time of the optimal algorithm has to be
+
+61
+00:06:12,307 --> 00:06:17,616
+O(N) that is that's specific algorithm
+provides an upper bound on the running
+
+62
+00:06:17,616 --> 00:06:23,431
+time of the optimal algorithm. And but in
+this case it's also easy to develop a
+
+63
+00:06:23,431 --> 00:06:29,052
+lower bound, that's a proof that no
+algorithm can do better. Well, for 1-sum
+
+64
+00:06:29,052 --> 00:06:34,536
+you have to examine all entries in the
+array. If you miss one, then that one
+
+65
+00:06:34,536 --> 00:06:40,016
+might be zero so that means that the
+optimal algorithm has to have a running
+
+66
+00:06:40,016 --> 00:06:46,270
+time at least some constant times N where
+we say the running time is omega of n. Now
+
+67
+00:06:46,270 --> 00:06:52,287
+in this case, the upper bound and the
+lower bound match. So, doing the constant
+
+68
+00:06:52,287 --> 00:06:59,133
+factor so, that's a proof that the brute
+force algorithm for 1-sum is optimal. It's
+
+69
+00:06:59,133 --> 00:07:05,459
+running time is theta(N). It's both omega
+and O(N). That's, for that simple problem
+
+70
+00:07:05,459 --> 00:07:11,576
+it was okay to get the optimal algorithm.
+For a more complicated problems it's going
+
+71
+00:07:11,576 --> 00:07:17,027
+to be more difficult to get upper balance
+and lower balance and particularly upper
+
+72
+00:07:17,027 --> 00:07:22,617
+balance and lower balance that match. For
+example let's look at 3-sum. So, upper
+
+73
+00:07:22,617 --> 00:07:30,211
+bound for 3-sum, say our first brute force
+algorithm, say that the proof, was a proof
+
+74
+00:07:30,211 --> 00:07:37,375
+that the running time of the optimal
+algorithm is O(N^3) but we found a better
+
+75
+00:07:37,375 --> 00:07:43,691
+improved algorithm. Whose running time is
+O(N^2) lg N. So, that's a better upper
+
+76
+00:07:43,691 --> 00:07:49,526
+bound. Lower bound well, we have to
+examine all entries cuz again, we might
+
+77
+00:07:49,526 --> 00:07:56,274
+miss one that makes 3-sum = zero and
+that's a proof that the running time in
+
+78
+00:07:56,274 --> 00:08:02,304
+the optimal algorithm is omega(N) but
+nobody knows higher or lower bound for
+
+79
+00:08:02,304 --> 00:08:08,280
+3-sum. So there's a gap between the upper
+bound and the lower bound and open
+
+80
+00:08:08,280 --> 00:08:14,237
+problems. Is there an optimal algorithm
+for 3-sum? We don't know what it is. We
+
+81
+00:08:14,237 --> 00:08:20,592
+don't even know if there's a algorithm
+whose running time is < O(N^2) or we don't
+
+82
+00:08:20,592 --> 00:08:27,130
+know higher lower bound and linear. So
+that's an example of an open problem in
+
+83
+00:08:27,130 --> 00:08:33,181
+the theory of algorithms we don't know how
+difficult it is to solve the 3-sum
+
+84
+00:08:33,181 --> 00:08:40,448
+problem. Now, this point of view has been
+extremely successful in recent decades. We
+
+85
+00:08:40,448 --> 00:08:45,958
+have a new problem, develop some
+algorithm, proves some lower bound. If
+
+86
+00:08:45,958 --> 00:08:51,679
+there's a gap, we look for new algorithm
+that will lower the upper bound or we try
+
+87
+00:08:51,679 --> 00:08:56,527
+to find a way to raise the lower bound.
+Usually it's very difficult to prove
+
+88
+00:08:56,527 --> 00:09:02,164
+non-trivial or lower bounds. Trivial or
+lower bound like look at every input items
+
+89
+00:09:02,164 --> 00:09:07,435
+is not so hard non-trivial lower bounds
+like for example, the proof that we're
+
+90
+00:09:07,435 --> 00:09:13,251
+talking about for Union-find problem are
+much more difficult. And in the last
+
+91
+00:09:13,251 --> 00:09:20,081
+several decades people have learned about
+the computational difficulty of problems
+
+92
+00:09:20,081 --> 00:09:26,124
+by examining steadily decreasing upper
+bounds so the algorithms were better worst
+
+93
+00:09:26,124 --> 00:09:31,979
+case running times for lots and lots of
+important problems and plenty of optimal
+
+94
+00:09:31,979 --> 00:09:37,944
+algorithms and plenty of gaps still
+remain. It's a fascinating field of
+
+95
+00:09:37,944 --> 00:09:43,617
+research that many people are engaged in.
+Now there is a couple of caveats on this
+
+96
+00:09:43,617 --> 00:09:48,770
+on the context to this course. And the
+first one is maybe it's overly pessimistic
+
+97
+00:09:48,770 --> 00:09:54,409
+to be focusing on the worst case. We've
+got data out there. We've got problems to
+
+98
+00:09:54,409 --> 00:09:59,786
+solve. Maybe it's not worst case data and
+lots of fields of engineering and science.
+
+99
+00:09:59,786 --> 00:10:05,194
+We don't focus on the worst case. The
+worst case for this course would be
+
+100
+00:10:05,194 --> 00:10:10,708
+lightning to strike and it would be over
+so we don't plan for that. And since
+
+101
+00:10:10,708 --> 00:10:16,301
+similar it's true for algorithms. Maybe we
+should be focusing on understanding prope
+
+102
+00:10:16,301 --> 00:10:21,252
+rties of the input and finding algorithms
+that are efficient for that input. And the
+
+103
+00:10:21,252 --> 00:10:26,645
+other thing is in order to really predict
+performance and compare algorithms we need
+
+104
+00:10:26,645 --> 00:10:33,210
+to do a closer analysis than to within a
+constant factor. So we talked about the
+
+105
+00:10:33,210 --> 00:10:39,719
+tilde notation in the big theta, big O,
+and big omega, omega that are used in the
+
+106
+00:10:39,719 --> 00:10:46,161
+theory of algorithms. And really there's
+so much published research in the theory
+
+107
+00:10:46,161 --> 00:10:51,608
+of algorithms that a lot of people make
+the mistake of interpreting the big O
+
+108
+00:10:51,608 --> 00:10:56,964
+results that are supposed to give improved
+upper bounds on the difficulty of the
+
+109
+00:10:56,964 --> 00:11:02,179
+problem as approximate models for the
+running time and that's really a mistake.
+
+110
+00:11:02,179 --> 00:11:07,619
+So in this course, we're going to focus on
+approximate models by, you know making
+
+111
+00:11:07,619 --> 00:11:12,738
+sure that we use the tilde notation and
+we'll try to give specific results for
+
+112
+00:11:12,738 --> 00:11:17,766
+certain quantities of interest and the
+constant, any unspecified constant in the
+
+113
+00:11:17,766 --> 00:11:22,271
+running time. We'll have to do with
+properties in the machine and in the
+
+114
+00:11:22,271 --> 00:11:27,542
+system so they will be able to use these
+results to predict performance and to
+
+115
+00:11:27,542 --> 00:11:29,013
+compare algorithms.

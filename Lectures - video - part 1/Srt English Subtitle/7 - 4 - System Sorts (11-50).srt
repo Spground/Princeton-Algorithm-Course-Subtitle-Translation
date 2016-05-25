@@ -1,0 +1,589 @@
+1
+00:00:01,082 --> 00:00:06,054
+Now, we'll take a look at how the sorting
+algorithms that we talked about or
+
+2
+00:00:06,054 --> 00:00:12,019
+expressed in the systems that we use
+everyday. Now, the key point is that
+
+3
+00:00:12,019 --> 00:00:16,778
+sorting algorithms rhythms are essential
+in a very broad variety of applications
+
+4
+00:00:16,954 --> 00:00:22,829
+and, and all of us use sorting algorithms
+pretty much every day. Many obvious out
+
+5
+00:00:23,042 --> 00:00:29,057
+applications like or, organizing your
+music library or displaying your search
+
+6
+00:00:29,057 --> 00:00:36,042
+results or listening feeds in your in your
+web browsers. There's some other
+
+7
+00:00:36,042 --> 00:00:43,777
+applications that are not so obvious where
+we use sorting as a to make a problem easy
+
+8
+00:00:43,777 --> 00:00:49,794
+once you know that they're sorted. And so,
+for example, finding the median and if
+
+9
+00:00:49,794 --> 00:00:54,508
+it's already sorted, it's much easy to
+find the median. And now, the statistical
+
+10
+00:00:54,508 --> 00:00:59,303
+problems are like that or finding
+duplicates. Probably finding duplicates by
+
+11
+00:00:59,303 --> 00:01:03,923
+itself is not quite obvious what to do but
+the easy way to solve it is to just go
+
+12
+00:01:03,923 --> 00:01:08,645
+ahead and sort. And then there are plenty
+of applications that we'll see later in
+
+13
+00:01:08,645 --> 00:01:14,422
+this course like data compression or
+computer graphics like finding the convex
+
+14
+00:01:14,422 --> 00:01:19,943
+hull, applications in science such as
+computational biology or, or in systems
+
+15
+00:01:19,943 --> 00:01:25,878
+development. We're having a efficient sort
+as absolutely crucial. So, because there's
+
+16
+00:01:25,878 --> 00:01:31,710
+all these applications most programming
+systems have a fast sort as an important
+
+17
+00:01:31,710 --> 00:01:37,725
+part of their infrastructure and Java is
+no exemption. So, Java has a method called
+
+18
+00:01:37,725 --> 00:01:44,668
+arrays.sort and it's intended to be a
+general purpose sorting method for use by
+
+19
+00:01:44,668 --> 00:01:50,844
+Java programmers. And now, that you have
+some understanding of the classic methods
+
+20
+00:01:51,073 --> 00:01:57,532
+you can have a better idea of why
+arrays.sort is the way that it is. So it
+
+21
+00:01:57,532 --> 00:02:04,256
+has the infrastructure that allows us to
+be used for all types of data types and
+
+22
+00:02:04,256 --> 00:02:11,001
+all types of ordering so it's got a method
+that implements comparable then its got
+
+23
+00:02:11,001 --> 00:02:17,146
+methods easy compare order. So that you
+can use the natural order or you can
+
+24
+00:02:17,146 --> 00:02:24,413
+provide a compare order and provide your
+own order for any type of data. It uses
+
+25
+00:02:24,413 --> 00:02:32,379
+actually both quicksort and mergesort. It
+uses two quick sort for primitive types of
+
+26
+00:02:32,379 --> 00:02:38,951
+data and a two mergesort for objects. Why
+two different well it's just the
+
+27
+00:02:38,951 --> 00:02:45,955
+designer's assessment of the idea that if
+a programmer is using object maybe spaces,
+
+28
+00:02:45,955 --> 00:02:50,969
+not a, a critically important
+consideration. And so, the extra space
+
+29
+00:02:50,969 --> 00:02:56,182
+used by merge sort maybe is not a problem.
+And if the program is using primitive
+
+30
+00:02:56,182 --> 00:03:01,136
+types, maybe performance is the most
+important thing. And so, then we'll use
+
+31
+00:03:01,136 --> 00:03:07,733
+the quicksort. To invoke arrays that sort,
+you have to import the name space from
+
+32
+00:03:07,733 --> 00:03:15,010
+java.util.Arrays and then all you need to
+do is invoke Arrays.sort. So I just
+
+33
+00:03:15,010 --> 00:03:21,008
+answered this question, why do we use
+different algorithms for the two types?
+
+34
+00:03:21,216 --> 00:03:27,934
+And this is, is maybe arguable. Now are
+referred to this idea of a good system
+
+35
+00:03:27,934 --> 00:03:34,812
+sort, there was a good system sort that a
+lot of people used for many years. And in
+
+36
+00:03:34,812 --> 00:03:41,233
+1991, there were some scientists that,
+that Bell Labs that were using qsort for a
+
+37
+00:03:41,233 --> 00:03:47,916
+scientific problem and they were used to
+taking just a few minutes and then they
+
+38
+00:03:47,916 --> 00:03:55,021
+realized that it was taking hours of CPU
+time. And the fact was that all the qsort
+
+39
+00:03:55,021 --> 00:04:00,875
+implementations at that time in Unix had
+this flaw well, there are two flaws and
+
+40
+00:04:00,875 --> 00:04:07,126
+one of them is a little complicated about
+the way they are raised order and the
+
+41
+00:04:07,126 --> 00:04:13,754
+other one was for a raise that had lots of
+equal keys and this is Wilks and Becker
+
+42
+00:04:13,935 --> 00:04:19,436
+problem and have lot of equal keys, it was
+quadratic time. So, the system designer,
+
+43
+00:04:19,436 --> 00:04:25,093
+Jon Bentley was one of the designers to
+take a look at these problems and that
+
+44
+00:04:25,093 --> 00:04:31,057
+lead ultimately to the development of the
+3-way quick sort that were used today. He
+
+45
+00:04:31,057 --> 00:04:36,985
+worked with Doug McIlroy and they wrote a,
+a, a paper that outline this problem and
+
+46
+00:04:36,985 --> 00:04:42,965
+talk about some of these things and they
+had a three-way partitioning method that
+
+47
+00:04:42,965 --> 00:04:49,507
+was somewhat like the Dijkstra method that
+we showed but a bit more complicated.
+
+48
+00:04:49,728 --> 00:04:57,215
+Anoth er thing they did was rather than
+shuffling the array. They [cough] used
+
+49
+00:04:57,215 --> 00:05:03,001
+what's called a method for choosing
+partitioning element called Tukey's
+
+50
+00:05:03,001 --> 00:05:08,595
+ninther. Tukey is a statistician and he
+had this particular method for order
+
+51
+00:05:08,595 --> 00:05:13,910
+statistics that has some interesting
+properties and use that for the
+
+52
+00:05:13,910 --> 00:05:19,624
+partitioning element. This paper was very
+influential and, and that basic method is
+
+53
+00:05:19,803 --> 00:05:25,796
+widely used. And Tukey's ninther is just
+pick nine items out of the array and take
+
+54
+00:05:25,796 --> 00:05:31,375
+the median of the mediums and that's the
+ninther. So very inexpensive and they had
+
+55
+00:05:31,375 --> 00:05:38,618
+macros to do this so and use not too much
+cost to find a partitioning element that's
+
+56
+00:05:38,618 --> 00:05:44,704
+much closer to the middle than, and if you
+use a, a random one. So the, the reason
+
+57
+00:05:44,704 --> 00:05:51,051
+they used that is they thought they got
+them closer to the middle and they also
+
+58
+00:05:51,051 --> 00:05:57,043
+don't like the, some system designers
+don't like the idea of using random
+
+59
+00:05:57,043 --> 00:06:03,504
+choices in a system method because of way
+that it changes the state of the system.
+
+60
+00:06:03,689 --> 00:06:08,296
+So they felt that they got better
+partitioning than a random shuffling and
+
+61
+00:06:08,296 --> 00:06:13,028
+it was also less costly and then
+generating random numbers including this
+
+62
+00:06:13,028 --> 00:06:18,580
+change of state problem. But there's a
+problem so you would think that the system
+
+63
+00:06:18,580 --> 00:06:24,999
+sort would be completely solid with all
+this resource with all these research and
+
+64
+00:06:25,217 --> 00:06:31,283
+all of the development that's going into
+it. In fact there's a file out there in
+
+65
+00:06:31,283 --> 00:06:36,863
+your book site and get it that will
+actually break the Java system sort. There
+
+66
+00:06:36,863 --> 00:06:43,357
+was a killer input that will make the
+thing run in quadratic time. Actually it
+
+67
+00:06:43,357 --> 00:06:49,371
+usually crashes because it's recursive and
+it crashes the system stack. And it can
+
+68
+00:06:49,371 --> 00:06:56,015
+cause all sorts of problems. There's a
+killer input for the system sort and, and
+
+69
+00:06:56,015 --> 00:07:02,780
+it can be disastrous in various systems
+and the reason is, they didn't do the
+
+70
+00:07:02,780 --> 00:07:10,511
+random shuffling. Mcilroy, himself,
+actually found this problem that you could
+
+71
+00:07:10,773 --> 00:07:17,839
+while the sort is running figuring out an
+inp ut that would make it crash. And so,
+
+72
+00:07:17,839 --> 00:07:23,881
+you can just run that program and if the
+sort doesn't use randomness then it's
+
+73
+00:07:24,084 --> 00:07:29,589
+vulnerable to this attack. So which
+algorithm should we use to sort that's,
+
+74
+00:07:29,589 --> 00:07:35,075
+that's really a key question. We've looked
+at lot of sorting algorithms and actually,
+
+75
+00:07:35,075 --> 00:07:41,348
+there's hundreds of sorting algorithms out
+there and we have chosen the most
+
+76
+00:07:41,348 --> 00:07:47,231
+important and the most interesting for you
+but you could literally spend a year
+
+77
+00:07:47,231 --> 00:07:53,649
+reading all the papers on sorting and then
+you still continue to be invented new
+
+78
+00:07:53,649 --> 00:07:58,980
+algorithms are developed and that are
+found to have good characteristics all the
+
+79
+00:07:58,980 --> 00:08:03,943
+time. And really, the key idea is really
+important to think about cuz it applies to
+
+80
+00:08:03,943 --> 00:08:09,272
+all sorts of algorithmic problems. On our
+way, we've been talking about rules of the
+
+81
+00:08:09,272 --> 00:08:14,837
+game. What is it that we care about in a
+sort? It's a little bit more complicated
+
+82
+00:08:14,837 --> 00:08:19,630
+than just put stuff in order. There's a
+lot of attributes, the different
+
+83
+00:08:19,630 --> 00:08:25,050
+applications have. Like stability, that's
+a fairly sophisticated attribute that you
+
+84
+00:08:25,050 --> 00:08:29,361
+really have to think about, you maybe not
+be aware of. Maybe your computer is
+
+85
+00:08:29,361 --> 00:08:34,117
+parallel and the sort has to be parallel
+and we found that equal keys make a huge
+
+86
+00:08:34,117 --> 00:08:38,778
+difference. And I didn't really think
+about that at the beginning but it can
+
+87
+00:08:38,778 --> 00:08:44,195
+make a huge difference. Maybe the way your
+computer's memory is organized make a
+
+88
+00:08:44,195 --> 00:08:49,158
+difference. Maybe the keys are small and
+the items are large or maybe the keys are
+
+89
+00:08:49,336 --> 00:08:53,638
+really huge. Do we need guaranteed
+performance? Are we happy with random
+
+90
+00:08:53,638 --> 00:08:57,968
+performance? Do we know, is the array
+randomly ordered? You can think of a
+
+91
+00:08:57,968 --> 00:09:03,297
+matrix shown in the right here where we
+list out all the possible attributes and
+
+92
+00:09:03,297 --> 00:09:08,756
+then there's algorithms that worked well
+for different combinations of attributes.
+
+93
+00:09:08,949 --> 00:09:14,042
+But the thing is, there is way more
+possible combinations of attributes than
+
+94
+00:09:14,042 --> 00:09:19,848
+there are algorithms. So there is going to
+be situations that are going to require an
+
+95
+00:09:19,848 --> 00:09:26,291
+understanding of what it takes to engineer
+a, a sort method that's appropriate for
+
+96
+00:09:26,291 --> 00:09:32,896
+your application. There can't be a system
+sort out there that's going to cover all
+
+97
+00:09:32,896 --> 00:09:39,307
+possible combinations of attributes. Now,
+usually it's going to be good enough but
+
+98
+00:09:39,307 --> 00:09:44,956
+it's definitely worth while to understand
+what's going on with different sorting
+
+99
+00:09:44,956 --> 00:09:50,639
+algorithms in order to even find improved
+performance over the system sort. So,
+
+100
+00:09:50,639 --> 00:09:56,255
+here's the summary of some of the things
+that we've talked about. We've talked
+
+101
+00:09:56,255 --> 00:10:01,505
+about six different sorting algorithms.
+Then, we've talked about a bunch of
+
+102
+00:10:01,692 --> 00:10:07,418
+attributes. For example, the top line,
+selection sort is in place it always takes
+
+103
+00:10:07,418 --> 00:10:12,671
+about N^2 / two comparisons. And one of
+the things to remark about it is that it
+
+104
+00:10:12,671 --> 00:10:17,251
+only uses N exchanges and so forth.
+Insertion sort best case linear,
+
+105
+00:10:17,251 --> 00:10:25,026
+quadratic, and place unstable. And it'll
+work well if the file is small or
+
+106
+00:10:25,026 --> 00:10:31,994
+partially ordered. Shellsort, we don't
+know it's a running time, it's not stable
+
+107
+00:10:32,246 --> 00:10:39,169
+but it's a fast method for intermediate
+size files and not much code. Mergesort
+
+108
+00:10:39,169 --> 00:10:45,384
+and log N guarantee unstable but not in
+place, need that auxiliary array.
+
+109
+00:10:45,632 --> 00:10:52,646
+Quicksort not stable. Quadratic time worst
+case but that's unlikely to occur if you
+
+110
+00:10:52,646 --> 00:10:58,125
+do the random shuffling. And its the
+fastest and most useful in practice
+
+111
+00:10:58,125 --> 00:11:04,111
+particularly if you make improvements to
+deal with duplicate keys. And it's
+
+112
+00:11:04,111 --> 00:11:10,562
+interesting to note we've looked at
+important and classic algorithms that are
+
+113
+00:11:10,562 --> 00:11:15,877
+widely deployed but we don't have a, a
+useful, practical algorithms that are
+
+114
+00:11:15,877 --> 00:11:21,406
+widely used that's got all of these
+characteristics that's in place and stable
+
+115
+00:11:21,663 --> 00:11:29,038
+worst case N log N. There's versions of
+merge sort that come close but they are
+
+116
+00:11:29,038 --> 00:11:34,962
+too complex for practitioners to have
+adopted them. Those are some of the
+
+117
+00:11:35,178 --> 00:11:42,381
+situations that we encounter when
+developing a system sort. And, quicksort
+
+118
+00:11:42,381 --> 00:11:50,049
+certainly plays a role in most system
+sorts.

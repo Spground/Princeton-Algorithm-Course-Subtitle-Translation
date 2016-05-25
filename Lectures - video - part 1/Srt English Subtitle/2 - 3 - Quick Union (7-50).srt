@@ -1,0 +1,349 @@
+1
+00:00:02,022 --> 00:00:08,015
+All right so QuickFind is too slow for
+huge problems. So, how are we going to do
+
+2
+00:00:08,015 --> 00:00:14,035
+better? Our first attempt is an
+alternative called, Quick-union. This is
+
+3
+00:00:14,035 --> 00:00:20,082
+so called lazy approach to algorithm
+design where we try to avoid doing work
+
+4
+00:00:20,082 --> 00:00:27,506
+until we have to. It uses the same data
+structure or array ID with size M but now
+
+5
+00:00:27,506 --> 00:00:34,280
+it has a different interpretation. We are
+going to think of that array as
+
+6
+00:00:34,280 --> 00:00:41,298
+representing a set of trees that's called
+a forest as depicted at right. So, each
+
+7
+00:00:41,298 --> 00:00:49,468
+entry in the array is going to contain a
+reference to its parent in the tree. So,
+
+8
+00:00:49,468 --> 00:00:57,425
+for example, 3's parent is four, 4's
+parent is nine. So 3's entry is four and
+
+9
+00:00:57,425 --> 00:01:06,681
+4's entry is nine in the array. Now each
+entry in the array has associated with it
+
+10
+00:01:06,681 --> 00:01:13,179
+a root. That's the root of its tree.
+Elements that are all by themselves in
+
+11
+00:01:13,179 --> 00:01:19,303
+just, in their own connected component,
+point to themselves, so one points to
+
+12
+00:01:19,303 --> 00:01:26,108
+itself but also nine points to itself.
+It's the root of the tree, containing two,
+
+13
+00:01:26,108 --> 00:01:32,419
+four and three. So, from this data
+structure we can associate with each item
+
+14
+00:01:32,419 --> 00:01:40,202
+a root, which is representative, say, of
+it's connected component. So that's the
+
+15
+00:01:40,202 --> 00:01:47,044
+root of three is nine, going up that root.
+Now, once we can calculate these roots,
+
+16
+00:01:47,044 --> 00:01:52,956
+then we can implement the find operation
+just by checking whether the two items
+
+17
+00:01:52,956 --> 00:01:57,592
+that we're supposed to check with are
+connective where they have the same root.
+
+18
+00:01:57,592 --> 00:02:02,373
+That's equivalent to saying, are they in
+the same connective component? So that's
+
+19
+00:02:02,373 --> 00:02:09,240
+some work, going to find the roots of each
+item but the union operation is very easy.
+
+20
+00:02:09,240 --> 00:02:15,254
+To merge components containing two
+different items. Two items that are in
+
+21
+00:02:15,254 --> 00:02:21,613
+different components. All we do is set the
+ID of P's route to the ID of Q's route.
+
+22
+00:02:21,613 --> 00:02:28,748
+Let's make P's tree point to Q. So in this
+case, we would change the entry of nine to
+
+23
+00:02:28,748 --> 00:02:35,027
+be six to merge three and five. The
+components containing three and five. And
+
+24
+00:02:35,027 --> 00:02:41,317
+with just changing one value in the array
+we get the two large components emerged
+
+25
+00:02:41,317 --> 00:02:46,295
+together. That's the Quick-union
+algorithm. Because a union operation only
+
+26
+00:02:46,295 --> 00:02:52,429
+involves changing one entry in the array.
+Find operation requires a little more
+
+27
+00:02:52,429 --> 00:02:57,907
+work. So let's look at the Implementation,
+a demo of that one in operation first. So
+
+28
+00:02:57,907 --> 00:03:03,569
+again we, we start out the same way but
+now the idea array entry really means that
+
+29
+00:03:03,569 --> 00:03:09,415
+every one of these things is a little tree
+where the one node each everyone pointing
+
+30
+00:03:09,415 --> 00:03:15,284
+to itself. It's the root of it's own tree
+so now if we have to put four and three in
+
+31
+00:03:15,284 --> 00:03:21,236
+the same component, then all we do is we
+take the root, of the component containing
+
+32
+00:03:21,236 --> 00:03:26,624
+the first item and make that a child of
+the root of the component, component
+
+33
+00:03:26,624 --> 00:03:33,029
+containing the second item. In this case
+we just make four as parent three. So now
+
+34
+00:03:33,259 --> 00:03:39,823
+three and eight. So again, we take the
+first item and make it a child of the root
+
+35
+00:03:39,823 --> 00:03:47,532
+of the tree containing the second item. So
+now three, four, and eight are in the same
+
+36
+00:03:47,532 --> 00:03:56,434
+component. Six and five six goes below
+five. Nine and four, So now four is the
+
+37
+00:03:56,434 --> 00:04:06,045
+root of the tree containing four is eight.
+And the root of tree containing nine is
+
+38
+00:04:06,045 --> 00:04:13,745
+nine. And so we make nine a child of
+eight. Two and one, that's an easy one.
+
+39
+00:04:14,007 --> 00:04:20,993
+Now if we get our, our eight and nine
+connected, we just checked that they have
+
+40
+00:04:20,993 --> 00:04:28,011
+the same root and they both have the same
+root eight and so they're connected. Five
+
+41
+00:04:28,011 --> 00:04:34,230
+and four 4's root is eight. 5's root is
+five. They're different. They're not
+
+42
+00:04:34,230 --> 00:04:42,339
+connected. Five and zero. Five goes to be
+a child of zero. Seven and two seven goes
+
+43
+00:04:42,339 --> 00:04:52,836
+to be a child of 2's root which is one.
+Six and one. 6's route is zero 1's its own
+
+44
+00:04:52,836 --> 00:05:00,636
+route, so zero becomes a child of one.
+Each one of these union operations just
+
+45
+00:05:00,636 --> 00:05:10,069
+involves changing one entry in the array.
+And finally, seven and three. So seven's
+
+46
+00:05:10,069 --> 00:05:18,755
+root is one, three's root is eight, one
+becomes a child of eight. Okay and now we
+
+47
+00:05:18,755 --> 00:05:26,012
+have one connected component with all the
+items together. Alright, so now let's look
+
+48
+00:05:26,012 --> 00:05:32,668
+at the code for implementing Quick-union.
+The constructor is the same as the other
+
+49
+00:05:32,668 --> 00:05:40,967
+one. We create the array and then set each
+element to be it's own root. Now we have a
+
+50
+00:05:40,967 --> 00:05:46,005
+private method that implements this
+process of finding the root by chasing
+
+51
+00:05:46,005 --> 00:05:51,352
+parent pointers until we get to the point
+where I is equal to ID of I, and if it's
+
+52
+00:05:51,352 --> 00:05:57,369
+not equal, we just move I up one level in
+the tree, set I equals ID of I and return
+
+53
+00:05:57,369 --> 00:06:02,005
+it. So starting at any node, you just
+follow ID equals ID of I until they're
+
+54
+00:06:02,005 --> 00:06:07,396
+equal and then you're at a root and that's
+a private method that we can use to
+
+55
+00:06:07,396 --> 00:06:11,959
+implement the find operation or the
+connected operation. You just find the
+
+56
+00:06:11,959 --> 00:06:17,316
+root of P and the root of Q and if you
+check if they're equal. And then the union
+
+57
+00:06:17,316 --> 00:06:23,342
+operation is simply find the two roots I
+and then set the idea the first one could
+
+58
+00:06:23,342 --> 00:06:30,310
+be the second one. Actually less code than
+for Quick Find, no fore loops. There's
+
+59
+00:06:30,310 --> 00:06:37,139
+this one wild loop that we have to worry
+about a little bit. But that's a quick and
+
+60
+00:06:37,139 --> 00:06:43,326
+elegant implementation of code to solve
+the dynamic connectivity problem called
+
+61
+00:06:43,326 --> 00:06:50,318
+Quick-union. So now we're going to have to
+look at can this code be effective for
+
+62
+00:06:50,582 --> 00:06:57,657
+large problems? Well unfortunately
+Quick-union is faster but it's also too
+
+63
+00:06:57,657 --> 00:07:04,042
+slow. And it's a little different kind of
+too slow then for Quick Find, there's
+
+64
+00:07:04,042 --> 00:07:10,005
+times when it could be fast, but there's
+also times when it could be too slow. And
+
+65
+00:07:10,005 --> 00:07:16,256
+the defect for Quick-union is that the
+trees can get too tall. Which would mean
+
+66
+00:07:16,256 --> 00:07:22,065
+that the find operation would be too
+expensive. You could wind up with a long
+
+67
+00:07:22,065 --> 00:07:28,432
+skinny tree. Of each object just pointing
+to next and then to do a find operation
+
+68
+00:07:28,432 --> 00:07:33,976
+for object at the bottom would involve
+going all the way through the tree.
+
+69
+00:07:34,183 --> 00:07:40,184
+Costing involving in the ray axises just
+to do the find operation and that's going
+
+70
+00:07:40,184 --> 00:07:44,013
+to be too slow if you have a lot of
+operations.

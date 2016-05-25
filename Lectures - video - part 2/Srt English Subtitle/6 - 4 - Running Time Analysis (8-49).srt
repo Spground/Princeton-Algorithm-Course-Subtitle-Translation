@@ -1,0 +1,428 @@
+1
+00:00:00,000 --> 00:00:07,437
+. So now we've got a general scheme for
+computing Max Flow's Min cuts and the
+
+2
+00:00:07,437 --> 00:00:13,549
+proof that they are equivalent. Next what
+we need to do is look at an analysis of
+
+3
+00:00:13,549 --> 00:00:19,588
+the, cost of computing things to try to
+figure out, specific, efficient ways to
+
+4
+00:00:19,588 --> 00:00:25,409
+compute, augmenting paths. So we already
+saw how to compute a Min cuts So we'll
+
+5
+00:00:25,409 --> 00:00:31,445
+just worry about doing the Max flow. To
+find an augmenting path. Well there's lots
+
+6
+00:00:31,445 --> 00:00:37,626
+of ways to find an augmenting path. any
+graph search is gonna work. so let's just
+
+7
+00:00:37,626 --> 00:00:43,599
+start with BFS for example. so if word
+focusing terminates, that means there's no
+
+8
+00:00:43,599 --> 00:00:49,086
+augmenting path. Does it always compute
+our Max slow? Yes, we showed that. and
+
+9
+00:00:49,086 --> 00:00:54,851
+well that's if it terminates. does it
+always terminate? Does it oscillate back
+
+10
+00:00:54,851 --> 00:01:01,664
+and forth? Well, it's a little more work.
+to show that it does always terminate. if
+
+11
+00:01:01,664 --> 00:01:07,072
+you have to, a few other conditions. So
+for simplicity, we assume that each
+
+12
+00:01:07,072 --> 00:01:13,147
+capacities are integers or there's other
+things that can be done with a choice of
+
+13
+00:01:13,147 --> 00:01:19,295
+augmenting paths and maybe we'll come back
+to that. But to figure out how many
+
+14
+00:01:19,295 --> 00:01:25,545
+augmenting paths there are, that's the key
+that requires some clever analysis. and
+
+15
+00:01:25,545 --> 00:01:31,860
+there's been a lot of different schemes
+studied to try to understand a way to
+
+16
+00:01:32,094 --> 00:01:39,189
+first find the paths cheaply and then
+decide to try to see how, many, how we can
+
+17
+00:01:39,189 --> 00:01:45,636
+limit the number of augmentations. so,
+let's look at a, at an important special
+
+18
+00:01:45,636 --> 00:01:51,215
+case. And it's true in lots of
+applications. where the edge capacities
+
+19
+00:01:51,215 --> 00:01:58,111
+are integers, between one and some, big
+maximum U. and, a lot of the things that
+
+20
+00:01:58,111 --> 00:02:04,542
+we talk about work when edge capacities
+are, are, are real numbers. But let's just
+
+21
+00:02:04,542 --> 00:02:10,580
+talk about this case. so one thing to
+notice in that case, is that our Ford
+
+22
+00:02:10,580 --> 00:02:17,850
+focus and method always keeps an integer
+value of flow We never take half a flow
+
+23
+00:02:17,850 --> 00:02:24,548
+unit and put it through an edge. So it's
+always integer valued, cause the flow on
+
+24
+00:02:24,548 --> 00:02:31,246
+each edge of the integer, capacities are
+integers and so everything stays to be an
+
+25
+00:02:31,246 --> 00:02:38,592
+integer. every, every augmentation either
+increases or decreases by the bottleneck
+
+26
+00:02:38,592 --> 00:02:45,104
+capacity, which is always an integer. s o,
+one thing that's definitely true is you
+
+27
+00:02:45,104 --> 00:02:51,595
+only augment if you're gonna increase the
+flow. you have to augment. You wouldn't
+
+28
+00:02:51,595 --> 00:02:58,087
+augment if you couldn't augment by at most
+one. so it's definitely true that the
+
+29
+00:02:58,087 --> 00:03:05,062
+number of augmentations is less than or
+equal to the value of the flow. . So
+
+30
+00:03:05,392 --> 00:03:12,845
+there's what's called the integrality.
+Integrality theorem that is important for
+
+31
+00:03:12,845 --> 00:03:18,130
+some applications and we'll come back to
+it, that says if there exists an integer
+
+32
+00:03:18,130 --> 00:03:24,981
+valued Max flow and Ford focus finds so
+it's and waving a little bit to talk about
+
+33
+00:03:24,981 --> 00:03:30,461
+that but we'll work with intergers and
+we'll be confident that we get to the
+
+34
+00:03:30,461 --> 00:03:37,246
+answer and so the proof of the Integraliy
+theorem is that it terminates in the Max
+
+35
+00:03:37,246 --> 00:03:43,770
+flow that it finds is integer valued and
+that's enough. So, but, just to get an
+
+36
+00:03:43,770 --> 00:03:49,701
+idea for what goes on, let's look at this
+bad case. Even when the edge capacities
+
+37
+00:03:49,701 --> 00:03:55,261
+are integers, you could have a lot of
+augmenting paths. And we want to avoid
+
+38
+00:03:55,261 --> 00:04:01,117
+this case. So look at this network here,
+where we have S and T. And we've got two
+
+39
+00:04:01,118 --> 00:04:07,419
+big capacity edges coming out of S and two
+big capacity edges coming into T. And then
+
+40
+00:04:07,419 --> 00:04:13,572
+we have just a little edge of capacity one
+going between those two intermediate
+
+41
+00:04:13,572 --> 00:04:20,328
+vertices. here's what could happen. so, in
+the first generation we could decide that
+
+42
+00:04:20,328 --> 00:04:26,345
+we wanna push flow along the path that
+goes across the middle. Now we're gonna
+
+43
+00:04:26,345 --> 00:04:31,227
+look in a lot of different schemes for,
+finding augmenting paths, so, maybe, a
+
+44
+00:04:31,227 --> 00:04:36,290
+scheme says, if we have a choice, let's
+take, as longer path as we can find. And
+
+45
+00:04:36,290 --> 00:04:40,991
+that, so, in this case, that's what it'd
+do. There's another augmenting path that
+
+46
+00:04:40,991 --> 00:04:46,536
+just goes from S to the left vortex down
+to P, but the algorithm, say, chooses this
+
+47
+00:04:46,536 --> 00:04:51,914
+one So we have an algorithm that chooses
+this one So that increases the flow by one
+
+48
+00:04:51,917 --> 00:04:59,648
+but then the problem is, maybe the next
+time, we make that middle edge a backwards
+
+49
+00:04:59,648 --> 00:05:07,376
+edge and so now we go through and increase
+the flow by one along that edge and now we
+
+50
+00:05:07,376 --> 00:05:14,001
+have a total flow of two and then maybe we
+alternate between these two schemes.
+
+51
+00:05:14,001 --> 00:05:20,948
+Increment by one in the left, increment by
+one in the right. and it 's gonna take 200
+
+52
+00:05:20,948 --> 00:05:27,939
+iterations. to finally get to the Max
+flow. whereas a different algorithm might
+
+53
+00:05:27,939 --> 00:05:33,138
+have gotten it done in two iterations and
+a hundred's not so bad, but maybe these
+
+54
+00:05:33,138 --> 00:05:38,275
+weights are a billion or something. It
+would take a billion iterations. So that's
+
+55
+00:05:38,275 --> 00:05:42,670
+bad news. Now that's too slow in
+algorithm. We want to try to avoid that.
+
+56
+00:05:42,879 --> 00:05:49,079
+now there's an easy way to avoid that and
+that's to use the shortest path or in
+
+57
+00:05:49,079 --> 00:05:55,070
+other ways to use the farthest path, the
+one you can push the most flow through.
+
+58
+00:05:55,279 --> 00:06:00,713
+that's just an example of the kind of
+pitfall that you wanna avoid and try to
+
+59
+00:06:00,713 --> 00:06:06,133
+come up with an algorithm for choosing
+augmenting paths in Ford Fulkerson Now the
+
+60
+00:06:06,133 --> 00:06:10,510
+performance of the Ford Fulkerson in
+algorithm is gonna depend on the method
+
+61
+00:06:10,510 --> 00:06:16,127
+used to choose the augmenting paths.
+here's listed four easy ways to pick
+
+62
+00:06:16,127 --> 00:06:22,272
+augmenting paths and they're pretty easy
+to implement. They're very similar to
+
+63
+00:06:22,272 --> 00:06:28,174
+Dijkstra's algorithm or Prim's algorithm
+and others that we've looked at. But they
+
+64
+00:06:28,174 --> 00:06:33,930
+lead to a different number of augmenting
+paths, depending on the network. So for
+
+65
+00:06:33,930 --> 00:06:39,175
+example, you could decide, let's use the
+shortest path. So that's just the
+
+66
+00:06:39,175 --> 00:06:45,050
+augmenting path with the fewest number of
+edges. and that's just, breath for a
+
+67
+00:06:45,050 --> 00:06:50,156
+search, essentially in the graph that
+ignores the full forward and empty
+
+68
+00:06:50,156 --> 00:06:56,282
+backward edges. now it's been proven that,
+there's no network for which the algorithm
+
+69
+00:06:56,282 --> 00:07:01,850
+uses more than one-half E times of E
+paths. so at least that's an upper bound
+
+70
+00:07:01,850 --> 00:07:07,924
+that shows that it doesn't have this bad
+performance involving the capacity. I want
+
+71
+00:07:07,924 --> 00:07:12,876
+to emphasize that this is a very
+conservative upper bound on the number of
+
+72
+00:07:12,876 --> 00:07:18,421
+paths used. in an actual network it might
+not use anywhere near that number of
+
+73
+00:07:18,421 --> 00:07:23,852
+augmentations. Another example is the
+fattest path. so that's the augmenting
+
+74
+00:07:23,852 --> 00:07:28,909
+path, with maximum bottleneck capacity.
+And again, that one is pretty easy to
+
+75
+00:07:28,909 --> 00:07:33,966
+implement. it's very similar to our
+implementations of Dijkstra and Prim's
+
+76
+00:07:33,966 --> 00:07:39,688
+algorithm and we'll see in a minute. And
+again, it can serve of upper bound on the
+
+77
+00:07:39,688 --> 00:07:45,011
+number of paths taken by that algorithm,
+is the number of e dges times the log of
+
+78
+00:07:45,011 --> 00:07:50,533
+product of edges and capacity. but again,
+that's a very conservative upper bound,
+
+79
+00:07:50,533 --> 00:07:59,466
+and in the real world it might only take a
+few, augmentations to computing max flow,
+
+80
+00:07:59,688 --> 00:08:05,530
+using that method. Or you could use a
+random path which again is easy to
+
+81
+00:08:05,530 --> 00:08:12,263
+implement, and randomized graph search. or
+depth-first search. now these conservative
+
+82
+00:08:12,263 --> 00:08:19,191
+upper bounds are useful, but in real world
+networks, these algorithms are going to
+
+83
+00:08:19,191 --> 00:08:25,691
+have running times that depend, really a
+lot on properties of the network. So
+
+84
+00:08:25,691 --> 00:08:32,533
+people use diffent algorithms in different
+situations and the fact is that, often, we
+
+85
+00:08:32,533 --> 00:08:39,290
+can get Max flow problems solved, even on
+huge networks with a relatively small
+
+86
+00:08:39,290 --> 00:08:41,600
+number of augmenting paths.

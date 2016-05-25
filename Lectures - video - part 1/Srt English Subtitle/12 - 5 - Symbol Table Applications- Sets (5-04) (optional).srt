@@ -1,0 +1,274 @@
+1
+00:00:00,000 --> 00:00:05,052
+Welcome back. Today we are going to look
+at some symbol table applications, give
+
+2
+00:00:05,052 --> 00:00:11,004
+you some idea of how symbol tables might
+be used, by client program for practical
+
+3
+00:00:11,004 --> 00:00:15,588
+problems. First when we look at, seems
+even simpler than the regular symbol
+
+4
+00:00:15,588 --> 00:00:19,898
+tables, and that's about sets. So, a
+mathematical set is just a collection of
+
+5
+00:00:19,898 --> 00:00:25,849
+distinct keys. And so, there are plenty of
+applications where we want to just be able
+
+6
+00:00:25,849 --> 00:00:30,486
+to implement, this really simple API. I
+want to be able to create an empty set,
+
+7
+00:00:30,486 --> 00:00:35,661
+we've got methods to add a key to the set,
+and to check whether a given key is in the
+
+8
+00:00:35,661 --> 00:00:40,760
+set or not. To remove a key, and maybe
+return the number of keys in the set, and
+
+9
+00:00:40,760 --> 00:00:45,632
+also have an iterator to iterate through
+keys in the set. This is simpler than
+
+10
+00:00:45,632 --> 00:00:50,332
+symbol tables because it's got no
+associated value. So, it's a very simple
+
+11
+00:00:50,332 --> 00:00:55,333
+API but of course, we're going to be able
+to do these operations efficiently, how
+
+12
+00:00:55,333 --> 00:00:59,646
+we'd we go ahead and implement that. Well,
+if you think about it for just a minute,
+
+13
+00:00:59,646 --> 00:01:03,897
+you see that what you need to do is just
+remove all references to value from any of
+
+14
+00:01:03,897 --> 00:01:09,037
+the symbol table implementations that we'd
+look at. The implementation is easy. Take
+
+15
+00:01:09,037 --> 00:01:13,069
+one of our symbol table implementations
+and get rid of the code that refers to
+
+16
+00:01:13,069 --> 00:01:20,027
+values. Okay, so let's look at a couple of
+applications where this set API might be
+
+17
+00:01:20,027 --> 00:01:26,992
+useful in client programs. One thing that
+is very common is the idea of an exception
+
+18
+00:01:26,992 --> 00:01:34,027
+filter. So the way we'll set that up is to
+think about having a list of files a list
+
+19
+00:01:34,027 --> 00:01:40,134
+of words in a file that are exceptional in
+some way. In this case, we'll have the
+
+20
+00:01:40,134 --> 00:01:46,055
+word, the file list.text that has these
+four words in it: was, it, the, and of. So
+
+21
+00:01:46,260 --> 00:01:51,870
+this two, complimentary ways to look at
+this. One is so-called White Listing where
+
+22
+00:01:51,870 --> 00:01:57,032
+we want to take the words in that file
+and, and then we have some other much
+
+23
+00:01:57,032 --> 00:02:01,096
+bigger file. And what we want to do is
+print out all the occurrences of our
+
+24
+00:02:01,096 --> 00:02:07,003
+exceptional words in our given file. Those
+are the ones that we care about, that we
+
+25
+00:02:07,003 --> 00:02:11,462
+want to get through. So in this case,
+tinyTale.txt the first couple of words
+
+26
+00:02:11,462 --> 00:02:16,602
+from "A Tale of Two Cities." and these
+words appear often, "It was the of, it was
+
+27
+00:02:16,602 --> 00:02:22,906
+the of." another, A complementary approach
+is to think of these words as words that
+
+28
+00:02:22,906 --> 00:02:28,076
+we don't want to ever see. They're
+blacklist, and we want to take them out of
+
+29
+00:02:28,076 --> 00:02:32,934
+our source file. So a blacklist client
+would print out all the words in our
+
+30
+00:02:32,934 --> 00:02:37,743
+source file, tinyTale.txt except was, it,
+be, and of. In this case, best times,
+
+31
+00:02:37,743 --> 00:02:42,839
+worst times, and so forth. So that's the
+exception filter, and that's useful in
+
+32
+00:02:42,839 --> 00:02:48,843
+lots of applications such as the ones
+listed here. For example, you might have a
+
+33
+00:02:48,843 --> 00:02:53,984
+spellchecker where you want to identify
+misspelled words. So, then your key would
+
+34
+00:02:53,984 --> 00:02:58,975
+be a word or a string. And in your
+exceptional list would be words that are
+
+35
+00:02:58,975 --> 00:03:04,057
+in the dictionary. And you'd want to print
+out all the words that are not in the
+
+36
+00:03:04,057 --> 00:03:09,308
+dictionary. That's an example of a, an
+exception filter. Or in a browser you
+
+37
+00:03:09,308 --> 00:03:15,062
+might want to mark your visited pages or
+block sites and so forth. Or like the one
+
+38
+00:03:15,062 --> 00:03:20,865
+at the bottom credit cards. Maybe, you run
+a credit card company and you want to
+
+39
+00:03:20,865 --> 00:03:25,969
+check for stolen cards then your keys
+would be numbers. I. And in your list,
+
+40
+00:03:26,166 --> 00:03:31,826
+might be kind of short, which would be the
+stolen cards that you know about, and
+
+41
+00:03:31,826 --> 00:03:37,619
+you'd want to run a, a white list filter
+for those cards and print out in your long
+
+42
+00:03:37,619 --> 00:03:42,478
+list of transactions which ever
+transactions have that stolen cards, So,
+
+43
+00:03:42,478 --> 00:03:47,259
+that's just a couple of examples of
+exception filters. What's the
+
+44
+00:03:47,259 --> 00:03:53,883
+implementation of an exception filters?
+Here's a simple one using the said API
+
+45
+00:03:53,883 --> 00:04:00,238
+that we just articulated. So, we start by
+creating an empty set of strings, and
+
+46
+00:04:00,238 --> 00:04:06,049
+again since we don't have associated
+values, we just have the one generic for
+
+47
+00:04:06,049 --> 00:04:11,821
+strings, and then create a new input
+stream from, from the first argument so
+
+48
+00:04:11,821 --> 00:04:17,292
+that's the name of the file that contains
+the exceptional words and so this just
+
+49
+00:04:17,292 --> 00:04:22,652
+reads the strings while the input string
+is not empty and then adds the m to the
+
+50
+00:04:22,652 --> 00:04:28,611
+set. So that now, we have our set of
+exceptional words. And now, from standard
+
+51
+00:04:28,611 --> 00:04:34,305
+input we read words, as long as our set
+contains the word, we print it out. And if
+
+52
+00:04:34,305 --> 00:04:40,262
+doesn't contain it, we don't print it out.
+So that's an example of a white list
+
+53
+00:04:40,262 --> 00:04:46,842
+filter. And to implement black list we
+just this call to contains, we just change
+
+54
+00:04:46,842 --> 00:04:53,388
+that to a, a not. If it's not in the
+exceptional list, then we print it out. So
+
+55
+00:04:53,388 --> 00:04:58,089
+that's a simple example of a filter using
+sets.

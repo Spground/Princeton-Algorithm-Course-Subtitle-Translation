@@ -1,0 +1,854 @@
+1
+00:00:03,520 --> 00:00:09,618
+Now, first we're going to look at the
+process of simulating the operation of an
+
+2
+00:00:09,618 --> 00:00:16,411
+NFA. And in order to do that, we have to
+look at the representation. so for state
+
+3
+00:00:16,411 --> 00:00:23,436
+names we're just going to use the integers
+from zero to N and those are just indexes
+
+4
+00:00:23,436 --> 00:00:30,152
+into the regular expression strain with
+one extra one for the except state. So, if
+
+5
+00:00:30,152 --> 00:00:36,288
+RE has M characters, we've got M plus one
+states. and then, we forget the
+
+6
+00:00:36,288 --> 00:00:45,003
+match-transitions. so for with this, we'll
+just keep the regular expression in an
+
+7
+00:00:45,003 --> 00:00:52,701
+array. and then for characters that are
+not metacharacters that are just
+
+8
+00:00:52,701 --> 00:00:59,030
+characters from the alphabet there's
+match-transition just to the next element
+
+9
+00:00:59,030 --> 00:01:04,831
+just to add one, so that's an implicit
+representation of the match-transitions.
+
+10
+00:01:05,057 --> 00:01:10,934
+and then the next thing is the epsilon
+transitions. So, since there might be
+
+11
+00:01:11,085 --> 00:01:17,188
+multiple edges leaving from any given
+state and it is directed, it always says,
+
+12
+00:01:17,188 --> 00:01:23,406
+go from this state to another one we'll
+use directed graph. So we just have a
+
+13
+00:01:23,406 --> 00:01:29,325
+bunch of edges with given vertex names.
+And that's convenient. That's what we use
+
+14
+00:01:29,325 --> 00:01:34,778
+for our graph processing algorithms, was
+indexes for vertex names. so, this is
+
+15
+00:01:34,978 --> 00:01:41,561
+totally well-suited to building a digraph
+using the basic digraph processing methods
+
+16
+00:01:41,561 --> 00:01:47,551
+that we talked about when doing graph
+processing. so, that's our representation
+
+17
+00:01:47,551 --> 00:01:54,098
+and then given that representation it's
+very, you know, straightforward to find
+
+18
+00:01:54,098 --> 00:02:01,692
+out for any state what are the possible
+next states and if it's got a character in
+
+19
+00:02:01,692 --> 00:02:07,803
+a possible next state is to match a
+character in angle up one otherwise it's
+
+20
+00:02:07,803 --> 00:02:14,455
+the vertices that they are pointed to by
+the edges and its adjacency list does have
+
+21
+00:02:14,874 --> 00:02:21,187
+epsilon transitions. So, let's take a look
+at just given that basic idea, that we can
+
+22
+00:02:21,187 --> 00:02:26,681
+always get to the transition from any
+given state how we're going to do a
+
+23
+00:02:26,681 --> 00:02:35,274
+simulation? and so, the idea is summarized
+by this diagram here. what, what we're
+
+24
+00:02:35,274 --> 00:02:42,172
+going to do is at every step each text
+character that the machine does read,
+
+25
+00:02:42,172 --> 00:02:48,815
+we're going to keep track of the, the set
+of all possible states where the NFA could
+
+26
+00:02:48,815 --> 00:02:52,214
+be after reading in the i, I text ch
+aracter.
+
+27
+00:02:52,220 --> 00:02:56,455
+So, say, we've done that and, you know,
+there's this is just a schematic. So,
+
+28
+00:02:56,455 --> 00:03:03,533
+there's a bunch of states that we could
+get to after reading i characters. Now in
+
+29
+00:03:03,533 --> 00:03:10,836
+some of those states they, they are
+labeled with characters. and if that
+
+30
+00:03:10,836 --> 00:03:16,399
+character matches our text character, they
+can take us to another state. So, say, in
+
+31
+00:03:16,399 --> 00:03:22,444
+this case, there is three of them that
+matches and the other one has some other
+
+32
+00:03:22,444 --> 00:03:27,733
+character or different character and it
+couldn't take us to another state. So,
+
+33
+00:03:27,733 --> 00:03:33,434
+that gives us a all the possible states
+that you could be in just after reading
+
+34
+00:03:33,434 --> 00:03:38,585
+the i plus first symbol. And now, what we
+do is take a look at the possible null
+
+35
+00:03:38,585 --> 00:03:44,432
+transitions that we could go to from those
+states. And that might take us to lots of
+
+36
+00:03:44,432 --> 00:03:49,732
+other states. but that's all the machine
+could do. It could read a character. And
+
+37
+00:03:49,732 --> 00:03:54,842
+then it can take a bunch of null
+transitions. and but that's all it knows
+
+38
+00:03:54,842 --> 00:04:00,016
+how to do. And that will give us all the
+possible states that it could be in after
+
+39
+00:04:00,016 --> 00:04:04,643
+reading i1 plus one symbols. And then, we
+just continue in that from every one of
+
+40
+00:04:04,643 --> 00:04:09,517
+those states. some of them match the
+character match the character, and then,
+
+41
+00:04:09,517 --> 00:04:14,331
+look at all the epsilon transitions. So,
+that's the basic idea is to simply keep
+
+42
+00:04:14,331 --> 00:04:20,228
+track of all possible states the NFA could
+be in after reading the first i text
+
+43
+00:04:20,228 --> 00:04:25,332
+characters. so the only thing that's
+complicated is how do we get all the
+
+44
+00:04:25,332 --> 00:04:30,950
+states that we could reach by epsilon
+transition. and we'll look at that in just
+
+45
+00:04:30,950 --> 00:04:35,458
+a second. It's actually very
+straightforward. But let's look at a demo
+
+46
+00:04:35,458 --> 00:04:43,071
+first. so this is our machine for A<i>B or
+A, or AC followed by D. and let's suppose</i>
+
+47
+00:04:43,071 --> 00:04:50,797
+it has this input. So, let's do this demo.
+Okay. So, we're going to, to check if the
+
+48
+00:04:50,797 --> 00:04:56,738
+input is matching the pattern. we're going
+to start the machine in state zero and so
+
+49
+00:04:56,953 --> 00:05:03,151
+the zero is one of the states, you could
+reach from the start. and then now we want
+
+50
+00:05:03,151 --> 00:05:08,103
+to get to all the states that you could
+reach by epsilon transitions from the
+
+51
+00:05:08,103 --> 00:05:14,289
+start. and so there's a bunch of them so
+we could go to one and from one, we could
+
+52
+00:05:14,289 --> 00:05:19,927
+go to either two or six. from two, we
+could go to three. From three, we could go
+
+53
+00:05:19,927 --> 00:05:25,355
+to two or four. so we could get to all
+those places from the start without
+
+54
+00:05:25,355 --> 00:05:29,865
+scanning a single character. So, zero,
+one, two, three, four, and six the machine
+
+55
+00:05:29,865 --> 00:05:35,700
+could be in any one of those states before
+it scans a single character. so, that's
+
+56
+00:05:35,700 --> 00:05:41,932
+where it could be after zero characters.
+But what about now after the first
+
+57
+00:05:41,932 --> 00:05:47,665
+character? Well, out of those states only
+two and six involve matching an A. So the
+
+58
+00:05:47,998 --> 00:05:54,894
+only thing that could happen next to read,
+the machine could do next, is to read the
+
+59
+00:05:54,894 --> 00:06:01,790
+A in either state two or state six. I know
+there's going to be match-transitions. So
+
+60
+00:06:01,790 --> 00:06:06,975
+in the first case, it goes to three and,
+and the second case, it goes to seven. So,
+
+61
+00:06:06,975 --> 00:06:12,378
+the stead of states, it can be reachable
+just after matching the A, is just three
+
+62
+00:06:12,378 --> 00:06:17,552
+and seven. But now from those states it
+might get somewhere with epsilon
+
+63
+00:06:17,552 --> 00:06:22,909
+transitions. We have to look at the
+epsilon transition graphs and what states
+
+64
+00:06:22,909 --> 00:06:28,475
+could it go to from epsilon transitions
+from these two. well, from three, seven
+
+65
+00:06:28,475 --> 00:06:34,458
+has nowhere to go, and from three it could
+go either to two or four. from two, it
+
+66
+00:06:34,458 --> 00:06:40,511
+could go back to three so the total number
+states that it could be after matching A
+
+67
+00:06:40,511 --> 00:06:46,393
+is two, three, four, and seven. and so
+that's one step. We've matched one
+
+68
+00:06:46,393 --> 00:06:51,818
+character, and we have kept track of all
+possible states the machine could be in
+
+69
+00:06:51,818 --> 00:06:56,972
+after matching that character. Now, what
+about the next character? You can see,
+
+70
+00:06:56,972 --> 00:07:02,126
+these four states take us all different
+ways. You could have an A, a B, or a C
+
+71
+00:07:02,126 --> 00:07:07,551
+next, and it could get somewhere. But it
+happens, we have an A, and the only one of
+
+72
+00:07:07,551 --> 00:07:13,654
+these states that matches an A is two. So,
+after matching the second A the only place
+
+73
+00:07:13,654 --> 00:07:19,575
+it could get to is three. and so that now,
+we have only one state to work with. But
+
+74
+00:07:19,575 --> 00:07:24,892
+where could we get with via epsilon
+transitions, from three? and so, well, you
+
+75
+00:07:24,892 --> 00:07:30,345
+can go from three to four or two. Well, we
+did this before. And then, from two back
+
+76
+00:07:30,345 --> 00:07:35,925
+to three. So, we could be in two, three,
+or four after matching two As. so that's
+
+77
+00:07:35,925 --> 00:07:41,526
+all the possible states we could be in
+after mat ch, after matching the two As.
+
+78
+00:07:41,744 --> 00:07:47,781
+now, what's next is B, only state four
+matches to B, so the only place we could
+
+79
+00:07:47,781 --> 00:07:54,601
+be right after matching the B is in state
+five. And that's after matching the B, now
+
+80
+00:07:54,601 --> 00:08:01,491
+what about epsilon transitions? Well,
+state five has an epsilon transition to
+
+81
+00:08:01,753 --> 00:08:08,156
+state eight. so we could take that one and
+eight has got one to nine. So it could be
+
+82
+00:08:08,156 --> 00:08:14,075
+an either five, eight, or nine after
+matching AAB and then following all of the
+
+83
+00:08:14,075 --> 00:08:19,149
+epsilon transitions. but its really
+important to keep in mind, there's no
+
+84
+00:08:19,149 --> 00:08:24,928
+other state the machine could be and it
+doesn't have any other way to get to after
+
+85
+00:08:24,928 --> 00:08:30,989
+matching AAB it couldn't get state seven
+or six or two. those are the only possible
+
+86
+00:08:30,989 --> 00:08:37,299
+states it could be in. since we're, each
+time, progressing through the input we're
+
+87
+00:08:37,809 --> 00:08:44,438
+making progress to the end for sure. So
+now to finish up this example the only
+
+88
+00:08:44,438 --> 00:08:50,387
+state out of those three that matches D is
+state nine. and so, that's a
+
+89
+00:08:50,387 --> 00:08:57,100
+match-transition that reads the D. and the
+only place you could be after matching
+
+90
+00:08:57,100 --> 00:09:03,446
+AABD is state ten. and then now, we follow
+epsilon transitions. and that Epsilon
+
+91
+00:09:03,446 --> 00:09:09,177
+transition could take us to eleven. so,
+the only place that machine could be after
+
+92
+00:09:09,177 --> 00:09:14,980
+matching ABD is ten or eleven. Now, our
+condition on whether we accept the string
+
+93
+00:09:14,980 --> 00:09:20,428
+or not is whether we could get to the
+accept state, and in this case, we could.
+
+94
+00:09:20,428 --> 00:09:26,443
+it is possible for the machine to get from
+zero to the accept state and read all the
+
+95
+00:09:26,443 --> 00:09:32,065
+input characters so that simulation is
+approved, that the machine accepts the
+
+96
+00:09:32,065 --> 00:09:38,281
+input AABD when simulated its operation,
+all possible ways and we managed to find
+
+97
+00:09:38,281 --> 00:09:44,114
+the accept state. Of course, if we had
+tried some input that the machine doesn't
+
+98
+00:09:44,114 --> 00:09:50,254
+recognize, we'd get stuck somewhere and
+either not get through the input or have
+
+99
+00:09:50,254 --> 00:09:56,163
+no possible states it could be in. and
+that would be a proof that it does not
+
+100
+00:09:56,163 --> 00:10:02,529
+accept since we try all possibilities. So,
+the only thing that's complicated in this
+
+101
+00:10:02,529 --> 00:10:08,584
+computation is reachability. but actually
+from our study of digraphs this is the,
+
+102
+00:10:08,584 --> 00:10:14,146
+one of the simplest problems that we
+discussed. what we really discussed was
+
+103
+00:10:14,146 --> 00:10:20,201
+single source reachability. That is given
+the source, can you find all vertices that
+
+104
+00:10:20,201 --> 00:10:26,797
+are reachable from that source? And that
+was Depth Firts Search. so we have very
+
+105
+00:10:26,797 --> 00:10:36,127
+simple depth first search but also in that
+API we put vertices reachable from a set
+
+106
+00:10:36,127 --> 00:10:43,591
+of sources, so an iterable of sources and
+so can we get the, the, what we really
+
+107
+00:10:43,591 --> 00:10:50,700
+need is all vertices reachable from a
+given source from its source set of
+
+108
+00:10:50,700 --> 00:10:56,736
+vertices. and it's easy using DFS. You
+just run it from each of the sources and
+
+109
+00:10:56,736 --> 00:11:02,845
+you don't unmark the ones that you get to
+and that stops DFS from revisiting any
+
+110
+00:11:02,845 --> 00:11:08,736
+vertices and it marks all the vertices
+that you could get to from that set. So,
+
+111
+00:11:08,736 --> 00:11:14,772
+its just a simple extension of our DFS
+implementation. it's going to run in time
+
+112
+00:11:14,772 --> 00:11:20,881
+proportional to the number of edges plus
+number of vertices in the digraph and it's
+
+113
+00:11:20,881 --> 00:11:26,988
+a very simple computation digraph
+reachability. so given that capability
+
+114
+00:11:26,988 --> 00:11:34,358
+which we discussed in graph processing the
+implementation of in a, in the NFA
+
+115
+00:11:34,358 --> 00:11:43,306
+stimulation is very straightforward. so
+this is a, a data type that implements the
+
+116
+00:11:43,306 --> 00:11:52,146
+NFA. so, we have a constructor that takes
+a regular expression as its argument. and
+
+117
+00:11:52,146 --> 00:12:02,776
+it's going to build the NFA and its got a,
+a method to build the digraph that we'll
+
+118
+00:12:02,776 --> 00:12:10,964
+talk about later but, but its also got a,
+a client method recognizes where the
+
+119
+00:12:10,964 --> 00:12:19,852
+client can after the NFA is constructed,
+it can that they could text string and
+
+120
+00:12:20,080 --> 00:12:27,300
+return true or false by simulating the
+operation. so we'll take a look at the
+
+121
+00:12:27,528 --> 00:12:34,292
+building the digraph in a second but the
+one that we're talking about now is
+
+122
+00:12:34,520 --> 00:12:41,569
+simulating the operation of the NFA once
+it's built for a given text string. and
+
+123
+00:12:41,822 --> 00:12:49,575
+this is the complete code and it's
+expresses in code what we talked about in
+
+124
+00:12:49,575 --> 00:12:56,485
+English during the demo. it's amazingly
+compact implementation of this idea of
+
+125
+00:12:56,485 --> 00:13:03,480
+simulating the operation of an NFA. So we
+keep a, a bag of integers or set of
+
+126
+00:13:03,480 --> 00:13:10,222
+integers called PC, that's kind of like
+program counter. So, that's the set of all
+
+127
+00:13:10,222 --> 00:13:18,820
+possible states that the NFA could be in.
+so and we build a DFS from our epsilon
+
+128
+00:13:18,820 --> 00:13:35,039
+transition graph. so the first thing that
+we do is do a, a, a for we put on to the,
+
+129
+00:13:35,274 --> 00:13:42,570
+the PC all the states that you could get
+to from state zero. so that's build a DFS
+
+130
+00:13:42,570 --> 00:13:49,317
+that marks all the states you could get to
+from state zero and then go through and
+
+131
+00:13:49,317 --> 00:13:55,436
+put all of the states on, on to the PC.
+So, that's our starting point, is all the
+
+132
+00:13:55,436 --> 00:14:02,418
+places that you could get to via epsilon
+transitions from state zero. So now during
+
+133
+00:14:02,654 --> 00:14:10,407
+the execution of this for loop PC is the
+thing that we have all the states that you
+
+134
+00:14:10,407 --> 00:14:17,192
+could reach after scanning past the ith
+character, so we initialize for the 0th
+
+135
+00:14:17,192 --> 00:14:23,815
+character. And then all we do is for
+everyone one of those states well, first
+
+136
+00:14:23,815 --> 00:14:30,842
+thing we do is test if we reach the accept
+state. If we reach the accept state we're
+
+137
+00:14:30,842 --> 00:14:37,546
+going to have nothing, we're, we have
+nothing left to do. if we have a match,
+
+138
+00:14:37,546 --> 00:14:44,275
+that is, if the a character in the RE if
+that state position matches our ith text
+
+139
+00:14:44,275 --> 00:14:49,856
+character, then we're going to keep
+another set of possible states called
+
+140
+00:14:49,856 --> 00:14:55,360
+match. So, those are the ones you could
+get to just after matching a text
+
+141
+00:14:55,360 --> 00:15:00,411
+character. And so, we'll just add V. plus
+one. So, if we find a matching character
+
+142
+00:15:00,411 --> 00:15:05,735
+at V, we just go to V plus one, that's the
+implicit match-transition. and here, we'll
+
+143
+00:15:05,735 --> 00:15:11,479
+throw in, don't care, cuz it's so easy to
+do if the regular, regular expressions
+
+144
+00:15:11,479 --> 00:15:17,854
+says, I don't care what character matches
+then throw that one to. so this just adds
+
+145
+00:15:17,854 --> 00:15:24,298
+don't care to the implementation. and so
+we do that for all states in our PC in the
+
+146
+00:15:24,298 --> 00:15:32,602
+states we can, can be in just before, just
+while looking at the ith character. If we
+
+147
+00:15:32,602 --> 00:15:39,737
+have a match then we put the next states
+into a match. So now, what we have to do
+
+148
+00:15:39,737 --> 00:15:46,503
+is follow the, epsilon transitions from
+match. So now, we build another DFS which
+
+149
+00:15:46,503 --> 00:15:52,434
+gives us marks all the states that you
+could reach by starting with any of the
+
+150
+00:15:52,434 --> 00:15:58,727
+states in match. and now when we build a
+new PC, we'll just set PC to a new, new
+
+151
+00:15:58,727 --> 00:16:04,223
+bag, and put all the marked states for
+that search. So, those are all the ones
+
+152
+00:16:04,223 --> 00:16:09,575
+that you could get to via epsilon
+transitions right after a match, and put
+
+153
+00:16:09,575 --> 00:16:15,506
+that in the PC. Now. we have a new PC. and
+we've r ead the ith, character and we go
+
+154
+00:16:15,506 --> 00:16:24,078
+to the i plus first character, and simply
+continue. so, when we're done with all of
+
+155
+00:16:24,078 --> 00:16:33,605
+the text then we can test if we made it to
+the accept state. that is, if any of the
+
+156
+00:16:33,605 --> 00:16:40,733
+states in our current set of states is the
+accept state, we return true. and if we
+
+157
+00:16:40,733 --> 00:16:47,288
+didn't get to the accept state after all
+of that, we return false. A very compact
+
+158
+00:16:47,288 --> 00:16:53,351
+code that takes advantage of our
+implementation of reachability for
+
+159
+00:16:53,597 --> 00:17:00,958
+digraphs in a, a reasonable way to
+simulate the operation of an NFA by
+
+160
+00:17:00,958 --> 00:17:08,869
+keeping track of all reachable states. so,
+what about the N analysis? Well it's easy
+
+161
+00:17:08,869 --> 00:17:16,135
+to see that the not difficult to see that
+if our text is N-character and we have an
+
+162
+00:17:16,135 --> 00:17:22,727
+M-character pattern. the worst that can
+happen is that we take time proportional
+
+163
+00:17:22,727 --> 00:17:29,410
+to M times N. and that's just because for
+everyone of the characters we have a set
+
+164
+00:17:29,410 --> 00:17:35,970
+of states, a set of all possible states.
+And we iterate through that set of
+
+165
+00:17:35,970 --> 00:17:43,060
+possible states a few times. we even run
+DFS on it, but that's linear. and there's
+
+166
+00:17:43,060 --> 00:17:50,329
+the extra point that the number of edges
+that we have is less than 3M. No node has
+
+167
+00:17:50,329 --> 00:17:57,384
+more than three edges leaving it. So the
+total amount of time for each character is
+
+168
+00:17:57,384 --> 00:18:01,758
+proportional to M and there's
+N-characters, so there are any
+
+169
+00:18:01,758 --> 00:18:07,445
+proportional to M times N. So, that's the,
+the cost of the simulation. Of course a
+
+170
+00:18:07,445 --> 00:18:12,913
+lot of times, the size of the set of
+states is much smaller than that. so in
+
+171
+00:18:12,913 --> 00:18:19,180
+many real world problems, it's closer to
+linear. that's NFA simulation.

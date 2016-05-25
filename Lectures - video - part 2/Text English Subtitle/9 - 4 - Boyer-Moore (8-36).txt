@@ -1,0 +1,190 @@
+.
+So Knuth-Morris-Pratt is a linear time
+algorithm, we can't, surely we can't do
+better than that, can we?
+Well, it's not the end of the story.
+Now we're going look at the Boyer-Moore
+algorithm. And it's also a very simple
+idea that's extremely effective in
+practice.
+So here's the idea.
+Instead of matching the pattern against
+the text moving from left to right in both
+pattern and text.
+Boyer-moore said, what, what if we try to
+scan the characters in the pattern from
+right to left?" so, then, when we find a
+mismatch we can skip, we know all the
+characters in the pattern.
+So, for example, if we're looking for a
+needle in the, in a haystack, if we first
+look at the last character in the pattern,
+which is an E, and we find that N in the
+text.
+Now then, it's clear that the next
+possible match is when the Ns lined up,
+Cuz if it was any other lineup, it'd be
+all these characters that we know are not
+N, compared against N, so we might as well
+just move it so the Ns are lined up.
+And that's good but that's not as good as
+the next case.
+If we happen to run into a character
+that's not in the pattern, then we can
+just skip all the way over.
+We don't have to compare any of our
+pattern character against that one.
+So we can just add m if we have m-pattern
+characters.
+And so then in this case we have a more
+complicated situation.
+We match the E, and we have a bunch of Es,
+And so, part of the algorithm is to figure
+out, when you do match a character that's
+in the pattern and that what do you do.
+But the intuition is, it's fast, because
+you're often going to have this kind of
+case where you find a mismath.
+And since you're going from right to left,
+that's you know, that, there's character
+in the text that's not in the pattern at
+all, you can shift over N characters at a
+time.
+And that's a huge win in a lot of
+practical situation.
+So,
+So how much do we skip?
+So the, the first case is clear.
+If there's,
+If you run into a text character that's
+not in the pattern, then you just move I
+from wherever it was to one character
+beyond the current one that you're looking
+at.
+So, and that's an easy, easy calculation,
+it's just increment it by the number of
+pattern characters that you've not looked
+at.
+Now, but if you have a character in a
+pattern then,
+You want to align the text and in this
+case, with the rightmost pattern, and, and
+that's pretty good.
+But you don't always want to do that.
+If you for example,
+We have a mismatch on E.
+If you were to say, oh, let's line up on
+the rightmost most E on the pattern, that
+would involve backup.
+So you don't want to do backup.
+In that case, you just move on by one.
+So there are times when the heuristic is
+no help.
+So what you really want to do is just
+increment by one in that case.
+So just given, those basic preliminaries,
+It's, clear that it's, actually easy to go
+ahead and precompute, how much, you might
+want to skip.
+So, you start out with, with -one.
+So this is the, amount, that, you're going
+to increment the, the text pointer.
+N - one means you just it's not in the
+pattern, so you're just going to move on
+one.
+And so all you do is go through the
+pattern,
+And so let's start with N.
+So we want too fill in this table for N.
+And it says, so if we, if we are going to
+find an N in the text, what do we want to
+do.
+Well we want to move to the next text
+character sorry, we want to co, compare
+the next text character against this one,
+which is zero.
+And so right of path.charAt j = j.
+It's going to, just going to fill in that
+zero.
+Then we go to j = one for the E,
+E, D, L. it's same, so for what happens is
+for if you do that for every letter in the
+pattern, if you have a letter that appears
+more often it gets overwritten until the
+right most occurrence is the one that's
+there.
+So, that precomputation is just one path
+through the pattern.
+And then giving that precomputation and,
+again we're going to implement, this is an
+implementation of Boyer-Moore, for using
+for loop incrementing in the text
+characte. And so we, are going to have the
+text pointer I.
+I in the course of the algorithm, we're
+going to compute a value skip which is the
+amount that we're going to move the text
+character.
+So we go all the way through the pattern
+from right to left.
+If we get all the way through the pattern
+and we find a match, and we don't change
+the value of skip, then we've found a
+match.
+If we don't, sorry, if we get all the way
+through the pattern and don't find a
+mismatch.
+It's all matches we don't change the value
+of skip and we found a match.
+If we do find a mismatch than we're going
+to compute the value that we skip, which
+is where we are minus that table that
+thing that we computed.
+And that's the amount that now that we're
+going to add to the text character to take
+care of the mismatch for the right to left
+mismatch. and if it's, it's, always going
+to be at least one, but if this thing is
+negative, we're not going to back up.
+That's, that's it.
+So it's a very simple implementation based
+on this idea of moving from right to left
+and skipping over the whole thing if we
+find a mismatch.
+And the key thing about Boyer-Moore you
+can study that implementation and figure
+it out easily, but the key thing is that
+this mismatched character here is, takes
+time proportional to N over M.
+That's kind of amazing.
+We had started out with a brute force
+which was N  N,
+And then we got linear time, we were happy
+with N, but actually there's a lot of
+practical situations where you can do the
+search in N over M.
+The longer the pattern gets, the faster
+the search gets.
+It's not only sublinear, it gets better.
+That's kind of amazing.
+Now there's a caveat there because there
+is a worse case that could be as bad as
+the brute force.
+So this is just a example of the worst
+case where you go from right to left,
+let's say, and always get to the first
+character before finding the mismatch, and
+you can't do anything better than move
+over one.
+But actually, what you can do is build
+something kind of like Knuth-Morris-Pratt
+to make sure that you don't do something
+like this with a, repetitive pattern.
+And you, you can get the worst case to the
+linear,
+But it's really of importance for, for
+intermediate length patterns with, because
+you so often are going to be able to get
+this N over M performance.
+And that's a widely used algorithm.
+The Boyer-Moore algorithm.

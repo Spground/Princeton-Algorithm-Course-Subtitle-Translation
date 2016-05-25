@@ -1,0 +1,723 @@
+1
+00:00:03,540 --> 00:00:08,780
+Now, we'll look at topological sorting.
+A digraph processing application that
+
+2
+00:00:08,987 --> 00:00:12,641
+doesn't quite have a parallel with
+undirected graphs.
+
+3
+00:00:12,848 --> 00:00:18,364
+And it's a very general model that is, is
+very widely, widely used and here's the
+
+4
+00:00:18,364 --> 00:00:21,881
+simplest example of it called, precedence
+scheduling.
+
+5
+00:00:22,088 --> 00:00:27,052
+So the idea is that you've got a set of
+tasks that need to be completed,
+
+6
+00:00:27,052 --> 00:00:32,533
+But there's precedence constraints, and
+you want to know in what order should you
+
+7
+00:00:32,533 --> 00:00:38,118
+schedule the tasks. so, you might think
+that this is like courses in a university
+
+8
+00:00:38,118 --> 00:00:42,430
+curriculum.
+For, so is the model we'll us the vertices
+
+9
+00:00:42,430 --> 00:00:47,578
+will be the task and the edges will be the
+precedence constraint.
+
+10
+00:00:47,578 --> 00:00:54,068
+And all these says is there's an edge from
+three to six, that means you have to take
+
+11
+00:00:54,068 --> 00:00:59,216
+introduction to Computer Science before
+you take Advance Programming.
+
+12
+00:00:59,440 --> 00:01:05,855
+And so there's so, all of these source of
+constraints in a graph. and so what you
+
+13
+00:01:05,855 --> 00:01:09,138
+want is, A what's called a feasible
+schedule,
+
+14
+00:01:09,138 --> 00:01:15,191
+So that's just an order in which you can
+take the linear order, in which you can
+
+15
+00:01:15,191 --> 00:01:19,869
+take the courses one after the other that
+respects the precedence.
+
+16
+00:01:20,081 --> 00:01:26,105
+So, that corresponds to drawing the graph,
+such that all the edges point upwards.
+
+17
+00:01:26,317 --> 00:01:31,774
+And this model is used to study
+manufacturing processes and many other
+
+18
+00:01:31,774 --> 00:01:35,317
+applications.
+So, that's the topological sorting
+
+19
+00:01:35,317 --> 00:01:39,002
+problem.
+So, first thing is topological sort works
+
+20
+00:01:39,002 --> 00:01:43,804
+on a DAG, so called DAG.
+That's a digraph that has no cycles.
+
+21
+00:01:44,066 --> 00:01:51,321
+If you have a cycle there's no way you're
+going to be able to solve the problem.
+
+22
+00:01:51,321 --> 00:01:58,963
+In fact we'll, simpler hraph processing
+problem is just find out if a graph has a
+
+23
+00:01:58,963 --> 00:02:02,057
+cycle.
+And we'll talk about that in a second,
+
+24
+00:02:02,057 --> 00:02:07,059
+But let's do topological sort first.
+So we know that the graph has no cycles.
+
+25
+00:02:07,059 --> 00:02:12,523
+It's a directed, acyclic graph, graph,
+And what we want to do is, find a way to
+
+26
+00:02:12,523 --> 00:02:15,880
+redraw the DAG, so that all the edges
+point upwards,
+
+27
+00:02:15,880 --> 00:02:21,286
+Yh, or give, a bottom to top order so that
+all the edges are pointing upward.
+
+28
+00:02:21,286 --> 00:02:24,423
+That's called a topological order of the
+graph.
+
+29
+00:02:24,423 --> 00:02:29,830
+And, that'll give, in this case, an order
+in which maybe you could take the courses
+
+30
+00:02:29,830 --> 00:02:33,901
+or perform the manufacturing process or
+whatever else.
+
+31
+00:02:33,901 --> 00:02:37,816
+So, that's the problem.
+So how are we going to solve it?
+
+32
+00:02:37,816 --> 00:02:42,555
+Well, we're going to use DFS.
+In fact, one of the lessons for
+
+33
+00:02:42,785 --> 00:02:49,206
+particularly for digraph processing is DFS
+is going to provide a way to solve it.
+
+34
+00:02:49,206 --> 00:02:56,977
+It might be hard to find a different way.
+So let's look at a demo of topological
+
+35
+00:02:57,292 --> 00:03:03,905
+sort.
+And all of this is just run DFS, but there
+
+36
+00:03:03,905 --> 00:03:11,242
+is a particular point in which we, we want
+to take the vertices out to get the order,
+
+37
+00:03:11,242 --> 00:03:17,314
+and that's called reverse DFS post-order.
+So, lets look at how that works.
+
+38
+00:03:17,314 --> 00:03:24,483
+What we do is, when we do the DFS, when we
+are done with the vertex we put it on a
+
+39
+00:03:24,483 --> 00:03:28,784
+stack or put it out,
+So, lets look at how that works.
+
+40
+00:03:29,037 --> 00:03:32,615
+So,
+We had just run DFS the same as before,
+
+41
+00:03:32,814 --> 00:03:38,401
+But we're not keeping track of anything,
+except the vertices that we're done with.
+
+42
+00:03:38,401 --> 00:03:43,256
+So, visit, visit, vertex zero.
+We have to check the places that you can
+
+43
+00:03:43,256 --> 00:03:46,106
+get to it from zero.
+It's one, two, and five.
+
+44
+00:03:46,109 --> 00:03:54,081
+So we check one, one is unmarked, so we're
+going to mark it and recursively visit
+
+45
+00:03:54,081 --> 00:03:58,150
+one.
+So we do that and we have to check four
+
+46
+00:03:58,154 --> 00:04:06,039
+and four again is unmarked, so we recurse.
+But now both of the edges to four are in,
+
+47
+00:04:06,039 --> 00:04:11,148
+so there's nowhere to go from four, so
+we're done with four.
+
+48
+00:04:11,151 --> 00:04:17,650
+When we're done with four, we output it,
+actually put it on a stack.
+
+49
+00:04:17,879 --> 00:04:22,996
+So that's order, the order in which we're
+done with the vertices.
+
+50
+00:04:22,996 --> 00:04:28,101
+That's called postorder.
+So now, once we're done with four, now
+
+51
+00:04:28,101 --> 00:04:34,561
+we're done with one, there's no where else
+to go so we put it on the post order.
+
+52
+00:04:34,806 --> 00:04:41,757
+And now, we're back at zero and we have to
+check the other vertices that we get to
+
+53
+00:04:41,757 --> 00:04:45,764
+from zero.
+So, here's two and get two from two, and,
+
+54
+00:04:46,221 --> 00:04:50,390
+it's unmarked, so we visit it.
+But there's no place to go,
+
+55
+00:04:50,390 --> 00:04:54,983
+So we're done with it.
+So we put it on the postorder and go back
+
+56
+00:04:54,983 --> 00:04:58,798
+to zero.
+Then we go to five, unmarked, so we visit
+
+57
+00:04:58,798 --> 00:05:02,049
+it.
+Then we check two, which is marked, so
+
+58
+00:05:02,049 --> 00:05:05,366
+nothing to do.
+And then we're done with five.
+
+59
+00:05:05,370 --> 00:05:10,581
+And, once we're done with five, then we're
+done with zero.
+
+60
+00:05:10,581 --> 00:05:17,281
+And that's the postorder of the vertices
+that you can get to it from zero.
+
+61
+00:05:17,281 --> 00:05:22,865
+So now we have to check all the other
+vertices in the graph,
+
+62
+00:05:22,865 --> 00:05:29,566
+But we have to find some other place, and
+so we just check the vertices in order.
+
+63
+00:05:29,566 --> 00:05:34,203
+Next one that we find that's unmarked is
+three.
+
+64
+00:05:34,206 --> 00:05:40,785
+And so to visit three, we have to check,
+two, four, five, and six.
+
+65
+00:05:40,785 --> 00:05:46,394
+And two, four, and five, are all marked,
+So nothing to do.
+
+66
+00:05:46,394 --> 00:05:50,306
+Six is unmarked,
+So we go visit six.
+
+67
+00:05:50,309 --> 00:05:57,604
+When we visit six, zero and four are,
+already, marked, so there's nothing to do.
+
+68
+00:05:57,604 --> 00:06:03,120
+Then we're done with six, And finally,
+we're done with three.
+
+69
+00:06:03,120 --> 00:06:08,936
+And we're done with the vertex.
+We'd put it out. That's or if we put it on
+
+70
+00:06:08,936 --> 00:06:15,647
+a stack, and then we get reverse postorder
+and that turns out is the answer that we
+
+71
+00:06:15,647 --> 00:06:20,678
+need.
+So the code is pretty simple but we'll
+
+72
+00:06:20,678 --> 00:06:24,833
+have to look a little more carefully to be
+convinced that it works.
+
+73
+00:06:25,051 --> 00:06:30,445
+So it's depth-first search but we have
+additional data structure, which is a
+
+74
+00:06:30,445 --> 00:06:35,255
+stack of integers, which is the vertices
+and reverse postorder.
+
+75
+00:06:35,474 --> 00:06:41,673
+The constructor just creates that stack,
+And then the only thing we change to DFS
+
+76
+00:06:41,673 --> 00:06:48,614
+is when we're done with the vertex, before
+exiting, we put that vertex on the reverse
+
+77
+00:06:48,987 --> 00:06:54,435
+post stack. and then the client simply
+gets the stack returned, that's
+
+78
+00:06:54,435 --> 00:06:58,465
+inevitable.
+And iterating through that will give the
+
+79
+00:06:58,465 --> 00:07:04,734
+vertices in the reverse DFS postorder
+which is the order you which is the
+
+80
+00:07:04,734 --> 00:07:10,798
+topologically sorted order.
+It's a very simple and compelling use of
+
+81
+00:07:10,798 --> 00:07:14,617
+DFS.
+Actually this is an amazingly simple
+
+82
+00:07:14,617 --> 00:07:18,436
+algorithm, but it went undiscovered for
+many years.
+
+83
+00:07:18,436 --> 00:07:23,630
+People were using much more complicated
+algorithms for this problem.
+
+84
+00:07:23,630 --> 00:07:27,486
+Okay.
+So, reverse DFS postorder of a DAG is the
+
+85
+00:07:27,486 --> 00:07:31,941
+topological order.
+That's, the correctness proof, that we
+
+86
+00:07:31,941 --> 00:07:36,263
+have to consider.
+This diagram over here, is a record of the
+
+87
+00:07:36,263 --> 00:07:39,787
+recursive calls, for that example that we
+just did.
+
+88
+00:07:39,986 --> 00:07:43,907
+To visit zero, we probably visit one, and
+then we visit four.
+
+89
+00:07:43,909 --> 00:07:47,830
+And then we're done with four, and then
+we're done with one.
+
+90
+00:07:47,832 --> 00:07:53,679
+And then we visit two, down with two, Then
+do five, which checks two, And five down
+
+91
+00:07:53,679 --> 00:07:57,540
+and so forth.
+So this gives a record of the calls, just,
+
+92
+00:07:57,775 --> 00:08:01,540
+For reference in this proof for that
+example.
+
+93
+00:08:01,540 --> 00:08:08,730
+Alright. So now, we want to consider any
+edge where v points to w and we want to
+
+94
+00:08:08,730 --> 00:08:12,786
+consider the point where dfs of V is
+called.
+
+95
+00:08:13,063 --> 00:08:20,293
+And there's a bunch of cases.
+So one case is that dfs w, has already
+
+96
+00:08:20,293 --> 00:08:26,320
+been called and returned.
+So in this example, when v equals three, w
+
+97
+00:08:26,320 --> 00:08:31,500
+equals two, four, or five, they were
+already done.
+
+98
+00:08:31,500 --> 00:08:39,903
+So, if we put out, those vertex numbers,
+before we put, three out, then the arrow
+
+99
+00:08:39,903 --> 00:08:43,798
+from v to w is going to point up.
+They were already done.
+
+100
+00:08:43,798 --> 00:08:49,223
+So that's case one. That's an easy case.
+Case two, they're all easy cases.
+
+101
+00:08:49,223 --> 00:08:55,956
+[laugh] Case two is, dfs w hasn't, been
+called yet, but if there's an edge from v
+
+102
+00:08:55,956 --> 00:09:02,954
+to w we're going call it and then recurse,
+it's going to finish before we're done
+
+103
+00:09:02,954 --> 00:09:07,699
+with three.
+So again, the edge from v to w is going to
+
+104
+00:09:07,699 --> 00:09:13,482
+point out, three to six.
+And the only other possible case might be
+
+105
+00:09:13,482 --> 00:09:18,070
+that, dfs w is already been called but not
+returned.
+
+106
+00:09:18,394 --> 00:09:23,690
+But that can't happen,
+In, because there's no cycles.
+
+107
+00:09:23,690 --> 00:09:29,220
+If d, dfs w had been called but not yet
+returned,
+
+108
+00:09:29,454 --> 00:09:35,718
+Then the function call stack is going to,
+from it's, it's going to have path from w
+
+109
+00:09:35,718 --> 00:09:39,868
+to v on it.
+And so. if we have an edge v-w, that would
+
+110
+00:09:39,868 --> 00:09:46,288
+give a cycle, but there is no cycles.
+So from those observations we know that
+
+111
+00:09:46,288 --> 00:09:51,221
+all vertices pointing from three are done
+before three is done,
+
+112
+00:09:51,221 --> 00:09:57,093
+So they appear after three in the
+topological order, or they point up if we
+
+113
+00:09:57,563 --> 00:10:01,400
+put the vertices in reverse topological
+order.
+
+114
+00:10:01,703 --> 00:10:07,625
+So that's the correctness proof for
+topological order.
+
+115
+00:10:07,625 --> 00:10:11,304
+So, a similar, process, is, to detect a
+cycle.
+
+116
+00:10:11,304 --> 00:10:15,187
+A topological sort doesn't work if a
+graph's got a cycle,
+
+117
+00:10:15,187 --> 00:10:20,433
+So one of the things we might want to do
+is, just, find cycles in digraphs.
+
+118
+00:10:20,433 --> 00:10:25,951
+Now, if you're a college and you put out a
+curriculum that's got a directed cycle,
+
+119
+00:10:25,951 --> 00:10:29,971
+you have your problem so you might want to
+process that first.
+
+120
+00:10:30,175 --> 00:10:32,785
+So,
+If there's a directed cycle, you can't
+
+121
+00:10:32,785 --> 00:10:36,901
+have a topological order.
+If there's no directed cycle then we've
+
+122
+00:10:36,901 --> 00:10:40,257
+just found it.
+So, one thing you might want, is given a
+
+123
+00:10:40,257 --> 00:10:44,309
+digraph, find a directed cycle.
+And how are you going to do that?
+
+124
+00:10:44,309 --> 00:10:49,184
+You're going to use DFS and that's a
+simple algorithm that you might want to
+
+125
+00:10:49,184 --> 00:10:52,540
+think about and,
+It's in a few lines in the book.
+
+126
+00:10:52,540 --> 00:11:00,888
+So, precedence scheduling is a, an
+excellent example of the use of search
+
+127
+00:11:01,493 --> 00:11:07,663
+directed graph,
+And, this is the cycle of length one.
+
+128
+00:11:07,663 --> 00:11:13,712
+Of course, that requires itself as a
+prerequisite.
+
+129
+00:11:13,712 --> 00:11:20,730
+And, this is just an example of a very
+widely computation.
+
+130
+00:11:20,959 --> 00:11:27,303
+And it really has many, many applications.
+So for example, the Java compiler actually
+
+131
+00:11:27,303 --> 00:11:31,661
+does cycle con, detection.
+If you have a class A extends B, and
+
+132
+00:11:31,661 --> 00:11:35,635
+another one B extends C, and another one C
+extends A,
+
+133
+00:11:35,635 --> 00:11:41,139
+That's going to create a problem.
+Class hierarchies are not supposed to have
+
+134
+00:11:41,139 --> 00:11:44,885
+cycles,
+And it'll actually, the Java compiler will
+
+135
+00:11:44,885 --> 00:11:50,006
+actually give a, an error message saying
+there's cyclic inheritance.
+
+136
+00:11:50,006 --> 00:11:56,643
+You're not allowed to do that.
+So there's many applications that involve
+
+137
+00:11:56,884 --> 00:12:01,872
+essentially digraphs that aren't supposed
+to add cycles.
+
+138
+00:12:02,113 --> 00:12:10,027
+Another example is Microsoft Excel.
+So if you do cyclic reference like this in
+
+139
+00:12:10,423 --> 00:12:19,543
+Excel, which in a big spreadsheet, now you
+can imagine might .. that's, that's an
+
+140
+00:12:19,543 --> 00:12:24,995
+error,
+And not only this Microsoft Excel flag the
+
+141
+00:12:24,995 --> 00:12:28,191
+error.
+It says you have, created a circular
+
+142
+00:12:28,191 --> 00:12:34,261
+reference, try one of the following,
+And it's actually got a circular reference
+
+143
+00:12:34,261 --> 00:12:39,392
+toolbar, that will help you figure out,
+what to do, in that case.
+
+144
+00:12:39,392 --> 00:12:44,884
+So, cycle detection and topological
+sorting are important applications in
+
+145
+00:12:45,462 --> 00:12:46,980
+depth-first and digraphs.

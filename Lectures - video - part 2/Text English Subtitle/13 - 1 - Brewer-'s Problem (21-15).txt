@@ -1,0 +1,396 @@
+Today we're going to talk about linear
+programming, including the simplex
+algorithm which ranks as one of the most
+important algorithms of the twentieth
+century so certainly has to be included in
+any course on algorithms. And so what is
+linear programming? well you'll have a
+fairly clear idea after the end of the
+lecture. And in effect you can take an
+entire course on linear probing,
+programming. or actually do graduate study
+in linear programming. or get a
+high-paying job in linear programming.
+Programming so it's quite a bit to define.
+so we talk about shortest paths and,
+Maxwell's problem solving models, and
+linear probing, programming is a general
+problem solving model, that works in a lot
+of contexts. so shortest path max flow,
+that's fighting the minimum or the maximum
+of, some kind of quantity. And a good way
+to think of linear probing is, programming
+where it's most, not often used in
+practice, is you want to allocate scarce
+resources among a number of competing
+activities. And you want to do it, in, in
+a way that, minimizes costs or maximizes
+something. That's the basic idea. And, it
+encompasses, a huge number of, problems
+that, we've considered, And even, plenty
+of problems that we haven't considered. so
+this is, an example, of a linear program
+that we're going to use, throughout this
+lecture. So it's got, a couple of,
+components. So, So one of'em is called an
+objective function. and so we say, we have
+some variables. and we want to maximize
+the objective function. And so our, our
+goal is to find values of the variables
+that'll maximize the objective function,
+subject to constraints in the acquaint,
+constraints are linear inequalities. and
+usually, including that the variables are
+positive. so, there's two steps the first
+is whatever problem you have you have to
+formulate it like this that's reduction.
+You take your problem and you convert it
+into this form. And, then the second thing
+is to solve it. that's what linear
+program, programming is. And, it's
+significant because it's widely applicable
+to re al world problems. there's fast
+commercial. programs out there that. will
+solve huge linear programs. and it's a key
+sub-routine for solving even more
+difficult problems. But it's the idea that
+it's. a widely applicable model that we
+can actually do solutions for huge
+problems. For example, airlines use linear
+programming to schedule the planes and
+pilots and flights. And Delta recently
+claimed that linear programming,
+programming saves it over a $100 million
+per year. so, it's general and we can
+solve problems. That's what linear
+programming is. And very general. Here's
+just a short list of problems where you
+can find papers where people used linear
+programming to solve these problems. From
+direct mail advertising to, as I
+mentioned, airline crew assignment there's
+problems in science Ising spin glasses in
+physics, sports scheduling, baseball and
+basketball in electrical engineering and
+designing computers, or blending petroleum
+products. All kinds of things, so a huge
+number of applications. It's a very
+general model. so let's take a look at. a
+little more detail of a full application.
+And we're gonna do it based on a classic
+paper in Scientific American in 1980. that
+certainly, I don't know if it was
+intended, but certainly does appeal to
+college students, cuz it's all about using
+linear programing to, to decide how to
+best make beer and ale. That's why it's
+called the brewers problem. So here's the
+idea. So, for example, to try to make sure
+that everybody understands what linear
+program, programming really is. It was
+developed by Bob Bland who also
+contributed to, a lot to the practice of
+linear program, programming as well. Okay.
+So the small brewery is supposed to
+produce both ale and beer. Now, there's
+raw materials that go into both ale and
+beer. There's a few other things but the
+main ones are corn. hops and malt, and the
+brewery has a certain amount of each one.
+say it's got 480 pounds of corn, 160
+ounces of hops, and 1,190 pounds of malt.
+So that's the resources that are
+available. Now there's, they k now how to
+make two things. They know how to make ale
+and they know how to make beer. And
+there's a recipe for the ale and the beer
+that uses these scarce resources. So to
+make a barrel of ale, you need five pounds
+of corn, four ounces of hops and 30. Five
+pounds of malt. and to make a barrel of
+beer you need much more corn and less malt
+and a little bit more hops. So that's the
+recipes for those two things. And the
+other thing is that there's different
+profitability. So you can make $thirteen
+per barrel of ale and $23 per barrel of
+beer. So the brewer's problem is what do
+we do? How much ale and how much beer
+should we make? so, the pro- situation is
+that depending on how much ale or how much
+beer you make you have different amount of
+profit. So let's say, someone says, well
+let's make it all out of ale. Le, let's
+make as much ale as we possibly can. so
+turns out that 34 barrels of ale is the
+most that you could possibly make, because
+that uses up all your malt. so you need 35
+pounds of malt per barrel and 34 times 35
+is 1190. That's all that you have. so, if
+you make 35, 34 barrels of ale, that's the
+max that you can make. and then, if you do
+that 34 times thirteen is $442 of profit
+that you make if you make all ale . what
+if you make all beer? Well, if you make
+all beer, then corn is the limiting
+resource. You need a lot of corn to make
+beer. you're going to need fifteen pounds
+per barrel. You can only make 32 barrels.
+and you have plenty of the other
+resources. but if you did make all beer,
+you'd make $736. So, if you're going to
+make all beer or all ale, you're gonna go
+with the all beer. but you can do things
+in between. The if you used up all the
+hops it would be 19.5, well you can't
+really make a half barrel so we're not
+going to consider that case. But if you
+could it still wouldn't be as good as all
+beer. but what about this mix here? If
+we're making twelve barrels of ale and 28
+barrels of beer. then the amount of hops
+that you need. you can multiply it out.
+That would use up all the hops. About 160,
+o unces of hops that you've got. so
+that's, restricted by the number of hops,
+And also uses up all the corn, that you've
+got. and if you do twelve <i>, thirteen, for
+the ale. And 28 <i>23 for the beer. you make</i></i>
+a profit of $800. So out of these
+alternatives, that's the one you're going
+to choose. Make twelve barrels of ale, and
+28, barrels of beer, and you're going to
+maximize your profits. that's the brewer's
+problem and now the question is can we do
+better? We've just been fooling around a
+little bit and seeing which one uses up
+resources is there some way that we can do
+better? so that's really the brewer's
+problem. I got the scarce resources. I've
+got the objective function. I want to
+maximize my problems while sticking to the
+resource constraints. So, this is a linear
+programming formulation of the Brewer's
+problem. It's a mathematical formulation
+of the problem. And all we're doing is
+expressing these various constraints with
+math. so A is the number of barrels of ale
+that I wanna make, and B is the number of
+barrels of beer. my profit is $thirteen
+for each barrel of ale, and $23 for each
+barrel of beer. So I want to maximize 13A
+plus B, and then I'm subject to all these
+constraints that are given to me by the
+recipes. the And, for the ale, it's, it's
+the five units of corn, four units of hop,
+and 35 units of malt. And for the beer,
+it's fifteen, four, and twenty. so, if I
+make A barrels of ale and B barrels of
+beer, then I'm subject to this constraint.
+And it's all, all the corn that I have.
+And so forth. And of course I have to pick
+a positive number of, barrels of ale and
+beer. That's a mathematical formulation of
+the problem. so that's linear programming.
+That's reducing the Brewer's problem to a
+mathematical formulation. so now, we wanna
+look at, try to get a better understanding
+or geometric intuition on what this thing
+means, in so. Of the key ideas is the
+thing called feasible region. So, we have
+two variables. So, we are gonna plot all
+the possible points, all the possible
+amounts of ale and beer we can make just
+in the xy plane. So, it's positive xy
+plane, because we are gonna make positive
+amount of beer and positive amount of ale.
+In the other constraints, actually defined
+half plains so that is, the amount of corn
+has to be, you have to have 5A plus 15B
+less or equals 480. If you draw the line
+out of 5A plus 15B equals 480, which is
+this line here, and it intersects way out
+there. Than, everything, above this line
+is not feasible. We don't have that much.
+And everything below that line is possibly
+feasible. And, actually, all we do is just
+intersect all the half blanks including
+the half blank above the X axis, and to,
+the right of the Y axis. And if you do
+that, you'll get a complex, convex
+polygon. it's and all the points inside
+are things that we could possibly do. so
+it's a first idea. We have inequalities
+that satisfy all those inequalities
+simultaneously defines a complex convex
+region like this. and what about the
+objective function? Well that's just
+another line. And so that's a line of
+slope If you take 13A23B plus 23B that's
+the objective function, and any point, if
+you, look at where this line of the same
+slope, intersects the, convex region, you
+can see that what we're going to be
+looking at is, we want the one that, goes
+up the highest. you can't get higher
+profit if you, if you have a line that is
+a bigger number then you're not going to
+be in a feasible, feasible region. So that
+you can see, it's a, the objective
+function defines the slope of a line. And
+what we found, want to find is, you think
+of it the other way. The line coming in
+from positive infinity. Where does it hit
+the feasible region? that's where our
+profit's gonna be maximized. so just the
+geometry tells us that the optimal
+solution is going to be at an extreme
+point. in this case it's where you know,
+we have two variables. It's where two
+constraints intersect. so that's already a
+huge improvement in terms of solving the
+problem rather than having to consider
+this infinite number of points that
+describe the amount of ale and amount of
+beer that we might make. we only have to
+consider this finite set of points which
+are the extreme points in the feasible
+region and one of those is going to be our
+optimal. . So, that brings us to the
+standard form of a linear program in
+general. In general, we have way more than
+two variables. and we have lots of
+different linear equations. so what we're
+going to do is and actually we're going to
+get rid of in, inequalities and just deal
+with equalities. And we'll talk about that
+in a minute. and this is just to try to
+get a form that makes all the problems
+seem the same so that we can work with
+them. And this again is the power of
+reduction. We're just using reduction to
+get the problem in a form that we can
+fully understand it and solve it. so the
+general statement of a linear program,
+it's going to be you've got some
+variables. and the, you want to and the
+variables you are going to assist are all
+positive. and the objective function is a
+linear combination of those variables.
+That just means we multiply by constants
+and add them. All the constraints also
+will be linear equations. However many
+constraints there are, there can be any
+number of constraints. the constraints
+might be redundant, the problem might be
+over constraints all of that has to be
+dealt with in a linear programming
+solution, and you don't have things like
+multiplying together variables or any
+thing like that. so your input is the
+coefficient, for the objective function.
+And also the coefficients for all the
+linear equations and also the radiant
+sides. in your output I use the result of
+solving the linear program and problem.
+It's the values of the X's that maximize
+your objection function subject to all the
+constraints. now people define standard
+forms of linear programs in different
+ways. And you can find all different sorts
+of slightly different standard forms. this
+one is really convenient to express as a
+matrix. where A and, A is a matrix and B
+and C are vectors. and it's just those and
+X is a vector, column vector. you're just
+sat isfying maximizing The that's, that's
+just saying the same thing in much more
+compact notation. so as I mentioned,
+there's no really widely agreed notion of
+standard form. So you'll find different
+standard forms in different context,
+usually. So now our brewer's problem
+didn't have equalities, it had
+inequalities. So we have to convert that
+to the standard form basically get rid of
+the inequalities. And it's really easy to
+do, and once you get used to this idea,
+then we'll use it again later on. so the
+first thing is, is, so instead of Mm-hm.
+maximizing a linear combination, we're
+actually going to, just maximize a single
+variable. And we're going to add that and,
+and then make the objective function an
+equation. so when I maximize Z, subject to
+the constraint that 13A plus 23B minus C
+equals zero. That's the same as maximizing
+13A plus 23B. And then we just add slack
+variables to convert each of the
+inequality, it's called a variable that
+takes up the slack. so if five A plus
+fifteen B has got to be less than or equal
+to 480, that's the same as saying that
+five A plus fifteen B plus something
+positive has to equal 480. so, it's just
+saying the same thing. add a slack
+variable SC. And say that it's got to be
+positive. So now we have a bunch of
+equations. and just all positive
+variables. So it's, it's more variables,
+but less variability. we've kind of got a
+variable for everything in the system. so
+that's a conversion of the brewer's
+problem to the, standard form of linear
+programming. now just a little bit more
+about the geometry before we get to the
+solution. Again, the, inequalities to find
+half spaces, so when you intersect them
+you get something convex. You can't get
+something like this because the half space
+will just chop it off. So that's really
+important and that's in two dimensions. so
+convex just means that if you have two
+points that are in the set everything in
+the line between them is also in the set.
+an, an extreme point is something that
+you, you can't write as a linear
+combination of something in the set. so
+that's just the geometry of it. and that's
+in two dimensions. and this is very
+intuitive in two dimensions. In higher
+dimensions it's hard to really trust your
+intuition so that's why we have these
+specific geometric definitions. Now the
+extreme point property still holds even in
+higher dimensions. This is three
+dimensions and now after three dimensions,
+we really have to use our imagination. But
+still the same idea of a bunch of
+intersecting half spaces in higher
+dimensions. And the same basic idea holds
+if just you stick with the basic math
+definitions. And so they all intersect.
+And the good news is that still, inside is
+an infinite number of all possible
+solutions, but there is only a finite
+number of these plains and so they
+intersect, there's only a finite number of
+intersections. That's a good news rather
+than having to examine infinite number of
+points. We just have to examine a finite
+number of these external points but the
+bad news is that there could be a lot of
+them, it can be exponential in number of
+constraints. So that's the extreme point
+property. Now, it's, because of this idea
+of the extrema has to be where the
+solution is. if you find a, a local
+optimum, place that's just, better than,
+everybody connected to it, that's just
+going to be actually a global option that
+follows from convexity. so, if the, it's
+actually a good situation that if you can
+just get to a place that, you can't
+improve from, then, you're in good shape.
+That's a kind of test, that's the geometry
+of the, linear programming problem.

@@ -1,0 +1,493 @@
+1
+00:00:02,043 --> 00:00:07,092
+If our symbols table's really going to be
+dynamic, we need to be able to delete key
+
+2
+00:00:07,092 --> 00:00:13,074
+valued pairs from the table. As we'll see,
+all symbol table implementations have,
+
+3
+00:00:13,095 --> 00:00:19,078
+lead to complications when we try to do
+this operation. Binary search trace is our
+
+4
+00:00:19,078 --> 00:00:26,051
+first example. So we need to fill in this
+one table. What's, what's the cost of
+
+5
+00:00:26,051 --> 00:00:31,081
+deletion in a binary search tree? How are
+we going to really do that? Well let's
+
+6
+00:00:31,081 --> 00:00:38,073
+take a look at a very lazy approach which
+we set up for in our basic conventions for
+
+7
+00:00:38,073 --> 00:00:45,048
+simple tables. What we can do to remove a
+node with a give key is just mark it with
+
+8
+00:00:45,048 --> 00:00:51,013
+a tombstone. Say, well, we'll leave the
+key in the tree to guide searches, but we
+
+9
+00:00:51,013 --> 00:00:56,061
+won't, count it as being in the symbol
+table. And actually you can, make some
+
+10
+00:00:56,061 --> 00:01:02,098
+progress with this kind of method. Leaving
+tombstone throughout the tree. And, make
+
+11
+00:01:02,098 --> 00:01:08,026
+sure that you keep, as long as there
+aren't too many deletions, you can keep
+
+12
+00:01:08,026 --> 00:01:14,029
+the search costs, and deletion and insert
+costs to be logarithmic. But it definitely
+
+13
+00:01:14,029 --> 00:01:19,071
+becomes, inconvenient to manage large
+numbers of tombstones in highly dynamic
+
+14
+00:01:19,071 --> 00:01:24,022
+situations with large numbers of keys and
+values. Eventually you're going to get an
+
+15
+00:01:24,022 --> 00:01:28,095
+overload of memory and you're going to
+have to rebuild the thing or clean out the
+
+16
+00:01:28,095 --> 00:01:33,079
+tombstones in some way so we need to look
+for a better way. This is a general method
+
+17
+00:01:33,079 --> 00:01:38,046
+that people often use on all different
+types of implementations, but in modern
+
+18
+00:01:38,046 --> 00:01:45,045
+systems it's rather unsatisfactory. Also
+got a simpler problem. What about deleting
+
+19
+00:01:45,045 --> 00:01:52,720
+the minimum? Well actually, that's maybe
+not too difficult to delete the minimum in
+
+20
+00:01:52,720 --> 00:01:57,855
+a binary search tree. Again, we just go to
+the left until we get a null left link.
+
+21
+00:01:57,855 --> 00:02:04,049
+And then, what we can do is just return
+that node's right link then that old node,
+
+22
+00:02:04,049 --> 00:02:09,760
+nobody's pointing to it, so it's available
+for garbage collection. And then we use
+
+23
+00:02:09,760 --> 00:02:15,012
+our usual trick of returning the link that
+we went down to update the other links
+
+24
+00:02:15,012 --> 00:02:20,664
+after the recursive calls. And also we
+have to update the counts, something
+
+25
+00:02:20,664 --> 00:02:26,043
+happened down below and we used that code
+to update the counts, in a co nsistent
+
+26
+00:02:26,049 --> 00:02:33,814
+way, so this code implements deleting, not
+too bad at all. If x. Left null, return x
+
+27
+00:02:33,814 --> 00:02:42,631
+right. Otherwise x left = delete min x
+left. And then when you're done with that,
+
+28
+00:02:42,631 --> 00:02:49,202
+it fix the count so maybe a node got
+deleted down there, but always, the
+
+29
+00:02:49,202 --> 00:02:55,780
+invariant is that the count of the node is
+one + size of the left and right. And then
+
+30
+00:02:55,780 --> 00:03:01,017
+return x and fix the links and the counts
+on the way up. That's a fine
+
+31
+00:03:01,017 --> 00:03:07,100
+implementation for delete min, and it also
+works for delete max. And that's the basis
+
+32
+00:03:07,100 --> 00:03:14,355
+for a general method for deleting nodes
+from BSTs known as Hibberd deletion. So,
+
+33
+00:03:14,355 --> 00:03:22,113
+that's the second case, the first case for
+Hibberd deletion is what we want to do to
+
+34
+00:03:22,113 --> 00:03:27,631
+delete a, a node with key K, is we search
+for the node that contains the key, and
+
+35
+00:03:27,631 --> 00:03:33,528
+the easiest case is that node has no
+children. So to, to delete a node that has
+
+36
+00:03:33,528 --> 00:03:40,887
+no children just return null. And then go
+back up to update the counts as usual,
+
+37
+00:03:40,887 --> 00:03:48,060
+that's the easy case. The next most
+difficult case is like the delete min case
+
+38
+00:03:48,060 --> 00:03:55,687
+we find a node T that contains our key, so
+like deleting R in this tree, it only has
+
+39
+00:03:55,687 --> 00:04:01,526
+one child. Just go ahead and return the
+link to that child and that updates the
+
+40
+00:04:01,526 --> 00:04:07,110
+link and everything works fine and then
+the node that the leads that available for
+
+41
+00:04:07,110 --> 00:04:11,939
+garbage collection that nobody's pointing
+to it. And then again update all the
+
+42
+00:04:11,939 --> 00:04:17,084
+accounts after the recursive calls. Zero
+children no problem one child no problem.
+
+43
+00:04:17,084 --> 00:04:22,594
+The problem is what happens when there is
+two children. So say we want to delete
+
+44
+00:04:22,594 --> 00:04:28,763
+node E in this tree. We have only one
+link, and we can get rid of the node but
+
+45
+00:04:28,763 --> 00:04:35,422
+we have only one link pointing to it. But
+we have two links pointing down from it.
+
+46
+00:04:35,422 --> 00:04:41,887
+So what are we going to do with those two
+links? Well the Hibbard deletion mechanism
+
+47
+00:04:41,887 --> 00:04:48,473
+which is pretty old. 50 years ago, it was
+proposed. Says, go ahead and find the next
+
+48
+00:04:48,473 --> 00:04:55,618
+smallest node in the right subtree of that
+tree. So in the case that's H and what's
+
+49
+00:04:55,618 --> 00:05:03,062
+that node? Well it's the minimum in T's
+right sub tree. And we know how to delete
+
+50
+00:05:03,062 --> 00:05:10,554
+the minimum. So we just find that minimum
+node and, in this case it's H, and we put
+
+51
+00:05:10,554 --> 00:05:16,851
+that node in T spot and then delete the
+minimum. So, find the H that's the
+
+52
+00:05:16,851 --> 00:05:22,539
+minimum, hang on to it, and then delete
+the minimum NT sub tree and then, so we
+
+53
+00:05:22,539 --> 00:05:28,179
+take the E, replace it with the H, delete
+the H, and then everything is fine. It is
+
+54
+00:05:28,179 --> 00:05:33,432
+still a BST. So we, essentially we are
+finding a node that has only one link,
+
+55
+00:05:33,432 --> 00:05:39,079
+deleting that node, and then replacing the
+node that we need to delete with that one.
+
+56
+00:05:39,079 --> 00:05:45,163
+That's Hibbard deletion. It's a little bit
+asymmetric. Why are we using the successor
+
+57
+00:05:45,163 --> 00:05:51,116
+and not the predecessor? No real reason.
+And it's not really satisfactory because
+
+58
+00:05:51,116 --> 00:05:57,758
+of that, and we'll come back to this but
+it works. So this is the code for Hibbard
+
+59
+00:05:57,758 --> 00:06:03,982
+deletion. So we search for the key. If
+it's got no right child, we're fine. We
+
+60
+00:06:03,982 --> 00:06:10,220
+just return, x out left, and that handles
+both cases zero and one. If it does have a
+
+61
+00:06:10,220 --> 00:06:15,590
+right child, then we do this, find the
+minimum, on the right. Delete min on the
+
+62
+00:06:15,590 --> 00:06:21,417
+right and then fix the links and then
+update our count that covers all cases. So
+
+63
+00:06:21,417 --> 00:06:26,468
+actually not that much code, it's
+complicated but not particularly more
+
+64
+00:06:26,468 --> 00:06:32,196
+complicated than other code we have seen
+like rank and floor and ceiling and that
+
+65
+00:06:32,196 --> 00:06:38,107
+implements Hibbard deletion. So now we
+have a fully dynamic symbol table where we
+
+66
+00:06:38,107 --> 00:06:43,918
+can insert and delete. The number of nodes
+that we have in the tree as always
+
+67
+00:06:43,918 --> 00:06:50,160
+proportion to the number of key value
+pairs in the symbol table. And the problem
+
+68
+00:06:50,160 --> 00:06:56,286
+is, and this was quite a surprise when it
+was first discovered actually many years
+
+69
+00:06:56,286 --> 00:07:02,306
+after Hibbard proposed the algorithm is
+this lack of symmetry that tends to lead
+
+70
+00:07:02,306 --> 00:07:08,171
+to difficulties. And here we are just
+inserting the leading alternating insert
+
+71
+00:07:08,171 --> 00:07:13,466
+and delete a random key. So that maybe
+well models a situation, practical
+
+72
+00:07:13,466 --> 00:07:19,340
+situation. And as you watch it go for
+awhile. You can see that this thing about
+
+73
+00:07:19,340 --> 00:07:24,355
+going to the right and taking the
+successor all the time. The tree's
+
+74
+00:07:24,355 --> 00:07:31,041
+becoming much less balanced than it was.
+And, this seems to be a, a problem. We
+
+75
+00:07:31,041 --> 00:07:38,049
+can't be having, supposedly having a
+dynamic situation, that is going to, allow
+
+76
+00:07:38,049 --> 00:07:44,975
+support of lots of different inserts and
+de letes. And in the end, win up with a
+
+77
+00:07:44,975 --> 00:07:52,104
+less balanced tree. What's worse, if you,
+so how you are going to fix it? At the end
+
+78
+00:07:52,104 --> 00:07:57,452
+researches show that after, sufficiently
+long sequence of random inserts and
+
+79
+00:07:57,452 --> 00:08:03,375
+deletes, the height of the tree becomes
+square root of N not lg N. Square root of
+
+80
+00:08:03,375 --> 00:08:09,498
+N is usually bigger than lg N. It might
+make difference between acceptable and
+
+81
+00:08:09,498 --> 00:08:15,005
+unacceptable performance in real
+applications. Then what's worse is you try
+
+82
+00:08:15,005 --> 00:08:20,757
+to fix it by say randomly choosing between
+the left and the right, that doesn't work,
+
+83
+00:08:20,757 --> 00:08:25,615
+it still becomes square root of N. And
+that's a very long standing open problem
+
+84
+00:08:25,615 --> 00:08:30,010
+to find a natural, simple, efficient
+delete for binary search trees. That's
+
+85
+00:08:30,010 --> 00:08:35,582
+another one like merging in place, that
+you think there ought to be another easy
+
+86
+00:08:35,582 --> 00:08:40,935
+way to do it, but in 50 years no one's
+really discovered one. Now we're going to
+
+87
+00:08:40,935 --> 00:08:46,564
+look at something pretty close in the next
+lecture, but here's the situation that
+
+88
+00:08:46,564 --> 00:08:52,291
+we're left with. We have a binary search
+tree algorithm, which is fine in that
+
+89
+00:08:52,291 --> 00:08:57,680
+gives us lg N performance for search and
+insert, in a situation where we can think
+
+90
+00:08:57,680 --> 00:09:04,010
+that these things are happening randomly.
+But we're kind of stuck if we allowed
+
+91
+00:09:04,010 --> 00:09:09,512
+delete. In fact everything regenerates to
+square root of N, and we also have a
+
+92
+00:09:09,512 --> 00:09:15,176
+problem with, with the worst case if the
+keys happen to have some order in them our
+
+93
+00:09:15,176 --> 00:09:20,453
+trees are not going to be balanced at all.
+And that's going to make the difference
+
+94
+00:09:20,453 --> 00:09:25,861
+between acceptable and not acceptable
+performance. What we're going to look at
+
+95
+00:09:25,861 --> 00:09:30,780
+next time, called a red black minor search
+tree, will guarantee logarithmic
+
+96
+00:09:30,780 --> 00:09:35,682
+performance for all operations. So that's
+extremely significant and much better then
+
+97
+00:09:35,682 --> 00:09:41,169
+binary search trees but the delete
+operation for binary search trees shows us
+
+98
+00:09:41,169 --> 00:09:45,289
+the kind of complexity that we can
+encounter with working with these kinds of
+
+99
+00:09:45,289 --> 00:09:46,080
+data structures.

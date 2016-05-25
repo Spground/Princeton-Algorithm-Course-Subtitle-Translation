@@ -1,0 +1,306 @@
+Next we are going to talk about
+breadth-firsth search,
+Which is a completely different way to
+process all the vertices connected to a
+given vertex.
+It'll get the job done,
+But it has totally different properties
+that are useful in different ways for
+different applications.
+So, to understand a breadth-first search,
+we'll start right out with a demo.
+So, a breadth-first search is not a
+recursive algorithm.
+It uses a Q as a auxiliary data structure.
+And it's also is quite similar quite
+simple to explain.
+So what we're going to do is we're going
+to put the source vertex on a queue and
+then repeat the following until the queue
+is empty.
+Remove the next vertex from the queue in
+FIFO order then add to the queue all
+unmarked vertices that are adjacent to V
+and mark them and just keep doing that
+until the queue is empty.
+Let's see how that works on our example.
+This is a smaller example, just a six
+vertex graph with eight edges.
+So, add zero to the queue.
+So we just, take zero and put it on the
+queue,
+That's where we start.
+And now go into repeat until queue after
+remove a vertex,
+Add all the marked vertex adjacent to
+mark'em.
+So, we do qeue zero.
+And then, in order to process zero, we
+need to check all its adjacent vertices.
+So in this case, it's two, one and five.
+And again, the order depends on, how the,
+how the bag was constructed for, vertices
+adjacent to zero.
+So, we check two, And that is, not marked.
+So we have to add it to the queue.
+We check then we check one, That's not
+marked, so we add it to the queue.
+Then we check five, And that's not marked,
+so we add it to the queue.
+So, that's, we finished, processing zero,
+zero is done.
+So now, remove the next vertex from the
+queue.
+In this case it's two.
+We're going to take two off the queue, and
+process this by adding to the queue all
+the unmarked vertices that are adjacent.
+So the process two, we have to check zero,
+one, three, and four.
+We check zero, that's already marked, so
+we don't do anything.
+We check one, that's also already marked,
+so we don't do anythin. in fact, it's on
+the queue.
+We check three, and that one is unmarked
+so we mark it and add it to the queue.
+And then we check four, that one's
+unmarked, so we mark it and add it to the
+queue.
+So by the way I didn't mention but we're
+also keeping track of two, auxiliary data
+structures for this.
+One is the edge two array, which is the
+same as before.
+What edge did we use to get to this, so
+four.
+And we got to four from two.
+And two, we got to two from zero.
+So again, that's going to be a tree that
+gives us a path back to the source.
+And instead of marked, we also keep, we
+keep a more, detailed information, which
+is, the length of the path, cuz it's, we
+do it, 'cause it's easy to do it.
+Okay, so four, we checked four, and added
+it to the queue,
+And now we're done with two.
+So now we have one, five, three, and four
+all on the queue,
+And we're going to process them.
+And since we've marked everything all
+we're going to be doing now is checking
+vertices that are marked.
+So for one, we check zero and that's
+marked.
+Then we check two and that's marked,
+So then we're done with one.
+Next thing off the queue is five, And we
+check three and that's marked, and we
+check zero and that's marked, so we're
+done with five.
+And then three, we got to check five, and
+then four, and then two and they're all
+marked, and now we're done with three.
+And then finally the last one,
+Always the last one everybody else has
+marked,
+So connected, check three, Check two, and
+it's marked and we're done.
+So what this process the result of this
+computation again is a three rooted at the
+source and we can follow back through the
+three to get past from each node to the
+source.
+Not only that, we can get the distance the
+number of edges on the path from each node
+to the source.
+So that's a demo of breadth-first search.
+And next we'll take a look at properties,
+Of this algorithm.
+Alright. So now we've considered two
+different methods for processing all
+vertices in a graph.
+And actually, they're quite closely
+related, even though the computations are
+quite different.
+Essentially, breadth-first search uses
+recursion to corresponds to putting
+unvisited vertices on a stack.
+Breadth-first search explicitly, we put
+the invert, visited vertices on the queue.
+And actually, breadth-first search solves,
+another problem that, you know, often we
+want to solve, called the shortest path
+problem.
+Actually, the path that you get back from
+breadth-first search is the path from the
+source to the given vertex that uses the
+fewest number of edges.
+And we'll look at that, in just a minute.
+And the idea is that the breadth-first
+search examines the vertices in the graph
+and increasing distance from the source.
+So, let's take a look at that.
+So breadth-first, breadth-first search
+computes shortest path,
+That is it builds the data structure that
+we can answer the shortest path queries
+from the source with,
+From S to all other vertices in the graph
+and time proportial to E plus V, then
+[inaudible] vertices.
+And so let's look at why that is the case.
+So the first thing is, how does, how do we
+know it competes, computes shortest paths?
+Well, the intuition is and, you, you can
+fill in the details, the queue always
+contains,
+Some vertices of distance K from the
+source followed by some vertices of
+distance K plus one.
+So they're on a queue we're processing
+them in first in first out order.
+So say we're at a state when all of these
+vertices are, are on the queue. we're
+going to have process vertex zero, as soon
+as we get this one we'll delete vertex
+zero from the queue, and then when we're
+putting these adjacent ones on, we're
+adding the ones of distance two.
+But we're not going to process any of
+those until we're done with the ones of
+distance one and so forth.
+So it's not hard to show that always you
+have either one of the two distances from,
+from the source on the queue, and that
+means the first time we get to a vertex,
+that's the shortest path to that vertex.
+And again, the running time we only visit
+vertices once cuz we mark them.
+So it's time proportional to the number of
+vertices plus the number of edges in the
+graph.
+So that's breadth-first search properties
+and then here's the implantation, which is
+simply code for the basic method that we
+outlined in pseudocode.
+So our private instance variables are
+marked or in the demo, we used this to,
+But just for simplicity, let's use marked
+edge two, then, is how we get to the first
+vertex and then the source.
+And so, we have a constructor that builds
+those arrays same way as before and then
+calls BFS.
+So BFS builds a queue,
+That's what it's going to use.
+Then queues the source and marks the
+source.
+And then, this is just in code what we
+said in words before, while the queue is
+not empty,
+We pull off the next vertex from the
+queue, call it V.
+For everybody adjacent to V,
+We go ahead and check if it's marked, we
+ignore it and move to the next.
+If it's not marked then we put it on the
+queue mark it, and remember the edge.
+And again this is an example of the power
+of extraction and the utility of our
+design pattering, pattern.
+All we're doing in terms of the graph data
+type is being a client to go through all
+the adjacent vertices.
+But it allows us to implement this
+completely different algorithm in, in, in,
+really an accessible way.
+So that's the implementation of
+breadth-first search.
+Then the client for getting the pass back
+as be saying this as for, as for
+breadth-first search.
+So here's an old application of
+breadth-first search in, in computer
+networks.
+That's very important when you're
+communicating from one place to another,
+you want to get there in the fewest number
+of hops.
+This is the Arpanet.
+The, the predecessor of the, internet, as
+of July 1977.
+And things were slow and computers were,
+computers were small and slow.
+It's important to do these things in small
+number of hops.
+And with breadth-first search, you could
+take this graph and figure out, the
+shortest way to get from, one place to
+another.
+That's a typical application of
+breadth-first search.
+And here's another one,
+So called Kevin Bacon numbers.
+And nowadays actually you can type Bacon
+and an actor's name,
+And get the answer to this.
+So there's if, if you're not, not familiar
+with it you can become familiar with it by
+Kevin Bacon numbers.
+The idea is you have a graph, where, the
+vertices are actors, and the edge, and
+think of an edge connecting two actors, if
+they are in a movie together. and so what
+you wabt to find is given an actor how,
+what's the shortest way to get to Kevin
+Bacon, connected by, so, edges were actors
+and edges were movies,
+In connection of actors in the movie.
+So Buzz Mauro and Tatiana Ramirez were in
+Sweet Dreams together, and these two
+actors were in this movie together and so
+forth.
+And you get a way to Kevin Bacon from any
+actor.
+And this is another pop culture
+application, this is so called six
+degrees, which you can get to anyone in
+six steps in this way.
+So that's all implementation of.
+Breadth first search on the Kevin Bacon
+graph,
+Where we include one vertex for each
+performer,
+One vertex for each movie.
+Connect the movie to all performers that
+appear in the aovie And the shortest path
+from Kevin Bacon to every actor, if you
+follow through, back through that path,
+you get.
+To. You, you get the proof of the Kevin
+Bacon number for each actor and we have
+implementation of that on the book side.
+So that's another example.
+And actually there's maybe even older or
+similar age example that mathematicians
+are fond of and that is called the,
+So called Erdos number.
+So in this one it's mathematicians, the
+nodes are mathematicians,
+And there's an edge if the two
+mathematicians have co-authored a paper.
+And Paul Erdos was a, a very productive
+Hungarian mathematician who traveled the
+world co authoring papers with people all
+over the world.
+A, a very interesting and prolific
+character, who actually did quite a bit of
+research on properties of graphs.
+And maybe even more so than Kevin Bacon.
+The idea is he was so prolific that pretty
+much every mathematician has a pretty low,
+Erdos number.
+So that's our second example of a
+graph-processing algorithm breadth-first

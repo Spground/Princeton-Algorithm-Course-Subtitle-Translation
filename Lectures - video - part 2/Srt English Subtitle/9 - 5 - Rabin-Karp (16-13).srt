@@ -1,0 +1,819 @@
+1
+00:00:00,000 --> 00:00:05,846
+.
+And that's still not the end of the story.
+
+2
+00:00:05,846 --> 00:00:11,131
+We're gonna look at one more really
+interesting al-, algorithm that has, lots
+
+3
+00:00:11,131 --> 00:00:14,420
+of important applications, called a Rabin
+Karp Algorithm.
+
+4
+00:00:14,596 --> 00:00:18,590
+Invented by two Turing award winners.
+Michael Rabin and Dick Karp.
+
+5
+00:00:18,793 --> 00:00:24,028
+I can remember hearing about this
+algorithm, from my friend, Dick Lipton,
+
+6
+00:00:24,028 --> 00:00:29,127
+who explained it to me over the phone,
+and, I, he explained it to me in about,
+
+7
+00:00:29,127 --> 00:00:33,751
+fifteen seconds, and I realized I had to
+have this, in the book.
+
+8
+00:00:33,954 --> 00:00:38,850
+And, so now, here we are, presenting it.
+Th, that was, in the 70's.
+
+9
+00:00:38,850 --> 00:00:43,755
+So the basic idea for the Rabin-Karp
+algorithm is, has to do with hashing.
+
+10
+00:00:43,941 --> 00:00:47,853
+In it's a particular kind of hashing,
+called modular hashing.
+
+11
+00:00:47,853 --> 00:00:51,516
+It's just a particular way of computing a
+hash function.
+
+12
+00:00:51,516 --> 00:00:56,235
+It's easiest to think about in terms of
+numbers, although it, it works in all
+
+13
+00:00:56,235 --> 00:01:00,271
+kinds of situations.
+Because remember everything in a computer
+
+14
+00:01:00,271 --> 00:01:05,363
+is encoded as a byte, which can be treated
+as bytes which could be treated as binary
+
+15
+00:01:05,363 --> 00:01:09,253
+numbers.
+And so what we are going to do is in this
+
+16
+00:01:09,253 --> 00:01:13,400
+case We saw a pattern characters are
+decimal digits.
+
+17
+00:01:13,400 --> 00:01:18,980
+And so, we'll treat a sequence of pattern
+characters as the decimal number.
+
+18
+00:01:19,360 --> 00:01:23,872
+And modular hashing is, just take a big
+prime.
+
+19
+00:01:23,872 --> 00:01:30,692
+And compute the remainder when you divide
+your number by that prime.
+
+20
+00:01:30,692 --> 00:01:38,715
+So in this case, 613 is the remainder that
+you get when you divide 26,535 by 997.
+
+21
+00:01:38,715 --> 00:01:45,033
+So you can check that.
+So that's what we're going to use as the
+
+22
+00:01:45,033 --> 00:01:47,340
+hash function.
+And that.
+
+23
+00:01:47,340 --> 00:01:53,251
+This type of hashing is widely used.
+You have a prime number, we talked about
+
+24
+00:01:53,251 --> 00:01:58,308
+it when we talked about hashing.
+It satisfies, it seems to satisfy
+
+25
+00:01:58,308 --> 00:02:03,831
+something like the uniform hash assumption
+under various circumstances.
+
+26
+00:02:03,831 --> 00:02:10,132
+So that's our pattern, a five character
+pattern, and we're going to keep the small
+
+27
+00:02:10,132 --> 00:02:16,821
+hash values 613 and this is going to
+generalize to longer patterns, and we'll
+
+28
+00:02:16,821 --> 00:02:22,540
+talk about that in a minute.
+So now, suppose we have this text.
+
+29
+00:02:22,778 --> 00:02:27,383
+And our pattern happens to occur here in
+the text.
+
+30
+00:02:27,383 --> 00:02:34,768
+And what the method is built on is the
+idea of you take the first five characters
+
+31
+00:02:34,768 --> 00:02:41,200
+in the text and compute its hash value.
+In this case, 31,415, mod down 97, is 508.
+
+32
+00:02:41,382 --> 00:02:44,364
+So that's different so that's not the
+pattern.
+
+33
+00:02:44,547 --> 00:02:49,537
+Maybe take the next five characters,
+that's 201. That's diffent It's not the
+
+34
+00:02:49,537 --> 00:02:51,120
+pattern.
+Take the next one.
+
+35
+00:02:51,355 --> 00:02:58,098
+That's 715, different it's not the pattern
+15,926 by 97 is 971, it's not the pattern.
+
+36
+00:02:58,098 --> 00:03:03,587
+Eventually, when you have the text
+characters that are the same as the
+
+37
+00:03:03,587 --> 00:03:08,920
+pattern characters you're gonna get the
+same result, it's a match.
+
+38
+00:03:08,920 --> 00:03:15,114
+If the pattern hat, hash equals the text
+sub-string hash you, you have the
+
+39
+00:03:15,114 --> 00:03:19,787
+potential for a match.
+And that's what the algorithm is based on.
+
+40
+00:03:19,787 --> 00:03:25,892
+Now it seems like, we're doing a lot of
+calculation, with, making numbers out of
+
+41
+00:03:25,892 --> 00:03:29,893
+these things.
+And, and keep doing modular arithmetic on
+
+42
+00:03:29,893 --> 00:03:33,612
+it.
+But actually there's, a really, simple way
+
+43
+00:03:33,612 --> 00:03:36,910
+to, severely limit the amount of
+calculation.
+
+44
+00:03:37,121 --> 00:03:40,490
+And give a quick linear algorithm for,
+search.
+
+45
+00:03:40,490 --> 00:03:46,582
+Sub-string search.
+So first thing is how to compute the hash
+
+46
+00:03:46,582 --> 00:03:51,030
+function.
+So we take the, just convert the Math.
+
+47
+00:03:51,030 --> 00:03:56,639
+So R's our Radix.
+So in this example, we're using ten so we
+
+48
+00:03:56,639 --> 00:04:02,537
+have decimal numbers.
+And then the digits, say t's of i That's
+
+49
+00:04:02,537 --> 00:04:08,629
+the text characters.
+So we have a number x of I, which is the,
+
+50
+00:04:10,040 --> 00:04:18,366
+M characters starting at position I.
+And that's just in Math, ti<i>R to the M-1</i>
+
+51
+00:04:19,242 --> 00:04:31,850
+So you know, in this case that's
+two<i>10000+6<i>1000+5<i>100+3<i>10+5 that's just</i></i></i></i>
+
+52
+00:04:31,850 --> 00:04:36,748
+Math for that.
+And our goal is so it's an N digit base
+
+53
+00:04:36,748 --> 00:04:42,764
+based our integer modular Q And our and
+our goal is to do the math.
+
+54
+00:04:42,764 --> 00:04:50,412
+That gives us the remainder that we would
+get when dividing that by Q well there's
+
+55
+00:04:50,670 --> 00:04:56,985
+really easy method called Horner's Method
+that we can use to evaluate a degree in
+
+56
+00:04:56,985 --> 00:05:02,992
+polynomials just with a multiplied M
+multiply and add. And we can do the
+
+57
+00:05:02,992 --> 00:05:10,308
+modular computation all the way through at
+each step, to keep the numbers less than q
+
+58
+00:05:10,308 --> 00:05:16,581
+and we still get the same result.
+And so the idea is, you multiply by R.
+
+59
+00:05:16,581 --> 00:05:24,650
+You go from left to right through the
+digits and you just multiply by R and add
+
+60
+00:05:24,650 --> 00:05:28,886
+the digit, and then do mod q at every
+time.
+
+61
+00:05:28,886 --> 00:05:37,661
+So we start with two mod 97 is two.
+To six mod 987 is two<i>10+6 mod 987 and</i>
+
+62
+00:05:37,661 --> 00:05:41,839
+that's 26.
+And then I take that value.
+
+63
+00:05:42,191 --> 00:05:47,707
+Multiply by ten and add five that's 265
+mod 997.
+
+64
+00:05:48,059 --> 00:05:54,750
+In that case it's, it's 265.
+So 265<i>10+3 is 2653.</i>
+
+65
+00:05:54,750 --> 00:06:00,933
+Our remainder is divided by 997, it's 659,
+so even though our number gets bigger than
+
+66
+00:06:00,933 --> 00:06:08,031
+997, might take them out every time, we
+keep our running total less than 997.
+
+67
+00:06:08,031 --> 00:06:16,051
+And then the last step is to take the 659.
+Basically we've thrown out a bunch of
+
+68
+00:06:16,051 --> 00:06:26,389
+multiples of 997 that we don't care about.
+And 659<i>10+5 mod 997 is exactly equal to</i>
+
+69
+00:06:26,389 --> 00:06:30,350
+26535 mod 997 and that's 613.
+That's our value.
+
+70
+00:06:31,123 --> 00:06:39,412
+So that's A using Horner's method we got
+a, well known linear time method to do
+
+71
+00:06:39,412 --> 00:06:43,550
+compute or hash function with this simple
+code.
+
+72
+00:06:43,764 --> 00:06:50,206
+And this notice will work even for a huge
+key that we wouldn't compute a hundred
+
+73
+00:06:50,206 --> 00:06:55,574
+dig, convert a hundred digit key in to
+some number to do the calculation.
+
+74
+00:06:55,789 --> 00:07:02,517
+We do one digit at a time using Horner's
+method and then we have no limit because
+
+75
+00:07:02,517 --> 00:07:07,170
+we're always keeping our numbers less than
+our prime queue.
+
+76
+00:07:07,170 --> 00:07:12,130
+So that's a first step, so no matter how
+big the pattern is,
+
+77
+00:07:12,431 --> 00:07:17,630
+We can efficiently compute a hash or,
+since that is the first step.
+
+78
+00:07:17,956 --> 00:07:28,827
+So now the second step for the Rabin Karp
+algorithm is to realize that if we know xi
+
+79
+00:07:28,827 --> 00:07:38,502
+mod q we can efficiently compute xi+1 mod
+q cause they have a lot of digits in
+
+80
+00:07:38,502 --> 00:07:44,372
+common.
+And you can just do a little Math to get
+
+81
+00:07:44,372 --> 00:07:53,310
+to xi+1 you take. Xi, we don't care about
+the first digit anymore, so you subtract
+
+82
+00:07:53,310 --> 00:07:57,380
+it off.
+Multiply by r and then add the new digit.
+
+83
+00:07:57,380 --> 00:08:03,610
+That's like one step of Horner's method.
+Now, then you have to take that
+
+84
+00:08:03,610 --> 00:08:08,261
+computation and you can do mod q all the
+way through.
+
+85
+00:08:08,261 --> 00:08:16,158
+All you have to do is pre-compute r to the
+n+1 mod q And so here's the computation
+
+86
+00:08:16,158 --> 00:08:22,476
+for one example.
+If we're at this position 41592 and we
+
+87
+00:08:22,476 --> 00:08:32,479
+know 41592 mod q we can compute 15926 mod
+q by subtracting off 40,000.
+
+88
+00:08:32,753 --> 00:08:41,596
+The TiR-1 and that gives us just the four
+digits, multiply by the radix add the new
+
+89
+00:08:41,596 --> 00:08:51,351
+trailing digit and that's the new value.
+And if we just keep that all mod q then we
+
+90
+00:08:51,351 --> 00:09:02,683
+can with just a multiply and an add at
+each step we can keep a running total of
+
+91
+00:09:02,683 --> 00:09:07,874
+the Modular hash value of the five digit
+thing.
+
+92
+00:09:07,874 --> 00:09:17,266
+So, for example, this is the case that,
+that we just did 4152 on 997 is, is done
+
+93
+00:09:17,266 --> 00:09:25,021
+by ex, exactly as we said we subtract and
+then add and then multiply by the radix
+
+94
+00:09:25,279 --> 00:09:29,415
+mod 997.
+So, doing those calculations all the way
+
+95
+00:09:29,415 --> 00:09:33,810
+through the search, we eventually get to a
+match.
+
+96
+00:09:34,125 --> 00:09:38,725
+That's again remarkably small amount of
+code.
+
+97
+00:09:38,978 --> 00:09:45,873
+We're going to keep a long random prime.
+Just keep it a little smaller than the
+
+98
+00:09:45,873 --> 00:09:54,331
+biggest long value to avoid overflow.
+So we pre-compute r to the m - one mod q
+
+99
+00:09:54,331 --> 00:10:00,249
+'cause that's the little calculation that
+we have to do.
+
+100
+00:10:00,249 --> 00:10:05,521
+We compute the hash function.
+And for the pattern.
+
+101
+00:10:05,521 --> 00:10:13,914
+And then, with those pre-computations, the
+search is extremely straight forward.
+
+102
+00:10:14,236 --> 00:10:22,521
+So we take our current hash value.
+And this is just, add a q make sure it's
+
+103
+00:10:22,521 --> 00:10:26,881
+positive.
+And subtract off rm times the first
+
+104
+00:10:26,881 --> 00:10:31,750
+character in then add in the next
+character mod q.
+
+105
+00:10:32,011 --> 00:10:37,229
+And that gives us the text hash for the
+current position.
+
+106
+00:10:37,229 --> 00:10:42,968
+And then we compare to see if that's equal
+to the pattern hash.
+
+107
+00:10:43,229 --> 00:10:50,359
+Now there's this is an introduction to the
+idea of randomized algorithms.
+
+108
+00:10:50,620 --> 00:10:57,490
+There's two ways to proceed from here.
+One way called Monte Carlo version.
+
+109
+00:10:57,738 --> 00:10:57,955
+Where we guaratee that the algorithm is
+gonna be quick but with low probability,
+
+110
+00:10:57,955 --> 00:11:06,694
+it might get the answer wrong. In that
+version we don't ever bother to check
+
+111
+00:11:06,694 --> 00:11:06,694
+whether the go through and check all
+digits to see if there's actually a match.
+
+112
+00:11:14,580 --> 00:11:25,723
+We take queue large enough so that we're
+confident the probability of the, to, two
+
+113
+00:11:25,726 --> 00:11:30,736
+digit numbers or two m digit numbers
+having the same hash value.
+
+114
+00:11:30,736 --> 00:11:36,320
+And so low that we're not gonna worry
+about it, that's called the Monte Carlo
+
+115
+00:11:36,320 --> 00:11:40,113
+version.
+The Las Vegas version is guarateed to get
+
+116
+00:11:40,113 --> 00:11:44,551
+the right answer.
+In that one we would go and check to make
+
+117
+00:11:44,551 --> 00:11:48,774
+sure that the M characters match if we
+have a hash match.
+
+118
+00:11:48,989 --> 00:11:55,646
+And then if it could be that with such at
+a low probability could be that there's a
+
+119
+00:11:55,646 --> 00:11:59,440
+hash match but not a substring match.
+Then we're just.
+
+120
+00:11:59,440 --> 00:12:03,766
+Move on.
+And from a theoretical point of view
+
+121
+00:12:04,054 --> 00:12:11,650
+there's some very extremely low
+possibility that one could be slow.
+
+122
+00:12:11,650 --> 00:12:15,494
+But lets look over at what the analysis
+says.
+
+123
+00:12:15,750 --> 00:12:22,499
+So the theory says that if you take a
+sufficiently large random prime say mn^
+
+124
+00:12:22,499 --> 00:12:28,650
+three So a long value maybe you can get
+that and remember n is huge.
+
+125
+00:12:28,650 --> 00:12:36,594
+Then the probability of a false collision
+is about 1/n. so you know in a billion
+
+126
+00:12:36,594 --> 00:12:43,258
+things you might get, you might get 1/n,
+you might get a false collision.
+
+127
+00:12:43,514 --> 00:12:49,400
+So in practice we choose actually q just
+to be, there's no reason not to choose as
+
+128
+00:12:49,400 --> 00:12:54,796
+large as we possibly can, not related to m
+and n.m And then the probably collision is
+
+129
+00:12:54,796 --> 00:13:00,653
+going to be about 1/q. So we're going to
+take it to be like the biggest law, and
+
+130
+00:13:00,653 --> 00:13:04,404
+that means that probably collision is
+extremely small.
+
+131
+00:13:04,601 --> 00:13:10,326
+And then you can take your chances.
+You can do a Monte Carlo version where you
+
+132
+00:13:10,326 --> 00:13:13,814
+just say I got a match because I got a
+hash match.
+
+133
+00:13:13,814 --> 00:13:16,710
+And be confident in the laws of
+probability.
+
+134
+00:13:16,944 --> 00:13:21,548
+And not worry about the client getting the
+wrong answer.
+
+135
+00:13:21,782 --> 00:13:27,634
+Or you can have the Las Vegas version
+where you go, go ahead and return the
+
+136
+00:13:27,634 --> 00:13:33,208
+correct answer.
+And. And be confident that your client's
+
+137
+00:13:33,208 --> 00:13:40,288
+not gonna run into a slow case cuz the
+probability is so, so tiny, 1/q, that you
+
+138
+00:13:40,288 --> 00:13:45,370
+don't have to worry about it.
+That's the Rabin-Karp algorithm.
+
+139
+00:13:45,554 --> 00:13:48,690
+Now, why look at this algorithm?
+It's linear time.
+
+140
+00:13:48,874 --> 00:13:51,702
+We have other algorithms that are linear
+time.
+
+141
+00:13:51,702 --> 00:13:56,744
+One of the key reasons to, be interested
+in Rabin-Karp is that it's easy to extend
+
+142
+00:13:56,744 --> 00:14:01,724
+it to more complicated situations.
+So, say you wanna look for one of, several
+
+143
+00:14:01,724 --> 00:14:05,413
+different patterns.
+Well, you just compute the hatches for
+
+144
+00:14:05,413 --> 00:14:10,946
+those patterns, and then look for any one
+them Use, a symbol table, to look for'em.
+
+145
+00:14:11,131 --> 00:14:16,172
+So, that's a much more, general capability
+than, we can provide with the other
+
+146
+00:14:16,172 --> 00:14:18,509
+methods.
+It also can be extended to do
+
+147
+00:14:18,509 --> 00:14:21,996
+2-dimensional search and other things like
+that.
+
+148
+00:14:22,215 --> 00:14:27,979
+For straight suffering search, it's gonna
+be a little slower because, there's,
+
+149
+00:14:28,198 --> 00:14:33,232
+interloop it's kind of long, the
+arithmatic operation, are gonna be a
+
+150
+00:14:33,232 --> 00:14:39,725
+little slow, if you wanna do the Las Vegas
+version you have to back up the text and
+
+151
+00:14:39,725 --> 00:14:46,219
+you have this, Monte Carlo Las, Las Vegas
+thing, and you should think about, writing
+
+152
+00:14:46,219 --> 00:14:52,421
+code to extend it to look for any one of p
+possible patterns, thats, an interesting,
+
+153
+00:14:52,640 --> 00:14:58,170
+Algorithmic puzzle as I mentioned is not
+so difficult to solve.
+
+154
+00:14:58,170 --> 00:15:04,521
+So here's our summary.
+We started with a brute force algorithm,
+
+155
+00:15:04,521 --> 00:15:10,667
+and although typically you don't have this
+worst case thing.
+
+156
+00:15:10,667 --> 00:15:18,863
+It works fairly well for typical cases.
+And then we've got the Knuth-Morris-Prath
+
+157
+00:15:18,863 --> 00:15:24,600
+Method that can guarantee linear time and
+has no backup.
+
+158
+00:15:24,831 --> 00:15:29,541
+And maybe uses extra space unless you use
+Pratt's version.
+
+159
+00:15:29,541 --> 00:15:37,263
+The Aboriamor who can get the running time
+down to n/m which is quite an amazing jump
+
+160
+00:15:37,494 --> 00:15:43,826
+and quite useful and in a Rabin Karp
+that's very flexible and extends through
+
+161
+00:15:43,826 --> 00:15:48,845
+all these other situations.
+This is a nice mac, microcosm of
+
+162
+00:15:49,077 --> 00:15:56,180
+algorithmic technology where, really
+interesting, and unique and path breaking
+
+163
+00:15:56,180 --> 00:16:01,792
+algorithmic ideas give us.
+A good algorithm, for even such a simple
+
+164
+00:16:01,792 --> 00:16:05,527
+problem.
+That's an introduction to pattern

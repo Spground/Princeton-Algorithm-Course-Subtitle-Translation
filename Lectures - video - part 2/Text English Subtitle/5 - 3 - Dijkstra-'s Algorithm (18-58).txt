@@ -1,0 +1,441 @@
+Now we'll look for, at Dijkstra's
+algorithm for finding shortest paths in
+graphs with non-negative edge weights.
+Dijsktra is a famous figure in computer
+science.
+And you can amuse yourself by reading some
+of the things that he wrote.
+He was a very prolific writer, and, kept
+notebooks.
+And then here really some of his, famous
+quotes.
+Now, you need to may know something about,
+old languages to appreciate some of these.
+For example, COBOL was one of the first
+business oriented languages, programming
+languages and it tried to, make it so that
+programs kind of read like English
+language sentences.
+But purists in computer science, such as
+Dijkstra really didn't like that language
+as you can tell,
+The use of COBOL cripples the mind.
+It's teaching should therefore be regarded
+as a criminal offense.
+Actually, when I first came to Princeton
+and was setting up the department here,
+One of, there was a big donor, who
+actually, wanted to have me fired and the
+department closed down because we wouldn't
+teach COBOL.
+I didn't know about Dijkstra's quote at
+that time,
+I wish I had.
+And there's some other opinions that
+Dijkstra had.
+You can amuse yourself on the web, reading
+some of his writing,
+But he was, here's another one that's
+actually pretty relevant today.
+Object-oriented programming is an
+exceptionally bad idea that could only
+have originated in California.
+Dijkstra worked in Texas, the University
+of Texas for a while, and of course, came
+from the Netherlands.
+Okay.
+But, Dijkstra, did, invent, a very, very
+important algorithm, that's very widely
+used for solving the shortest paths
+problem.
+It's the one that's in your maps app and
+in your, car, and many, many other
+applications.
+So let's take a look at how that algorithm
+works.
+It's a very simple algorithm.
+We, consider, what we're going to do is
+consider the vertices
+In increasing order of their distance from
+the source.
+So and a way we're going to do that is
+take the next vertex, add it to the tree
+and relax all the edges that point from
+that vertex.
+So let's talk about it in terms of a demo
+and then we'll look at the code.
+So our mandate is to consider vertices in
+increasing order of distance from the
+source.
+So, our source is zero in this case so
+what vertices are closest to the source?
+Well, we can look at the edges that point
+from that vertex.
+Well, start out with vertex is zero, is
+the distance zero from the source, so we
+pick it.
+Then we add that vertex to the shortest
+paths tree, and relax all its edges.
+And relaxing all the edges pointing from
+zero in this case is just going to uptake
+the, this two and edgeTo entries for five,
+eight, nine.
+So in this case, this says that the
+shortest path from zero to one is to go
+along zero, one and that's distance five
+and from zero to four, it's to go along
+zero, four and that's distance nine, And
+zero to seven, let's go take it zero,
+seven that's distance eight.
+And the edge weights are positive.
+We're not going to find a shorter path to
+anyone, of what,
+Sorry.
+The edge weights are positive and those
+are the shortest paths that we know so far
+to the vertices.
+Now, the first key point of the algorithm
+is take the closest one.
+If you take the closest one, in this case,
+it's one, Then we know we're not going to
+find a shorter, shorter path to one.
+The only other way to go out of zero is to
+take one of these other edges, and they're
+longer.
+So, and all the edge weights are positive.
+So we're not going to find a shorter way
+from zero to one, than to take the edge,
+0-1.
+So that means that edge 0-1 is on the
+shortest path tree,
+That's what the algorithm says.
+Take the next closest vertex to the
+source. in this case, it's one.
+And then,
+We're going to add that edge, that vertex
+to the tree.
+And relax all the edges that point from
+that.
+So now both zero and one are on the tree,
+so now let's look at the edges pointing to
+that and we have to relax each one of
+those.
+So in this case if you go from one to
+four, Then we look at four, we know a path
+of length nine.
+And one to four doesn't give us a shorter
+path, so we leave that edge alone.
+One to three gives us a shorter path to
+three which is going to be twenty, cuz you
+went from zero to one, and then one to
+three is of length twenty.
+And one to two, also, we didn't know a way
+to two, But now we know now we know one,
+or better one is seventeen.
+So that completes the relaxation of all
+the edges pointing from one.
+So now we have zero and one on the tree,
+And.
+We would, consider next,
+The next closest vertex to the source.
+So what we have in this two is the
+shortest paths to all the vertex, vertices
+that we've seen so far and this one says
+that the we've been to the zero and one so
+the next closest one is seven, which is
+distance eight.
+So we are going to choose vertex seven.
+And again, that's the shortest path we've
+seen so far, we are not going to find a
+shorter one cuz to get to every other
+vertex is longer. and so, we know it's on
+the shortest paths tree, and now we're
+going to relax all the edges pointing from
+seven.
+In this case, both of them, the one from
+seven to two, gives us a shorter way to
+two than what we knew before, and the one
+from seven to five gives us a shorter way
+to five than we knew before.
+Well, we hadn't been to five before.
+So that relaxes seven, so now seven is on
+the shortest paths tree.
+So now 4's the next closest path vertex to
+the source.
+From the edge zero, four which is of
+length nine.
+So that's the one that we're going to pick
+next for the tree.
+We're not going to find a shorter path
+there,
+And we relax, relax along all its edges.
+In this case, we find a shorter path to
+five than we knew before and a shorter
+path to six, well, we visit six for the
+first time.
+Okay, so that's four, so now we just have
+to worry about two, three, five, and six,
+and five is the one over there, and so we
+select vertex five, Relax along its edges.
+In this case those edges both give us
+better paths than we knew before.
+So now we're left with three vertices, and
+two is the winner.
+This is the two from the sources fourteen,
+To three, it's twenty and to six, it's 26.
+Relax it's edges, and it gives us again,
+new shorter paths to both three and six.
+And then the last, this next to last step
+is to pick three and that does not give us
+a new way to six, and then finally we pick
+six.
+And then we now know,
+The shortest path to all the vertices from
+vertex zero.
+If we just take the edgeTo edges,
+That's from one, to one you take zero, to
+five you take two, And so forth you get
+the shortest paths tree and that gives the
+shortest way to get from the source to
+every vertex.
+That's a simulation of Dijkstra's
+algorithm.
+Here's a demo of Dijsktra's algorithm
+running in a large digraph.
+So the source is the protects the center
+with the open circle and you can see it
+considers the vertices in the graph in
+order of their distance from the source.
+Now you can see this is maybe like a lake
+in the middle of the graph,
+And so it's not going to move on from
+those vertices.
+It's going to take a little while to get
+around the lake.
+And again, if, this visualization is
+produced by our code,
+Then it, and it gives a very, natural
+feeling for the way that the algorithm
+works,
+This, in principle. And I think, in fact,
+in many cases, is what your, car does when
+you turn the map system on,
+It computes the shortest path to
+everywhere,
+And then it's all ready when you ask for a
+certain place, how to get there.
+So here's just, starting from another
+point in the graph.
+You have, if you happen to live at a
+corner of the Earth, then it's going to be
+slightly longer to get to the other
+corner.
+And, a nice feeling for how the algorithm
+gets its job done.
+Again, when it gets into those blank
+areas, it takes a little while to get over
+to the other side.
+And of course if we had islands, if we had
+little roads in the middle there that were
+not connected,
+Then we know where to get to them from the
+source and we wouldn't see them.
+And that's fine for the way our algorithm
+works.
+We just leave that out of the demo and the
+proof to avoid adding an extra comment
+about that for every algorithm.
+That's a visualization of Dijkstra's
+algorithm on a large graph.
+So, so how do we prove it's correct?
+Well, essentially we've prove that it's an
+instance of the generic algorithm.
+So, first thing is that every edge is
+relaxed exactly once.
+Every time we, everytime we put a vertex
+onto the tree, we relax all the edges that
+come from that vertex and we never
+reconsider the vertex.
+And what does relaxation do?
+Relaxation ensures that after the
+relaxation, either way there was before,
+afterwards, you have the distance to w is
+less than or equal the distance to v plus
+e to the, e plus the way to the edge.
+Either it's equal cuz we just made it that
+way, or it's less than it was before and
+the edge was not relevant.
+And this inequality is going to hold for
+every an, entry for every edge
+corresponding to every edge, for just two
+entries corresponding to every edge
+because number one, the, these two values
+are always increasing.
+We never I'm sorry, we're always
+decreasing.
+The only thing we ever change, only reason
+we ever change distTo w is to make it
+smaller.
+If we, if we found an edge that would make
+it bigger we ignor that edge,
+So it's always decreasing.
+So when we change distTo w, we're not
+going to make that inequality holds.
+We're just going to make it better.
+And this distTo v is not going to change
+at all.
+Once we relax an edge from a vertex, we're
+done with that vertex.
+We're not going to process that at all.
+So, then when we're done we have the
+optimality conditions hold that exactly is
+the optimality condition.
+And, not only that, we have a path from
+the source to every vertex.
+So that's the correctness proof for
+Dijkstra's algorithm based on the
+optimality conditions.
+Here's the code.
+It's similar to code that we've seen
+before.
+We're going to use the indexed priority
+queue that allows us to implement the
+decreased key operation.
+And we have our edgeTo and distTo arrays
+that are part of the shortest paths
+computation and the goal of the shortest
+paths computation.
+So we initialized the constructor,
+initializes those rays and including the
+Index
+Minimum PQ. and we start out with all the
+distances infinity except for the distance
+of the source is zero.
+We put the source on the priority Q and
+then what we're going to do is take the,
+Edge that closest to the source off the
+priority.
+That's on the priority queue off and then
+relax all the edges that are adjacent to
+that, so I'm using our standard iterator
+to get all the edges that emanate from
+that vertex and relax them. And then the
+relax code is just like the code that was
+showed when describing relaxation, except
+that it also updates the priority queue.
+If the, vertex, that, that edge goes to is
+on the priority queue, it gives a new
+shorter way to get to that,
+So we have to, decrease the key on the
+priority queue,
+Cuz if it's not on the priority queue, we
+insert it,
+And that's it.
+That's a complete implementation, of
+Dijsktra's algorithm using modern data
+structures.
+Now, this algorithm might seem very
+familiar than, if you've been paying
+attention.
+It's essentially the same algorithm as
+Prim's algorithm.
+The difference is that, in both cases,
+we're building what's called a spanning
+tree of the graph.
+But in Prim's algorithm, we take a vertex
+that, that's not on the tree using the
+rule of let's take the vertex that's
+closest to the tree, anywhere on the tree,
+Closest to some vertex on the tree.
+For Dijsktra's algorithm, we take next,
+the vertex that's closest to the source
+through a path, they go through a tree and
+then into a non-tree vertex.
+That's the difference and the differences
+in the code have to do with the fact that
+Prim's algorithm is for an undirected
+graph, Dijsktra's algorithm is for a
+directed graph,
+But essentially, they're the same
+algorithm.
+And actually, several of the algorithms
+that we've talked about are in this same
+family.
+They compute a spanning tree.
+I have, you, you have a tree that takes
+care of where that records where you've
+been in the graph,
+From every vertex, back to where you
+started.
+Then you used different rules for choosing
+which vertex to add next.
+For breadth-first search, you use a Q, for
+depth-first search, you use something like
+a stack and then you have to decide what
+to do, if you encounter a vertex that
+you've been to before.
+But many graph algorithms use this same
+basic idea.
+So in particular, when we are talking
+about what the running time of Dijsktra's
+algorithm, it depends on what priority Q
+the implementation we use,
+And it's the same considerations as for
+Prim's algorithm.
+We have V insert operations, every vertex
+goes on to the priority queue. V
+delete-min, every vertex comes off the
+priority queue. and for every edge, in the
+worst case, we could compute decrease-key
+operation.
+So, the original implementations of
+Dijsktra's algorithm used an unordered
+array,
+Which would mean that it would take time
+proportional to V to find the minimum,
+To find the vertex closest to the source.
+So the total running time would be
+proportional to V squared.
+That's not adequate for the huge sparse
+graph that we see in practice today like
+the map in your car.
+So, the binary heap data structure, makes
+the,, makes it feasible to run this
+algorithm.
+And that's where all the operations take
+time proportional to log V.
+We have to use the indexing trick that we
+talked about last time to support
+decrease-key.
+But still, we get a total running time of
+E log V,
+Which makes it feasible.
+And just as with Prim's algorithm, by
+using a implementation of the priority
+queue that can do a faster decrease-key,
+you can get a faster algorithm.
+And in, in practice something like a 4-way
+hit is going to give quite a fast
+algorithm.
+And so, more expensive to insert and t-,
+to insert but much faster to delete min in
+decrease key.
+And again, there's a theoretical data
+structure that's not useful in practice.
+It gets the running time down to E + V log
+V.
+Of course, if your graph, graph is dense,
+And again, the examples I used, they're
+not.
+The array implementation is optimal, we
+can't do any better.
+We have to go through all the edges and
+might as well find the minimum, at the
+same time.
+But in, in, in practice, people use binary
+heaps, for sparse graphs.
+I maybe going to four way,
+If, the performance is really critical.
+The bottom line is, we have, extremely
+efficient implementations for the huge
+graphs that arise in practice nowadays.

@@ -1,0 +1,629 @@
+1
+00:00:03,680 --> 00:00:10,108
+Okay, so next we'll look at what the idea
+of the classes P and NP mean in terms of
+
+2
+00:00:10,320 --> 00:00:16,608
+actual problems we're looking at solving.
+we want to classify our problems the same
+
+3
+00:00:16,608 --> 00:00:22,966
+way as which scientists classify elements.
+And the key technique they're going to,
+
+4
+00:00:22,966 --> 00:00:29,406
+that we're gonna use is reduction. So the
+problem that we're gonna start with. That
+
+5
+00:00:29,406 --> 00:00:35,709
+is, the key to this theory is the Boolean
+satisfiability problem. and we talked
+
+6
+00:00:35,709 --> 00:00:42,612
+about at the beginning, it's not that
+different than Gaussian than systems
+
+7
+00:00:42,612 --> 00:00:47,939
+linear equations. It's just that
+everything has to be Boolean variables.
+
+8
+00:00:48,164 --> 00:00:55,228
+and so. given a system of boolean
+equations, find a solution. and. Even on
+
+9
+00:00:55,228 --> 00:01:02,952
+it's own, it's a very significant problem.
+it Has come, it comes up, and, and people
+
+10
+00:01:02,952 --> 00:01:08,644
+solve huge and, and face huge
+satisfiability problems in trying to
+
+11
+00:01:08,871 --> 00:01:15,095
+understand whether trying to prove whether
+software, to verify software, that
+
+12
+00:01:15,095 --> 00:01:22,380
+software works correctly. Also, hardware
+for design automation. people model what's
+
+13
+00:01:22,380 --> 00:01:29,286
+going on with huge satisfiability problems
+and solve them. it's, it's so basic that
+
+14
+00:01:29,514 --> 00:01:35,350
+it even arises in, in, in physics, and
+scientific studies, and. The so-called,
+
+15
+00:01:35,592 --> 00:01:42,373
+mean field diluted spin class model. It's
+a very fundamental, problem that is just,
+
+16
+00:01:42,616 --> 00:01:50,882
+about, logical reasoning about what's
+going on, in, in some complex system. now
+
+17
+00:01:50,882 --> 00:01:57,728
+the question is, so it's a search problem.
+we know that and what that means is that
+
+18
+00:01:58,817 --> 00:02:06,049
+if we have a solution, we can efficiently
+check that we have a solution But the
+
+19
+00:02:06,049 --> 00:02:11,783
+question is, is it in P? Can we find an
+algorithm that guarantees to find a
+
+20
+00:02:11,783 --> 00:02:17,982
+solution in polynomial time? Now people
+solve huge problems be, but in some sense
+
+21
+00:02:17,982 --> 00:02:24,414
+maybe they're lucky because the instances
+that they're trying to solve don't cause
+
+22
+00:02:24,414 --> 00:02:30,768
+the algorithm to run in polynomial time.
+But the real question is can we guarantee
+
+23
+00:02:30,768 --> 00:02:39,509
+that we'll get that in polynomial time?
+So, well. What do we do? Well. For satisfy
+
+24
+00:02:39,509 --> 00:02:44,700
+ability, as I mentioned, it's pretty easy
+to use. Exhaustive search, just try all
+
+25
+00:02:44,700 --> 00:02:50,019
+the truth assignments. and really what
+that means is, they have an algorithm that
+
+26
+00:02:50,019 --> 00:02:55,146
+if doesn't find the right tru th
+assignment it might wind up trying all of
+
+27
+00:02:55,146 --> 00:03:00,657
+them. but you might find on earlier and
+that's, that's what happens with practice.
+
+28
+00:03:00,849 --> 00:03:05,784
+but the big question is, can we do
+anything that is really substantially more
+
+29
+00:03:05,784 --> 00:03:10,867
+clever than sat? then, then the brute
+force algorithm. that, that is an
+
+30
+00:03:10,867 --> 00:03:16,113
+algorithm run brute force in the, in the
+worst, worst case. That's a, that's a
+
+31
+00:03:16,113 --> 00:03:21,220
+pretty stringent definition of
+substantially. but that's the one that
+
+32
+00:03:21,220 --> 00:03:26,886
+we're that we're talking about. can we get
+less than exponential, worst case
+
+33
+00:03:26,886 --> 00:03:32,553
+performance. And some people have worked
+on this for long enough now to, that most
+
+34
+00:03:32,553 --> 00:03:37,903
+people agree that there's no polynomial
+time algorithm for SAT. To start
+
+35
+00:03:37,903 --> 00:03:44,914
+classifying problems, what we're going to
+do is kind of adopt that as an assumption.
+
+36
+00:03:44,914 --> 00:03:51,192
+Or at least we'll classify problems
+according to the difficulty of, of SAT.
+
+37
+00:03:51,192 --> 00:03:58,040
+And what that means is we're going to use
+reduction from SAT. So if we reduce SAT to
+
+38
+00:03:58,040 --> 00:04:04,087
+some problem. as we talked about in the
+reduction layer, lecture. That means if we
+
+39
+00:04:04,087 --> 00:04:09,417
+could solve this problem efficiently, we
+also could solve that efficiently. And
+
+40
+00:04:09,417 --> 00:04:14,684
+we're going to, call, a problem like that
+intractable. if we could solve it
+
+41
+00:04:14,684 --> 00:04:18,543
+efficiently we could solve SAD
+efficiently. We don't think we can solve
+
+42
+00:04:18,543 --> 00:04:22,782
+SAD efficiently. that problem's
+intractable. So that's, that's our meaning
+
+43
+00:04:22,782 --> 00:04:27,889
+of the word intractable. Alright, so now
+what are we gonna do to classify problems?
+
+44
+00:04:27,889 --> 00:04:32,551
+So, the first thing is which search
+problems in, in P, so there's no really
+
+45
+00:04:32,742 --> 00:04:38,553
+easy answer for that except for, devising
+algorithms. but we do have this reduction
+
+46
+00:04:38,553 --> 00:04:44,428
+technique that is gonna help us It's, now
+we can be a little more general than when
+
+47
+00:04:44,428 --> 00:04:49,855
+we were actually designing algorithms that
+we we're gonna use and we can have the
+
+48
+00:04:49,855 --> 00:04:55,539
+reduction take polynomial amount of time
+before we're insisting on linear time. And
+
+49
+00:04:55,539 --> 00:05:02,902
+not only that, we can. Take a polynomial
+number of calls to the, the one that we're
+
+50
+00:05:02,902 --> 00:05:08,761
+reducing to. And again all this is about
+is that if you have a polynomial time
+
+51
+00:05:08,761 --> 00:05:14,551
+algorithm for y then the reduction gives
+you a polynomial time algorithm for x. And
+
+52
+00:05:14,551 --> 00:05:19,922
+we're just try ing to have the most
+general definition that preserves that
+
+53
+00:05:19,922 --> 00:05:26,404
+property. and so the consequences that if
+we have a polynomial time reduction from
+
+54
+00:05:26,404 --> 00:05:32,643
+SAT to a given problem Y, then we can
+conclude that Y is well, it's intractable.
+
+55
+00:05:32,643 --> 00:05:38,882
+By our definition. that is it's as
+difficult as SAT and we think that there
+
+56
+00:05:38,882 --> 00:05:45,121
+is no polynomial time algorithm for it. So
+that's a mean tool that we're going to
+
+57
+00:05:45,121 --> 00:05:51,130
+start out with to use for classifying
+problems so let's look at an example.
+
+58
+00:05:51,759 --> 00:05:57,577
+Actually you can work with simpler
+versions of, of SAT. You can actually
+
+59
+00:05:57,577 --> 00:06:04,339
+reduce any SAT problem to just a form
+where you have a bunch of equations using
+
+60
+00:06:04,339 --> 00:06:12,596
+literals . so, usually we use and so for
+example like that. So, given that fact to
+
+61
+00:06:12,596 --> 00:06:19,043
+find a solution. so, now we have another
+problem IOP given a system of linear
+
+62
+00:06:19,043 --> 00:06:29,689
+inequalities find a solution. So, what we
+want to do is, Characterize sat as an ILP
+
+63
+00:06:29,689 --> 00:06:36,743
+problem. So, that is, if we had an
+efficient solution to ILP, it'd give us a
+
+64
+00:06:36,743 --> 00:06:44,831
+solution to sat. So let's take a look at,
+this example. so our, whatever SAT problem
+
+65
+00:06:44,831 --> 00:06:52,662
+we have, we put it in this form. and now,
+we're gonna introduce a variable, C1. and,
+
+66
+00:06:52,939 --> 00:07:00,770
+for every, literal in the SAT problem.
+we're gonna, put C1 greater than or = to,
+
+67
+00:07:01,046 --> 00:07:08,786
+either the literal, if it's not negated.
+Or one minus the literal if it is negated.
+
+68
+00:07:09,062 --> 00:07:16,053
+so in this case, . And so we have C1
+greater or = to one - x1. Greater than x
+
+69
+00:07:16,053 --> 00:07:22,567
+or greater than x3, like that. and then
+we're going to have a fourth inequality.
+
+70
+00:07:22,808 --> 00:07:30,045
+that says that it has to be less than or
+equal to the sum of those three. so what
+
+71
+00:07:30,045 --> 00:07:36,559
+this construction does is if the equation
+is satisfied, if there's some way to
+
+72
+00:07:36,800 --> 00:07:45,388
+satisfy this equation then it's going to
+be C1 equals to one. so that is, if there
+
+73
+00:07:45,388 --> 00:07:56,193
+is a way to, make each one of these terms
+one, say by setting X1 to zero, X2 to one
+
+74
+00:07:56,193 --> 00:08:06,870
+and X3 to one, then this thing will be,
+those things all will be true. and then
+
+75
+00:08:07,280 --> 00:08:12,747
+this one also will be true. And all four
+of these are true. If and only if, the
+
+76
+00:08:12,747 --> 00:08:18,077
+equation is satisfied. And we make a
+little group like that for, all four of
+
+77
+00:08:18,077 --> 00:08:24,911
+the equations. and then we do a, a similar
+thing wi th a variable that's true if and
+
+78
+00:08:24,911 --> 00:08:30,515
+only if, all of the c's are true. So this
+one's, this variable has got to be less
+
+79
+00:08:30,515 --> 00:08:36,256
+than all four of these. And the only way
+that this thing's gonna be one, is if all
+
+80
+00:08:36,256 --> 00:08:41,661
+the equations are satisfied. So this
+system, has a solution. if and only if,
+
+81
+00:08:41,867 --> 00:08:47,070
+there's a SAT solution. And from the
+solution to the system, you can find the
+
+82
+00:08:47,070 --> 00:08:52,137
+SAT solution. So that's a reduction from
+SAT to integer linear programming,
+
+83
+00:08:52,137 --> 00:08:57,820
+programming. Because of this reduction, we
+feel that we don't, we're not gonna have a
+
+84
+00:08:57,820 --> 00:09:03,434
+polynomial time solution to integer linear
+programming. If we did, we'd have a fast
+
+85
+00:09:03,434 --> 00:09:08,208
+solution to SAT. so that's, that's an
+important, piece of knowledge where you
+
+86
+00:09:08,208 --> 00:09:12,483
+focus on this one hard problem that we
+know about, and that tells us another
+
+87
+00:09:12,483 --> 00:09:16,919
+problem, is that, the, the reduction tells
+us another problem that is at least as
+
+88
+00:09:16,919 --> 00:09:24,712
+hard. and that by itself is interesting
+integer linear programming is a very
+
+89
+00:09:24,712 --> 00:09:32,946
+important computation with lots of
+applications. but the a, amazing thing
+
+90
+00:09:32,946 --> 00:09:42,604
+that was shown by Dick Carp in the 70s, is
+that there are lots and lots of problems
+
+91
+00:09:42,604 --> 00:09:51,013
+that you can reduce satisfiability to. and
+actually you. Car produced SAT to the so
+
+92
+00:09:51,013 --> 00:09:56,723
+called independent set problem then reduce
+that one to aisle P, but if you do two
+
+93
+00:09:56,723 --> 00:10:02,644
+reductions it still, it still works. if, I
+could solve ILP quickly. I could solve
+
+94
+00:10:02,644 --> 00:10:08,566
+independent set quickly. Then, I could use
+that to solve SAT quickly. so, if you can
+
+95
+00:10:08,566 --> 00:10:14,123
+prove any problem on this set, you can
+reduce any problem on this set. To your
+
+96
+00:10:14,123 --> 00:10:21,236
+new problem that's like proving that SAT
+reduces to it. So, if we adopt the idea
+
+97
+00:10:21,236 --> 00:10:28,348
+that SAT is intractable it means that all
+of these problems are intractable. These
+
+98
+00:10:28,348 --> 00:10:35,547
+are lots of important problems that people
+were looking for solutions and couldn't
+
+99
+00:10:35,547 --> 00:10:42,572
+find good solutions to, and, what Karp
+shows in the Travelling Salesman problem
+
+100
+00:10:42,572 --> 00:10:48,713
+and the Hamilton Path problem which is the
+like problem. Finding the that's the
+
+101
+00:10:48,713 --> 00:10:55,569
+problem of finding a path on the graph
+that visits all the vertices. So what,
+
+102
+00:10:55,569 --> 00:11:01,527
+what Karp showed is that all of these
+problems are intractable. They're all as
+
+103
+00:11:01,527 --> 00:11:09,030
+least as difficult to SAP, as SAP. if we
+had a efficient polynomial times solution
+
+104
+00:11:09,030 --> 00:11:16,048
+to any one of them, we'd have a polynomial
+time solution to SAP. that was Quite a
+
+105
+00:11:16,048 --> 00:11:24,227
+powerful idea of using polynomial time
+reduction to classify problems in this
+
+106
+00:11:24,227 --> 00:11:32,406
+way. In fact, it's such a powerful idea
+that nowadays there's maybe 6000 papers
+
+107
+00:11:32,406 --> 00:11:38,329
+per year. with reductions from some
+problem that has, been shown to reduce
+
+108
+00:11:38,329 --> 00:11:44,588
+from SAT to some new problem. and these
+are, important problems in, all fields of
+
+109
+00:11:44,588 --> 00:11:50,492
+human endeavor. so, for example, the so
+called protein folding problem. Which, in
+
+110
+00:11:50,492 --> 00:11:56,822
+biochemistry, where, people are trying to
+understand what's going on, in, living
+
+111
+00:11:56,822 --> 00:12:03,011
+organisms. has been reduced from SAT. We'd
+like to solve that problem. But, and that
+
+112
+00:12:03,011 --> 00:12:09,775
+would help us understand what's going in,
+in living organisms. much better. but if
+
+113
+00:12:09,775 --> 00:12:15,197
+we had a, an efficient solution for, a
+guaranteed polynomial time solution to
+
+114
+00:12:15,197 --> 00:12:20,262
+that problem. We'd have a, a, a,
+guaranteed polynomial time solution to
+
+115
+00:12:20,262 --> 00:12:25,969
+SAT. and so we don't think so, Or,
+economics, With, if you just make the
+
+116
+00:12:25,969 --> 00:12:31,106
+arbitrage problem a little more
+complicated and a little more realistic.
+
+117
+00:12:31,320 --> 00:12:37,455
+where, there's, a little cost involved
+with doing things. it turns out to be,
+
+118
+00:12:37,669 --> 00:12:42,633
+that, you can't have an efficient
+solution. Not to that one unless, cause it
+
+119
+00:12:42,633 --> 00:12:48,628
+would imply an efficient solution to SAP.
+and many, many other examples. Voting
+
+120
+00:12:48,628 --> 00:12:55,858
+power and politics. Experimental design
+and statistics. Thousands and thousands of
+
+121
+00:12:55,858 --> 00:13:04,000
+papers per year involving reductions from
+sap. Very, very powerful concept, that the
+
+122
+00:13:04,000 --> 00:13:10,820
+idea of reducing from sets. Now, we have
+two ways to classify problems. We can,
+
+123
+00:13:11,090 --> 00:13:18,628
+find a polynomial time algorithm and then
+we know problems in P, or we can develop a
+
+124
+00:13:18,628 --> 00:13:25,345
+polynomial time reduction from set and
+that'll prove that at least if you believe
+
+125
+00:13:25,345 --> 00:13:30,900
+that sat is difficult you should believe
+that'll be difficult to find a solution to
+
+126
+00:13:30,900 --> 00:13:35,720
+your problem. so that's the first step in
+classifying problems.

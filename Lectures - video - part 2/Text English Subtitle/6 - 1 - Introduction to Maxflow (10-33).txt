@@ -1,0 +1,259 @@
+Today we're gonna finish off our
+discussion of graph processing by looking
+at Max Flow algorithms.
+This is another general problem solving
+model for which we have efficient
+algorithms, so where at the difference
+between having a good algorithm and not
+having one makes a difference between
+being able to solve all kinds of practical
+problems and not being able to address
+them at all.
+As an introduction we'll take a look at
+what the problem is and some of it's
+implications.
+So first we'll start with what's called
+the mincut problem.
+So this is a. takes as input a Edge
+Weighted Digraph and now we are going to
+assume that the edge weights are positive,
+and we referred to the weight as a
+capacity and you will see why in just a
+minute.
+And also we specify a source and a target
+vertex.
+This is not an absolute requirement but it
+will simplify our discussion for the
+lecture.
+So we have an edge weighted digraph where
+the source and target vertex and every
+edge has a positive capacity.
+Now a cut, an ST cut, S and T are
+specified remember? Is the partition of
+the vertices into two disjoint sets,
+Where s is one set and t is in the other.
+And we'll indicate a cut as we've done
+before by coloring the vertices in one
+set.
+So in this case, the cut consists of s in
+one set, and all the other vertices in the
+other.
+So s is in, one set and t is in the other,
+that's an st cut.
+Now given a cut.
+We talk about the capacity of the cut.
+And that's gonna be the sum of the
+capacity of the edges that go from the set
+containing s to the set containing b If
+you have edge going the other way we don't
+count it.
+So in this case, the, this cut with the
+vertex containing just s in one set has
+capacity 30 ten + five +fifteen.
+Here's another cut this one contains three
+vertices,
+S and two at the bottom there.
+Again it's an ST cut, cause s is colored t
+is not.
+And then we can look at the capacity of
+that cut.
+Again, we count the vertic, the edges that
+go from to the cut containing s to the cup
+containing b, B.
+In this case, is ten + eight + sixteen
+That's the edges going out is 34.
+That's the capacity.
+We don't count the edges that go in from
+the sec containing t to the sec containing
+s Capacity of the cut is the sum of the
+capacities of the edges going out.
+Here's the third example, and this one's
+got capacity 28.
+Now the three cuts that we've seen you
+notice have different capacities: 30, 34,
+28.
+So the mincut problem, clearly, is to find
+the minimum capacity cut.
+Find a way to divide the vertices into two
+sets, one containing s and the other
+containing t with the property that the
+capacity of the cut is minimized.
+That's the mincut problem.
+And this an important practical problem
+with all kinds of applications.
+Just for fun we take an application from
+the 1950's.
+This is around time these sorts of
+problems were first articulated.
+So this is, has to do with the cold war
+and these are rail networks that connects
+the Soviet Union with countries in Eastern
+Europe.
+This map actually wasn't declassified
+until 1999.
+But it shows a graph with the vertices,
+directed graph with vertices corresponding
+to cities and edges corresponding to rail
+lines.
+And if you look closely, you can see that,
+Each of the edges is labeled with a
+capacity.
+The goal.
+So the goal of the free world say if there
+was gonna be a real war was to find a way
+to cut the Soviet Union from Eastern
+Europe.
+And they wanna do that.
+You can assume maybe the cost of cutting a
+rail line is proportional to its capacity.
+So they wanna find the cheapest way to cut
+off supplies.
+From Soviet Union, Eastern Europe.
+That's an example of a min cut
+application.
+We'll look at some other applications
+later on.
+Well, look at a future, well maybe this is
+a cut for today's world.
+So now you have a huge graph, maybe a
+social network.
+And maybe there's a government and power
+in some area of the world, and the goal of
+that government would be to cut off the
+communication to some set of people.
+And again, they want to do that in the
+cheapest way possible.
+Find the minimum way to cut off
+communication.
+And certainly, people are writing programs
+to process graphs like this with such
+goals in mind nowadays.
+These are huge, huge graphs and certainly
+are going to need efficient algorithms.
+In the 1950s, the graphs were pretty huge
+by 1950s standards.
+And it wanted efficient algorithms then
+too, for sure, 'cause computers were
+slower.
+Alright, that's one problem.
+So let's talk about a different problem,
+called the max-flow problem.
+And it's the same setup inputs and edge
+weighted digraphs, source for text s, and
+a target for text t, every edge has a
+positive capacity.
+And now what we're gonna talk about is
+what's called a flow.
+It's a assignment of values to the edges.
+So, we have the capacities, and we're
+gonna assign another integer to each edge,
+called its flow.
+And then flow has to satisfy two
+properties.
+The first one is that the flows have to be
+positive and they can't be greater than
+the capacity.
+You can think of the, edges again as a
+rail line containing some commodity or a
+pipe containing some fluid.
+So the flow is how much stuff can you put
+through that edge?
+You can more than zero but you can't put
+more than capacity.
+The other thing about a flow is that there
+has to be local equilibrium at the
+vertices.
+And again that's a natural constraint to
+think about stuff flowing in on rail lines
+to a city and you want, you want to keep
+things going the local elibrium constrains
+says that the stuff coming in has to equal
+the stuff going out at every vertex except
+for the source everything leaves from the
+source.
+And the target, everything goes to the
+target.
+And those have the source has no inflow
+and the target has no outflow.
+So what you want is the inflow at a
+vertex, say, in this example inflow at v,
+there's five coming in on this edge and
+five coming in on that edge. So that's a
+total of ten coming in and there has to be
+just ten going out.
+So that's, happens on this one edge.
+And that has to be satisfied at every
+vertex.
+So this flow's got five coming in there
+and five going out.
+Ten going in there and five going out each
+way and so forth.
+Every vertex except S and T.
+And we can even make it true for S and T
+by drawing an edge from T all the way back
+to S.
+So that's the max flow problem, well, the,
+that's the definition of a flow, and of
+course the max flow problem is to assign a
+value to the flow.
+Well that's how much stuff you can get to
+the source.
+To the target.
+Or equivalently, how much stuff can you
+push out of the source.
+And so the value is how much can you get
+into the target.
+There's lots of different ways to assign
+flows to the network to satisfy the
+capacity equilibri-, equilibrium
+constraint.
+Which one maximizes the flow, that's the
+maximum ST flow problem, or the max flow
+problem.
+So that's two different problems.
+The min cut problem.
+How do we cut the graph efficiently, with
+a minimal amount of work.
+And the max flow problem.
+What's the maximum amount of stuff that we
+can get through the graph?
+And again, if we look at, the 1950's
+graph.
+What the Soviet Union wanted to do was
+find a way to maximize the flow of
+supplies to Eastern Europe.
+Now that was their goal in this case, and
+again you can see in this whole map, this
+is a assignment of a flow to this network
+that does maximize the flow for this
+network,
+So they figured it out.
+And nowadays in the huge graph, maybe the
+free world wants to do the opposite.
+They want to maximize the flow of
+information to some specified set of
+people.
+How do we get the most information in
+there and is there another way to think of
+it?
+And again, these are huge graphs and we
+want efficient algorithms.
+So that's two problems both have an input
+weighted digraph with a specified source
+and target and then cut problem is to find
+them in capacity cut and max flow problem
+is find a maximum value flow.
+It's a lot of computation to do for
+example in the max flow problem we have to
+assign a value to each edge.
+So that's more work than just finding a
+path as we've done in other graph
+processing problems.
+So it's more complicated and the amazing
+thing about these two problems is that
+they're actually pretty much the same
+problem.
+They're what we call dual.
+If you solve one you're able to solve the
+other.
+So that's an introduction to max flow

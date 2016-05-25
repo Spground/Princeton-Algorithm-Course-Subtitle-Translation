@@ -1,0 +1,989 @@
+1
+00:00:03,160 --> 00:00:07,431
+Today we're going to talk about linear
+programming, including the simplex
+
+2
+00:00:07,431 --> 00:00:12,055
+algorithm which ranks as one of the most
+important algorithms of the twentieth
+
+3
+00:00:12,055 --> 00:00:17,489
+century so certainly has to be included in
+any course on algorithms. And so what is
+
+4
+00:00:17,489 --> 00:00:23,693
+linear programming? well you'll have a
+fairly clear idea after the end of the
+
+5
+00:00:23,693 --> 00:00:29,136
+lecture. And in effect you can take an
+entire course on linear probing,
+
+6
+00:00:29,136 --> 00:00:35,008
+programming. or actually do graduate study
+in linear programming. or get a
+
+7
+00:00:35,008 --> 00:00:40,584
+high-paying job in linear programming.
+Programming so it's quite a bit to define.
+
+8
+00:00:40,788 --> 00:00:46,021
+so we talk about shortest paths and,
+Maxwell's problem solving models, and
+
+9
+00:00:46,021 --> 00:00:51,799
+linear probing, programming is a general
+problem solving model, that works in a lot
+
+10
+00:00:51,799 --> 00:00:57,508
+of contexts. so shortest path max flow,
+that's fighting the minimum or the maximum
+
+11
+00:00:57,508 --> 00:01:03,125
+of, some kind of quantity. And a good way
+to think of linear probing is, programming
+
+12
+00:01:03,125 --> 00:01:08,124
+where it's most, not often used in
+practice, is you want to allocate scarce
+
+13
+00:01:08,124 --> 00:01:14,059
+resources among a number of competing
+activities. And you want to do it, in, in
+
+14
+00:01:14,059 --> 00:01:20,527
+a way that, minimizes costs or maximizes
+something. That's the basic idea. And, it
+
+15
+00:01:20,527 --> 00:01:27,451
+encompasses, a huge number of, problems
+that, we've considered, And even, plenty
+
+16
+00:01:27,451 --> 00:01:34,299
+of problems that we haven't considered. so
+this is, an example, of a linear program
+
+17
+00:01:34,299 --> 00:01:40,099
+that we're going to use, throughout this
+lecture. So it's got, a couple of,
+
+18
+00:01:40,312 --> 00:01:46,709
+components. So, So one of'em is called an
+objective function. and so we say, we have
+
+19
+00:01:46,709 --> 00:01:52,254
+some variables. and we want to maximize
+the objective function. And so our, our
+
+20
+00:01:52,254 --> 00:01:57,940
+goal is to find values of the variables
+that'll maximize the objective function,
+
+21
+00:01:57,940 --> 00:02:03,982
+subject to constraints in the acquaint,
+constraints are linear inequalities. and
+
+22
+00:02:03,982 --> 00:02:10,464
+usually, including that the variables are
+positive. so, there's two steps the first
+
+23
+00:02:10,464 --> 00:02:18,367
+is whatever problem you have you have to
+formulate it like this that's reduction.
+
+24
+00:02:18,367 --> 00:02:25,153
+You take your problem and you convert it
+into this form. And, then the second thing
+
+25
+00:02:25,393 --> 00:02:31,141
+is to solve it. that's what linear
+program, programming is. And, it's
+
+26
+00:02:31,141 --> 00:02:37,822
+significant because it's widely applicable
+to re al world problems. there's fast
+
+27
+00:02:37,822 --> 00:02:45,640
+commercial. programs out there that. will
+solve huge linear programs. and it's a key
+
+28
+00:02:45,640 --> 00:02:50,511
+sub-routine for solving even more
+difficult problems. But it's the idea that
+
+29
+00:02:50,511 --> 00:02:56,383
+it's. a widely applicable model that we
+can actually do solutions for huge
+
+30
+00:02:56,383 --> 00:03:02,763
+problems. For example, airlines use linear
+programming to schedule the planes and
+
+31
+00:03:02,763 --> 00:03:08,624
+pilots and flights. And Delta recently
+claimed that linear programming,
+
+32
+00:03:08,624 --> 00:03:15,152
+programming saves it over a $100 million
+per year. so, it's general and we can
+
+33
+00:03:15,152 --> 00:03:21,091
+solve problems. That's what linear
+programming is. And very general. Here's
+
+34
+00:03:21,091 --> 00:03:28,030
+just a short list of problems where you
+can find papers where people used linear
+
+35
+00:03:28,030 --> 00:03:33,889
+programming to solve these problems. From
+direct mail advertising to, as I
+
+36
+00:03:33,889 --> 00:03:41,522
+mentioned, airline crew assignment there's
+problems in science Ising spin glasses in
+
+37
+00:03:41,522 --> 00:03:48,846
+physics, sports scheduling, baseball and
+basketball in electrical engineering and
+
+38
+00:03:48,846 --> 00:03:55,072
+designing computers, or blending petroleum
+products. All kinds of things, so a huge
+
+39
+00:03:55,072 --> 00:04:03,523
+number of applications. It's a very
+general model. so let's take a look at. a
+
+40
+00:04:03,523 --> 00:04:09,525
+little more detail of a full application.
+And we're gonna do it based on a classic
+
+41
+00:04:09,525 --> 00:04:15,458
+paper in Scientific American in 1980. that
+certainly, I don't know if it was
+
+42
+00:04:15,458 --> 00:04:21,319
+intended, but certainly does appeal to
+college students, cuz it's all about using
+
+43
+00:04:21,531 --> 00:04:27,393
+linear programing to, to decide how to
+best make beer and ale. That's why it's
+
+44
+00:04:27,393 --> 00:04:33,711
+called the brewers problem. So here's the
+idea. So, for example, to try to make sure
+
+45
+00:04:33,711 --> 00:04:39,919
+that everybody understands what linear
+program, programming really is. It was
+
+46
+00:04:39,919 --> 00:04:45,800
+developed by Bob Bland who also
+contributed to, a lot to the practice of
+
+47
+00:04:45,800 --> 00:04:52,008
+linear program, programming as well. Okay.
+So the small brewery is supposed to
+
+48
+00:04:52,008 --> 00:04:58,380
+produce both ale and beer. Now, there's
+raw materials that go into both ale and
+
+49
+00:04:58,380 --> 00:05:05,787
+beer. There's a few other things but the
+main ones are corn. hops and malt, and the
+
+50
+00:05:05,787 --> 00:05:14,012
+brewery has a certain amount of each one.
+say it's got 480 pounds of corn, 160
+
+51
+00:05:14,012 --> 00:05:21,035
+ounces of hops, and 1,190 pounds of malt.
+So that's the resources that are
+
+52
+00:05:21,035 --> 00:05:27,354
+available. Now there's, they k now how to
+make two things. They know how to make ale
+
+53
+00:05:27,354 --> 00:05:33,205
+and they know how to make beer. And
+there's a recipe for the ale and the beer
+
+54
+00:05:33,205 --> 00:05:39,360
+that uses these scarce resources. So to
+make a barrel of ale, you need five pounds
+
+55
+00:05:39,360 --> 00:05:45,829
+of corn, four ounces of hops and 30. Five
+pounds of malt. and to make a barrel of
+
+56
+00:05:45,829 --> 00:05:53,367
+beer you need much more corn and less malt
+and a little bit more hops. So that's the
+
+57
+00:05:53,610 --> 00:05:59,688
+recipes for those two things. And the
+other thing is that there's different
+
+58
+00:05:59,688 --> 00:06:06,740
+profitability. So you can make $thirteen
+per barrel of ale and $23 per barrel of
+
+59
+00:06:06,740 --> 00:06:13,224
+beer. So the brewer's problem is what do
+we do? How much ale and how much beer
+
+60
+00:06:13,224 --> 00:06:21,531
+should we make? so, the pro- situation is
+that depending on how much ale or how much
+
+61
+00:06:21,531 --> 00:06:29,580
+beer you make you have different amount of
+profit. So let's say, someone says, well
+
+62
+00:06:29,580 --> 00:06:36,574
+let's make it all out of ale. Le, let's
+make as much ale as we possibly can. so
+
+63
+00:06:36,808 --> 00:06:43,207
+turns out that 34 barrels of ale is the
+most that you could possibly make, because
+
+64
+00:06:43,207 --> 00:06:50,231
+that uses up all your malt. so you need 35
+pounds of malt per barrel and 34 times 35
+
+65
+00:06:50,231 --> 00:06:56,943
+is 1190. That's all that you have. so, if
+you make 35, 34 barrels of ale, that's the
+
+66
+00:06:56,943 --> 00:07:05,530
+max that you can make. and then, if you do
+that 34 times thirteen is $442 of profit
+
+67
+00:07:05,530 --> 00:07:13,242
+that you make if you make all ale . what
+if you make all beer? Well, if you make
+
+68
+00:07:13,242 --> 00:07:18,792
+all beer, then corn is the limiting
+resource. You need a lot of corn to make
+
+69
+00:07:18,792 --> 00:07:24,128
+beer. you're going to need fifteen pounds
+per barrel. You can only make 32 barrels.
+
+70
+00:07:24,342 --> 00:07:29,678
+and you have plenty of the other
+resources. but if you did make all beer,
+
+71
+00:07:29,678 --> 00:07:35,227
+you'd make $736. So, if you're going to
+make all beer or all ale, you're gonna go
+
+72
+00:07:35,227 --> 00:07:41,648
+with the all beer. but you can do things
+in between. The if you used up all the
+
+73
+00:07:41,648 --> 00:07:48,695
+hops it would be 19.5, well you can't
+really make a half barrel so we're not
+
+74
+00:07:48,695 --> 00:07:55,655
+going to consider that case. But if you
+could it still wouldn't be as good as all
+
+75
+00:07:55,655 --> 00:08:04,832
+beer. but what about this mix here? If
+we're making twelve barrels of ale and 28
+
+76
+00:08:04,832 --> 00:08:13,042
+barrels of beer. then the amount of hops
+that you need. you can multiply it out.
+
+77
+00:08:13,042 --> 00:08:18,512
+That would use up all the hops. About 160,
+o unces of hops that you've got. so
+
+78
+00:08:18,512 --> 00:08:25,252
+that's, restricted by the number of hops,
+And also uses up all the corn, that you've
+
+79
+00:08:25,252 --> 00:08:31,991
+got. and if you do twelve <i>, thirteen, for
+the ale. And 28 <i>23 for the beer. you make</i></i>
+
+80
+00:08:31,991 --> 00:08:37,398
+a profit of $800. So out of these
+alternatives, that's the one you're going
+
+81
+00:08:36,953 --> 00:08:42,656
+to choose. Make twelve barrels of ale, and
+28, barrels of beer, and you're going to
+
+82
+00:08:43,100 --> 00:08:50,674
+maximize your profits. that's the brewer's
+problem and now the question is can we do
+
+83
+00:08:50,674 --> 00:08:57,341
+better? We've just been fooling around a
+little bit and seeing which one uses up
+
+84
+00:08:57,582 --> 00:09:04,490
+resources is there some way that we can do
+better? so that's really the brewer's
+
+85
+00:09:04,490 --> 00:09:10,515
+problem. I got the scarce resources. I've
+got the objective function. I want to
+
+86
+00:09:10,997 --> 00:09:18,514
+maximize my problems while sticking to the
+resource constraints. So, this is a linear
+
+87
+00:09:18,514 --> 00:09:25,104
+programming formulation of the Brewer's
+problem. It's a mathematical formulation
+
+88
+00:09:25,104 --> 00:09:32,605
+of the problem. And all we're doing is
+expressing these various constraints with
+
+89
+00:09:32,605 --> 00:09:39,846
+math. so A is the number of barrels of ale
+that I wanna make, and B is the number of
+
+90
+00:09:39,846 --> 00:09:46,356
+barrels of beer. my profit is $thirteen
+for each barrel of ale, and $23 for each
+
+91
+00:09:46,356 --> 00:09:53,760
+barrel of beer. So I want to maximize 13A
+plus B, and then I'm subject to all these
+
+92
+00:09:53,760 --> 00:10:01,560
+constraints that are given to me by the
+recipes. the And, for the ale, it's, it's
+
+93
+00:10:01,560 --> 00:10:06,934
+the five units of corn, four units of hop,
+and 35 units of malt. And for the beer,
+
+94
+00:10:06,934 --> 00:10:12,511
+it's fifteen, four, and twenty. so, if I
+make A barrels of ale and B barrels of
+
+95
+00:10:12,511 --> 00:10:17,885
+beer, then I'm subject to this constraint.
+And it's all, all the corn that I have.
+
+96
+00:10:17,885 --> 00:10:23,666
+And so forth. And of course I have to pick
+a positive number of, barrels of ale and
+
+97
+00:10:23,666 --> 00:10:29,945
+beer. That's a mathematical formulation of
+the problem. so that's linear programming.
+
+98
+00:10:29,945 --> 00:10:37,925
+That's reducing the Brewer's problem to a
+mathematical formulation. so now, we wanna
+
+99
+00:10:37,925 --> 00:10:45,695
+look at, try to get a better understanding
+or geometric intuition on what this thing
+
+100
+00:10:45,695 --> 00:10:52,336
+means, in so. Of the key ideas is the
+thing called feasible region. So, we have
+
+101
+00:10:52,336 --> 00:10:58,478
+two variables. So, we are gonna plot all
+the possible points, all the possible
+
+102
+00:10:58,478 --> 00:11:04,465
+amounts of ale and beer we can make just
+in the xy plane. So, it's positive xy
+
+103
+00:11:04,465 --> 00:11:10,918
+plane, because we are gonna make positive
+amount of beer and positive amount of ale.
+
+104
+00:11:10,918 --> 00:11:18,427
+In the other constraints, actually defined
+half plains so that is, the amount of corn
+
+105
+00:11:18,427 --> 00:11:25,436
+has to be, you have to have 5A plus 15B
+less or equals 480. If you draw the line
+
+106
+00:11:25,436 --> 00:11:32,530
+out of 5A plus 15B equals 480, which is
+this line here, and it intersects way out
+
+107
+00:11:32,530 --> 00:11:38,545
+there. Than, everything, above this line
+is not feasible. We don't have that much.
+
+108
+00:11:38,545 --> 00:11:44,329
+And everything below that line is possibly
+feasible. And, actually, all we do is just
+
+109
+00:11:44,329 --> 00:11:50,786
+intersect all the half blanks including
+the half blank above the X axis, and to,
+
+110
+00:11:50,987 --> 00:11:56,031
+the right of the Y axis. And if you do
+that, you'll get a complex, convex
+
+111
+00:11:56,031 --> 00:12:04,950
+polygon. it's and all the points inside
+are things that we could possibly do. so
+
+112
+00:12:04,950 --> 00:12:12,409
+it's a first idea. We have inequalities
+that satisfy all those inequalities
+
+113
+00:12:12,409 --> 00:12:20,237
+simultaneously defines a complex convex
+region like this. and what about the
+
+114
+00:12:20,237 --> 00:12:28,777
+objective function? Well that's just
+another line. And so that's a line of
+
+115
+00:12:28,777 --> 00:12:40,424
+slope If you take 13A23B plus 23B that's
+the objective function, and any point, if
+
+116
+00:12:40,424 --> 00:12:47,300
+you, look at where this line of the same
+slope, intersects the, convex region, you
+
+117
+00:12:47,300 --> 00:12:53,238
+can see that what we're going to be
+looking at is, we want the one that, goes
+
+118
+00:12:53,238 --> 00:12:58,353
+up the highest. you can't get higher
+profit if you, if you have a line that is
+
+119
+00:12:58,353 --> 00:13:03,511
+a bigger number then you're not going to
+be in a feasible, feasible region. So that
+
+120
+00:13:03,511 --> 00:13:08,001
+you can see, it's a, the objective
+function defines the slope of a line. And
+
+121
+00:13:08,001 --> 00:13:12,794
+what we found, want to find is, you think
+of it the other way. The line coming in
+
+122
+00:13:12,976 --> 00:13:17,891
+from positive infinity. Where does it hit
+the feasible region? that's where our
+
+123
+00:13:17,891 --> 00:13:23,909
+profit's gonna be maximized. so just the
+geometry tells us that the optimal
+
+124
+00:13:23,909 --> 00:13:30,475
+solution is going to be at an extreme
+point. in this case it's where you know,
+
+125
+00:13:30,475 --> 00:13:36,466
+we have two variables. It's where two
+constraints intersect. so that's already a
+
+126
+00:13:36,466 --> 00:13:41,931
+huge improvement in terms of solving the
+problem rather than having to consider
+
+127
+00:13:41,931 --> 00:13:47,396
+this infinite number of points that
+describe the amount of ale and amount of
+
+128
+00:13:47,396 --> 00:13:52,926
+beer that we might make. we only have to
+consider this finite set of points which
+
+129
+00:13:52,926 --> 00:13:58,523
+are the extreme points in the feasible
+region and one of those is going to be our
+
+130
+00:13:58,523 --> 00:14:07,135
+optimal. . So, that brings us to the
+standard form of a linear program in
+
+131
+00:14:07,135 --> 00:14:14,890
+general. In general, we have way more than
+two variables. and we have lots of
+
+132
+00:14:15,136 --> 00:14:22,034
+different linear equations. so what we're
+going to do is and actually we're going to
+
+133
+00:14:22,527 --> 00:14:30,081
+get rid of in, inequalities and just deal
+with equalities. And we'll talk about that
+
+134
+00:14:30,328 --> 00:14:35,839
+in a minute. and this is just to try to
+get a form that makes all the problems
+
+135
+00:14:35,839 --> 00:14:40,702
+seem the same so that we can work with
+them. And this again is the power of
+
+136
+00:14:40,702 --> 00:14:45,760
+reduction. We're just using reduction to
+get the problem in a form that we can
+
+137
+00:14:45,760 --> 00:14:52,544
+fully understand it and solve it. so the
+general statement of a linear program,
+
+138
+00:14:52,544 --> 00:14:58,800
+it's going to be you've got some
+variables. and the, you want to and the
+
+139
+00:14:58,800 --> 00:15:04,010
+variables you are going to assist are all
+positive. and the objective function is a
+
+140
+00:15:04,010 --> 00:15:08,074
+linear combination of those variables.
+That just means we multiply by constants
+
+141
+00:15:08,074 --> 00:15:12,822
+and add them. All the constraints also
+will be linear equations. However many
+
+142
+00:15:12,822 --> 00:15:18,132
+constraints there are, there can be any
+number of constraints. the constraints
+
+143
+00:15:18,132 --> 00:15:23,376
+might be redundant, the problem might be
+over constraints all of that has to be
+
+144
+00:15:23,376 --> 00:15:28,355
+dealt with in a linear programming
+solution, and you don't have things like
+
+145
+00:15:28,355 --> 00:15:33,612
+multiplying together variables or any
+thing like that. so your input is the
+
+146
+00:15:33,612 --> 00:15:39,185
+coefficient, for the objective function.
+And also the coefficients for all the
+
+147
+00:15:39,394 --> 00:15:45,317
+linear equations and also the radiant
+sides. in your output I use the result of
+
+148
+00:15:45,317 --> 00:15:51,030
+solving the linear program and problem.
+It's the values of the X's that maximize
+
+149
+00:15:51,030 --> 00:15:57,370
+your objection function subject to all the
+constraints. now people define standard
+
+150
+00:15:57,370 --> 00:16:02,944
+forms of linear programs in different
+ways. And you can find all different sorts
+
+151
+00:16:02,944 --> 00:16:10,163
+of slightly different standard forms. this
+one is really convenient to express as a
+
+152
+00:16:10,163 --> 00:16:18,754
+matrix. where A and, A is a matrix and B
+and C are vectors. and it's just those and
+
+153
+00:16:18,754 --> 00:16:27,818
+X is a vector, column vector. you're just
+sat isfying maximizing The that's, that's
+
+154
+00:16:27,818 --> 00:16:32,820
+just saying the same thing in much more
+compact notation. so as I mentioned,
+
+155
+00:16:32,820 --> 00:16:37,991
+there's no really widely agreed notion of
+standard form. So you'll find different
+
+156
+00:16:37,991 --> 00:16:43,669
+standard forms in different context,
+usually. So now our brewer's problem
+
+157
+00:16:43,922 --> 00:16:50,844
+didn't have equalities, it had
+inequalities. So we have to convert that
+
+158
+00:16:50,844 --> 00:16:58,102
+to the standard form basically get rid of
+the inequalities. And it's really easy to
+
+159
+00:16:58,102 --> 00:17:05,952
+do, and once you get used to this idea,
+then we'll use it again later on. so the
+
+160
+00:17:06,205 --> 00:17:13,508
+first thing is, is, so instead of Mm-hm.
+maximizing a linear combination, we're
+
+161
+00:17:13,508 --> 00:17:19,474
+actually going to, just maximize a single
+variable. And we're going to add that and,
+
+162
+00:17:19,685 --> 00:17:25,861
+and then make the objective function an
+equation. so when I maximize Z, subject to
+
+163
+00:17:25,861 --> 00:17:32,697
+the constraint that 13A plus 23B minus C
+equals zero. That's the same as maximizing
+
+164
+00:17:32,697 --> 00:17:38,782
+13A plus 23B. And then we just add slack
+variables to convert each of the
+
+165
+00:17:38,782 --> 00:17:44,717
+inequality, it's called a variable that
+takes up the slack. so if five A plus
+
+166
+00:17:44,717 --> 00:17:50,727
+fifteen B has got to be less than or equal
+to 480, that's the same as saying that
+
+167
+00:17:50,727 --> 00:17:56,615
+five A plus fifteen B plus something
+positive has to equal 480. so, it's just
+
+168
+00:17:56,615 --> 00:18:02,322
+saying the same thing. add a slack
+variable SC. And say that it's got to be
+
+169
+00:18:02,322 --> 00:18:07,379
+positive. So now we have a bunch of
+equations. and just all positive
+
+170
+00:18:07,379 --> 00:18:13,736
+variables. So it's, it's more variables,
+but less variability. we've kind of got a
+
+171
+00:18:13,736 --> 00:18:19,949
+variable for everything in the system. so
+that's a conversion of the brewer's
+
+172
+00:18:19,949 --> 00:18:26,013
+problem to the, standard form of linear
+programming. now just a little bit more
+
+173
+00:18:26,013 --> 00:18:31,783
+about the geometry before we get to the
+solution. Again, the, inequalities to find
+
+174
+00:18:31,783 --> 00:18:37,409
+half spaces, so when you intersect them
+you get something convex. You can't get
+
+175
+00:18:37,409 --> 00:18:43,107
+something like this because the half space
+will just chop it off. So that's really
+
+176
+00:18:43,107 --> 00:18:49,165
+important and that's in two dimensions. so
+convex just means that if you have two
+
+177
+00:18:49,165 --> 00:18:55,080
+points that are in the set everything in
+the line between them is also in the set.
+
+178
+00:18:55,493 --> 00:19:02,062
+an, an extreme point is something that
+you, you can't write as a linear
+
+179
+00:19:02,062 --> 00:19:07,797
+combination of something in the set. so
+that's just the geometry of it. and that's
+
+180
+00:19:07,797 --> 00:19:12,847
+in two dimensions. and this is very
+intuitive in two dimensions. In higher
+
+181
+00:19:12,847 --> 00:19:18,561
+dimensions it's hard to really trust your
+intuition so that's why we have these
+
+182
+00:19:18,760 --> 00:19:25,523
+specific geometric definitions. Now the
+extreme point property still holds even in
+
+183
+00:19:25,523 --> 00:19:32,058
+higher dimensions. This is three
+dimensions and now after three dimensions,
+
+184
+00:19:32,058 --> 00:19:38,770
+we really have to use our imagination. But
+still the same idea of a bunch of
+
+185
+00:19:38,770 --> 00:19:45,482
+intersecting half spaces in higher
+dimensions. And the same basic idea holds
+
+186
+00:19:45,482 --> 00:19:52,194
+if just you stick with the basic math
+definitions. And so they all intersect.
+
+187
+00:19:52,194 --> 00:19:58,049
+And the good news is that still, inside is
+an infinite number of all possible
+
+188
+00:19:58,049 --> 00:20:03,170
+solutions, but there is only a finite
+number of these plains and so they
+
+189
+00:20:03,170 --> 00:20:09,013
+intersect, there's only a finite number of
+intersections. That's a good news rather
+
+190
+00:20:09,013 --> 00:20:14,927
+than having to examine infinite number of
+points. We just have to examine a finite
+
+191
+00:20:14,927 --> 00:20:20,770
+number of these external points but the
+bad news is that there could be a lot of
+
+192
+00:20:20,770 --> 00:20:26,540
+them, it can be exponential in number of
+constraints. So that's the extreme point
+
+193
+00:20:26,540 --> 00:20:35,110
+property. Now, it's, because of this idea
+of the extrema has to be where the
+
+194
+00:20:35,110 --> 00:20:41,071
+solution is. if you find a, a local
+optimum, place that's just, better than,
+
+195
+00:20:41,300 --> 00:20:48,102
+everybody connected to it, that's just
+going to be actually a global option that
+
+196
+00:20:48,102 --> 00:20:55,365
+follows from convexity. so, if the, it's
+actually a good situation that if you can
+
+197
+00:20:55,365 --> 00:21:02,289
+just get to a place that, you can't
+improve from, then, you're in good shape.
+
+198
+00:21:02,289 --> 00:21:08,880
+That's a kind of test, that's the geometry
+of the, linear programming problem.

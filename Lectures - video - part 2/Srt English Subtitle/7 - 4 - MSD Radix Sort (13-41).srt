@@ -1,0 +1,759 @@
+1
+00:00:03,910 --> 00:00:08,130
+we can also get strings sorted by moving
+from left to right.
+
+2
+00:00:08,130 --> 00:00:13,516
+That's called MSD string sorter.
+Most-significant-digit-first string sort.
+
+3
+00:00:13,738 --> 00:00:19,346
+And this is going to kind of, kind of
+related to what we did with quick sort,
+
+4
+00:00:19,346 --> 00:00:23,109
+and maybe viewed as a generalization of
+quick sort.
+
+5
+00:00:23,331 --> 00:00:30,046
+So the idea is that we start with the
+first character, to use key index counting
+
+6
+00:00:30,046 --> 00:00:36,761
+on the first character of the array and
+that will partition it into the strings
+
+7
+00:00:36,761 --> 00:00:39,270
+that start with each character.
+So.
+
+8
+00:00:39,472 --> 00:00:44,592
+If we use the first character, the
+left-most character in a string as, as the
+
+9
+00:00:44,592 --> 00:00:50,251
+first character in this case, then we get
+all the strings that start with A followed
+
+10
+00:00:50,251 --> 00:00:53,619
+by all the strings that start with B and
+so forth.
+
+11
+00:00:53,619 --> 00:00:57,594
+And then recursively use the same method
+for each subfile.
+
+12
+00:00:57,594 --> 00:01:02,310
+Essentially, we have a subarray for, each
+of the characters.
+
+13
+00:01:02,310 --> 00:01:08,306
+And, that cumulate that we built with key
+index counting gives us the subarrays and
+
+14
+00:01:08,306 --> 00:01:12,820
+actually completely delineates the
+subarrays that we need to sort.
+
+15
+00:01:13,033 --> 00:01:19,233
+Remember we had built up this array that
+said that there's six keys less than d and
+
+16
+00:01:19,233 --> 00:01:24,577
+eight keys less than e and so forth.
+So that tells us exactly precisely the
+
+17
+00:01:24,791 --> 00:01:29,707
+boundaries of the subarray that contain
+the keys to start with d,
+
+18
+00:01:29,707 --> 00:01:36,121
+And then we can just use the same method
+recursively to sort each of the subarrays
+
+19
+00:01:36,121 --> 00:01:39,430
+one for each character.
+Mm.
+
+20
+00:01:40,453 --> 00:01:44,549
+Now, this is a little bit complicated
+trace,
+
+21
+00:01:44,805 --> 00:01:53,166
+But if you look at it more carefully after
+the lecture you'll see that it's pretty
+
+22
+00:01:53,166 --> 00:02:01,014
+simple, setup for what we need to do.
+So, here's our input and we sort on the
+
+23
+00:02:01,014 --> 00:02:05,017
+first character.
+If we sort on the first character,
+
+24
+00:02:05,209 --> 00:02:10,243
+In this example, we have lots of s's.
+So the subfile for the s's, it's already
+
+25
+00:02:10,243 --> 00:02:14,767
+sorted on the first character.
+This d is the digit that we're currently
+
+26
+00:02:14,767 --> 00:02:19,483
+working on. So then, we sort that on,
+it's, the rest of it on its first
+
+27
+00:02:19,483 --> 00:02:22,733
+character.
+So it's the second character and all the
+
+28
+00:02:22,733 --> 00:02:27,194
+words that start with s.
+And then there's a lot of them that start
+
+29
+00:02:27,194 --> 00:02:30,253
+with e,
+So we move on to the third character for
+
+30
+00:02:30,253 --> 00:02:33,375
+those,
+And then there's some that start with a
+
+31
+00:02:33,375 --> 00:02:35,160
+and so forth.
+So, recursively,
+
+32
+00:02:35,509 --> 00:02:45,623
+Every time that we move on one character,
+we have to keep going until one thing we
+
+33
+00:02:45,623 --> 00:02:51,701
+have to do, is if there's two keys that
+are equal, we have to examine every
+
+34
+00:02:51,701 --> 00:02:56,464
+character in the key.
+We never find out that the two keys are
+
+35
+00:02:56,464 --> 00:03:01,392
+equal until the end.
+And if we reach the end of a string, we
+
+36
+00:03:01,392 --> 00:03:05,744
+can just assume that goes before any
+character value.
+
+37
+00:03:05,744 --> 00:03:12,150
+And with those two things, then you, you
+can trace through the recursion to see how
+
+38
+00:03:12,150 --> 00:03:16,693
+MSD string sort of works.
+So and again, in this case, it sorts by
+
+39
+00:03:16,693 --> 00:03:21,307
+the first character, A and B have only
+size once, so you don't have to do
+
+40
+00:03:21,307 --> 00:03:24,640
+anything.
+So then most of this slide is showing what
+
+41
+00:03:24,640 --> 00:03:30,024
+happens in the keys that start with S, and
+then at the end, there's the two keys that
+
+42
+00:03:30,024 --> 00:03:35,215
+start with T, and they have both h's and
+both e's, we have to go through the whole
+
+43
+00:03:35,215 --> 00:03:38,909
+thing.
+So that's an example of MSD string sort.
+
+44
+00:03:38,909 --> 00:03:45,527
+Now, if strings are variable length like
+they were in that example, we just treat
+
+45
+00:03:45,527 --> 00:03:52,475
+them as if they had an extra character at
+the end that's smaller than any character.
+
+46
+00:03:52,475 --> 00:03:59,259
+So they'll appear before they're supposed
+to appear alphabetically, before strings
+
+47
+00:03:59,259 --> 00:04:03,809
+that have the same starting characters
+that are longer.
+
+48
+00:04:03,809 --> 00:04:09,103
+And you can do that by overloading, you
+know, implementing charAt to just return
+
+49
+00:04:09,103 --> 00:04:14,822
+minus one, if, if we're past the character
+that we're looking at.
+
+50
+00:04:14,822 --> 00:04:18,760
+So, that's the easy part of the
+implementation.
+
+51
+00:04:18,760 --> 00:04:25,267
+One thing to point out, the in the C
+programming language, the representation
+
+52
+00:04:25,267 --> 00:04:32,373
+of strings puts an extra character that's
+zero at the end and those string has the
+
+53
+00:04:32,373 --> 00:04:37,510
+zero character.
+So, actually not to do anything at all.
+
+54
+00:04:37,854 --> 00:04:46,160
+But when that change the code for MSD
+string sort is also really an extremely
+
+55
+00:04:46,160 --> 00:04:51,442
+simple modification or extension to key
+index counting.
+
+56
+00:04:51,731 --> 00:04:58,358
+So we've got our sort and it takes its
+input array and then, output buffer,
+
+57
+00:04:58,358 --> 00:05:06,233
+And then we have to take the deliminators
+of the subfile we're going to sort, low
+
+58
+00:05:06,233 --> 00:05:11,612
+and high just like we've done for other
+recursive sorts.
+
+59
+00:05:11,900 --> 00:05:22,510
+We go ahead and we do the key index
+counting, again, to take care of, we have
+
+60
+00:05:22,510 --> 00:05:27,879
+to take care of the fact that we have an
+extra character that kind of the end of
+
+61
+00:05:27,879 --> 00:05:32,717
+string character.
+And also, pull out the d character of our
+
+62
+00:05:32,717 --> 00:05:38,615
+string just like we did for LSD sort.
+And we just go through the whole thing and
+
+63
+00:05:38,615 --> 00:05:44,050
+sort according to the given character.
+And then, what we do next is just do a
+
+64
+00:05:44,050 --> 00:05:49,617
+recursive call for every entry in the
+counter array where we, we just sort the
+
+65
+00:05:49,617 --> 00:05:55,472
+part of the array from count of r to lo
+plus count of r or lo plus count of r plus
+
+66
+00:05:55,472 --> 00:05:59,575
+one.
+Really just one line of curve for each
+
+67
+00:05:59,812 --> 00:06:03,442
+subarray.
+And then we move to the right one
+
+68
+00:06:03,442 --> 00:06:07,703
+character.
+So, again, this is very little code to get
+
+69
+00:06:07,703 --> 00:06:13,780
+a very useful and powerful sorting method,
+That's MSD string sorting.
+
+70
+00:06:13,983 --> 00:06:18,258
+One thing to notice is that, with the,
+extra output buffer,
+
+71
+00:06:18,462 --> 00:06:21,584
+We can use that even with the recursive
+calls,
+
+72
+00:06:21,584 --> 00:06:25,859
+But not the counter array,
+We have to keep the counter array around.
+
+73
+00:06:26,063 --> 00:06:30,338
+So it's part, it's gotta be local to the
+recursive procedure,
+
+74
+00:06:30,541 --> 00:06:36,174
+Cuz when we call for the next character,
+we're going to need, a new counter array
+
+75
+00:06:36,174 --> 00:06:42,078
+for that character but have to save the
+old one to do the next subarray for, the
+
+76
+00:06:42,078 --> 00:06:45,875
+calling, method.
+Well that turns out to be important
+
+77
+00:06:45,875 --> 00:06:50,695
+because there's a potential for big
+problems with MSD sort when we start
+
+78
+00:06:50,695 --> 00:06:55,258
+looking at the analysis.
+And the thing to notice is that if you
+
+79
+00:06:55,258 --> 00:07:00,648
+have a tiny array, say an array of size
+two, it doesn't matter how small your
+
+80
+00:07:00,648 --> 00:07:06,251
+array is, you need to have a counter array
+for each potential character in the
+
+81
+00:07:06,251 --> 00:07:10,100
+alphabet.
+So for ASCII, just to, to initialize the
+
+82
+00:07:10,100 --> 00:07:16,788
+counter and to set it to zero, just create
+it, it's going to be a hundred times
+
+83
+00:07:16,788 --> 00:07:23,921
+slower, then just sorting the thing or
+just copying it back, even if you're using
+
+84
+00:07:23,921 --> 00:07:30,877
+Unicode, it's 32,000 times slower. And
+what's worse is it's a recursive program,
+
+85
+00:07:30,877 --> 00:07:34,890
+so there's going to be lots of small
+subarrays.
+
+86
+00:07:35,211 --> 00:07:40,250
+Sorry.
+This feature or characteristic of MSD
+
+87
+00:07:40,250 --> 00:07:48,828
+string sort actually [INAUDIBLE], we're
+having a lot of applications that were
+
+88
+00:07:48,828 --> 00:07:56,119
+using it when people switched from ASCII
+to Unicode a while back.
+
+89
+00:07:56,441 --> 00:08:02,010
+All of a sudden programs that were really
+efficient sorts,
+
+90
+00:08:02,207 --> 00:08:07,330
+All of a sudden, became hundreds of times
+slower, with the switch to Unicode,
+
+91
+00:08:07,527 --> 00:08:13,175
+Because these big arrays in the recursive,
+these big arrays in the recursive
+
+92
+00:08:13,175 --> 00:08:16,460
+procedure.
+It was a, a serious performance problem,
+
+93
+00:08:16,460 --> 00:08:22,240
+So we definitely have to watch out for
+that, with, MSD string sort.
+
+94
+00:08:22,240 --> 00:08:28,444
+Now there is a good solution to avoid this
+danger and it's the same solution we've
+
+95
+00:08:28,444 --> 00:08:32,256
+used before.
+If you've got a small subarray and the
+
+96
+00:08:32,256 --> 00:08:36,367
+sort is going to be slower just cut off
+the insertion sort.
+
+97
+00:08:36,367 --> 00:08:42,226
+The other thing you can do is and save
+some more time, is to just have insertion
+
+98
+00:08:42,226 --> 00:08:46,321
+sort start at the character that we're
+currently working on.
+
+99
+00:08:46,525 --> 00:08:52,598
+Cuz we know things are, equal, to the left
+and we're just looking for the right.
+
+100
+00:08:52,803 --> 00:08:58,467
+And, that's easy to implement just by
+changing the implementation of the compare
+
+101
+00:08:58,467 --> 00:09:02,425
+function, to take into account which
+character we're at.
+
+102
+00:09:02,630 --> 00:09:06,929
+Notice it's quicker,
+And, and it happens to be quicker in Java
+
+103
+00:09:06,929 --> 00:09:12,280
+to just pull out the substrings and use
+compare to, than to go in and get the
+
+104
+00:09:12,280 --> 00:09:15,160
+charAt that's just a feature of the
+implementation.
+
+105
+00:09:15,606 --> 00:09:22,158
+So switching to, cutting off the insertion
+sort for small subarrays is definitely a
+
+106
+00:09:22,158 --> 00:09:27,964
+good idea for MSD string sort.
+And so, what about the performance of this
+
+107
+00:09:27,964 --> 00:09:31,985
+method?
+Well the key characteristic of, of MSD
+
+108
+00:09:31,985 --> 00:09:37,568
+string sorting, it examines just the
+characters that it needs to examine in
+
+109
+00:09:37,568 --> 00:09:42,631
+order to get the C key sorted.
+So, that means that its performance is
+
+110
+00:09:42,631 --> 00:09:48,666
+going to be really dependent on the data.
+Now, in the, worst case for the algorithm,
+
+111
+00:09:48,889 --> 00:09:54,631
+it has to examine all the data, in this
+case all the characters in all the
+
+112
+00:09:54,631 --> 00:10:00,521
+strings, and that's, for example, when
+they're all equal, it's going to look at
+
+113
+00:10:00,521 --> 00:10:05,219
+all the characters.
+If you have some duplicate keys, it might
+
+114
+00:10:05,219 --> 00:10:11,258
+have to examine all the characters in
+those duplicate keys, but there's plenty
+
+115
+00:10:11,258 --> 00:10:16,180
+of other strings that it doesn't examine
+all the characters. so,
+
+116
+00:10:16,400 --> 00:10:21,682
+That, depending on, and end of the keys
+are random in some way, if they, or
+
+117
+00:10:21,682 --> 00:10:27,332
+they're approximated by random keys.
+Then it's not going to examine very many
+
+118
+00:10:27,332 --> 00:10:32,248
+characters at all,
+Actually and this is a typical case, say,
+
+119
+00:10:32,248 --> 00:10:38,558
+for account numbers or some situation
+library call numbers or some situation
+
+120
+00:10:38,558 --> 00:10:40,980
+like that,
+In a case like that.
+
+121
+00:10:40,980 --> 00:10:45,531
+Msd string sort will examine only a small
+fraction of the data,
+
+122
+00:10:45,747 --> 00:10:51,527
+A small constant fraction of the data,
+And it's always going to be sublinear.
+
+123
+00:10:51,527 --> 00:10:57,739
+Now, it's also possible that sorts that do
+comparisons can be sublinear, but MSD
+
+124
+00:10:57,739 --> 00:11:02,652
+string sort is, you, you know, good and
+that it really only examines the
+
+125
+00:11:02,652 --> 00:11:07,420
+characters that need to be examined in
+order to get the sort done.
+
+126
+00:11:07,420 --> 00:11:11,653
+So this gives us another line on, on the
+table,
+
+127
+00:11:11,897 --> 00:11:19,062
+And the key here is that if the data is
+approximated by random log base r of N is
+
+128
+00:11:19,062 --> 00:11:24,680
+going to be pretty well approximated by a
+constant in the real world.
+
+129
+00:11:24,876 --> 00:11:31,596
+So this is going to be a fast method.
+The one danger is that, you have to worry
+
+130
+00:11:31,596 --> 00:11:38,674
+out [inaudible], worry about using too
+much extra space, with those big counter
+
+131
+00:11:38,674 --> 00:11:42,173
+arrays.
+But that's a important and useful,
+
+132
+00:11:42,411 --> 00:11:48,666
+practical sorting method.
+So now let's look at, MSD string sort
+
+133
+00:11:48,666 --> 00:11:55,354
+versus Quicksort for strings.
+There, it, they are similar in many ways.
+
+134
+00:11:55,354 --> 00:12:00,957
+They're both recursive methods that,
+partition a file up.
+
+135
+00:12:00,957 --> 00:12:08,022
+So one of the problems with MSD string
+sort is that, It tends to, when it's doing
+
+136
+00:12:08,022 --> 00:12:13,229
+the counting, it's kind of making random
+accesses to memory when it, particularly
+
+137
+00:12:13,229 --> 00:12:18,891
+when it's distributing the keys out.
+So on modern systems that have caches not
+
+138
+00:12:18,891 --> 00:12:24,554
+everything is in the fastest memory at, at
+the same time and programs that move from
+
+139
+00:12:24,554 --> 00:12:29,760
+one piece of data to another right next
+are, are going to be much more efficient.
+
+140
+00:12:29,760 --> 00:12:32,950
+And quicksorts like that, an MSD quicksort
+is not.
+
+141
+00:12:34,190 --> 00:12:39,382
+Another disadvantage of MSD string sort is
+that there's actually quite a few
+
+142
+00:12:39,382 --> 00:12:43,697
+instructions in, in our loop.
+With the indexing and accounting.
+
+143
+00:12:43,697 --> 00:12:47,878
+And the plus and [inaudible] in the
+accumulating and so forth,
+
+144
+00:12:47,878 --> 00:12:54,906
+Whereas Quicksort remember is fast,
+because it has only a few instructions in
+
+145
+00:12:54,906 --> 00:12:59,568
+the inner loop.
+And amnesty strings are used as extra
+
+146
+00:12:59,568 --> 00:13:03,221
+space,
+Whereas quick sort, there's two things,
+
+147
+00:13:03,221 --> 00:13:08,501
+one is, it's not linear in these
+applications, where MSD string sort is,
+
+148
+00:13:08,501 --> 00:13:14,233
+and kind of the reason that it's not
+linear, is that if you've got keys that
+
+149
+00:13:14,233 --> 00:13:20,266
+have a lot of the same characters at the
+beginning, when it's doing the compares,
+
+150
+00:13:20,266 --> 00:13:24,490
+it has to rescan or recompare, lots of
+those characters.
+
+151
+00:13:24,490 --> 00:13:29,920
+So, what were going to look at next, is
+try to get this, achieve this goal, of
+
+152
+00:13:29,920 --> 00:13:34,220
+combining the advantages of, of these two
+sorting algorithms.

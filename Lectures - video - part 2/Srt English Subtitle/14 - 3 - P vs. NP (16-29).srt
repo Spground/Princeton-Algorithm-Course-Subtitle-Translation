@@ -1,0 +1,778 @@
+1
+00:00:03,140 --> 00:00:08,987
+Now we're going to talk about P and NP,
+the two major classes of problems that
+
+2
+00:00:08,987 --> 00:00:15,457
+form the basis for the theory of
+intractability. and so we've talked about
+
+3
+00:00:15,457 --> 00:00:22,396
+search problems and what we're going to do
+is just name that class of problems and
+
+4
+00:00:22,396 --> 00:00:28,168
+that's what we call NP. NP is the class of
+all search problems. now I just want to
+
+5
+00:00:28,771 --> 00:00:34,805
+mention again that the classic definition
+that's often used in, in many books and
+
+6
+00:00:34,805 --> 00:00:41,039
+papers that you'll read about this topic.
+the classic definition limits NP to yes/no
+
+7
+00:00:41,039 --> 00:00:46,992
+problems. but again, the major conclusions
+that we draw are exactly the same. so, we
+
+8
+00:00:46,992 --> 00:00:54,137
+just listed a bunch of problems that are
+in NP. And the way that we know is we had
+
+9
+00:00:54,137 --> 00:01:01,368
+a very concrete definition of what we mean
+by a search problem. you have to be able
+
+10
+00:01:01,368 --> 00:01:08,338
+to given a solution, you have to be able
+to verify in guaranteed polynomial time
+
+11
+00:01:08,338 --> 00:01:14,960
+that you have a solution. and for
+satisfiability problems that we considered
+
+12
+00:01:14,960 --> 00:01:21,297
+and factor all are in the class NP. so we,
+we're using the concept of a search
+
+13
+00:01:21,297 --> 00:01:28,198
+problem to classify some problems. One way
+to think of NP is it's, it's really what
+
+14
+00:01:28,198 --> 00:01:35,773
+we would like to be able to compute. We'd
+like to have algorithms that solve all of
+
+15
+00:01:35,773 --> 00:01:42,112
+these problems. and it's a very, very
+general class of problems that's like,
+
+16
+00:01:43,100 --> 00:01:51,663
+it's almost articulating in as general way
+as possible what we mean by a problem that
+
+17
+00:01:51,663 --> 00:01:57,010
+we want to solve computationally. So,
+these are the problems that we'd like to
+
+18
+00:01:57,010 --> 00:02:02,636
+solve. Some of them we can, we know how to
+solve, some of them we don't. that's the
+
+19
+00:02:02,636 --> 00:02:11,296
+NP. now, by contrast, there is another
+class P where we add a, a restriction and
+
+20
+00:02:11,296 --> 00:02:17,518
+that's the class of search problems that
+we know how to solve in polynomial time.
+
+21
+00:02:17,518 --> 00:02:23,894
+So, that is we have, generally we have we
+prove that problems in P by demonstrating
+
+22
+00:02:23,894 --> 00:02:30,500
+an algorithm that is guaranteed to run in
+polynomial time for any instance of that
+
+23
+00:02:30,500 --> 00:02:37,493
+problem. And again, the classic definition
+is about yes/no problems. so here's bunch
+
+24
+00:02:37,493 --> 00:02:43,502
+of problems that are in P. and so we
+already showed L solve cuz Gaussian
+
+25
+00:02:43,502 --> 00:02:49,532
+elimination runs in polynomial time. And
+we already talked about LP cuz algorithm
+
+26
+00:02:49,715 --> 00:02:54,953
+works for linear program, programming. and
+then pretty much all the algorithms that
+
+27
+00:02:54,953 --> 00:03:01,237
+we've covered in this course like are cast
+as search problems. And also can, have
+
+28
+00:03:01,237 --> 00:03:08,323
+polynomial time solutions. We've been
+talking about programs that are polynomial
+
+29
+00:03:08,323 --> 00:03:15,498
+time solutions and just a little bit has
+to be done to convince yourself that, or
+
+30
+00:03:15,498 --> 00:03:22,672
+to cast the problem as a search problem
+that many of them are explicit as search
+
+31
+00:03:22,672 --> 00:03:27,763
+problems, like ST connectivity. You're
+searching for a path in a graph you know,
+
+32
+00:03:27,763 --> 00:03:32,236
+and, and Theseus and the minotaur, you
+know, showed if you, if you are given a
+
+33
+00:03:32,236 --> 00:03:36,876
+path, you can check that it's a path
+easily. So, it's a search problem. so P is
+
+34
+00:03:37,147 --> 00:03:42,705
+the class of search problems that can be
+solvable in polynomial time. so the
+
+35
+00:03:42,705 --> 00:03:48,128
+significance of p is, those are the ones
+that we actually do compute feasibly. So,
+
+36
+00:03:48,128 --> 00:03:53,754
+NP's the ones, all the ones we would like
+to, and P is all the ones that we actually
+
+37
+00:03:53,754 --> 00:04:00,124
+do compute feasibly. and those are
+perfectly well defined classes of
+
+38
+00:04:00,124 --> 00:04:07,925
+problems. now, what is the N and NP for?
+Well, just the, a brief moment to talk
+
+39
+00:04:07,925 --> 00:04:14,617
+about that. the N and NP stands for
+non-determinism. and the idea of a
+
+40
+00:04:14,617 --> 00:04:20,930
+non-deterministic machine is one that can
+guess the desired solution. and that's an
+
+41
+00:04:20,930 --> 00:04:26,875
+abstract machine. as far as we know, we
+don't have non-determinism in real life
+
+42
+00:04:26,875 --> 00:04:32,894
+devices. but in, but it's fine to have an
+abstract machine of that sort. Remember,
+
+43
+00:04:33,114 --> 00:04:38,913
+for our implementation for regular
+expression pattern matching, the way that
+
+44
+00:04:38,913 --> 00:04:44,638
+we solved that practical problem was to
+image a non-deterministic machine. And
+
+45
+00:04:44,638 --> 00:04:50,820
+then, write a program that would simulate
+that machine by trying all different
+
+46
+00:04:50,820 --> 00:04:59,222
+possibilities. and, in fact, that whole
+exercise really gets at the difference
+
+47
+00:04:59,222 --> 00:05:07,068
+between polynomial exponential time. first
+approach is the naive approach to
+
+48
+00:05:07,068 --> 00:05:12,979
+simulating that machine turns out to be an
+algorithm that can run in exponential time
+
+49
+00:05:12,979 --> 00:05:18,547
+for some inputs. And we actually saw that
+today there's implementations like that
+
+50
+00:05:18,547 --> 00:05:24,184
+out there that hackers can exploit to deny
+service. The implementation we show had
+
+51
+00:05:24,184 --> 00:05:28,817
+guaranteed polynomial time. So,
+non-determinism was an abstract device
+
+52
+00:05:28,817 --> 00:05:34,504
+that we used to help us try to get to a
+real practical solution and that's what
+
+53
+00:05:34,504 --> 00:05:39,993
+we're doing again. So, let's imagine, we
+have a non-deterministic machine that can
+
+54
+00:05:39,993 --> 00:05:48,242
+guess the solution. so like if you're in,
+in a deterministic machine, if you make a,
+
+55
+00:05:48,242 --> 00:05:56,514
+an array and create an array of size n,
+then it, Java we know deterministically,
+
+56
+00:05:56,514 --> 00:06:03,053
+initializes the entries to all zero. but
+what if that array A is supposed to be our
+
+57
+00:06:03,053 --> 00:06:08,083
+solution to a integer linear programming
+problem? we could have a non-deterministic
+
+58
+00:06:08,263 --> 00:06:12,934
+machine initialize the entries to the
+solution. They could just guess what the
+
+59
+00:06:12,934 --> 00:06:18,042
+right answer is and initialize it. So, it
+seems like a really, really powerful
+
+60
+00:06:18,261 --> 00:06:24,992
+capability. so for example, for integer
+linear programming, we could just tell the
+
+61
+00:06:25,284 --> 00:06:31,722
+non-deterministic machine guess the
+solution and we'd be done. and the same
+
+62
+00:06:31,722 --> 00:06:37,536
+concept goes all the way down to a touring
+machine. the whole idea of the finite
+
+63
+00:06:37,536 --> 00:06:43,224
+state machine or of any computation that
+people think about is the machine's in
+
+64
+00:06:43,224 --> 00:06:48,081
+some state, and it's fully determined what
+the next state will be. And Turing
+
+65
+00:06:48,081 --> 00:06:53,705
+machine's the simplest type of imaginary
+machine with that kind of capability. But
+
+66
+00:06:53,705 --> 00:06:58,881
+it's very simple to make a Turing machine
+non-deterministic, the same way that we
+
+67
+00:06:58,881 --> 00:07:04,249
+made Finite Automata non-deterministic.
+You just let it go to more than one
+
+68
+00:07:04,441 --> 00:07:10,680
+possible state. So, when you think about
+non-determinism in this way, it is pretty
+
+69
+00:07:10,680 --> 00:07:17,260
+clear almost immediately that NP is a
+class of search problems that are solvable
+
+70
+00:07:17,260 --> 00:07:24,003
+in polynomial time on a non-deterministic
+Turing machine. Even, if the machine gives
+
+71
+00:07:24,003 --> 00:07:30,745
+the solution, what we requiring is that we
+have to be able to check that there is a
+
+72
+00:07:30,745 --> 00:07:38,396
+solution in polynomial time. and that's,
+that's NP. So, what we have led to
+
+73
+00:07:38,396 --> 00:07:44,968
+immediately is the, what's called the
+extended Church-Turing thesis. and that's
+
+74
+00:07:45,211 --> 00:07:52,050
+the idea that P is, is the ones that we
+know how to solve, but it's the class of
+
+75
+00:07:52,050 --> 00:07:58,022
+the problems that we ever going to be able
+to solve in the, in the natural world. and
+
+76
+00:07:58,022 --> 00:08:04,072
+again evidence were supporting the thesis
+is that all the computers that we know
+
+77
+00:08:04,072 --> 00:08:10,432
+about were simulating in polynomial time.
+people wondered, have wondered and still
+
+78
+00:08:10,432 --> 00:08:16,792
+wonder, is it possible that there are
+computers out there that work differently
+
+79
+00:08:15,861 --> 00:08:22,556
+or more efficiently than the computers
+that we built. here's the an interesting
+
+80
+00:08:22,556 --> 00:08:27,330
+and simple example. there's a thing called
+a Steiner tree, which is like an MST,
+
+81
+00:08:27,330 --> 00:08:31,986
+except you're not restricted to have your
+lines go through the points that are
+
+82
+00:08:31,986 --> 00:08:36,680
+given. Steiner tree you're given some
+points. And what you're supposed to do is
+
+83
+00:08:36,680 --> 00:08:41,821
+find a set of lines of minimal length that
+connect the end points. Now, this is quite
+
+84
+00:08:41,821 --> 00:08:46,717
+a bit of math and geometry even to prove
+that a given set of lines is a Steiner
+
+85
+00:08:46,717 --> 00:08:51,919
+tree. But like for four points it's known
+like this, in a rectangle or array. that's
+
+86
+00:08:51,919 --> 00:08:57,060
+what the Steiner tree looks like. Can we
+write a program to compute Steiner trees?
+
+87
+00:08:57,243 --> 00:09:04,423
+it's a search problem. And although that
+it's not, not completely easy to
+
+88
+00:09:04,423 --> 00:09:10,548
+characterize as a search problem, but it
+is. But anyway, the point for now is that
+
+89
+00:09:10,778 --> 00:09:17,132
+people wondered actually if you put soap
+in between two glasses, the film formed by
+
+90
+00:09:17,132 --> 00:09:23,028
+the soap or soap bubbles is another way to
+think about it. But this is a two, making
+
+91
+00:09:23,028 --> 00:09:29,229
+it two-dimensional if you put four points
+and put soap and people have done this
+
+92
+00:09:29,229 --> 00:09:35,090
+experiment, that's a photo off the, off
+the web, you get a Steiner tree. and, you
+
+93
+00:09:35,090 --> 00:09:42,489
+know, who knows what kind of computation
+is involved to make that. if you put lots
+
+94
+00:09:42,489 --> 00:09:49,037
+of points, people have done I, I, I don't
+know what number. but they can get Steiner
+
+95
+00:09:49,037 --> 00:09:55,234
+trees for substantial numbers of points.
+can we really compute Steiner trees that
+
+96
+00:09:55,234 --> 00:10:02,000
+way? Well, you can construct things where
+it doesn't actually get the actual Steiner
+
+97
+00:10:02,000 --> 00:10:07,627
+tree. So, it doesn't really work. and
+that's just one example of an attempt.
+
+98
+00:10:07,841 --> 00:10:13,966
+there's plenty other examples out there.
+but the Chur, extended Church-Turing
+
+99
+00:10:13,966 --> 00:10:20,018
+thesis hasn't been with us for as long as
+the Church Turing thesis and maybe it's
+
+100
+00:10:20,018 --> 00:10:25,246
+not quite as strong, but it's held for
+quite a, quite a long time. and people are
+
+101
+00:10:25,246 --> 00:10:30,629
+assuming that there's not going to be a
+design that's going to make the differ
+
+102
+00:10:30,629 --> 00:10:35,901
+ence between polynomial time in this
+natural world. if we're going to make
+
+103
+00:10:35,901 --> 00:10:40,930
+future computers more efficient, we're
+just going to improve our existing
+
+104
+00:10:40,930 --> 00:10:48,275
+designs. that's the extended church term
+thesis. but it leaves us with all of this
+
+105
+00:10:48,275 --> 00:10:54,079
+leads us with a basic question. Does P
+equal NP? so P is all the problems we can
+
+106
+00:10:54,079 --> 00:10:58,773
+solve in the natural world, and P is all
+the search problems that would like to
+
+107
+00:10:58,773 --> 00:11:04,286
+solve. if we had non-determinism in the
+natural world do we have non-determinism
+
+108
+00:11:04,286 --> 00:11:09,700
+in the natural world? Does non-determinism
+help? that's the question. Does P equals
+
+109
+00:11:09,700 --> 00:11:15,372
+NP? this question has been around for a
+long time and has even made it into the
+
+110
+00:11:15,372 --> 00:11:21,624
+popular culture. and I think it'll make it
+into the popular culture much more when we
+
+111
+00:11:21,624 --> 00:11:27,231
+start having because we're starting to
+have massive online courses where many
+
+112
+00:11:27,231 --> 00:11:33,001
+more people are learning about these
+fabulous concepts. now here's another way
+
+113
+00:11:33,001 --> 00:11:39,722
+to think about P versus NP. it's the like
+idea of automating creativity. it's one
+
+114
+00:11:39,722 --> 00:11:46,287
+thing to be creative, it's another thing
+to appreciate creativity. so Mozart comes
+
+115
+00:11:46,287 --> 00:11:52,695
+up with music, a piece of music. Once that
+thing is created, we can appreciate it. Or
+
+116
+00:11:52,695 --> 00:11:59,650
+Andrew Wiles proved with his last theorem
+and however he came up with it, there's a
+
+117
+00:11:59,650 --> 00:12:06,470
+way to check it, somebody can check it. or
+a, somebody designs an, an air, air foiler
+
+118
+00:12:06,470 --> 00:12:12,992
+or airplane wing, we can verify that it
+has the properties it's suppose to. or
+
+119
+00:12:12,992 --> 00:12:19,200
+Einstein proposes a theory, somebody can
+validate it. So, there's the creative
+
+120
+00:12:19,436 --> 00:12:25,958
+let's, let's, let's make something or, or
+come up with something, that's the analog
+
+121
+00:12:25,958 --> 00:12:32,559
+to that is a solution to a problem, a
+search problem. and the ordinary thing to
+
+122
+00:12:32,559 --> 00:12:39,282
+do is to check it. but if P equals NP,
+there's no difference. we can, we, it's
+
+123
+00:12:39,282 --> 00:12:46,983
+really like automating creativity. that's
+the computational an analog to P equals NP
+
+124
+00:12:46,983 --> 00:12:53,993
+question is the computational analog to
+automating creativity. Is P equals NP?
+
+125
+00:12:53,993 --> 00:13:01,523
+That's the central question. , can you
+always avoid before searching and do
+
+126
+00:13:01,523 --> 00:13:08,249
+better? for search problems, since we have
+a small solution that can be checked in
+
+127
+00:13:08,249 --> 00:13:13,899
+palonomial time, ther e's always a
+exponential time solution, which is try
+
+128
+00:13:13,899 --> 00:13:19,912
+all possible solutions. but that's not,
+the question is, can you can you always do
+
+129
+00:13:19,912 --> 00:13:27,172
+better than that? That's the, the, the
+essence of the P equals NP question. so
+
+130
+00:13:27,172 --> 00:13:34,175
+there's two possibilities. If P, if P is
+not, if P is a search problem so it's
+
+131
+00:13:34,175 --> 00:13:41,454
+certainly an NP. Any problem in NP is also
+in P. so, the question is are there some
+
+132
+00:13:41,454 --> 00:13:49,285
+problems, some search problems that we
+can't solve in polynomial time? so if the
+
+133
+00:13:49,285 --> 00:13:56,031
+answer to the question is yes, then all
+the problems that I've mentioned that
+
+134
+00:13:56,031 --> 00:14:02,402
+nobody knows the solution to despite
+people working on them for many decades.
+
+135
+00:14:02,641 --> 00:14:08,932
+if P is equal to NP there's polynomial
+times out, algorithms for those out there,
+
+136
+00:14:08,932 --> 00:14:15,380
+we just haven't found them yet. if the
+answer to that is no, if that that's
+
+137
+00:14:15,380 --> 00:14:23,860
+really something fundamental about our
+universe that, that something, said
+
+138
+00:14:23,860 --> 00:14:31,992
+something profound about the power of
+non-determinism, non-determinism. If, if P
+
+139
+00:14:32,573 --> 00:14:42,436
+equals NP, non-determinism actually
+doesn't help, not equal NP. it would, now,
+
+140
+00:14:42,436 --> 00:14:48,990
+the overwhelming consensus is that P
+equals, not equal to NP. and we'll talk
+
+141
+00:14:48,990 --> 00:14:56,805
+some more about some reasons that people
+believe that. but when thinking about it
+
+142
+00:14:56,553 --> 00:15:03,742
+and you can really convince yourself that
+it really seems as though having a
+
+143
+00:15:03,742 --> 00:15:09,492
+machine. And a machine that can when you
+initialize a ray, an array, initialize it
+
+144
+00:15:09,492 --> 00:15:14,774
+with a solution to a integer linear
+programming problem really would seem that
+
+145
+00:15:14,774 --> 00:15:20,390
+a machine like that is going to be more
+powerful than the machines that we're
+
+146
+00:15:20,390 --> 00:15:26,140
+using. and that's why people believe that
+P is not equal to NP. But the frustrating
+
+147
+00:15:26,140 --> 00:15:31,088
+thing is that, theoretical computer
+scientist, and mathematicians have been
+
+148
+00:15:31,088 --> 00:15:37,618
+working on this for many, many years and
+no one has been able to prove it. actually
+
+149
+00:15:37,930 --> 00:15:47,290
+there's the Millenium Prize. you can earn
+a million dollars from Clay Mathematics
+
+150
+00:15:47,290 --> 00:15:53,455
+Institute if you resolve PNP.
+Equals NP. actually there's other math
+
+151
+00:15:53,455 --> 00:15:59,261
+problems on that list and but people who
+know algorithms. First of all, you could
+
+152
+00:15:59,261 --> 00:16:04,662
+learn, earn way more than a million
+dollars if, if you resolve this problem.
+
+153
+00:16:04,864 --> 00:16:10,130
+second of all, if you're expert in
+algorithms, there's lots of other ways to
+
+154
+00:16:10,130 --> 00:16:15,936
+earn a million dollars. so it's not about
+the million dollars, it's about this is
+
+155
+00:16:16,138 --> 00:16:22,484
+some would argue one of the most important
+open mathematical questions that faces us
+
+156
+00:16:22,484 --> 00:16:23,160
+right now.

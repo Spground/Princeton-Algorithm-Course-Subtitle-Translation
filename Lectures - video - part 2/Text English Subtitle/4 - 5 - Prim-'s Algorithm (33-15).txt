@@ -1,0 +1,763 @@
+Next we'll look at another classic
+algorithm for computing the MST called
+Prim's algorithm.
+It's also an extremely simple algorithm to
+state. What we're going to do now is start
+with vertex zero and we're going to grow
+the tree one edge at a time, always
+keeping it connected.
+The way we're going to do that is add to
+the tree the minimum weight edge that has
+exactly one endpoint in the tree computed
+so far, and we'll keep doing that until
+we've grown the whole v-minus one edge
+tree.
+Let's look at a demo to see how that
+works.
+So we start with vertex zero.
+And we're supposed to add them in minimum
+edge that's connected to zero.
+So that's zero, seven Out of all the edges
+connected to zero, that's the one of
+minimum weight.
+So now we have one edge, two vertices on
+the tree.
+And so now we want to add the min weight
+edge that connects to the tree.
+In this case, that's seven, one out of all
+the edges that connect to the tree, one,
+seven is the shortest one, so that's the
+one that we add.
+So now we have two edges on the tree.
+Continuing now, the min weight edge that
+connects to the tree is zero, two so, we
+add that one.
+So, now we have three edges, four vertices
+on the tree.
+The closest edge, the closest vertex to
+the tree or the smallest edge coming out
+of the tree is two, three so we add that
+one.
+So now we have three more vertices to go,
+and you can see that the next one that's
+going to come is five.
+That's closer, to the three than four or
+six.
+So we do that, add five, now there's two
+more and so, out of all those edges, the
+closest one to the tree is 45.
+It's a little shorter than four, seven and
+zero, four.
+So that's the one that gets added and then
+finally six gets added to the tree by the
+surest edge that connects it to the tree,
+which is six, two.
+So start with vertex zero, add an edge at
+a time to the tree, it's the shortest edge
+that goes from, a tree vertex to a
+non-tree vertex, that's Prim's algorithm.
+Now let's look at Prim's algorithm running
+on, on the same huge graph that we ran for
+Kruskal's.
+This is also a fascinating dynamic
+process.
+Usually, the new edge, is, close to, the
+last edge added.
+But every once in a while, it gets stuck.
+And so, jumps to a new place, to add
+edges, to the MST.
+This algorithm's a little bit easier to
+follow.
+But it's a very interesting dynamic
+process.
+You can see that it, when it's easy, it
+just sticks where it was.
+And when it runs into some long edges, it
+gets stuck and tries somewhere else.
+Always adding to the tree, the shortest
+edge that connects a non-tree vertex to a
+tree vertex.
+And you can see the last few things to be
+added where the vertices in the upper left
+corner.
+So that's a visualization of Prinz
+algorithm.
+Completely different character, but comes
+out to the same tree as Kruskal's
+algorithm as long as the edge weights are
+distinct.
+So we need to prove Prim's algorithm
+correct and this one has been rediscovered
+a, a few times depending on how you cast
+the data structure for implementing
+finding the minimum.
+But the basic algorithm has been known
+since at least 1930 and it's proof that it
+computes the MST again comes because it's
+a special case of the greedy MST
+algorithm.
+So the, let's suppose that E is the
+min-win weight edge connecting the vertex
+on the tree to a vertex not on the tree.
+Well, you just, you take, as your cut, the
+tree vertices.
+There's no black crossing edge from the
+tree vertices to non tree vertex.
+That's a definition that's not on the
+tree.
+And there's no crossing edge of low
+weight, cuz that's the minimum one.
+That we picked by design.
+So it's a special case of the Greedy
+algorithm where you take, as the cut, the
+set of vertices currently on the tree.
+That's Prim's algorithm.
+Now how are we going to implement Prim's
+algorithm?
+How are we going to find the minimum
+weight edge with exactly one point and T?
+Well, one thing that we could do is just
+try all the edges.
+And, maybe some early implementations that
+would do that.
+But what we're going to do is use a modern
+data structure of priority q.
+So we're going to keep the, edges, on a
+priority queue.
+But, have exactly one end point in T.
+And then we can just, pick out the minimum
+weight one.
+That's a so called, lazy implementation of
+Prim's algorithm.
+We'll look at another one, called the
+eager implementation afterwards.
+So, what we need to do is find the minimum
+weight edge with exactly one endpoint in
+the tree.
+So, the solution is to make a priority cue
+of the edges that have at least one end
+point in the tree.
+And then we, using as priority, the key is
+the edge and the priority is the weight of
+the edge.
+And so, we're going to. Use delete min to
+find the next edge to add to the tree.
+And then we have to update the priority
+queue.
+When we consider that edge, now there's
+going to be some edges on the priority
+queue that are obsolete, and we've already
+found better ways to connect them, so
+we'll just disregard an edge that has both
+endpoints in the tree, we've already found
+a way to connect them and we don't need
+that edge for the minimum spanning frame.
+That's why it's called a lazy
+implementation.
+We allow stuff to be on the priority queue
+that we know is obsolete.
+And then when we pull it off the queue we
+test whether it belongs in the tree or
+not.
+But then the key step in the algorithm is
+to assume, is to, what do you do when you
+get a new vertex for the minimum pan in
+tree and a new edge.
+So that means that one of the vertices is
+on the tree, let's say that's v and the
+other one is not on the tree.
+That means W.
+And so what we want to do is add W to the
+tree but then we also want to add to the
+priority Q, any edge that's incident to W.
+So that's got the possibility, as long as
+this other end point is not in the tree.
+So those edges have the possibility of
+being minimum spanning tree edges in the
+future unless some better way to connect
+their incident vertex to the tree is found
+before they come off the queue.
+And that's the algorithm.
+A lazy solution of Primm's algorithm.
+So lets take a demo of that.
+So what we're going to do is start with a
+vertex and really grow the tree.
+Add to T the mid-weight edge with exactly
+one end-point entry in the tree.
+That's Primm's algorithm.
+But now we're going to show the data
+structure, the priority Q, that allows us
+to do this.
+By keeping all the edges that we know
+about that connect, that possibly could be
+that edge on priority Q.
+So let's look at what happens, for our
+sample graph.
+So we start at vertex zero,
+That's fine.
+Now, we're going to add that, to the tree,
+vertex zero to the tree, and we're going
+to put in the priority queue, all the
+edges that are, incident to zero.
+And just for, the demo, we'll just show
+the, edges sorted by weight, with the
+understanding that we have a heaped data
+structure or something under there, to
+give us the smallest one.
+But, for the demo, it's easiest to see,
+them sorted by weight.
+Okay so then to greenly grow the tree we
+have to pick 0,7 off the priority queue.
+But and so we'll show that one on the MST.
+And then the vertex that's not, on the
+tree at that point is seven, so we're
+going to add seven to the tree.
+So first we add zero, seven to be an MST
+edge, and then we add to the priority
+queue all the edges that are incident to
+seven, that. All the edges into, incident
+to seven that point to places, the
+vertices that are not on the tree that are
+connected to vertices that are not on the
+tree.
+So we don't put zero, seven back on'cause
+zero is already on the tree.
+So we put all those on a priority queue.
+And, again, keep them sorted by weight.
+So, now let's continue.
+So smallest thing is one, seven.
+That's the smallest edge, to a from a tree
+edge to a non-tree edge.
+And so that's, delete 1,7 from the
+priority queue and add it to the MSTs, so
+we do that.
+And now that takes us to one and so now we
+have to add to the priority queue, all the
+edges that, connect, one to non-tree
+edges.
+So that's what the asterisks are, are the
+new, new edges on the priority queue.
+And again, we keep ''em sorted by weight.
+So now what we want on the priority queue
+is a subset of the, you wanna be sure that
+every edge that connects a tree edge to a
+non-tree edge is on the priority queue.
+We might have a few others as well, and
+we'll see that in, in a second.
+So now 0,2's the smallest so we take 0,2
+and add it to the MST.
+So notice now that once we add two to the
+MST, this edge between one and two becomes
+obsolete.
+It's never going to be added to the MST.
+At the time that we put one on, we thought
+maybe that was a good way to get to two.
+But now we know there's a better way to
+get to two.
+So that edge becomes obsolete.
+And the lazy implementation just leaves
+that edge on the priority Q.
+So let's now continue, so, we added, two
+to the, 0-2 to the MST.
+And we have to add, everybody infinite the
+two, that, is not on the tree, to the
+priority queue.
+So, in this case, it's 2-3 and 6-2.
+We don't have to add 1-2 and 2-7, 'cause
+they go to three edges.
+We don't add'em back on.
+Okay, so now the smallest is two, three.
+So take that, add it to the MST.
+And add all the edges incident to three to
+non-tree vertices, in this case it's just
+three, six.
+And that's a long one.
+So now the next edge for the MST is five,
+seven.
+Take that off the priority queue, put it
+on the MST.
+And so and now all peak, all edges
+incident to five that go to non tree
+vertices.
+It says just five, four and that one.
+So now the next edge that would come off
+the priority que is one, three but, that's
+an obsolete edge.
+We already have one, three connected in
+the MST because we were lazy and left that
+in the priority que.
+So now we just pull it off and, and
+discard it, because it connects through
+three vertices.
+Same with 1,5.
+We already have a better way to connect
+them.
+2,7 connects through three vertices.
+And finally we get to four, five.
+4,5 now gets deleted.
+And from the priority queue, and add it to
+the MST.
+Everybody connected to four, that's just
+six, and that's a long one, goes on.
+Now we have some obsolete edges we'll get
+to that one too.
+And then four, seven is obsolete, and
+zero, four is obsolete.
+And finally, the last edge to get added to
+the MST is six, two.
+And after deleting 6-2 from the priority
+queue and adding the MST we have, computed
+the MST.
+We have V minus one edges on V vertices,
+and that's, implementation of the lazy
+version of Prim's algorithm.
+And it's just a version of Prim's
+algorithm we showed was the underlying
+data structure, the priority queue, that
+ensures that we always get the shortest
+edge connecting a tree vertex to a
+non-tree vertex.
+So let's look at the code for Prim's
+algorithm.
+Again, the data structures that we build
+up in part one of this course, give us a
+very compact implementation of this MST
+algorithm.
+So we're going to need three instance
+variables.
+One is a existence array.
+A vertex indexed array of bullions, that
+for each vertex.
+Will tell us whether or not it's on the
+MST.
+Then we have the, list of edges on the
+MST, that, is going to be, returned to the
+client after the MST is computed, to, for
+iterable.
+And then we we'll have the priority queue
+of edges that, connect, tree vertices with
+non-tree vertices.
+The super-set of the edges that connect
+tree vertices and non-tree vertices.
+So.
+Given a graph we'll build a priority
+queue.
+We'll initialize all the data structures.
+And then we'll visit, and we'll show what
+the routine does.
+That's the one that processes each vertex
+when it gets added to, to the tree.
+We'll look at that in the next slide.
+So the main loop is, while the priority q
+is not empty, we pull off the minimum edge
+from the priority q.
+We get it's constituent vertices, if their
+both marked then we just ignore it.
+They're already on the MST.
+Otherwise, we put the edge on the MST.
+And which ever vertex was not on the tree,
+we visit and put on the tree.
+And the visit routine is the one that puts
+the vertex on the tree and puts all of its
+indecent edges on the priority Q.
+So to visit a vertex we set its entry,
+corresponding entry in the marked array to
+be true, so it's, added to the tree.
+And then for, every edge, that's adjacent
+to that, we're going to, if it's, other
+edge is not marked, we're going to put it
+on the priority Q.
+So if it's an edge that goes from a tree
+vertex to a non-tree vertex, we put it on
+the priority Q.
+And then, we have the, client query method
+to, get the MST, once the, MST is built.
+Again, the data structures that we've used
+give a very compact and complete
+implementation of Prim's, Prim's
+algorithm.
+What's the running time of the algorithm?
+Well, it's correct cuz it implements
+Prim's algorithm as we've showed us in the
+sense of a greedy algorithm.
+And it's easy to see that the running time
+is always going to be proportional to E
+log E in the worst case.
+And that's because you could put all the
+edges on priority Q and. So, every edge
+would, might, would have to come off the
+priority cue, so that's e times, and then
+the cost would be proportional to e for,
+inserting and deleting, every edge off the
+priority cue.
+So, E log e is sorry, is a fine running
+time.
+The space, extra space proportional to e
+is you know, might be considered annoying,
+or inelegant, or inefficient so there's a
+more efficient version of Prim's algorithm
+where we clear off that dead weight on the
+priority queue.
+And that's the eager implementation of
+Prim's algorithm that we'll look at next.
+In practice, the lazy implementation works
+pretty well, but the eager implementation
+is all.
+So a very elegant and efficient algorithm,
+and it's worth learning both.
+So for the eager solution, what we're
+going to do is.
+The priority Q is going to have vertices.
+And it's going to have, at most, one entry
+per vertex.
+And so those are the vertices that are not
+on the tree but are connected by an edge
+to the tree.
+And the priority of a given vertex is
+going to be the weight of the shortest
+edge connecting that vertex to the tree.
+So if we look at this little example here
+Where we've build the tree for zero, seven
+and one then the Black.
+Entries in this are the ones, the edges
+that are on the MST.
+So that's zero, seven and one, seven and
+the red ones are the ones that are on the
+priority Q because they're connected by an
+edge to some vertex that's on the tree.
+And for each one of them, there's a
+particular edge that connects, that's
+shortest, that connects that vertex to the
+tree.
+So that's the key for the priority Q.
+So that's what we're, that's what we're
+going to want for at any time during the
+execution of the algorithm.
+We're going to want the vertices that are
+connected to the tree by one vertex.
+And, and we're going to know the shortest
+edge connecting that vertex to the tree.
+So then, the algorithm is again, delete
+the minimum vertex.
+And it's got an associated edge that
+connects it to the tree, and we put that
+one on the tree.
+And then we have to update the priority
+queue.
+So why do we have to update the priority
+queue.
+So we have.
+This vertex that's not on the tree, we
+consider all of the edges that are
+incident to that vertex.
+If they point to a tree vertex then we're
+going to ignore it.
+That's no problem.
+If it's not already on the priority Q,
+we're going to put that new vertex on the
+priority Q.
+And then other thing is, if the vertex is
+on the priority Q and we just found a
+shorter way to get to it, then we're going
+to have to decrease the priority of that
+vertex.
+So, let's look at how that works in a
+demo.
+So, again, it's just an implementation of
+Prim's algorithm.
+It's just how to we get the min weight
+edge that connects to the tree?
+And this is a, a more efficient way to do
+it.
+So, again, we start out with our graph,
+started zero, and, let's get going.
+So, now, the priority QS vertices, and so
+there's four vertices that are just one
+edge away from the tree, and, we keep'em
+on the priority queue, in order of their
+distance to the tree.
+So, and we also keep the edge.
+Two vertice, vertex index arrays.
+One is the edge that takes us to the tree,
+and the other is the length of that edge.
+And again we'll keep sorted on the
+priority queue just to make the demo
+easier to follow.
+So the next vertex to go on the tree is
+seven.
+The next edge to get added to the tree is
+edge two of seven.
+And then we go from there.
+So that's the smallest one, we take that
+for the tree and now we have to update the
+priority q.
+So, how do we update the priority q?
+Well we have to look at, everybody
+incident the seventh, and so, let's look
+at, so, for example, 7-2.
+We don't need to put 7-2 in the priority
+queue, since we already have a better way
+to connect two to the tree, thats 2-0.
+So we don't have to change anything.
+Same with 7-4.
+And about 7-5, and 7-1.
+One and five are not on the priority
+queue.
+So, we have to put them on the priority
+queue.
+And, then save the edges in length that,
+get them, to seven which would get them to
+the tree.
+So now, on our priority queue, we have our
+current tree.
+And we have all vertices that were within
+one edge of the tree.
+And the edge that gets'em to the tree, and
+their length.
+So, we're ready for another step of the
+algorithm.
+So now seventeen is the smallest thing in
+the priority queue.
+And so we put that on the MST.
+And now we look at everybody connected to
+one.
+And again, one seven we [inaudible],
+because it's on the tree.
+One five we don't need cuz we have a
+shorter way to get to the tree.
+One two we don't need cuz we have a
+shorter way, to get, two to the tree, but
+we haven't seen three yet so we add vertex
+three to the priority cue and say we get
+to the tree by one, one three, distance
+point two nine.
+Every, all the vertices within one edge of
+the tree and the edge and length of the
+shortest edge that gets.
+To the tree from that vertex, that's what
+we're maintaining at every step.
+Okay so next vertex to come to the tree is
+two and so we put that on the tree and now
+we look at everybody that connected to
+two, so now we have our first example of
+decrease key but let's, let's check them
+all.
+So two, zero.
+Two, seven, and two, one, take us to
+vertices that are already on the tree.
+So it's two, three and two, six.
+So what we need to do for three, we had
+thought that the best way to get to three
+from the tree from three was to go to one.
+And adding this new edge two means we now
+know a better way to get from three to the
+tree.
+So we have to update the priority.
+Update the edge two, in the priority we
+have to decrease the key of the priority.
+So that's an operation that we're going to
+need from our priority Q.
+And it's something that has to be factored
+into our priority Q implementation.
+And the same thing for six.
+We thought we had a good way to get to the
+tree from zero but two brings six closer
+to the tree so we have to update that
+information.
+And say now the best way to get from six
+to the three is 6,2 and that it's length.
+We have to decrease the key.
+And this definitely.
+Involves summary shuffling in the priority
+queue and our implementation is going to
+take that into account.
+So, with those changes now, we have the
+following situation.
+And, we've got, four edges on the tree.
+Three edges on the tree.
+Now we're going to add the fourth, which
+is 2-3.
+That's the smallest thing on the priority
+queue.
+So we add, two, three to the MST.
+And now we have to go to the, things
+connected to three, And, well, there's
+nothing to add, since we already have a
+better way to six.
+So next one that gets added is 5-7.
+And check, so, edges from five, seven.
+So.
+We from five, We're going to decrease the
+key of four from.38 to.5.'Cause the best
+way to get from four to the tree is no
+longer 4,0, it's 4,5.
+So again, decrease the key and discard the
+longer edge to the tree.
+And in fact, that's the next edge that we
+pick.
+And we don't bother putting forth six on,
+'cause we already have a better way to get
+from six to the tree.
+And then the last edge that we had was
+6,2.
+Again, it's the easy version of Prim's
+algorithm is an implementation that always
+connects to the tree, the vertex that's
+closest to the tree.
+But we use a more efficient data structure
+to do it.
+That can only have one, at most one entry
+per vertex, as opposed to one entry per
+edge.
+So that's the eager version of the Prim's
+algorithm.
+Okay rather than focus on the code for the
+eager version.
+Which is quite similar to the code for the
+lazy version.
+We're going to talk briefly about the Key
+data structure that we need to implement
+this.
+And it's the implementation of the
+priority Q that allows us to decrease
+keys.
+And so, this is a advanced version of the
+priority Q that we talked about in part
+one of the course.
+But it's necessary for algorithms like
+this.
+So what we're going to do, The problem is.
+We have keys that the priority queue
+algorithm doesn't really, Needs to know
+when we change values of keys, and so we
+have to do that through the API.
+And so what we're going to do is allow the
+client to change the key by specifying the
+index and the, and the new key.
+And then the implementation will take care
+of changing the value and updating its
+data structures to reflect the changed
+values.
+You can't have the client changing values
+without informing the implementation.
+The priority queue implementation.
+That's the basic challenge for this data
+structure.
+So since we are working with vertex
+indexed arrays and graphs.
+And, the priority queue implementation
+might do the same.
+We'll just associate an index.
+Kind of pass that idea onto the priority,
+queue.
+To make it allow it to implement these
+operations officially.
+So the constructor gets to know how many
+indices or how many keys there are going
+to be at most ever in the priority Q.
+And so it can make use of that to
+implement efficient data structures for
+the operations.
+And so insert just associates a key with a
+given index.
+Decrease key allows to decrease the keys
+associated with a given index we can
+check.
+Whether that's a bug should be Mth K.
+Is an index on the priority Q.
+We can remove a minimal key and give it's
+associated index.
+Check whether it's empty and give its
+size.
+Now it's pretty much a topic for part one
+of the course, but we'll give just one
+slide here to show how these indeces kind
+of help things go around.
+We're basically going to use the same
+code, the heap based implementation of min
+PQ. But we'll keep parallel arrays that
+allows us to access quickly all the
+information that we need.
+So things on the queue are accessed by
+index, and so we'll keep the values in
+keys, so that's where the keys are.
+So PQ of I will give the index of the key
+that's in heap position I and QPI is the
+heap position of the key with index I.
+So that is the information that you need
+when the client changes a value, you.
+Need to get to the, you have to actually
+first of all change the value but then you
+may need to adjust the heap to, To reflect
+the changed value.
+So instead of a swim with an index, we use
+the, we get the heat position of the given
+index, and so forth.
+So if you look in the book, you'll see the
+code for index priority Q, and it's
+definitely a confusing topic for a
+lecture, but it's important to realize
+that it's possible to implement this
+decreased key operation in logarithmic
+time without ever having to search
+through.
+Everything for anything, using the idea of
+indexing.
+So with that change, We get, for all the
+operations, we get time proportional to,
+log v.
+And, what do we have to do for, the eager
+version of Prim's Algorithm?
+We, we have to, might have to insert every
+vertex once, and delete min, every vertex
+one.
+And we might do as many as E decrease key
+operations.
+So that gives us a total running time of E
+log V.
+But the main thing is that the amount of
+space for the priority q, is.
+Only V not E.
+And that can make a difference for a huge
+graph.
+So there are modifications that you can
+make to this.
+That give a more efficient running time.
+For example, one easy thing to do is to
+use since the operation we're performing
+most often is the decreased key.
+If we use a multi-way heap, like say a
+four way heap, or in general a D way heap.
+Then that reduces the cost of that
+operation.
+And it's.
+Slightly increases the cost for insert and
+delete min but there's not many of those,
+so we can get the running time to log base
+e over v of v.
+And that, if you do the math for various
+types of graphs, that's, that's going to
+be faster.
+And in fact a data structure called the
+Fibonacci heap was invented in the'80s
+that actually gets the running time down
+to e plus v log b, although that data
+structure's too.
+Complimented to actually, too complicated
+to actually use in practice.
+If you have a, a dense graph.
+Then you wouldn't even use a heap.
+You'd just use an array and find the
+minimum by going through, everything.
+Since every vertex has, lots of connected
+vertices.
+So we didn't consider that one.
+Because the huge graphs that we find in
+practice are, are sparse.
+And a binary heap is going to be much
+faster.
+And if you really have a
+performance-critical situation, it's
+worthwhile to do a four way heap.
+That's the, basic bottom line in the
+running time of Prim's algorithm.

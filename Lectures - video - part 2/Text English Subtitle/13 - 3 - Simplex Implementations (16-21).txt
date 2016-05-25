@@ -1,0 +1,312 @@
+Let's take a look at what's needed to
+implement the simplex algorithm in Java.
+so there's a basic idea that's very
+straightforward and that's the first thing
+we have to do is just put everything in an
+array. and, that's going to be a simple
+thing to do. So, we have in this case our
+input is our recipe for a recipe for beer.
+and our profit which is our objective
+function. and then, all the slack
+variables. so we put our matrix A, our M
+equations, and unknowns in this part of
+the array. And then, we put our slack
+variables next to them and then the
+right-hand sides of the equations which is
+B. and then the initial values of the
+objective function, and we'll have to put
+in the constraints that everything's
+positive. and so that's where we start,
+it's a tableau, it's really a the matrices
+and vectors that we have of input to the
+problem, all put into a single array. And,
+and that's again just to reduce the amount
+of code you have to worry about. so the
+idea is that when we run the algorithm,
+what all we're doing is transforming a few
+entries in this array. and when we're
+done, this is the representation of the
+equations that we ended up with, with
+before. and what they tell us is the
+immediately, they tell us the value of the
+objective function. And not only that,
+they tell us what, how many barrels of
+beer and ale to make cuz we're sitting at
+point where we have our A and B A and B in
+the basis. And the, and the therefore, the
+slack variables are zero so it tell us
+immediately that we better make 28 barrels
+of beer and twelve barrels of ale. so
+that's the idea. we just work with the
+elements in this tableau. And then, all
+we're going to do is write the code to
+build the tableau and then to do the
+pivots. and this is very straightforward
+Java code so it's going to be
+2-dimensional array, clearly. we have our
+number of constraints and our number of
+variables. so and so we'll write a
+constructor that takes the, the
+constraints. and the, then the array of
+five for the constraints and the
+coefficients for the object ive function
+as argument. so it picks out m and n, and
+so how big an array do we need? m + one
+n + n + one.
+So we just make that array and just fill
+it in from our argument. Fill in first the
+coefficients and then put the initial
+values of the slack variables along the
+diagonal here. Java rays are initialized
+to zero so we're going to have to
+initialize all of the others. and then,
+you put the objective function in the
+right-hand side of the constraint
+equations into the tableau simple as that.
+So, every one of those lines of that code
+is completely transparent so that's
+building the initial, initial values of
+the tableau. so now we have to find the
+column that is going to, we're going to
+pivot on. So, we're going to need to pivot
+on some entry in the array. It's going
+have to be in row p and column q in the
+rule we've given, which is called Bland's
+Rule. Remember, Bland is the one who wrote
+the classic Scientific American article
+about beer. So, we use Bland's Rule to
+just go through and look at the last row,
+which is the objective function and look
+for a positive. So that's all it does, it
+just goes through and looks for positive.
+if it finds positive it returns that
+column, and that's what we're going to
+use. so it's the first one that's
+positive. If you line them up positive, it
+always returns the first one. and if it
+can't find one, then it's optimal we can
+stop. So that's the entering column. we
+also have to find the entering row. and to
+find the entering row, we use the minimum
+ratio rule. so we just go through for all
+of possible rows we just do this
+calculation involving the ratio between
+the current element and the element that
+we would pivot on. we only worry about the
+positive ones and so, it's just a little
+check. And again, if there's a tie, you
+choose the first one and a simple
+calculation going through all the entries
+to figure out which row gives you the
+means ratio and then return p. so now, we
+have p and q where we want to pivot.
+that's in, and so we have the values p and
+q and we just go throu gh and do the
+pivot. and then, this is the same
+calculation that you do for Gaussian
+elimination. scale everything, zero out in
+q, and then and then scale the row And
+then, I'm not going to do the details of
+that calculation. that's what you get when
+you solve for one variable, substituting
+into the other equations. It's the same
+calculation as for when you're solving for
+simultaneous equations. and that's it. the
+simplex algorithm is just until you get a
+-one return from Bland, you just compute
+q, you compute p and pivot. And, and keep
+going and going until you're done. And
+then, to look at your maximized value,
+just look in the corner. not too much code
+to implement the bare bones implementation
+of simplex. It's a fairly straightforward
+algorithm. Now, what's remarkable about it
+is, remember, in multiple dimensions the
+number of points in the simplex could be
+high, could be exponential. But what's
+remarkable about this simplex algorithm,
+and still today, even somewhat mysterious,
+but certainly very mysterious for the
+first several decades that it was used, is
+that it seems to find the answer after
+just a linear number of pivots. this, all
+those points out there on the simplex. but
+when Delta Airlines is scheduling it's
+airline pilots or another company is
+looking for a way to drill or whatever,
+Walmart's trying to move its trucks
+around. these huge problems with millions
+of variables it's linear time. It could be
+exponential time, but it's linear time.
+That's why it's been so effective. now,
+you could use other pivoting rules and
+there are certainly been a huge amount of
+research on trying to figure out exactly
+what to do. nobody knows a pivot rule
+that'll guarantee that the algorithm is
+fast, it runs in polynomial time. most of
+them are known to be exponential in the
+worst case, but the real, again, the
+real-world problems maybe aren't worst
+case. and certainly people have looked at
+all different ways to look at it to try to
+understand why this simplex algorithm
+usually takes polynomial time. this is a,
+a recen t paper on the topic. now there
+are things that can happen during the
+execution of the algorithm that we've
+glossed over. one, one thing is that you
+could get stuck in that you could have a
+new basis. You could make this
+substitution but still wind up at the same
+extreme point. Like if a line, a bunch of
+lines intersect at the same extreme point.
+so that's called stalling. and that would
+be that, that's not a good situation that
+you have to watch out for. and the other
+thing is when you have this kind of
+degeneracy, you could, you could get in a
+cycle where you go through different basis
+always corresponding the same extreme
+point. It doesn't seem to occur in
+practice in the way that we implement it
+and the way that anyone would implement
+it. Just choosing the first one, that's
+Bland's rule is going to guarantee that at
+least you, you don't get caught in an
+infinite loop which would be bad. That
+doesn't seem to happen anyway. But it's a
+problem to think about. there's a number
+of other things that have to be thought
+about in order to actually try to use this
+to schedule airlines or whatever. so you,
+you, you, you certainly have to be careful
+to avoid stalling. one thing is that there
+tend to be, most of the equations tend to
+involved relatively few variables. and
+people who have experience with
+calculating these systems of equations
+know that in some situations you can find
+yourself filled up with lots of non-zero
+values. so you want to take a, a rule that
+meant implements of things with sparse
+matrix with, so your amount of space you
+take is proportional to the number of
+non-zero entries. so, and we, we looked a
+couple of times at some data structures of
+that sort, and that's certainly a
+consideration in simplex implementations.
+the other thing that we haven't talked
+about much in this course, but whenever
+you're working with floating point
+approximations of real numbers, and you're
+making a lot of calculations you have to
+make sure that you have control over the
+errors in the calculations. and scientific
+compu tation is certainly concerned with
+keeping control of that situation and
+something that we haven't talked about
+much in this course. and the other thing
+is that actually it could be the case that
+your constraints are unfeasible, there's
+no way to satisfy them. and it's a bad
+idea to run simplex for unfeasible
+situation cuz it won't ever get to the
+optimum. So typically, what we have to do
+in practice is run a different simplex
+algorithm on con transformed version of
+the problem. And there's theory, really
+interesting theory behind that all. and
+it's, you use the same code to figure out
+in-feasibility, but something has to be
+done. and the other possibility is there
+aren't enough constraints. so that you
+missed with one of those half-planes. You
+missed somewhere, and then it gets
+infinite. and that's also a situation that
+you want to avoid. And with the code that
+we gave, that would be the case where you
+use Bland's Rule to find a column, and.
+You're looking for a row and there's no
+row, so you have to check for that as
+well. and each one of these things is
+complicate, complicated enough that in
+this case we'd probably say the best
+practices. don't, don't go in and try to
+implement a simplex unless you're prepared
+to devote a really substantial amount of
+time to it. and there's really, no need to
+do that nowadays because basic
+implementations of simplex are readily
+available in many different programming
+environments. and routinely, nowadays,
+people solve LPs with millions of
+variables airline and they're so easy to
+reduce practical problems to an AP, and
+LP. Just throw in another constraint. Any
+constraints that you might have a certain
+pilot doesn't want to be scheduled early
+in the day, or late in the day, or union
+rules, or whatever. You just put all these
+things in as constraints without worrying
+that much about it. And then, add more
+variables, whatever you need to do. and
+then send it to an industrial strength
+solver and people nowadays solve LPs with
+huge numbers of variables. And not only
+are there solv ers.
+Nowadays, there's modeling languages that
+make it even easier to write down the LP.
+and so, there's plenty of resources
+available to make use of the simplex
+algorithm nowadays. and it's important.
+This is a really, you know, important
+quote from just a few, few years ago
+that's worth reviewing. so, they have this
+is so widely used. They have benchmarks on
+how well linear programming
+implementations do. So, even in 1988, it's
+not all that far back, they have a
+benchmark that would have taken 82 years
+to solve and even that's just a guess. and
+using the best linear programming
+algorithms of the day would take 82 years.
+Just fifteen years later, you could solve
+the same problem in one minute, that's a
+factor of 43 million. of this, factor of
+1000 was due to increased processor speed,
+so fifteen years we have computers that
+are 1000 times faster but 43,000 is due to
+algorithm improvements. And there has been
+more even since then. So, the importance
+of knowing good algorithms and working
+with good algorithms is unquestioned, in
+this case. and, of course, this algorithm
+is still being heavily, heavily studied.
+so, it's starting with Dantzig's simplex
+algorithm and other basic knowledge about
+the algorithm and about linear programming
+that was applied in practice in nineteen
+48.
+The, the basic idea of linear programming
+actually precedes Danlig, Dantzig, and
+actually wound up with a Nobel Prize. but
+what's interesting is rhere was, that
+algorithm was so good, there was actually
+not much development on it for about three
+decades. But then, an amazing surprising
+result Khachiyan proved that you could
+solve linear programming problems in
+polynomial time. that was quite a quite a
+shock at the time and we'll talk more
+about that in the last lecture of the
+course. And then since then, knowing that
+there are algorithms that potentially
+could beat simplex, people have actually
+developed algorithms that do beat simplex.
+And so, there's still a great deal of
+research going on, on the simplex on
+implementations of linear programmi ng
+solvers. So that's quick outline of what
+it means to implement and solve linear
+programs.

@@ -1,0 +1,615 @@
+Now, we're going to look at depth-first
+search, which is a classical graph
+processing algorithm.
+It's actually maybe one of the oldest
+algorithms that we study, surprisingly.
+One way to think about depth first search,
+is in terms of mazes.
+It's a pretty familiar way to look at,
+look at it.
+And, so, if you have a maze like the one
+drawn on the left, you can model it with a
+graph.
+By creating a vertex for every
+intersection.
+In the maze.
+And an edge for every passage connecting
+two intersections.
+And.
+So.
+If you're at the entrance to this maze and
+you want to find a pot of gold somewhere.
+What you're gonna need to do is.
+Explore every intersection.
+Or explore, explore every edge.
+In the maze.
+So.
+We're gonna talk about the.
+Explore every intersection.
+Option.
+So that's our goal.
+To have an algorithm for doing that.
+By the way, this is a famous graph that
+some of you might recognize.
+That's the graph for the Pac-man game.
+Okay, so one method classic method that
+predates computers for exploring a maze is
+called the Tr maux maze exploration
+algorithm.
+The idea is to think about having a ball
+of string.
+And what you do is when you walk down a
+passage, you unroll the string behind you.
+And you also, mark, every place that
+you've been.
+So actually, I have a ball of string and
+some chalk, maybe.
+So in this case, maybe we walk down this
+passage here.
+And now we have some choices about where
+we might go.
+So say we go down here.
+So we unroll our ball of string and mark
+it.
+And so now, the next time, At this
+intersection, we have no choice but to go
+up here.
+We go up here and we say, oh, we've
+already been there.
+So we're not gonna go there.
+And we come back.
+And, we have our ball of string.
+So we can unroll it to figure out where we
+were.
+And we go back until we have some other
+choice.
+Which is this, this place, now.
+And we mark that we've been in these other
+places, And so now, we take another option
+and say, go down this way.
+And here, we take another option, go that
+way.
+And then finally again we go up this a way
+and we see that we've been there so we
+back up and take the last option and then
+that gets us to the last vertex in the
+graph.
+So mark each visited intersection and each
+visited package, passage, and retrace our
+steps when there's no unvisited option.
+Again this is a classical algorithm that
+was studied centuries ago and in fact some
+argued the first youth was when Theseus
+entered the Labyrinth and was trying to
+find the Minotaur and, And Rodney didn't
+want ''em to get lost in the maze.
+So she instructed Theseus to use a ball of
+string to find his way back out.
+That's the basic algorithm that we're
+gonna use.
+And has been studied by many, many
+scientists in the time since Theses.
+And in fact, Claude Shannon, founder of
+Information Theory, did experiments on
+mazes with mice to see if they might
+understand maze exploration, this might
+help.
+Okay, so here's what it look like in its
+typical maze.
+Now one of the things to remember is in a
+computer representation normally we're
+just looking at the vertices and the set
+of associated edges.
+We don't see anything other than that.
+Though, it's sometimes frustrating
+watching me you know that it turned the
+wrong way and it's gonna get trapped here.
+But, the computer doesn't really know
+that, so it has to back up along here now
+and it continues to back up to find
+another option untill it gets free again.
+And finds a some place to go.
+Sometimes its very frustrating.
+Its seems to be quite close to the goal
+like appear and it turns a wrong way.
+So we an see its gonna take a long way but
+no way the program could really know that.
+Again, all the programs we're working with
+is vertex instead of edges associated with
+that vertex and there it finally get to
+the goal.
+Here's a bigger one going faster.
+The king thing is not so much, its getting
+lost and the key thing is not going
+anywhere twice.
+And that's the whole thing.
+We have to have the string to know to go
+back where we came from.
+And we have to be able to mark where we
+have been.
+And with those two things we are,
+algorithm is, able to avoid going the same
+place twice.
+If you weren't marking, if you tried to do
+this randomly or some other way it might
+take you a while to get to the goal.
+So it doesn't seem like much of
+accomplishment maybe for a maze but
+actually to be able to get there with
+going, without going any place thrice,
+twice is sort of a, profound idea and
+leads to an efficient algorithm.
+Okay.
+So, our idea is, given in this, medicode,
+to do, depth research, that is, to, visit,
+all the places you can get to from a
+vertex, V.
+What we're gonna do is this simple re,
+recursive algorithm.
+Mark the vertex as visited and then
+recursively visit all unmarked vertices, W
+that are adjacent to V.
+That's a very simple description, and it
+leads to very simple codes.
+It's so simple actually, it really belies
+the profound idea underneath this
+algorithm.
+So, again, There's lots of applications.
+And, for example, this is one way to find
+whether there exists a path between two
+vertices.
+Or to find all the vertices connected to a
+given source vertex.
+And we'll consider some less abstract
+applications, once we've looked at the
+code.
+So, so how to implement.
+Well here's what we're gonna do for our
+design pattern for graph processing.
+It's our first example.
+So what we did, when we defined an API for
+graph was to decouple the graph data type
+from graph processing.
+The idea is we're gonna create a graph
+object using that API which we know allows
+us to represent a big graph within the
+computer.
+And gives us the basic operations that
+we're gonna need for graph processing.
+And then we use that API within a graph
+processing routine.
+And the basic idea is that, that graph,
+graph processing routine will go through
+the graph and collect some information.
+And then a client of that routine will
+query the it's API to get information
+about the graph.
+So in the case of, depth first search.
+Here's a potential possible API.
+So the idea is that what this, what we're
+gonna implement is a program that can find
+paths in a graph from a given source.
+So we give a graph and a vertex.
+And that the constructor is gonna do what
+it needs in order to be able to answer,
+these two queries.
+First one is, give a vertex,
+Client will give a vertex.
+Is there a path in the graph, from the
+source to that vertex?
+You wanna be able to, answer that
+efficiently.
+And then,
+The other thing is to just give the path.
+What's the path from, has to be giving all
+the vertices on the path, in time
+proportional to its length.
+So here's a client of, this, API.
+So, it's gonna take a source, a source
+vertex S.
+And it's gonna build a pathfinder, or a
+path object.
+And that object is gonna do the processing
+it needs to be able to efficiently
+implement hasPathTo. And then what this
+does is for every vertex in the graph.
+If there's a path from s to that vertex.
+It'll print it out.
+So it prints out all the vertices
+connected to x.
+And that's just one client, of this, data
+type.
+You could, print out the pass or whatever
+else you might.
+So that's our design pattern that we're
+gonna use over and over again, for, A
+graph processing routine.
+And it's important to understand why we
+use a design pattern like this.
+We're decoupling the graph representation
+from the processing of it.
+As I mentioned, there's hundreds of
+routines for, or algorithms that have been
+developed for processing graphs.
+An alternative might be to put all of
+those algorithms in one big data type.
+That's a so called fat interface.
+And that would be a, a bad plan, cuz these
+things maybe are not so well related to
+each other.
+And actually all of them really are just
+iterating through the graph, and doing
+different types of processing.
+With this way we're able to separate out.
+The, and I articulate what the graph
+processing clients are doing.
+And then the real applications can be
+clients, of these graph processing
+routines.
+And everybody's taken advantage of an
+efficient representation, that we already
+took care of.
+Okay.
+So now let's look at a demo of how
+depth-first search is gonna work and then
+we'll take a look at the implementation.
+Okay.
+So here's a demo of depth-first search in
+operation on our sample graph.
+Again, to visit a vertex we're gonna mark
+it, and then recursively visit all
+unmarked verti-, vertices that are
+adjacent.
+So this is a sample graph.
+And so the first thing we do is realize
+that we're gonna need a vertex index array
+to keep track of which vertices are more.
+So that will just be an array of bullions
+and we'll initialize that with all false.
+We're also gonna keep another data
+structure.
+A, a vertex indexed array of ints.
+That for every vertex gives us the vertex
+that took us there.
+So, let's get started and you'll see how
+it works.
+So this is depth-first search staring at
+vertex zero.
+So now to visit vertex zero, we wanna mark
+it so that's, our mark zero is true.
+That's the starting points we know
+anything with Edge two.
+And now what we're gonna do is.
+We're going to need to check all the
+vertices that are adjacent to zero.
+So that's six, two, one, and five.
+The order in which they're checked depends
+on the representations in the bag.
+We don'tr really, necessarily care about
+that.
+Most of the algorithms are going to check
+them all.
+And it doesn't matter that much about the
+order.
+Although, in some cases it's wise to be
+mindful.
+And maybe use a bag that takes them out in
+random order.
+Okay this is zero.
+Now we have to check, six, two, one, and
+five so, lets go ahead and do that.
+So in this case six, six is the first
+thing to get checked.
+And so now, we mark, six is visited so now
+we are going to recursively do a search
+starting from six.
+The other difference when we visit six
+from zero.
+We're going to put a zero in this edge to
+entry to say that when we first got the
+six the way we got there, was from zero.
+And that's going to be the data structure
+that'll help us, implement the client
+query and give us the path back to zero
+from any path.
+From any vertex.
+So okay what do we have to do to visit
+six.
+Well six has two adjacent vertices zero
+and four.
+So we're gonna have to check them.
+So first we check zero and that's already
+marked.
+So we don't really have to do anything.
+We're only suppose to recursively visit
+unmarked vertices.
+And then we check four.
+And four is unmarked, so we're going to
+have to recursively visit is.
+The next thing we do is visit four.
+Mark four as having been visited.
+Where the true and the marked array,
+Fourth entry is a marked array.
+And we fill an edge two saying we got to
+four from six.
+And so now to visit four, we have to
+recursively check five, six and three, and
+again, that order is where they happen to
+be in our bag.
+So first we check five.
+Five is not marked so we're going to visit
+five.
+We're gonna mark it.
+Say we got there from four, and then go
+ahead and visit three, four and zero, in
+that order.
+From first we visit three.
+That one also is not yet marked, so we're
+gonna recursively visit it.
+So it's marked three.
+Say we got there from five and then go
+ahead and to visit three recursively, we
+have to check five and four.
+Check five.
+Well we just came here it's mark, so we
+don't have to do anything.
+Check four, that's also, been marked so we
+don't have to do anything.
+So now finally, this is the first time and
+that requires a call that we're ready to
+return, we're done with that first search
+from three.
+So now we're done with three.
+And we can unwinding the recursion, we can
+now continue our search from five.
+And the next thing we have to do from
+five, we had already checked three, so now
+we're gonna check four.
+And we've already visited four, so we
+don't have to do anything.
+That's already marked.
+And we checked zero, and that one's
+already marked.
+So now we're done with five, and we can
+back one more level up in the recursion.
+So now, for four, we have to go through,
+and look at six and three.
+Six is mar, marked, so we don't have to do
+anything.
+Three is marked, so we don't have to do
+anything, and so we're gonna be done with
+four.
+So that after finishing four we're done
+with six.
+And so now we're in the recursion back at
+zero.
+And we've already checked six.
+So now we gotta check two next.
+We checked two, and so we rehearse and go
+there.
+Mark two, and then say we got there from
+zero, and now to visit two, all we check
+is zero and that's a marks, so we don't
+have to do anything, and we're done with
+two.
+Then check one, visit one, that's the last
+vertex we're visiting.
+Check zero, it's already marked so we
+don't do anything.
+We return.
+Now, we're at the last, step is to, from
+zero, five is on it's list, we have to
+check if we've been there.
+We can see that it's marked and we have
+been there so we're one with zero.
+So that's a depth-first search from vertex
+zero, and we have visited all the vertices
+that are reachable from zero.
+Number one and number two for each one of
+those vertexes we kept track of how we got
+there from zero.
+So if we now want to know for any one of
+those vertices how to get back to zero we
+have the information that we need.
+For example say we want to find the path
+from five back to zero.
+We know we got the five from four, we know
+we got the four from six, we know we got
+the six from zero so we can go back
+through using that edge to array to find.
+The path, so the depth for search
+calculation built in data structures, and
+now clients, whose data structures built
+in a constructor serve as the basis for,
+being able to.
+Officially answer client queries.
+That's a depth-first search demo.
+So, this is just a summary of the thing I
+talked about, during that demo.
+Our goal is to find all the vertices
+connected to different vertex at.
+And also a path, in order to be able to
+answer client query.
+On the algorithm we're going to use is
+based on like maze exploration where we
+use excursion, mark each vertex, keep
+track of the edge we took to visit it and
+return when there's no unvisited options.
+We're using, two data structures, to
+implement this.
+Both vertex indexed arrays.
+One named Mark that will tell us which
+vertices we've been to.
+And another one, edge two that maintains
+that tree of paths.
+Where edge 2W = V means that VW was taken,
+the first time that we went to W.
+So now, let's look at the code, that,
+given all of this background.
+The code for implementing depth first
+search is remarkably compact.
+So here's our private instance variables.
+The marked and edgedTo vertex and mix
+arrays, and the source s.
+And the constructor just goes through and,
+creates, the arrays and initializes them.
+And we won't repeat that code.
+And so here's the, the last thing the
+constructor does after it creates the
+arrays, is does a DFS on the graph, from
+the given source.
+And it's a remarkably, compact
+implementation to do depth-first search,
+from a vertex V.
+What we do is mark V, let's say mark it
+true.
+Then for everybody adjacent to V.
+We check if it's marked.
+If it's not marked, then we do a recursive
+call.
+And we set edge to w equals v.
+Again remarkably compact code that gets
+the job done.
+So now let's look at some of the
+properties of depth-first search.
+So first thing is we wanna be sure that
+convince ourselves that it marks all the
+vertices connected to S in time
+proportional to some of their degrees,
+well, depth-first graph is going to be
+small.
+So s-, so first thing is, convince
+yourself that if you mark the vertex, then
+there has to be a way to get to that
+vertex from S.
+So well that's easy to see, because the
+only way to mark vertex is get there
+through a sequence of recursive calls, and
+every recursive calls corresponds to an
+edge on a path from SVW.
+But you also have to be able to show that
+you get to, every vertex that's connected
+to S.
+And that's a little more intricate.
+And this diagram is, supposed to help you
+out in understanding that.
+If you had, some unmarked vertex, Then,
+maybe there's, a bunch of unmarked
+vertices.
+And so...
+And it's connected to S and it's not
+marked, so that means there has to be an
+edge on a path from S to W, that goes from
+a marked vertex to an unmarked one.
+But the design of the algorithm says that
+there's no such edge if you're on a marked
+vertex then you're gonna go through and
+look at all the adjacent ones and if it's
+not marked, you're gonna mark it.
+So that's an outline of the proof that DFS
+marks all the vertices.
+And in the running time, it only visits
+each marked vertex once or each vertex
+connected as once.
+And so, for each one of them, it goes
+through all the adjacent vertices.
+So that's the basic properties of
+depth-first search.
+So now, the other thing that is important
+is that a client who has, uses this
+algorithm after the depth-first search,
+after the constructor has done the
+depth-first search and built these data
+structures,
+Client can find the vertices connected to
+the source in constant time.
+And can find a path, 2S if one exists in
+time proportional to its length.
+Well, the marked array provides the first
+part.
+And the second part is Just the property
+of the edge to array.
+It's a, what's called a parent link
+representation of a tree rooted at S.
+So if a vertex is connected to S then its
+edge two is parent in a tree.
+So this code here.
+Is going to for a given, well has path too
+so that's just return mark, that's the
+first part.
+And then to actually get the path to a
+given vertex so, here's the code for doing
+that.
+We actually use a stack to keep track of
+the path'cause we get it in reverse order.
+If there's no path, we return null.
+Otherwise we keep a variable X and we just
+follow up through the edge to array
+Pushing the vertex on to the stack and
+then moving up the tree in the ray, then
+finally push, push as itself on to the
+path and then we have a stack which is
+edible which will give us our path.
+So that's in time, time proportional to
+the length of the path and forth while to
+check your understanding of how stacks in
+real works, irreversible to take a look at
+this code to see that it does the job.
+So that's depth-first search.
+Now it's not.
+Of the optimal graph searching method for
+all applications.
+And here's an, an amusing representation
+of how depth first search can maybe create
+problems sometimes.
+So, I'm getting ready for a date, what
+situations do I prepare for?
+Well, medical emergency, dancing, food too
+expensive.
+Okay, what kind of medical emergencies
+could happen?
+Well, I could be snake bite or a lightning
+strike or a fall from a chair.
+Well, what about snakes, I have to worry
+about corn snakes or garder.
+Say for copperhead.
+And then well, I better make a straight.
+I better study snakes.
+And then the date says, I'm here to pick
+you up.
+You're not dressed.
+And well, so I really need to stop using
+depth-first search.
+So we're gonna look at other graph
+searching algorithms.
+But if you always try to expand the next
+thing that you come to, that's depth-first
+search.
+And there's a lot of natural, situations
+where that naturally comes to mind.
+Here's another example.
+I took this photo of the Taj Mahal a
+couple of years ago and I didn't like the
+color of the sky.
+So I used Photoshop's magic wand to make
+it more blue.
+And the implementation, now this is a huge
+graph.
+This picture's got millions of pixels.
+And the way that the flood filled the
+magic wand works, is to build, from a
+photo, what's called a grid graph, where
+every vertex is a pixel and every edge
+connects two pixels that are the same
+color, approximately the same color.
+And it builds a blob of all the pixels
+that have the same color as the given
+pixel.
+So when I click on one, it does the
+depth-first search to find all.
+All the connected pixels and therefore
+change them to the new color that's a fine
+example of depth per search on a huge
+graph that people use everyday.
+So that's our first nontrivial graph
+processing algorithm depth-first search.

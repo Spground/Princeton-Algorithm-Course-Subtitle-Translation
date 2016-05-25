@@ -1,0 +1,432 @@
+1
+00:00:01,082 --> 00:00:06,475
+Next we're going to consider addressing
+another fundamental defect in the
+
+2
+00:00:06,475 --> 00:00:11,664
+implementations we've considered so far
+that those implementations are only good
+
+3
+00:00:11,664 --> 00:00:16,503
+for strings. What if we want to have
+queues and stacks of other types of data?
+
+4
+00:00:16,503 --> 00:00:22,573
+And that brings us to the topic of
+generics. Alright. So, we implemented
+
+5
+00:00:22,573 --> 00:00:29,075
+stack of strings but in applications we
+have all different types of data that we
+
+6
+00:00:29,075 --> 00:00:35,675
+might want to implement like stack of int
+say or URLs or cars or vans or whatever
+
+7
+00:00:35,887 --> 00:00:41,386
+data that we might be processing. So how
+are we going to implement stacks and
+
+8
+00:00:41,386 --> 00:00:46,796
+queues for that types of data. Well, first
+thing that we might that we might consider
+
+9
+00:00:46,796 --> 00:00:51,869
+and actually we're forced to consider this
+one in lots of programming environment, is
+
+10
+00:00:51,869 --> 00:00:57,135
+to implement a separate stack class for
+each type of data that we're using. That
+
+11
+00:00:57,135 --> 00:01:02,900
+really seems unsatisfactory. We have our
+carefully crafted code that does array
+
+12
+00:01:02,900 --> 00:01:09,348
+resizing and so forth and we're going to
+copy that code and change the data type
+
+13
+00:01:09,348 --> 00:01:15,129
+string to the data type van or int to
+everywhere. And what if we have hundreds
+
+14
+00:01:15,129 --> 00:01:21,039
+of different types of data that we're
+processing. We have hundreds of different
+
+15
+00:01:21,039 --> 00:01:26,470
+implementations. Unfortunately that
+situation at the beginning of Java where
+
+16
+00:01:26,470 --> 00:01:31,424
+we stuck with that and there are plenty of
+programming languages where basically
+
+17
+00:01:31,424 --> 00:01:36,425
+we're stuck with that so what we want to
+look at is a modern approach to avoiding
+
+18
+00:01:36,425 --> 00:01:42,509
+having multiple implementations for each
+type of data. So the a quick hack that is
+
+19
+00:01:42,509 --> 00:01:51,399
+widely used is to use casting to implement
+to reuse the code for different data types.
+
+20
+00:01:51,704 --> 00:01:59,435
+So, we make our implementation with type
+Object so everything in Java is a sub type
+
+21
+00:01:59,435 --> 00:02:07,050
+of Object and then the client, when the
+client comes to use it, will simply cast
+
+22
+00:02:07,050 --> 00:02:13,491
+the result to the corresponding type. I
+don't want to spend a lot of time with
+
+23
+00:02:13,491 --> 00:02:19,643
+this cuz I think this is a unsatisfactory
+solution. So, in this example we have two
+
+24
+00:02:19,643 --> 00:02:25,878
+types with two stacks one of apples and
+one of oranges. And then, it's up to the
+
+25
+00:02:25,878 --> 00:02:32,007
+client when it pops something off the
+apple stacks to cast at the apple to keep
+
+26
+00:02:32,007 --> 00:02:37,103
+the type checking system happy. The
+problem with this is that the client code
+
+27
+00:02:37,270 --> 00:02:43,100
+has to do this, this casting and it's kind
+of an insidious bug if it doesn't quite
+
+28
+00:02:43,100 --> 00:02:51,458
+get it. So, the third attempt that we're
+going to talk about uses generics. And
+
+29
+00:02:51,458 --> 00:03:00,357
+that way the client code doesn't do
+casting. We can discover mistakes in typed
+
+30
+00:03:00,652 --> 00:03:08,018
+mismatches at compile-time instead of at
+run-time. So, in this case, we put, with
+
+31
+00:03:08,018 --> 00:03:16,698
+generics, we can have a type parameter on
+our class and that include, that's inside
+
+32
+00:03:17,011 --> 00:03:24,080
+angle brackets in this code and then, we
+can [cough] if we have a stack of apples
+
+33
+00:03:24,378 --> 00:03:32,980
+and we tried to push an orange unto a
+stack of apples then we're going to get a
+
+34
+00:03:32,980 --> 00:03:38,027
+compile-time error because that's stack
+was declared to only consist of, of
+
+35
+00:03:38,027 --> 00:03:44,492
+apples. And just the guiding principal in
+good modular programming is that we should
+
+36
+00:03:44,492 --> 00:03:51,730
+welcome compile-time errors and avoid
+run-time errors because if we can detect
+
+37
+00:03:51,730 --> 00:03:58,323
+an error at compile-time, then we can ship
+our product or deploy our implementation
+
+38
+00:03:58,323 --> 00:04:04,310
+our implementation of an API and have some
+confident that it's going to work for any
+
+39
+00:04:04,310 --> 00:04:09,664
+client whereas, the error is not going to
+get discovered until run-time it might
+
+40
+00:04:09,853 --> 00:04:16,082
+occur with some client development. Now,
+years after, we have to deploy our
+
+41
+00:04:16,347 --> 00:04:23,849
+software and be extremely difficult on
+everyone. Okay. So actually with a good
+
+42
+00:04:23,849 --> 00:04:32,268
+generic implementation it's not difficult
+to simply [cough], take every place that
+
+43
+00:04:32,268 --> 00:04:40,637
+we used string and replace it with a
+generic type name as in this code here. On
+
+44
+00:04:40,637 --> 00:04:48,018
+the left is our implementation of a stack
+of strings using link list. On the right
+
+45
+00:04:48,018 --> 00:04:53,095
+is a generic implementation. So, every
+place that we used string type on the
+
+46
+00:04:53,095 --> 00:04:59,520
+left we used the word item on the right.
+And at the top, the class declaration we
+
+47
+00:04:59,520 --> 00:05:05,539
+declared an angle brackets that item is
+the generic type that we're going to use.
+
+48
+00:05:05,746 --> 00:05:11,836
+The implementation could hardly be more
+straightforward and it's an excellent way
+
+49
+00:05:11,836 --> 00:05:18,862
+to solve the problem of handling multiple
+types of data with one implementation.
+
+50
+00:05:19,298 --> 00:05:29,269
+With arrays, it doesn't quite work and
+again all programming languages and, you
+
+51
+00:05:29,269 --> 00:05:35,404
+know, many programming languages nowadays
+have difficulties with this and Java's got
+
+52
+00:05:35,404 --> 00:05:41,231
+a particular difficulty. So, what we would
+like to do is just declare a new array
+
+53
+00:05:41,443 --> 00:05:48,057
+using our generic name Item as in the
+highlighted line here. Otherwise it's the
+
+54
+00:05:48,057 --> 00:05:55,059
+same. Unfortunately, Java does not allow
+generic array creation. So there's various
+
+55
+00:05:55,059 --> 00:06:02,125
+technical reasons for that and you can
+read, read extensive debates about this on
+
+56
+00:06:02,125 --> 00:06:08,718
+the web that's going to go beyond our
+scope. For now, what we need to do is put
+
+57
+00:06:08,718 --> 00:06:15,322
+a cast in to make this work. So, we create
+an array of objects and then we cast it
+
+58
+00:06:15,322 --> 00:06:22,461
+down to an array of items. Now in my view,
+a good code has zero cast. So, we want to
+
+59
+00:06:22,461 --> 00:06:28,622
+avoid cast as much as possible because it,
+it, it really is declaring some kind of
+
+60
+00:06:28,622 --> 00:06:35,306
+weakness in what we're doing. But in this
+case we have to put in this one cast and
+
+61
+00:06:35,306 --> 00:06:41,647
+so what we've heard about that is the ugly
+cast it doesn't, it doesn't make you feel
+
+62
+00:06:41,647 --> 00:06:47,734
+good about the code. It's not something
+that you will come up with on your own and
+
+63
+00:06:47,734 --> 00:06:52,789
+that's, and that's an undesirable feature,
+I think for codes so simple as this. But
+
+64
+00:06:52,789 --> 00:06:58,276
+fortunately, we can get through pretty
+much everything that we're going to do in
+
+65
+00:06:58,276 --> 00:07:04,297
+this course just knowing about this one of
+lay cast. So now, when we compile this
+
+66
+00:07:04,297 --> 00:07:10,490
+program we get a, a warning message from
+Java. It says that we're using unchecked
+
+67
+00:07:10,490 --> 00:07:15,610
+or unsafe operations and we should
+recompile with a minus -Xlint equals
+
+68
+00:07:15,610 --> 00:07:21,787
+unchecked for details. So, we can go ahead
+and do that and it says that you have put
+
+69
+00:07:21,787 --> 00:07:27,247
+in, in your code an unchecked cast and
+we're warning you about that cuz you
+
+70
+00:07:27,247 --> 00:07:33,428
+shouldn't be putting in unchecked cast.
+And okay, that's fine and you're going to
+
+71
+00:07:33,428 --> 00:07:40,014
+see that when you do compiles using code
+like these. I, I think maybe they might
+
+72
+00:07:40,014 --> 00:07:45,494
+have added to this warning statement "We apologize for making you do this". It's
+
+73
+00:07:45,494 --> 00:07:51,770
+not our fault that we had to do that, we
+had to do that cuz of your requirement
+
+74
+00:07:51,770 --> 00:07:57,908
+about not allowing us to declare generic
+arrays. So with that note please don't
+
+75
+00:07:57,908 --> 00:08:03,915
+think there's something wrong with your
+code if you follow our prescriptive and,
+
+76
+00:08:03,915 --> 00:08:10,596
+and get this warning message. Okay then,
+it's one of the detail that Java takes
+
+77
+00:08:10,596 --> 00:08:19,274
+care of and that's what about primitive
+types [cough] so the generic type that
+
+78
+00:08:19,274 --> 00:08:26,636
+we're using is for objects and you know,
+we're casting down from array of objects.
+
+79
+00:08:26,876 --> 00:08:34,517
+So in order to handle generic types we
+have to use Java's wrapper object types.
+
+80
+00:08:34,782 --> 00:08:40,751
+So Integer with the capitalized rapid type
+for int and so forth and many of you were
+
+81
+00:08:40,751 --> 00:08:46,419
+probably familiar with that. And there's a
+process called auto-boxing which
+
+82
+00:08:46,419 --> 00:08:51,827
+automatically cast between primitive types
+and wrappers so all of that handles of
+
+83
+00:08:51,827 --> 00:08:57,633
+the, the problem of dealing with primitive
+types, kind of behind the scenes. And the
+
+84
+00:08:57,633 --> 00:09:04,693
+bottom line is that we can articulate an
+API for generic stacks that works for any
+
+85
+00:09:04,693 --> 00:09:10,665
+type of data and we've got two
+implementations, link list and arrays
+
+86
+00:09:10,665 --> 00:09:20,867
+that, that performed very well for [cough]
+any type of data using the, the resizing
+
+87
+00:09:20,867 --> 00:09:26,035
+or link list as we've described.

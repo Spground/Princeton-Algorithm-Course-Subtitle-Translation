@@ -1,0 +1,328 @@
+.
+And that's still not the end of the story.
+We're gonna look at one more really
+interesting al-, algorithm that has, lots
+of important applications, called a Rabin
+Karp Algorithm.
+Invented by two Turing award winners.
+Michael Rabin and Dick Karp.
+I can remember hearing about this
+algorithm, from my friend, Dick Lipton,
+who explained it to me over the phone,
+and, I, he explained it to me in about,
+fifteen seconds, and I realized I had to
+have this, in the book.
+And, so now, here we are, presenting it.
+Th, that was, in the 70's.
+So the basic idea for the Rabin-Karp
+algorithm is, has to do with hashing.
+In it's a particular kind of hashing,
+called modular hashing.
+It's just a particular way of computing a
+hash function.
+It's easiest to think about in terms of
+numbers, although it, it works in all
+kinds of situations.
+Because remember everything in a computer
+is encoded as a byte, which can be treated
+as bytes which could be treated as binary
+numbers.
+And so what we are going to do is in this
+case We saw a pattern characters are
+decimal digits.
+And so, we'll treat a sequence of pattern
+characters as the decimal number.
+And modular hashing is, just take a big
+prime.
+And compute the remainder when you divide
+your number by that prime.
+So in this case, 613 is the remainder that
+you get when you divide 26,535 by 997.
+So you can check that.
+So that's what we're going to use as the
+hash function.
+And that.
+This type of hashing is widely used.
+You have a prime number, we talked about
+it when we talked about hashing.
+It satisfies, it seems to satisfy
+something like the uniform hash assumption
+under various circumstances.
+So that's our pattern, a five character
+pattern, and we're going to keep the small
+hash values 613 and this is going to
+generalize to longer patterns, and we'll
+talk about that in a minute.
+So now, suppose we have this text.
+And our pattern happens to occur here in
+the text.
+And what the method is built on is the
+idea of you take the first five characters
+in the text and compute its hash value.
+In this case, 31,415, mod down 97, is 508.
+So that's different so that's not the
+pattern.
+Maybe take the next five characters,
+that's 201. That's diffent It's not the
+pattern.
+Take the next one.
+That's 715, different it's not the pattern
+15,926 by 97 is 971, it's not the pattern.
+Eventually, when you have the text
+characters that are the same as the
+pattern characters you're gonna get the
+same result, it's a match.
+If the pattern hat, hash equals the text
+sub-string hash you, you have the
+potential for a match.
+And that's what the algorithm is based on.
+Now it seems like, we're doing a lot of
+calculation, with, making numbers out of
+these things.
+And, and keep doing modular arithmetic on
+it.
+But actually there's, a really, simple way
+to, severely limit the amount of
+calculation.
+And give a quick linear algorithm for,
+search.
+Sub-string search.
+So first thing is how to compute the hash
+function.
+So we take the, just convert the Math.
+So R's our Radix.
+So in this example, we're using ten so we
+have decimal numbers.
+And then the digits, say t's of i That's
+the text characters.
+So we have a number x of I, which is the,
+M characters starting at position I.
+And that's just in Math, ti<i>R to the M-1</i>
+So you know, in this case that's
+two<i>10000+6<i>1000+5<i>100+3<i>10+5 that's just</i></i></i></i>
+Math for that.
+And our goal is so it's an N digit base
+based our integer modular Q And our and
+our goal is to do the math.
+That gives us the remainder that we would
+get when dividing that by Q well there's
+really easy method called Horner's Method
+that we can use to evaluate a degree in
+polynomials just with a multiplied M
+multiply and add. And we can do the
+modular computation all the way through at
+each step, to keep the numbers less than q
+and we still get the same result.
+And so the idea is, you multiply by R.
+You go from left to right through the
+digits and you just multiply by R and add
+the digit, and then do mod q at every
+time.
+So we start with two mod 97 is two.
+To six mod 987 is two<i>10+6 mod 987 and</i>
+that's 26.
+And then I take that value.
+Multiply by ten and add five that's 265
+mod 997.
+In that case it's, it's 265.
+So 265<i>10+3 is 2653.</i>
+Our remainder is divided by 997, it's 659,
+so even though our number gets bigger than
+997, might take them out every time, we
+keep our running total less than 997.
+And then the last step is to take the 659.
+Basically we've thrown out a bunch of
+multiples of 997 that we don't care about.
+And 659<i>10+5 mod 997 is exactly equal to</i>
+26535 mod 997 and that's 613.
+That's our value.
+So that's A using Horner's method we got
+a, well known linear time method to do
+compute or hash function with this simple
+code.
+And this notice will work even for a huge
+key that we wouldn't compute a hundred
+dig, convert a hundred digit key in to
+some number to do the calculation.
+We do one digit at a time using Horner's
+method and then we have no limit because
+we're always keeping our numbers less than
+our prime queue.
+So that's a first step, so no matter how
+big the pattern is,
+We can efficiently compute a hash or,
+since that is the first step.
+So now the second step for the Rabin Karp
+algorithm is to realize that if we know xi
+mod q we can efficiently compute xi+1 mod
+q cause they have a lot of digits in
+common.
+And you can just do a little Math to get
+to xi+1 you take. Xi, we don't care about
+the first digit anymore, so you subtract
+it off.
+Multiply by r and then add the new digit.
+That's like one step of Horner's method.
+Now, then you have to take that
+computation and you can do mod q all the
+way through.
+All you have to do is pre-compute r to the
+n+1 mod q And so here's the computation
+for one example.
+If we're at this position 41592 and we
+know 41592 mod q we can compute 15926 mod
+q by subtracting off 40,000.
+The TiR-1 and that gives us just the four
+digits, multiply by the radix add the new
+trailing digit and that's the new value.
+And if we just keep that all mod q then we
+can with just a multiply and an add at
+each step we can keep a running total of
+the Modular hash value of the five digit
+thing.
+So, for example, this is the case that,
+that we just did 4152 on 997 is, is done
+by ex, exactly as we said we subtract and
+then add and then multiply by the radix
+mod 997.
+So, doing those calculations all the way
+through the search, we eventually get to a
+match.
+That's again remarkably small amount of
+code.
+We're going to keep a long random prime.
+Just keep it a little smaller than the
+biggest long value to avoid overflow.
+So we pre-compute r to the m - one mod q
+'cause that's the little calculation that
+we have to do.
+We compute the hash function.
+And for the pattern.
+And then, with those pre-computations, the
+search is extremely straight forward.
+So we take our current hash value.
+And this is just, add a q make sure it's
+positive.
+And subtract off rm times the first
+character in then add in the next
+character mod q.
+And that gives us the text hash for the
+current position.
+And then we compare to see if that's equal
+to the pattern hash.
+Now there's this is an introduction to the
+idea of randomized algorithms.
+There's two ways to proceed from here.
+One way called Monte Carlo version.
+Where we guaratee that the algorithm is
+gonna be quick but with low probability,
+it might get the answer wrong. In that
+version we don't ever bother to check
+whether the go through and check all
+digits to see if there's actually a match.
+We take queue large enough so that we're
+confident the probability of the, to, two
+digit numbers or two m digit numbers
+having the same hash value.
+And so low that we're not gonna worry
+about it, that's called the Monte Carlo
+version.
+The Las Vegas version is guarateed to get
+the right answer.
+In that one we would go and check to make
+sure that the M characters match if we
+have a hash match.
+And then if it could be that with such at
+a low probability could be that there's a
+hash match but not a substring match.
+Then we're just.
+Move on.
+And from a theoretical point of view
+there's some very extremely low
+possibility that one could be slow.
+But lets look over at what the analysis
+says.
+So the theory says that if you take a
+sufficiently large random prime say mn^
+three So a long value maybe you can get
+that and remember n is huge.
+Then the probability of a false collision
+is about 1/n. so you know in a billion
+things you might get, you might get 1/n,
+you might get a false collision.
+So in practice we choose actually q just
+to be, there's no reason not to choose as
+large as we possibly can, not related to m
+and n.m And then the probably collision is
+going to be about 1/q. So we're going to
+take it to be like the biggest law, and
+that means that probably collision is
+extremely small.
+And then you can take your chances.
+You can do a Monte Carlo version where you
+just say I got a match because I got a
+hash match.
+And be confident in the laws of
+probability.
+And not worry about the client getting the
+wrong answer.
+Or you can have the Las Vegas version
+where you go, go ahead and return the
+correct answer.
+And. And be confident that your client's
+not gonna run into a slow case cuz the
+probability is so, so tiny, 1/q, that you
+don't have to worry about it.
+That's the Rabin-Karp algorithm.
+Now, why look at this algorithm?
+It's linear time.
+We have other algorithms that are linear
+time.
+One of the key reasons to, be interested
+in Rabin-Karp is that it's easy to extend
+it to more complicated situations.
+So, say you wanna look for one of, several
+different patterns.
+Well, you just compute the hatches for
+those patterns, and then look for any one
+them Use, a symbol table, to look for'em.
+So, that's a much more, general capability
+than, we can provide with the other
+methods.
+It also can be extended to do
+2-dimensional search and other things like
+that.
+For straight suffering search, it's gonna
+be a little slower because, there's,
+interloop it's kind of long, the
+arithmatic operation, are gonna be a
+little slow, if you wanna do the Las Vegas
+version you have to back up the text and
+you have this, Monte Carlo Las, Las Vegas
+thing, and you should think about, writing
+code to extend it to look for any one of p
+possible patterns, thats, an interesting,
+Algorithmic puzzle as I mentioned is not
+so difficult to solve.
+So here's our summary.
+We started with a brute force algorithm,
+and although typically you don't have this
+worst case thing.
+It works fairly well for typical cases.
+And then we've got the Knuth-Morris-Prath
+Method that can guarantee linear time and
+has no backup.
+And maybe uses extra space unless you use
+Pratt's version.
+The Aboriamor who can get the running time
+down to n/m which is quite an amazing jump
+and quite useful and in a Rabin Karp
+that's very flexible and extends through
+all these other situations.
+This is a nice mac, microcosm of
+algorithmic technology where, really
+interesting, and unique and path breaking
+algorithmic ideas give us.
+A good algorithm, for even such a simple
+problem.
+That's an introduction to pattern

@@ -1,0 +1,408 @@
+1
+00:00:03,280 --> 00:00:09,380
+Now, we'll look at a couple of more
+interesting examples that show how useful
+
+2
+00:00:09,380 --> 00:00:15,175
+reductions are for designing new
+algorithms. so again that's the basic
+
+3
+00:00:15,175 --> 00:00:21,657
+definition and the implication of the
+definition is that in order to design an
+
+4
+00:00:21,657 --> 00:00:28,536
+algorithm for a problem X. we can go ahead
+and use some existing algorithm for Y. And
+
+5
+00:00:28,536 --> 00:00:34,530
+here's the, some of the many examples that
+we've already seen in this course finding
+
+6
+00:00:35,186 --> 00:00:41,670
+the median and element distinctness. I
+just talked about the scheduling problem,
+
+7
+00:00:41,670 --> 00:00:48,236
+reduces the topological sort. we saw that
+in the shortest paths lecture. Also, the
+
+8
+00:00:48,236 --> 00:00:54,310
+arbitrage problem of is, involves building
+a, a, a digraph for currency exchange. we
+
+9
+00:00:54,556 --> 00:01:00,465
+reduce that to shortest paths. and there's
+several other examples. So, it's an
+
+10
+00:01:00,465 --> 00:01:06,505
+important and useful technique. so that
+just the general mentality is, if I know
+
+11
+00:01:06,505 --> 00:01:12,110
+how to solve Y, I have a new problem. can
+I use that to solve X? and every
+
+12
+00:01:12,110 --> 00:01:17,065
+programmer does that and saying, well,
+I've got some code that solves Y or I've
+
+13
+00:01:17,065 --> 00:01:22,901
+got a library function that does Y. Can I
+use that to solve X? That's reduction. So,
+
+14
+00:01:22,901 --> 00:01:28,889
+our first example is convex hull problem
+that we looked at briefly back in the
+
+15
+00:01:28,889 --> 00:01:34,736
+sorting lecture. And, and that's where
+your given endpoints in the plane and what
+
+16
+00:01:34,736 --> 00:01:40,160
+you want to do is, I identify the points
+on the periphery, these, that's called
+
+17
+00:01:40,160 --> 00:01:46,836
+extreme points on the convex hull. you can
+imagine a, a bunch of points on a big
+
+18
+00:01:46,836 --> 00:01:52,196
+range and a rancher wants to use the
+cheapest amount of fence to surround them
+
+19
+00:01:52,196 --> 00:01:57,621
+all. And so it's a minimum parameter way
+to draw a line that surrounds all the
+
+20
+00:01:57,621 --> 00:02:03,047
+points, it's a convex hull. and there's
+many other ways to define it. That doesn't
+
+21
+00:02:03,047 --> 00:02:08,995
+seem to be all that closely related to
+sorting but it's actually true that convex
+
+22
+00:02:08,995 --> 00:02:14,664
+hull reduces the sorting. that is if you
+can sort, you can compute the convex hull.
+
+23
+00:02:14,664 --> 00:02:19,928
+And that's an algorithm known as the
+Graham scan algorithm that we'll look at
+
+24
+00:02:19,928 --> 00:02:25,535
+in the next slide. the cost of a convex
+hull is the cost of the sort and log N
+
+25
+00:02:25,740 --> 00:02:31,278
+plus the cost of the reduction. And that
+Graham scan algorithm just uses linear
+
+26
+00:02:31,278 --> 00:02:36,748
+time. So, with sorting we get an N log N
+algorithm for convex hull, which is a nice
+
+27
+00:02:36,953 --> 00:02:44,167
+algorithm design technique. And this is a
+diagram of the, that shows the Graham scan
+
+28
+00:02:44,167 --> 00:02:51,572
+algorithm we which we won't go through in
+detail but it's pretty intuitive. what we
+
+29
+00:02:51,572 --> 00:02:59,068
+do is we pick a point one over in the
+corner and maybe the smallest Y coordinate
+
+30
+00:02:59,068 --> 00:03:06,640
+point. and then, sort the points by polar
+angle swept out by that coordinate. so, if
+
+31
+00:03:06,640 --> 00:03:12,670
+you think of a, of a line sweeping through
+and just picking out the points by polar
+
+32
+00:03:12,670 --> 00:03:18,559
+angles centered at that point, then we get
+the points in order along this polygon.
+
+33
+00:03:18,559 --> 00:03:24,518
+And because we're doing it by polar angle
+the lines don't intersect. It's a simple
+
+34
+00:03:24,518 --> 00:03:30,197
+polygon which with no intersecting lines.
+And then, the Graham scan algorithm is
+
+35
+00:03:30,197 --> 00:03:37,061
+just to proceed along, over here, it
+proceeds along that polygon. but if you
+
+36
+00:03:37,061 --> 00:03:42,413
+ever come to a point where you are going
+to make a right turn or clockwise turn you
+
+37
+00:03:42,413 --> 00:03:47,254
+throw out the points that would have
+caused that. So, in this case, this point
+
+38
+00:03:47,254 --> 00:03:52,414
+will cause us to make a right turn so we
+throw it out. And now, our most recent
+
+39
+00:03:52,414 --> 00:03:57,447
+points are these three. And again, that's
+a right point, so we throw that one out
+
+40
+00:03:57,447 --> 00:04:03,191
+and it puts us in this position here and
+so, and the idea is that any point that
+
+41
+00:04:03,191 --> 00:04:07,554
+would cause a right-hand turn is not going
+to be on the convex hull. It's going to
+
+42
+00:04:07,928 --> 00:04:13,352
+kind of a, we kind of have a proof that
+the points inside just buys into the fact
+
+43
+00:04:13,352 --> 00:04:18,415
+that it would make us do a right turn. So,
+we throw this one out and that leaves that
+
+44
+00:04:18,415 --> 00:04:23,388
+and then we go here. And that would be a
+right turn on the, on our path. So throw
+
+45
+00:04:23,388 --> 00:04:28,438
+that one out, and we're here. Another one
+and continuing in this way. when we
+
+46
+00:04:28,438 --> 00:04:33,550
+finally get back to the beginning we've
+computed the points on the convex hull.
+
+47
+00:04:33,550 --> 00:04:38,796
+So, the cost of the algorithm is the cost
+of the sort which is N log N. But the cost
+
+48
+00:04:38,796 --> 00:04:43,727
+of the scan is only linear. Every point
+only gets considered once. that's an
+
+49
+00:04:43,727 --> 00:04:49,037
+excellent example of a reduction to get a
+new algorithm. If you didn't have the fast
+
+50
+00:04:49,037 --> 00:04:55,715
+sort this wouldn't be so effective. here's
+another example of a reduction we
+
+51
+00:04:55,715 --> 00:05:02,652
+implemented and looked at short est path
+for digraphs. what about shortest paths on
+
+52
+00:05:02,652 --> 00:05:09,025
+undirected graphs? It still makes sense.
+That's why I have a weighted undirected
+
+53
+00:05:09,025 --> 00:05:15,640
+graph with non-negative weights and I'm
+going to find the shortest path from a
+
+54
+00:05:15,640 --> 00:05:22,093
+given vortex, source vortex, S2 or a given
+target vortex T, and if it's the lowest
+
+55
+00:05:22,093 --> 00:05:27,837
+weight path from S to T. so how are we
+gonna solve that one? We have shortest
+
+56
+00:05:27,837 --> 00:05:33,512
+path that works for digraphs. Well, if we
+just replace each undirected edge by two
+
+57
+00:05:33,512 --> 00:05:39,188
+directed edges, then the shortest path
+algorithm for digraphs works. in fact,
+
+58
+00:05:39,188 --> 00:05:45,280
+with our graph representation it's just
+running that algorithm cuz our undirected
+
+59
+00:05:45,280 --> 00:05:50,610
+graphs are represented with the edges
+going in both directions so they're
+
+60
+00:05:50,610 --> 00:05:56,939
+actually represented as digraphs. and
+again, what's the cost? the cost this time
+
+61
+00:05:56,939 --> 00:06:03,320
+is the cost of pre-processing to just take
+the graph in its undirected form and
+
+62
+00:06:03,320 --> 00:06:09,854
+convert it to directed form and then the
+cost of shortest pass of the digraph is E
+
+63
+00:06:09,854 --> 00:06:16,539
+log V. So that gives us an algorithm for
+shortest path in undirected graphs. Notice
+
+64
+00:06:16,539 --> 00:06:22,829
+that it doesn't work if there's negative
+weights in the undirected graph, because
+
+65
+00:06:22,829 --> 00:06:28,898
+the reduction creates a negative cycle. it
+is possible to find shortest paths in
+
+66
+00:06:28,898 --> 00:06:35,227
+these graphs but you need a, a much more
+sophisticated algorithm to do it. so just
+
+67
+00:06:35,227 --> 00:06:40,336
+continuing in this way we've considered
+quite a few problems that involved
+
+68
+00:06:40,336 --> 00:06:45,577
+reductions. so, I just talked about
+finding median and element distinctness in
+
+69
+00:06:45,577 --> 00:06:51,932
+convex hull reducing to sorting. and there
+were a bunch of other problems that we
+
+70
+00:06:51,932 --> 00:06:57,893
+considered as exercises when we talked
+about applications to applications of
+
+71
+00:06:57,893 --> 00:07:03,462
+sorting. So, application of sorting really
+means problem reduces to sorting. so sure
+
+72
+00:07:03,462 --> 00:07:08,310
+as processing time scheduling and, and,
+and lots of other problems that are
+
+73
+00:07:08,310 --> 00:07:13,135
+reduced to sorting. and in the graph world
+we looked at some pretty complicated
+
+74
+00:07:13,135 --> 00:07:17,321
+problems. Arbitrage we looked at a
+parallel, parallel scheduling or CPM
+
+75
+00:07:17,321 --> 00:07:22,612
+method and I just talked about shortest
+paths and undirected graphs and those all
+
+76
+00:07:23,744 --> 00:07:29,688
+reduced to shortest paths and digraphs. we
+looked at problems that reduced to max
+
+77
+00:07:29,688 --> 00:07:36,139
+flow bipartite matching, reduces to max
+flow and the linear program problem that
+
+78
+00:07:36,139 --> 00:07:42,082
+we'll talk about next time, actually both
+max flow and shortest paths and digraphs
+
+79
+00:07:42,300 --> 00:07:48,778
+reduce to linear program programming. So
+this is a pretty diversed set of problems
+
+80
+00:07:48,778 --> 00:07:56,513
+that all through the set of reduction we
+found ways to solve them using some core
+
+81
+00:07:56,513 --> 00:08:03,011
+kinds of problem solving models. And so
+reduction is an extremely important
+
+82
+00:08:03,011 --> 00:08:05,100
+algorithm design technique.

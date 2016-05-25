@@ -1,0 +1,359 @@
+1
+00:00:02,010 --> 00:00:07,060
+Next we'll look at separate chaining, a
+collision red solution strategy that makes
+
+2
+00:00:07,060 --> 00:00:13,008
+use of elementary link list. So, what are
+we supposed to do when two different keys
+
+3
+00:00:13,008 --> 00:00:18,011
+hash to the same index? The birthday
+problem tells us that we're going to have
+
+4
+00:00:18,011 --> 00:00:23,259
+collisions. You need a quadratic amount of
+memory to avoid collisions. In the lower
+
+5
+00:00:23,259 --> 00:00:27,617
+balancing, a coupon collector analysis
+tell us that the collisions are going to
+
+6
+00:00:27,617 --> 00:00:32,497
+be evenly distribute, distributed among
+the table, around the table. So, what we
+
+7
+00:00:32,497 --> 00:00:37,380
+want to do is have an easy way to deal
+with collisions. And so the first way
+
+8
+00:00:37,380 --> 00:00:43,414
+we'll look at is called Separate Chaining
+and it's a very diagonal idea back1953,
+
+9
+00:00:43,596 --> 00:00:48,881
+and the idea is just build a link list for
+each of the table positions. So, we'll
+
+10
+00:00:49,071 --> 00:00:53,667
+have a table that's smaller than the
+number of keys that we have, the hash
+
+11
+00:00:53,667 --> 00:00:58,437
+function will map each key to some
+integer. So in this case, we have a table
+
+12
+00:00:58,437 --> 00:01:03,779
+of size five. So the hash function will
+map any key. In this case, we use single
+
+13
+00:01:03,779 --> 00:01:09,927
+letter keys. It'll map any key to an
+integer between zero and four and then to
+
+14
+00:01:09,927 --> 00:01:16,286
+[cough] do an insertion we'll just keep a
+link list at the table position
+
+15
+00:01:16,286 --> 00:01:22,296
+corresponding to the hash value. So S hash
+is to position two, it'll be on the link
+
+16
+00:01:22,296 --> 00:01:28,198
+list that is first link is at position
+two. And E goes to zero, and A goes to
+
+17
+00:01:28,198 --> 00:01:34,008
+zero. And for search, we're going to have
+to go to, if we're going to look at is C
+
+18
+00:01:34,008 --> 00:01:40,046
+in this table say, we're going to find the
+hash value for C and we'll look down the
+
+19
+00:01:40,046 --> 00:01:45,431
+list to see if we can find C. So we have
+to look through the whole list for search
+
+20
+00:01:45,431 --> 00:01:49,976
+but you only have to look through one list
+out of all the lists. Essentially if you
+
+21
+00:01:49,976 --> 00:01:55,206
+have M entries in the hash table and M
+keys the link of list you're going to look
+
+22
+00:01:55,206 --> 00:02:01,502
+at is about N over M cuz they're evenly
+distributed. So that's a straightforward
+
+23
+00:02:01,502 --> 00:02:08,555
+and simple scheme for implementing symbol
+tables with hashing. Now, we could use a
+
+24
+00:02:08,804 --> 00:02:15,991
+interval bag or some data structure like
+that and hide the link list structure
+
+25
+00:02:16,211 --> 00:02:22,386
+underneath and that's a perfectly fine way
+to proceed in modern programming. This
+
+26
+00:02:22,386 --> 00:02:29,303
+implementation directly implements the
+link list. Now, for a practical situation
+
+27
+00:02:29,561 --> 00:02:36,890
+we picked some kind of, some value of M.
+You could make it so that the hash table
+
+28
+00:02:36,890 --> 00:02:44,882
+itself grows once it gets really huge and
+such hybrid methods are easy to implement.
+
+29
+00:02:44,882 --> 00:02:52,106
+So we won't talk to much about that. We
+need to just in terms of implementation
+
+30
+00:02:52,106 --> 00:02:59,064
+details, our keys and values have to be
+objects. Because we can't have an array of
+
+31
+00:02:59,064 --> 00:03:06,334
+generics. So, since we're making array of
+nodes, a node would have generics if we
+
+32
+00:03:06,334 --> 00:03:14,225
+use to key in value. So we have to make
+them objects then when we get things off,
+
+33
+00:03:14,225 --> 00:03:22,987
+we're going to have cast. So [cough] this
+is the get procedure. So to look for a key
+
+34
+00:03:22,987 --> 00:03:30,589
+in the hash table we compute the hash
+value. In our hash function is pull out
+
+35
+00:03:30,589 --> 00:03:37,170
+the system hash code, make it positive by
+ending off the sign bit and then mark with
+
+36
+00:03:37,170 --> 00:03:43,993
+M to get a number of, zero and -one. So we
+pick that number, I and then we just go to
+
+37
+00:03:43,993 --> 00:03:50,287
+that list and this is the standard code
+for diversing a link list start at the
+
+38
+00:03:50,287 --> 00:03:57,485
+first node as long as it is not null go x
+= x dot x. And if you find a key that's
+
+39
+00:03:57,485 --> 00:04:02,655
+equal to the key you're looking for,
+return the value and we have to cast it to
+
+40
+00:04:02,655 --> 00:04:08,452
+value because of the generic recreation
+problem in Java, otherwise return null. So
+
+41
+00:04:08,452 --> 00:04:14,448
+that's not much code, and it's trivial
+code at that for doing an efficient symbol
+
+42
+00:04:14,448 --> 00:04:21,075
+table search using hashing. And insertion
+is not much more difficult if you do the
+
+43
+00:04:21,075 --> 00:04:27,414
+same thing and if you find a node where
+key equal to key on the link list, reset
+
+44
+00:04:27,414 --> 00:04:35,089
+the value and return. Otherwise, you make
+a new node and put it at the beginning of
+
+45
+00:04:35,089 --> 00:04:43,218
+the link list with the standard code. Now,
+replace STFI with a new node that links to
+
+46
+00:04:43,218 --> 00:04:49,820
+the old STFI. So again, very little code
+to implement search and insert using
+
+47
+00:04:49,820 --> 00:04:57,071
+hashin g and that's why it's so popular.
+And what about the analysis? Well, again
+
+48
+00:04:57,071 --> 00:05:04,304
+this the [cough] standard probabilistic
+analysis of the balls and bins problem
+
+49
+00:05:04,548 --> 00:05:12,035
+tells us a lot of information of what goes
+on. And again, if the uniform hashing
+
+50
+00:05:12,035 --> 00:05:18,173
+assumption holds the probability that the
+number of keys within a list is within a
+
+51
+00:05:18,173 --> 00:05:24,006
+constant factor of N over M is extremely
+close to one. So, it means that we've
+
+52
+00:05:24,208 --> 00:05:30,065
+divided the search cost which would be N
+if we have a sequential search by a factor
+
+53
+00:05:30,065 --> 00:05:37,005
+of M. And, and in many applications even
+setting M = 100 or 1,000 is going to be
+
+54
+00:05:37,005 --> 00:05:44,239
+very effective. And that's why so many
+system programs refuse that. So, number of
+
+55
+00:05:44,239 --> 00:05:51,935
+pros for search and insert's proportional
+to N over M. Now typically, what we'd what
+
+56
+00:05:51,935 --> 00:05:58,038
+a programmer would do is try to figure on
+making M about equal to the number of keys
+
+57
+00:05:58,038 --> 00:06:03,071
+divided by five say. So, you can't make M
+too large, you have too much space and
+
+58
+00:06:03,071 --> 00:06:08,609
+you'll have empty chains or short chains.
+And if you make M too small then they're
+
+59
+00:06:08,609 --> 00:06:13,739
+too long, you have to search through them
+all. So let's say, N over five and then
+
+60
+00:06:13,739 --> 00:06:19,995
+you get constant time searches and not
+much extra space. You have extra space for
+
+61
+00:06:19,995 --> 00:06:25,244
+the links to implement the link lists but
+the rest of the table is not much extra
+
+62
+00:06:25,244 --> 00:06:30,155
+space. And those are typical parameters.
+If you want a full service symbol table
+
+63
+00:06:30,155 --> 00:06:34,404
+which is going to, going to grow from
+small to huge and then back down to small
+
+64
+00:06:34,404 --> 00:06:39,588
+again then you'd want to use array
+re-sizing to make sure that M is always
+
+65
+00:06:39,588 --> 00:06:45,879
+within a constant factor of N but we will
+leave that detail out for now. So that
+
+66
+00:06:45,879 --> 00:06:51,264
+brings us to this summary where red-black
+trees, we were happy with a log based two
+
+67
+00:06:51,267 --> 00:06:56,791
+of N for search and insert with separate
+chaining, you can really get it down to a
+
+68
+00:06:56,791 --> 00:07:02,084
+constant number of operations for search
+and insert. So hashing's going to be
+
+69
+00:07:02,084 --> 00:07:08,193
+preferred for short keys where the hash
+function's easy to compute. And where we
+
+70
+00:07:08,193 --> 00:07:13,737
+don't need ordered iteration or any of the
+ordered symbol table operations because it
+
+71
+00:07:13,737 --> 00:07:20,726
+has really fast access to the symbol
+table. That's our first collision
+
+72
+00:07:20,726 --> 00:07:29,042
+resolution method, hashing with separate
+chaining.

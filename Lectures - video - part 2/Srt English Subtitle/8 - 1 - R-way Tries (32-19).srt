@@ -1,0 +1,1853 @@
+1
+00:00:03,580 --> 00:00:09,248
+Today we're going to talk about tries,
+which is a data structure for searching
+
+2
+00:00:09,248 --> 00:00:14,988
+with string keys that is remarkable
+effective in enabling us to deal with huge
+
+3
+00:00:14,988 --> 00:00:18,549
+amounts of data that we have to process
+nowadays.
+
+4
+00:00:18,767 --> 00:00:25,016
+Just as a motivation, when we left off
+talking about searching algorithms, or the
+
+5
+00:00:25,016 --> 00:00:28,868
+symbol table implementations here's where
+we were.
+
+6
+00:00:29,086 --> 00:00:34,972
+The best algorithms that we examined were
+balanced red, black, binary search trees,
+
+7
+00:00:35,190 --> 00:00:40,144
+in hash tables.
+And With respect to the basic search,
+
+8
+00:00:40,344 --> 00:00:45,087
+insert and delete operations.
+Red black BSTs we're able to guarantee
+
+9
+00:00:45,087 --> 00:00:50,297
+that we can get those done in logorithmic
+time, actually, pretty efficiently.
+
+10
+00:00:50,497 --> 00:00:55,574
+And for hashing, we'd get'em done in
+constant time under certain assumptions.
+
+11
+00:00:55,574 --> 00:00:58,647
+That we could have a uniform, hash
+function.
+
+12
+00:00:58,847 --> 00:01:04,258
+And also, for hashing, what we need to
+compute a hash, code for binary search
+
+13
+00:01:04,258 --> 00:01:09,468
+trees, we use, a compare to function.
+And another difference is, binary search
+
+14
+00:01:09,468 --> 00:01:14,792
+trees, we can support more operations.
+Than we can support with hashing ordered
+
+15
+00:01:14,792 --> 00:01:18,357
+operations.
+For example, getting the rank of a key in
+
+16
+00:01:18,357 --> 00:01:22,441
+the tree, and other things.
+And those are terrific algorithms.
+
+17
+00:01:22,441 --> 00:01:27,237
+And we looked at plenty of go, good
+applications of those algorithms.
+
+18
+00:01:27,237 --> 00:01:30,673
+But still there's the question could we do
+better?
+
+19
+00:01:30,867 --> 00:01:33,720
+And the answer is that yes, we can do
+better.
+
+20
+00:01:33,939 --> 00:01:38,615
+As with string sorting, we can avoid
+examining the entire key.
+
+21
+00:01:38,835 --> 00:01:45,046
+Which is going to give us algorithms that
+can compete and even beat these classic
+
+22
+00:01:45,046 --> 00:01:49,260
+algorithms.
+So to get started we are going to
+
+23
+00:01:49,260 --> 00:01:56,337
+articulate in API for symbol tables that
+specialize for the case when the keys are
+
+24
+00:01:56,337 --> 00:02:00,804
+strings.
+So simply, we just add the modifier string
+
+25
+00:02:00,804 --> 00:02:07,980
+to our standard symbol table EPI.
+And we can take a generic value just put
+
+26
+00:02:07,980 --> 00:02:13,913
+the keys or strings.
+And then we take all the methods that we
+
+27
+00:02:13,913 --> 00:02:19,099
+articulated before.
+And for key type, instead of generic, we
+
+28
+00:02:19,099 --> 00:02:23,070
+use string.
+And this is going to allow us to develop
+
+29
+00:02:23,070 --> 00:02:28,418
+efficient algorithms that take advantage
+of properties of strings.
+
+30
+00:02:28,661 --> 00:02:34,495
+Our goal is to get, some algorithms that
+are even faster than hashing.
+
+31
+00:02:34,738 --> 00:02:41,221
+And maybe, more flexible than BSTs.
+And we're going to be able to achieve both
+
+32
+00:02:41,221 --> 00:02:47,347
+those goals.
+So, this again is the summary of the
+
+33
+00:02:47,608 --> 00:02:54,818
+running times for when, in the case that
+the keys are strings for red black BSTs
+
+34
+00:02:55,079 --> 00:03:00,378
+and for hashing.
+And let's take a look at those so if L is
+
+35
+00:03:00,378 --> 00:03:05,644
+the length of the string.
+And n is the number of strings and then
+
+36
+00:03:05,644 --> 00:03:11,092
+also the rate x is r is going to be a
+factor later on but its not going to be
+
+37
+00:03:11,092 --> 00:03:15,128
+for these two.
+Then for hashing for every operation we
+
+38
+00:03:15,128 --> 00:03:20,778
+have to compute a hash function, which
+basically means looking at every character
+
+39
+00:03:20,778 --> 00:03:25,608
+in the string.
+Actually in Java string hash functions are
+
+40
+00:03:25,608 --> 00:03:31,201
+cached, so sometimes there's efficiencies
+cuz you only have to comp, and they're
+
+41
+00:03:31,201 --> 00:03:35,225
+mutable, so you only have to compute the
+hash function once.
+
+42
+00:03:35,430 --> 00:03:41,023
+And then this is roughly the amount of
+space that takes into account the table
+
+43
+00:03:41,023 --> 00:03:46,753
+and the string size for red black BSTs,
+the analysis is a bit more complicated.
+
+44
+00:03:46,958 --> 00:03:50,710
+For a search hit, you have to look at the
+entire string.
+
+45
+00:03:50,710 --> 00:03:55,404
+Given a entire key to check that every
+character's the same and then the
+
+46
+00:03:55,404 --> 00:04:00,654
+comparison's depending on the nature of
+the keys for a typical case though its
+
+47
+00:04:00,654 --> 00:04:06,152
+something like log squared N. we had log N
+comparison's but usually you have to look
+
+48
+00:04:06,152 --> 00:04:11,896
+at something like a log N characters in
+the key in order to get down the tree.
+
+49
+00:04:12,081 --> 00:04:17,085
+For a search miss you might be able to
+find out before you get to the end of the
+
+50
+00:04:17,085 --> 00:04:22,150
+tree and sing a for an insert so the
+running times are something like this.
+
+51
+00:04:22,376 --> 00:04:28,933
+Then here's some experimental evidence
+that, that we, we can use to test out
+
+52
+00:04:28,933 --> 00:04:35,039
+these analytic hypothesis.
+And we'll just look at two examples one is
+
+53
+00:04:35,039 --> 00:04:41,747
+the entire text of Melville's Moby Dick
+which we've used before and that's about a
+
+54
+00:04:41,747 --> 00:04:45,226
+million characters.
+And maybe 200,000 strings.
+
+55
+00:04:45,226 --> 00:04:49,319
+And add to this 200,000 strings, about
+32,000 are distinct.
+
+56
+00:04:49,530 --> 00:04:53,482
+And then this,
+There's another file of actors from the
+
+57
+00:04:53,482 --> 00:04:59,127
+Internet movie database that's much bigger
+maybe tourism magnitude bigger.
+
+58
+00:04:59,339 --> 00:05:03,361
+And it's got maybe about a million
+different words.
+
+59
+00:05:03,361 --> 00:05:09,909
+So we'll want our algorithms to do better
+than, or at least as well as red black
+
+60
+00:05:09,909 --> 00:05:15,826
+BSTs in hashing on these data sets.
+I think, you know, our test is to dedupe
+
+61
+00:05:15,826 --> 00:05:18,891
+these data sets.
+So that's our challenge.
+
+62
+00:05:18,891 --> 00:05:24,737
+Efficient performance for string keys and
+try to come up with algorithms that can
+
+63
+00:05:24,737 --> 00:05:30,945
+compete with the best classic algorithms.
+Now in order to do that we're going to
+
+64
+00:05:30,945 --> 00:05:35,976
+look at R way tries.
+That's a particular data structure, that
+
+65
+00:05:35,976 --> 00:05:39,704
+was, invented actually really quite a
+while ago.
+
+66
+00:05:39,928 --> 00:05:43,507
+This data structure, dates back, to the
+60s.
+
+67
+00:05:43,731 --> 00:05:50,218
+And, the first thing to know about it is
+that, the name is based a little bit, on a
+
+68
+00:05:50,218 --> 00:05:53,797
+pun.
+It actually is the middle letters of the
+
+69
+00:05:53,797 --> 00:05:59,987
+word retrieval, but we don't pronounce it
+tree because then we couldn't distinguish
+
+70
+00:05:59,987 --> 00:06:03,790
+it from binary search trees, so we
+pronounce it try.
+
+71
+00:06:03,993 --> 00:06:09,569
+And this is a confusing fact of life that
+we've been living with for many decades
+
+72
+00:06:09,569 --> 00:06:14,397
+now with this data structure.
+And let's look at what a try is and we'll
+
+73
+00:06:14,397 --> 00:06:17,864
+look at some, examples before we get to
+the code.
+
+74
+00:06:17,864 --> 00:06:22,012
+So, for now, we're going to think of a try
+as some nodes.
+
+75
+00:06:22,012 --> 00:06:26,568
+A tree structure with nodes where we store
+characters in the nodes,
+
+76
+00:06:26,568 --> 00:06:30,401
+Not keys.
+And the other thing is that each node has
+
+77
+00:06:30,401 --> 00:06:35,628
+R children, where R is the rate, it's the
+number of possible characters.
+
+78
+00:06:35,843 --> 00:06:41,070
+And there's g-, the possibility of a child
+for each possible character.
+
+79
+00:06:41,268 --> 00:06:46,305
+Now in the standard implementation, this
+is going to involve on all links.
+
+80
+00:06:46,504 --> 00:06:50,348
+We have to have a placeholder for each
+possible character.
+
+81
+00:06:50,348 --> 00:06:55,650
+So there's a lot of null links and tries.
+And we'll get back to that in a minute.
+
+82
+00:06:55,650 --> 00:07:00,754
+But to get the concept, we'll use this
+graphical representation, where we have
+
+83
+00:07:00,754 --> 00:07:04,399
+characters and nodes and we don't show any
+null length.
+
+84
+00:07:04,399 --> 00:07:09,767
+And the other thing is, remember a symbol
+table is associating a key with a value,
+
+85
+00:07:09,767 --> 00:07:13,678
+so this try is built for this set of key
+value pairs.
+
+86
+00:07:13,678 --> 00:07:18,290
+And what we do is we.
+Store values in nodes that correspond to
+
+87
+00:07:18,290 --> 00:07:23,117
+the last characters in keys.
+And we'll look, that's what these numbers
+
+88
+00:07:23,117 --> 00:07:26,386
+here are.
+And we'll look at a little more in detail,
+
+89
+00:07:26,386 --> 00:07:30,680
+on how this try is built in just a second.
+So that's the basic idea.
+
+90
+00:07:30,680 --> 00:07:35,230
+We're going to have string keys.
+We're going to associate values, and we're
+
+91
+00:07:35,230 --> 00:07:40,357
+going to use this tree-like, tree data
+structure but we're not going to draw the
+
+92
+00:07:40,357 --> 00:07:45,019
+imply null links for now.
+So, for example, in this trie so the root
+
+93
+00:07:45,019 --> 00:07:50,641
+re-, represents all strings.
+And, coming out of the root is one length
+
+94
+00:07:50,641 --> 00:07:55,307
+for each possible letter.
+In particular in this try, the middle link
+
+95
+00:07:55,307 --> 00:08:00,600
+is the link to the, to a sub try that
+contains all the keys that start with S.
+
+96
+00:08:00,600 --> 00:08:06,334
+Then we go further down.
+Each time we go by a node, we pick off a
+
+97
+00:08:06,334 --> 00:08:13,413
+letter so that this length, for example,
+goes to the try for all keys that start
+
+98
+00:08:13,413 --> 00:08:17,547
+with s followed by h followed by e.
+And so forth.
+
+99
+00:08:17,547 --> 00:08:23,689
+So now all, out of all the keys that start
+with SHE, actually one of them, the one
+
+100
+00:08:23,689 --> 00:08:29,062
+that just has the letters in then ends,
+has a value associated with it.
+
+101
+00:08:29,062 --> 00:08:35,050
+So when the node corresponding to the last
+letter, the E, we put the value zero.
+
+102
+00:08:35,271 --> 00:08:38,445
+And so that's, how the try is going to
+look.
+
+103
+00:08:38,445 --> 00:08:44,424
+So just given that definition, then let's
+look at, how to do search, in a try.
+
+104
+00:08:44,424 --> 00:08:50,181
+All we do is use the characters and the
+key to guide our search down the data
+
+105
+00:08:50,181 --> 00:08:54,116
+structure.
+So, let's say we're looking for the key
+
+106
+00:08:54,116 --> 00:08:57,584
+shells.
+So we start at the root, and we go down
+
+107
+00:08:57,584 --> 00:09:03,448
+the S link, since we started with an S.
+Now our second letter is H, so we look to
+
+108
+00:09:03,448 --> 00:09:09,460
+see if there's a non-null link that,
+corresponding to H, and in this case there
+
+109
+00:09:09,460 --> 00:09:12,651
+is.
+Now our next letter is E, so we look for
+
+110
+00:09:12,651 --> 00:09:13,320
+an E.
+Now.
+
+111
+00:09:13,320 --> 00:09:18,995
+No need to examine the value here because
+well we haven't looked at all the letters
+
+112
+00:09:18,995 --> 00:09:22,914
+in our key yet.
+So now we look for L now we look for
+
+113
+00:09:22,914 --> 00:09:28,860
+another L and then finally we find the S
+and when we find the S we look to see if
+
+114
+00:09:28,860 --> 00:09:33,049
+there's a value there.
+In this case there is a value and so
+
+115
+00:09:33,049 --> 00:09:37,847
+that's what we return the value associated
+with the last key character.
+
+116
+00:09:37,847 --> 00:09:41,842
+So that's a typical search hit in a tri.
+Another way is...
+
+117
+00:09:41,842 --> 00:09:45,139
+So, that node was down at the bottom but
+if you had.
+
+118
+00:09:45,139 --> 00:09:48,629
+We're doing a search for SHE, you follow
+the same path.
+
+119
+00:09:48,629 --> 00:09:53,994
+But now when you get to the E, that's the
+last character of that key and so we just
+
+120
+00:09:53,994 --> 00:09:57,808
+know how to return that, value associated
+with that node.
+
+121
+00:09:57,808 --> 00:10:01,945
+That is, the search doesn't have to go all
+the way to the bottom.
+
+122
+00:10:01,945 --> 00:10:04,724
+It might terminate at an intermediate
+node.
+
+123
+00:10:04,724 --> 00:10:09,896
+And we just return the value associated
+with the node corresponding to the last
+
+124
+00:10:09,896 --> 00:10:13,063
+character in the key.
+What about a search miss?
+
+125
+00:10:13,063 --> 00:10:16,151
+Well, there's two cases.
+It's for a search miss.
+
+126
+00:10:16,360 --> 00:10:22,904
+So one of them is we've followed down the
+tree picking off the letters in the key
+
+127
+00:10:22,904 --> 00:10:28,264
+one letter at a time as, as before.
+And then when we get to the end of the key
+
+128
+00:10:28,473 --> 00:10:34,251
+we take a look to see if there is a value.
+In this case there's no value associated
+
+129
+00:10:34,251 --> 00:10:39,681
+with the last key character that mean
+there's no key in the data structure
+
+130
+00:10:39,681 --> 00:10:43,650
+that's been associated with a value.
+So we just return no.
+
+131
+00:10:43,650 --> 00:10:48,746
+Or, the other thing that can happen is, we
+can, reach a null link.
+
+132
+00:10:48,746 --> 00:10:54,729
+So, our key now is S, starts with S, and
+then H, and then E, and then L, and now
+
+133
+00:10:54,729 --> 00:11:00,860
+our next letter is T, so we look to see if
+there's a non null link coming from this
+
+134
+00:11:00,860 --> 00:11:05,587
+node associated with T.
+And in this case, there's no such link, so
+
+135
+00:11:05,587 --> 00:11:10,167
+we return null.
+That's evidence that, that string, there's
+
+136
+00:11:10,167 --> 00:11:14,377
+no key associated with that string in our
+data structure.
+
+137
+00:11:14,377 --> 00:11:16,442
+So that's a search miss.
+Iii.
+
+138
+00:11:16,442 --> 00:11:21,070
+Now, what about insertion?
+Well insertion is also pretty simple.
+
+139
+00:11:21,280 --> 00:11:25,690
+So we follow two, two rules.
+One is again, we go down links
+
+140
+00:11:25,690 --> 00:11:31,360
+corresponding each character in the key.
+If we come out on a link, we create a new
+
+141
+00:11:31,360 --> 00:11:35,490
+node that's associated with the character
+that we're on.
+
+142
+00:11:35,700 --> 00:11:41,300
+And just keep doing that until we get to
+the last character of the key, in which
+
+143
+00:11:41,300 --> 00:11:45,136
+case, we put the value.
+So if in this try, we're supposed to
+
+144
+00:11:45,136 --> 00:11:47,879
+associate the value seven with
+[inaudible].
+
+145
+00:11:48,070 --> 00:11:53,046
+We follow, our path from the root to s,
+'cause our first letter is s, and then
+
+146
+00:11:53,046 --> 00:11:57,958
+h.'Cause our next letter is h.
+And then a O, we had an, [inaudible] kinda
+
+147
+00:11:57,958 --> 00:12:02,040
+ran into a null link.
+So we have to put, a node there, with the
+
+148
+00:12:02,040 --> 00:12:04,719
+character, associated with the character
+O.
+
+149
+00:12:04,719 --> 00:12:10,014
+So in later searches for this key, we'll
+be able to find it by passing through that
+
+150
+00:12:10,014 --> 00:12:12,821
+node.
+And now we move to the next letter, and
+
+151
+00:12:12,821 --> 00:12:16,840
+there's no node again.
+In the next letter, there's still no node.
+
+152
+00:12:16,840 --> 00:12:20,125
+Iii.
+When we get to the end, then that's the
+
+153
+00:12:20,125 --> 00:12:23,910
+last character in the key, and we put our
+value seven.
+
+154
+00:12:23,910 --> 00:12:30,224
+And now we've modified the data structure,
+adding the nodes that are necessary for a
+
+155
+00:12:30,224 --> 00:12:36,030
+later search to go through, character by
+character and find the value associated
+
+156
+00:12:36,030 --> 00:12:39,514
+with that key.
+So that's an insertion into a try.
+
+157
+00:12:39,732 --> 00:12:46,119
+Just to cement all these ideas let's do a
+demo of how that tree was constructed from
+
+158
+00:12:46,119 --> 00:12:50,045
+scratch.
+So we have a null try.
+
+159
+00:12:50,045 --> 00:12:58,215
+So we're going to start by putting the,
+associating the value zero with the string
+
+160
+00:12:58,215 --> 00:13:02,662
+SHE.
+So we start at the root node, which, and
+
+161
+00:13:02,662 --> 00:13:10,625
+I'll try, it just has that one node.
+Create a new node for S, create a new node
+
+162
+00:13:10,625 --> 00:13:15,590
+for H, create a new node for E.
+Associate zero.
+
+163
+00:13:15,590 --> 00:13:21,004
+So the key is the sequence of characters
+from the root to the value, and the value
+
+164
+00:13:21,004 --> 00:13:24,371
+is in the node corresponding to the last
+character.
+
+165
+00:13:24,371 --> 00:13:29,257
+This try represents the symbol table that
+contains just on string SHE, and
+
+166
+00:13:29,257 --> 00:13:33,351
+associated with zero.
+Every other string, if you search for any
+
+167
+00:13:33,351 --> 00:13:38,963
+other string in this try you'll either end
+in a node that doesn't have a value or
+
+168
+00:13:38,963 --> 00:13:44,050
+you'll end at a null link.
+All right, so now, let's say we put in the
+
+169
+00:13:44,050 --> 00:13:50,381
+key S, E, L, L, S and you can kinda tell
+where it's going, we made room for it in
+
+170
+00:13:50,381 --> 00:13:54,410
+the try.
+So we go for S, and now the second letter,
+
+171
+00:13:54,410 --> 00:13:58,767
+E, corresponds to a null link, so we
+create a new node.
+
+172
+00:13:58,767 --> 00:14:05,838
+And similarly we go through and create new
+nodes for each of the remaining characters
+
+173
+00:14:05,838 --> 00:14:10,360
+in the key and then associate the value
+one at the end.
+
+174
+00:14:10,643 --> 00:14:16,510
+So now we have a try that has two keys in
+it, SHE and SELLS.
+
+175
+00:14:16,510 --> 00:14:21,648
+Now our next is to insert SEA.
+So now we have S, we already have a node
+
+176
+00:14:21,648 --> 00:14:26,126
+corresponding to E.
+And so now we just have to create one new
+
+177
+00:14:26,126 --> 00:14:30,531
+node, the one corresponding to A.
+And put our value two there.
+
+178
+00:14:30,531 --> 00:14:36,330
+And now, we're going to put SHELLS in.
+So we already have the S, already have the
+
+179
+00:14:36,330 --> 00:14:42,129
+H, already have the E, so now we have to
+add nodes for the last three letters in
+
+180
+00:14:42,129 --> 00:14:45,800
+that string.
+And associate the value three with it.
+
+181
+00:14:45,800 --> 00:14:49,865
+Now we're going to put finally a key that
+doesn't start with S.
+
+182
+00:14:49,865 --> 00:14:54,833
+So that means we create a new node
+corresponding to the first letter of that
+
+183
+00:14:54,833 --> 00:14:59,480
+string, I, N to the other letter two.
+And then associate the value four.
+
+184
+00:14:59,480 --> 00:15:02,224
+And here's another one that doesn't start
+with s.
+
+185
+00:15:02,224 --> 00:15:06,761
+So we create new nodes corresponding to
+each one of its characters, and associate
+
+186
+00:15:06,761 --> 00:15:10,178
+the value five with the last one.
+Now here's SEA.
+
+187
+00:15:10,178 --> 00:15:18,860
+So this is, remember, our symbol table API
+is associative, which means that if we get
+
+188
+00:15:18,860 --> 00:15:25,450
+a new value for a key that's already in
+the table, we overwrite.
+
+189
+00:15:25,450 --> 00:15:32,079
+The old value with the new value.
+That's the way, the convention that we've
+
+190
+00:15:32,079 --> 00:15:38,349
+chosen for symbol tables.
+So that is easily done with tries as well.
+
+191
+00:15:38,349 --> 00:15:44,620
+Now here's one more key, S, H.
+And now we have to add a new node because
+
+192
+00:15:44,620 --> 00:15:50,174
+there's no node that's a child of H that
+corresponds letter O.
+
+193
+00:15:50,174 --> 00:15:57,341
+So we have to create new nodes for O, R,
+and E, and associate the value seven with
+
+194
+00:15:57,341 --> 00:16:00,522
+it.
+So that's a tri that has precisely eight
+
+195
+00:16:00,522 --> 00:16:03,648
+keys.
+If you look for any one of those eight
+
+196
+00:16:03,648 --> 00:16:08,549
+keys you'll get the value.
+If you look for any other string you'll
+
+197
+00:16:08,549 --> 00:16:14,658
+either come to a node that has a null
+value or go out on a null link and so the
+
+198
+00:16:14,658 --> 00:16:19,560
+search would be unsuccessful.
+That's is a demo of tri construction.
+
+199
+00:16:20,520 --> 00:16:27,464
+Now that you have a basic idea of how,
+what tris are and how they work, let's
+
+200
+00:16:27,464 --> 00:16:32,299
+take a look at what's needed to implement
+them in Java.
+
+201
+00:16:32,299 --> 00:16:39,771
+The key idea in the tri representation for
+implementation in Java or any computer
+
+202
+00:16:39,771 --> 00:16:48,297
+language is that. Instead of representing
+a node as a character in the node, what we
+
+203
+00:16:48,297 --> 00:16:55,521
+do is represent the links as an indexed
+array with one entry for each possible
+
+204
+00:16:55,521 --> 00:16:59,636
+character.
+And the idea is the characters are
+
+205
+00:16:59,636 --> 00:17:03,253
+actually.
+Implicitly defined by link indeces.
+
+206
+00:17:03,253 --> 00:17:08,600
+So just for example, we have this small
+try that we built over here.
+
+207
+00:17:08,600 --> 00:17:12,510
+In this case, the root has only one node
+below it.
+
+208
+00:17:12,510 --> 00:17:18,656
+That's for all the keys that start with S.
+The way that's represented in real
+
+209
+00:17:18,656 --> 00:17:22,007
+representation, and this is for
+efficiency.
+
+210
+00:17:22,007 --> 00:17:25,918
+And it's the way that tries get their
+efficiency.
+
+211
+00:17:25,918 --> 00:17:30,547
+Is we have one link corresponding to each
+possible letter.
+
+212
+00:17:30,547 --> 00:17:36,953
+And the only one that is un-null is S.
+So the character S is defined implicitly
+
+213
+00:17:36,953 --> 00:17:43,535
+by the fact that, that link that
+[inaudible] that, that corresponds to S is
+
+214
+00:17:43,535 --> 00:17:48,472
+not null.
+Over here there's from e to a there's two
+
+215
+00:17:48,472 --> 00:17:54,067
+links coming out of E.
+And the only way that we represent A is by
+
+216
+00:17:54,067 --> 00:18:00,238
+having the first link be not null.
+If the link corresponding to a letter is
+
+217
+00:18:00,238 --> 00:18:07,150
+not null, then it corresponds to having
+that letter in the node that it points to.
+
+218
+00:18:07,378 --> 00:18:10,952
+So in this case we have E connected to A
+and L.
+
+219
+00:18:10,952 --> 00:18:16,960
+So we have the entries corresponding to A
+and L filled with non null values.
+
+220
+00:18:16,960 --> 00:18:23,022
+So you can see immediately the
+correspondence between this tri the way
+
+221
+00:18:23,022 --> 00:18:27,774
+we've been drawing it and the job
+representation of it.
+
+222
+00:18:27,774 --> 00:18:33,836
+Where each node contains 200, or r links
+if there's r different letters.
+
+223
+00:18:34,082 --> 00:18:39,326
+And letters are implicitly represented by
+non [inaudible] links.
+
+224
+00:18:39,326 --> 00:18:44,580
+Now, you just go in the node.
+So for example, I, in this try, S, E, A,
+
+225
+00:18:44,580 --> 00:18:48,724
+but which is easy to follow down through
+the try.
+
+226
+00:18:48,724 --> 00:18:53,788
+We're looking for an S.
+And S is the twentieth letter in the
+
+227
+00:18:53,788 --> 00:18:54,957
+alphabet.
+Or so.
+
+228
+00:18:54,957 --> 00:19:00,103
+We index into the twentieth position and
+that takes us right to S.
+
+229
+00:19:00,103 --> 00:19:03,845
+And E's the fifth letter, we take the
+fifth link.
+
+230
+00:19:03,845 --> 00:19:07,665
+Then A's the first letter, we take the
+first link.
+
+231
+00:19:07,665 --> 00:19:12,421
+So we can use the character as index into
+the array of links.
+
+232
+00:19:12,421 --> 00:19:18,190
+To quickly travel down the tree.
+Then when we get to the last character, we
+
+233
+00:19:18,190 --> 00:19:22,790
+can check the value at that node that's
+stored in the node.
+
+234
+00:19:23,030 --> 00:19:28,888
+One slight complication in the
+implementation that we encountered before
+
+235
+00:19:28,888 --> 00:19:34,826
+with hashing algorithms and other things.
+We're going to need arrays of nodes.
+
+236
+00:19:34,826 --> 00:19:40,363
+That's what our lengths are.
+So we can't have any generics with nodes,
+
+237
+00:19:40,363 --> 00:19:46,060
+even though I would like to.
+So we have to declare the value to be a
+
+238
+00:19:46,060 --> 00:19:52,319
+type object, and then we'll have to cast
+it back to whatever type it should be,
+
+239
+00:19:52,319 --> 00:19:55,930
+when we return it.
+And we'll see that in code.
+
+240
+00:19:56,152 --> 00:20:01,258
+Other than that little complication.
+This is quite straightforward
+
+241
+00:20:01,258 --> 00:20:05,328
+representation of tries.
+And it leads to a very easy
+
+242
+00:20:05,328 --> 00:20:09,325
+implementation.
+So the keys and the characters are not
+
+243
+00:20:09,325 --> 00:20:13,691
+explicitly stored.
+They're, they're implicitly, because of
+
+244
+00:20:13,691 --> 00:20:17,761
+the links.
+And that's a, a very important point to
+
+245
+00:20:17,761 --> 00:20:21,980
+think about when it comes to, implementing
+using tries.
+
+246
+00:20:22,880 --> 00:20:29,599
+Given that representation, this code for
+implementing try, simple table in Java
+
+247
+00:20:29,848 --> 00:20:34,946
+almost writes itself.
+So it's a [inaudible] implementation in
+
+248
+00:20:34,946 --> 00:20:40,929
+this slide has the implementation of put
+using the same recursive scheme that was
+
+249
+00:20:40,929 --> 00:20:46,692
+used many other times in building trees
+the what are the instance variables?
+
+250
+00:20:46,692 --> 00:20:53,113
+Well we declare artery 256 as usual in our
+string implementations where working with
+
+251
+00:20:53,113 --> 00:20:59,388
+extended asking and then we have one
+instance variable that matters and that is
+
+252
+00:20:59,607 --> 00:21:04,976
+the root of the [inaudible].
+So tries begin with, start, all tries
+
+253
+00:21:04,976 --> 00:21:10,775
+start with a null node.
+So first thing we do is create a new node
+
+254
+00:21:11,031 --> 00:21:17,939
+and put a reference to that node in root.
+So our empty trie consists of a node
+
+255
+00:21:18,195 --> 00:21:23,654
+that's got a.
+Remember, when you create a new node we
+
+256
+00:21:23,910 --> 00:21:30,280
+Build an array of R links to nodes.
+And at the beginning those'll all be empty
+
+257
+00:21:30,280 --> 00:21:32,100
+links.
+Or all null links.
+
+258
+00:21:32,100 --> 00:21:37,448
+So the root points to a node that has 256
+null lengths.
+
+259
+00:21:37,448 --> 00:21:42,171
+Now to put.
+Or to associate a key with the value in a
+
+260
+00:21:42,171 --> 00:21:46,953
+trie.
+We use this instance method that calls
+
+261
+00:21:47,177 --> 00:21:51,584
+recursive method.
+Again, the same way that we've done for
+
+262
+00:21:51,584 --> 00:21:57,935
+other tree construction schemes before.
+So we take the recursive method, takes a
+
+263
+00:21:57,935 --> 00:22:04,135
+node as argument and returns a node.
+So it takes a reference to a trie and
+
+264
+00:22:04,135 --> 00:22:08,170
+returns to, a reference to the trie that
+it constructs.
+
+265
+00:22:08,435 --> 00:22:16,411
+After a associating the key with a value.
+Just to get started suppose that our first
+
+266
+00:22:16,411 --> 00:22:22,260
+key has just one character.
+So in that case, we would call.
+
+267
+00:22:22,260 --> 00:22:27,789
+Another recursive put for the root, with
+our one character.
+
+268
+00:22:28,061 --> 00:22:35,313
+And so our one character key.
+And call the recursive routine.
+
+269
+00:22:35,584 --> 00:22:39,845
+Now our node is not null.
+It's the root node.
+
+270
+00:22:40,117 --> 00:22:46,915
+So and our key is length one.
+And we, called it starting at zero.
+
+271
+00:22:46,915 --> 00:22:55,260
+So the first thing that we do is pick out
+the [inaudible] character of our, Yeah key
+
+272
+00:22:55,260 --> 00:23:01,432
+so zero of character which is our one
+character and I guess its an index
+
+273
+00:23:01,432 --> 00:23:07,603
+whatever letter might happen to B.
+Say its B then C would be two that's sort
+
+274
+00:23:07,603 --> 00:23:14,100
+of thing and then all we do is recursively
+are follow that link in ser.
+
+275
+00:23:14,313 --> 00:23:18,793
+Our, associate our key value in the try
+pointed to by that link.
+
+276
+00:23:19,006 --> 00:23:25,264
+And then take the link that we get and put
+it back into that link out of the root
+
+277
+00:23:25,264 --> 00:23:29,054
+node.
+So the next call there's nothing in the
+
+278
+00:23:29,264 --> 00:23:35,010
+word dot next it's a, it's null so the
+next call we get null so we create a new
+
+279
+00:23:35,010 --> 00:23:38,164
+node.
+And then that new node this point we've
+
+280
+00:23:38,164 --> 00:23:41,808
+called with D plus one moving to the next
+character.
+
+281
+00:23:41,808 --> 00:23:46,364
+So now we have D equals one which is equal
+to our key dot length.
+
+282
+00:23:46,364 --> 00:23:51,270
+So we associate the value in that node
+with our node and we return it.
+
+283
+00:23:51,482 --> 00:23:57,578
+So that return one level up will set the
+length of the new node in the appropriate
+
+284
+00:23:57,578 --> 00:24:04,672
+entry corresponding to the root.
+Again once you've learned our normal
+
+285
+00:24:04,672 --> 00:24:12,566
+recursive way of structuring building tree
+structures this code is very natural.
+
+286
+00:24:12,832 --> 00:24:20,726
+So for a longer key I'm again thinking
+recursively we find the if we're suppose
+
+287
+00:24:20,726 --> 00:24:28,797
+to insert the key associate the key with a
+value, and we're working on the
+
+288
+00:24:28,797 --> 00:24:34,343
+[inaudible] character.
+We pick out the, The character at the deep
+
+289
+00:24:34,343 --> 00:24:37,377
+position.
+We use that to index and to be in link
+
+290
+00:24:37,377 --> 00:24:43,343
+array of the current node and then that's
+the link that we set when we do a put of
+
+291
+00:24:43,343 --> 00:24:47,136
+the new node.
+So when we start with a longer string and
+
+292
+00:24:47,136 --> 00:24:53,205
+a perfectly empty tree we create new nodes
+all the way down and then put their links
+
+293
+00:24:53,205 --> 00:24:57,550
+to their parents all the way up.
+In this recursive structure.
+
+294
+00:24:57,756 --> 00:25:01,412
+And it's a very simple and natural
+recursive code.
+
+295
+00:25:01,412 --> 00:25:05,687
+So that's the put.
+Now that takes a little study but not so
+
+296
+00:25:05,687 --> 00:25:11,067
+much once you're use to our standard
+recursive way of producing tree
+
+297
+00:25:11,067 --> 00:25:13,687
+structures.
+And get is even simpler.
+
+298
+00:25:13,894 --> 00:25:19,842
+So contains and gets.
+So our scenario's standard convention is
+
+299
+00:25:20,116 --> 00:25:28,336
+to return null if we have a key that's not
+there or that contains and the get
+
+300
+00:25:28,336 --> 00:25:36,786
+function is a again recursive.
+Procedure that will return in reference to
+
+301
+00:25:36,786 --> 00:25:40,322
+the node, and if that's null, we return
+null.
+
+302
+00:25:40,322 --> 00:25:46,984
+Otherwise, we can get the value out of the
+node return by the recursive procedure.
+
+303
+00:25:46,984 --> 00:25:52,411
+And then remember we had the omega value
+in nodes of type objects.
+
+304
+00:25:52,411 --> 00:25:56,277
+So we have to cast that back to the type
+value.
+
+305
+00:25:56,277 --> 00:26:04,024
+And the recursive get is very simple.
+To find the node that contains the value
+
+306
+00:26:04,024 --> 00:26:09,540
+associated with a given key.
+And we're working on the deep character.
+
+307
+00:26:09,540 --> 00:26:14,326
+And we're currently on, node x.
+We just, return null.
+
+308
+00:26:14,326 --> 00:26:18,626
+Effects happens to be null.
+That means it's not there.
+
+309
+00:26:18,869 --> 00:26:24,710
+If we're, at the last character in the
+key, we return our current node.
+
+310
+00:26:24,946 --> 00:26:28,650
+Otherwise, we get that [inaudible]
+character.
+
+311
+00:26:28,650 --> 00:26:34,010
+And we use that to index into the next
+array of the current, node.
+
+312
+00:26:34,246 --> 00:26:41,103
+And recursively called the get routine,
+for, that node moving, one down the tree.
+
+313
+00:26:41,103 --> 00:26:47,802
+And incrementing our key pointer by one.
+Extremely simple, recursive code to do the
+
+314
+00:26:47,802 --> 00:26:51,599
+tri implementation.
+So what about the performance?
+
+315
+00:26:51,808 --> 00:26:58,218
+Well in a cert chip we simply go down the
+tried examining all L characters just
+
+316
+00:26:58,218 --> 00:27:01,911
+using each one to index into an x-array at
+some note.
+
+317
+00:27:02,120 --> 00:27:06,510
+And then go down to the end to, to see if
+there's a value there.
+
+318
+00:27:06,719 --> 00:27:11,875
+Search miss we might have to go all the
+way down to the last character.
+
+319
+00:27:11,875 --> 00:27:17,450
+But we could also just have a miss match
+on the first character and find a null
+
+320
+00:27:17,450 --> 00:27:19,680
+link right away.
+And actually.
+
+321
+00:27:19,680 --> 00:27:24,528
+Typically, in a try.
+In typical applications, we only examine a
+
+322
+00:27:24,528 --> 00:27:28,544
+few characters.
+So right away, you can see, by thinking
+
+323
+00:27:28,544 --> 00:27:33,090
+about a search miss, that try algorithms
+can be sublinear.
+
+324
+00:27:33,090 --> 00:27:39,378
+We can find out that a key's not in the
+tree, by only examining a few characters.
+
+325
+00:27:39,378 --> 00:27:44,032
+If we don't have any.
+Strings in our try that begin with the
+
+326
+00:27:44,032 --> 00:27:49,057
+same few characters as our search key,
+then, it's not there.
+
+327
+00:27:49,292 --> 00:27:55,260
+That's a typical case.
+Now the downside of tri performance in
+
+328
+00:27:55,542 --> 00:28:00,160
+lots of applications is the amount of
+space used.
+
+329
+00:28:00,433 --> 00:28:05,804
+There is the problem that every node's got
+R lengths in it.
+
+330
+00:28:05,804 --> 00:28:12,997
+And particularly, down at the bottom, the
+leaf nodes that correspond to the last
+
+331
+00:28:12,997 --> 00:28:20,371
+characters and keys and, the prefix in the
+key in the try that's going to be null
+
+332
+00:28:20,371 --> 00:28:24,337
+lengths.
+Now it is possible in a huge try with lots
+
+333
+00:28:24,337 --> 00:28:30,510
+of strings that are short and sharing
+common prefixes to actually much less
+
+334
+00:28:30,510 --> 00:28:37,360
+space then this but be ardenal links at
+each leaf is a real problem in some
+
+335
+00:28:37,360 --> 00:28:42,480
+applications so we're going to take a look
+on how to deal with that.
+
+336
+00:28:42,783 --> 00:28:51,479
+So the bottom line is for symbol tables
+with relatively small numbers of string
+
+337
+00:28:51,479 --> 00:28:58,672
+keys where the amount of space used by the
+[UNKNOWN] is not a problem.
+
+338
+00:28:58,920 --> 00:29:05,697
+Then we get very fast, search hit.
+And even faster search miss but we burn up
+
+339
+00:29:05,697 --> 00:29:09,334
+some space.
+That's the bottom line about try
+
+340
+00:29:09,334 --> 00:29:13,384
+performance.
+And, just a typical application.
+
+341
+00:29:13,384 --> 00:29:19,996
+Maybe you get a job interview question
+about, what data structure you use for
+
+342
+00:29:19,996 --> 00:29:28,234
+spell checking And then, so, and this is
+just an example, to show, how effective
+
+343
+00:29:28,234 --> 00:29:34,377
+tries can be for such an application.
+Where all the words are three letters.
+
+344
+00:29:34,613 --> 00:29:41,385
+And the solution is, build a 26 way try.
+So spell checking, usually, there'll be
+
+345
+00:29:41,385 --> 00:29:47,842
+pre-processing to strip out everything but
+the lowercase letters that make up the
+
+346
+00:29:47,842 --> 00:29:51,858
+word.
+So you can build a 26 way try that, will
+
+347
+00:29:51,858 --> 00:29:56,820
+immediately tell you whether you have a
+misspelled word or not.
+
+348
+00:29:56,820 --> 00:30:04,540
+Another interesting thing about prize is
+that, deletion is, very easy, what do we
+
+349
+00:30:04,540 --> 00:30:11,646
+do to delete a key value pair, well you
+find, the node corresponding to key and,
+
+350
+00:30:12,172 --> 00:30:16,208
+set the value there corresponding to null,
+.
+
+351
+00:30:16,208 --> 00:30:23,489
+So that's, easily done, so we want to
+delete shelves we cross out the, value
+
+352
+00:30:23,489 --> 00:30:30,174
+there, and now, there's two cases.
+One case is this one where that node, now
+
+353
+00:30:30,174 --> 00:30:34,250
+we set its' value to null and its got all
+null links.
+
+354
+00:30:34,250 --> 00:30:40,865
+Now there's no reason for its existence.
+So it wouldn't have been created except
+
+355
+00:30:40,865 --> 00:30:46,940
+for the fact that we inserted shells.
+So if the node has got null links, just
+
+356
+00:30:46,940 --> 00:30:50,239
+remove it.
+And then, just delete it.
+
+357
+00:30:50,239 --> 00:30:57,322
+And then when you go back up the tree,
+which you do because you got down there.
+
+358
+00:30:57,575 --> 00:31:05,416
+Every node that you touch you check if
+it's got a no value and all no links, just
+
+359
+00:31:05,416 --> 00:31:10,024
+delete it.
+And you keep going until you find one that
+
+360
+00:31:10,024 --> 00:31:17,377
+has either a value or a downhill link and
+then that's when you can stop the leading
+
+361
+00:31:17,377 --> 00:31:21,491
+node.
+So it's pretty easy to delete a key value
+
+362
+00:31:21,491 --> 00:31:26,481
+pair in an R-way tri.
+And that's unusual for other search
+
+363
+00:31:26,481 --> 00:31:33,484
+structures that we saw in the deletion was
+a significant challenge to implement
+
+364
+00:31:33,484 --> 00:31:37,350
+often.
+So our challenge is to find a way to use,
+
+365
+00:31:37,594 --> 00:31:41,912
+less memory.
+Be, particularly because, nowadays, many
+
+366
+00:31:41,912 --> 00:31:47,533
+strings are built with Unicode.
+And the number of null links in a tri
+
+367
+00:31:47,533 --> 00:31:52,746
+would be truly huge.
+Again we talked about this, with rated
+
+368
+00:31:52,746 --> 00:31:56,820
+sorting.
+A lot a programs broke when this.
+
+369
+00:31:56,820 --> 00:32:03,190
+Switch went from ASCII to Unicode.
+In any program that use this reposession,
+
+370
+00:32:03,190 --> 00:32:10,540
+representation for Tries, certainly broke.
+So that's an introduction to Tries with
+
+371
+00:32:10,540 --> 00:32:11,520
+R-way Tries.

@@ -1,0 +1,289 @@
+Now, we'll look at topological sorting.
+A digraph processing application that
+doesn't quite have a parallel with
+undirected graphs.
+And it's a very general model that is, is
+very widely, widely used and here's the
+simplest example of it called, precedence
+scheduling.
+So the idea is that you've got a set of
+tasks that need to be completed,
+But there's precedence constraints, and
+you want to know in what order should you
+schedule the tasks. so, you might think
+that this is like courses in a university
+curriculum.
+For, so is the model we'll us the vertices
+will be the task and the edges will be the
+precedence constraint.
+And all these says is there's an edge from
+three to six, that means you have to take
+introduction to Computer Science before
+you take Advance Programming.
+And so there's so, all of these source of
+constraints in a graph. and so what you
+want is, A what's called a feasible
+schedule,
+So that's just an order in which you can
+take the linear order, in which you can
+take the courses one after the other that
+respects the precedence.
+So, that corresponds to drawing the graph,
+such that all the edges point upwards.
+And this model is used to study
+manufacturing processes and many other
+applications.
+So, that's the topological sorting
+problem.
+So, first thing is topological sort works
+on a DAG, so called DAG.
+That's a digraph that has no cycles.
+If you have a cycle there's no way you're
+going to be able to solve the problem.
+In fact we'll, simpler hraph processing
+problem is just find out if a graph has a
+cycle.
+And we'll talk about that in a second,
+But let's do topological sort first.
+So we know that the graph has no cycles.
+It's a directed, acyclic graph, graph,
+And what we want to do is, find a way to
+redraw the DAG, so that all the edges
+point upwards,
+Yh, or give, a bottom to top order so that
+all the edges are pointing upward.
+That's called a topological order of the
+graph.
+And, that'll give, in this case, an order
+in which maybe you could take the courses
+or perform the manufacturing process or
+whatever else.
+So, that's the problem.
+So how are we going to solve it?
+Well, we're going to use DFS.
+In fact, one of the lessons for
+particularly for digraph processing is DFS
+is going to provide a way to solve it.
+It might be hard to find a different way.
+So let's look at a demo of topological
+sort.
+And all of this is just run DFS, but there
+is a particular point in which we, we want
+to take the vertices out to get the order,
+and that's called reverse DFS post-order.
+So, lets look at how that works.
+What we do is, when we do the DFS, when we
+are done with the vertex we put it on a
+stack or put it out,
+So, lets look at how that works.
+So,
+We had just run DFS the same as before,
+But we're not keeping track of anything,
+except the vertices that we're done with.
+So, visit, visit, vertex zero.
+We have to check the places that you can
+get to it from zero.
+It's one, two, and five.
+So we check one, one is unmarked, so we're
+going to mark it and recursively visit
+one.
+So we do that and we have to check four
+and four again is unmarked, so we recurse.
+But now both of the edges to four are in,
+so there's nowhere to go from four, so
+we're done with four.
+When we're done with four, we output it,
+actually put it on a stack.
+So that's order, the order in which we're
+done with the vertices.
+That's called postorder.
+So now, once we're done with four, now
+we're done with one, there's no where else
+to go so we put it on the post order.
+And now, we're back at zero and we have to
+check the other vertices that we get to
+from zero.
+So, here's two and get two from two, and,
+it's unmarked, so we visit it.
+But there's no place to go,
+So we're done with it.
+So we put it on the postorder and go back
+to zero.
+Then we go to five, unmarked, so we visit
+it.
+Then we check two, which is marked, so
+nothing to do.
+And then we're done with five.
+And, once we're done with five, then we're
+done with zero.
+And that's the postorder of the vertices
+that you can get to it from zero.
+So now we have to check all the other
+vertices in the graph,
+But we have to find some other place, and
+so we just check the vertices in order.
+Next one that we find that's unmarked is
+three.
+And so to visit three, we have to check,
+two, four, five, and six.
+And two, four, and five, are all marked,
+So nothing to do.
+Six is unmarked,
+So we go visit six.
+When we visit six, zero and four are,
+already, marked, so there's nothing to do.
+Then we're done with six, And finally,
+we're done with three.
+And we're done with the vertex.
+We'd put it out. That's or if we put it on
+a stack, and then we get reverse postorder
+and that turns out is the answer that we
+need.
+So the code is pretty simple but we'll
+have to look a little more carefully to be
+convinced that it works.
+So it's depth-first search but we have
+additional data structure, which is a
+stack of integers, which is the vertices
+and reverse postorder.
+The constructor just creates that stack,
+And then the only thing we change to DFS
+is when we're done with the vertex, before
+exiting, we put that vertex on the reverse
+post stack. and then the client simply
+gets the stack returned, that's
+inevitable.
+And iterating through that will give the
+vertices in the reverse DFS postorder
+which is the order you which is the
+topologically sorted order.
+It's a very simple and compelling use of
+DFS.
+Actually this is an amazingly simple
+algorithm, but it went undiscovered for
+many years.
+People were using much more complicated
+algorithms for this problem.
+Okay.
+So, reverse DFS postorder of a DAG is the
+topological order.
+That's, the correctness proof, that we
+have to consider.
+This diagram over here, is a record of the
+recursive calls, for that example that we
+just did.
+To visit zero, we probably visit one, and
+then we visit four.
+And then we're done with four, and then
+we're done with one.
+And then we visit two, down with two, Then
+do five, which checks two, And five down
+and so forth.
+So this gives a record of the calls, just,
+For reference in this proof for that
+example.
+Alright. So now, we want to consider any
+edge where v points to w and we want to
+consider the point where dfs of V is
+called.
+And there's a bunch of cases.
+So one case is that dfs w, has already
+been called and returned.
+So in this example, when v equals three, w
+equals two, four, or five, they were
+already done.
+So, if we put out, those vertex numbers,
+before we put, three out, then the arrow
+from v to w is going to point up.
+They were already done.
+So that's case one. That's an easy case.
+Case two, they're all easy cases.
+[laugh] Case two is, dfs w hasn't, been
+called yet, but if there's an edge from v
+to w we're going call it and then recurse,
+it's going to finish before we're done
+with three.
+So again, the edge from v to w is going to
+point out, three to six.
+And the only other possible case might be
+that, dfs w is already been called but not
+returned.
+But that can't happen,
+In, because there's no cycles.
+If d, dfs w had been called but not yet
+returned,
+Then the function call stack is going to,
+from it's, it's going to have path from w
+to v on it.
+And so. if we have an edge v-w, that would
+give a cycle, but there is no cycles.
+So from those observations we know that
+all vertices pointing from three are done
+before three is done,
+So they appear after three in the
+topological order, or they point up if we
+put the vertices in reverse topological
+order.
+So that's the correctness proof for
+topological order.
+So, a similar, process, is, to detect a
+cycle.
+A topological sort doesn't work if a
+graph's got a cycle,
+So one of the things we might want to do
+is, just, find cycles in digraphs.
+Now, if you're a college and you put out a
+curriculum that's got a directed cycle,
+you have your problem so you might want to
+process that first.
+So,
+If there's a directed cycle, you can't
+have a topological order.
+If there's no directed cycle then we've
+just found it.
+So, one thing you might want, is given a
+digraph, find a directed cycle.
+And how are you going to do that?
+You're going to use DFS and that's a
+simple algorithm that you might want to
+think about and,
+It's in a few lines in the book.
+So, precedence scheduling is a, an
+excellent example of the use of search
+directed graph,
+And, this is the cycle of length one.
+Of course, that requires itself as a
+prerequisite.
+And, this is just an example of a very
+widely computation.
+And it really has many, many applications.
+So for example, the Java compiler actually
+does cycle con, detection.
+If you have a class A extends B, and
+another one B extends C, and another one C
+extends A,
+That's going to create a problem.
+Class hierarchies are not supposed to have
+cycles,
+And it'll actually, the Java compiler will
+actually give a, an error message saying
+there's cyclic inheritance.
+You're not allowed to do that.
+So there's many applications that involve
+essentially digraphs that aren't supposed
+to add cycles.
+Another example is Microsoft Excel.
+So if you do cyclic reference like this in
+Excel, which in a big spreadsheet, now you
+can imagine might .. that's, that's an
+error,
+And not only this Microsoft Excel flag the
+error.
+It says you have, created a circular
+reference, try one of the following,
+And it's actually got a circular reference
+toolbar, that will help you figure out,
+what to do, in that case.
+So, cycle detection and topological
+sorting are important applications in
+depth-first and digraphs.

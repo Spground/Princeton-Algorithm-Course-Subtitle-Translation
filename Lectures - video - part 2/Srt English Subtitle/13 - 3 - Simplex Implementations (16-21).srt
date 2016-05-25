@@ -1,0 +1,779 @@
+1
+00:00:03,500 --> 00:00:10,385
+Let's take a look at what's needed to
+implement the simplex algorithm in Java.
+
+2
+00:00:10,640 --> 00:00:18,375
+so there's a basic idea that's very
+straightforward and that's the first thing
+
+3
+00:00:18,375 --> 00:00:25,515
+we have to do is just put everything in an
+array. and, that's going to be a simple
+
+4
+00:00:25,515 --> 00:00:36,846
+thing to do. So, we have in this case our
+input is our recipe for a recipe for beer.
+
+5
+00:00:37,160 --> 00:00:44,434
+and our profit which is our objective
+function. and then, all the slack
+
+6
+00:00:44,434 --> 00:00:52,114
+variables. so we put our matrix A, our M
+equations, and unknowns in this part of
+
+7
+00:00:52,114 --> 00:00:58,999
+the array. And then, we put our slack
+variables next to them and then the
+
+8
+00:00:58,999 --> 00:01:07,040
+right-hand sides of the equations which is
+B. and then the initial values of the
+
+9
+00:01:07,233 --> 00:01:12,462
+objective function, and we'll have to put
+in the constraints that everything's
+
+10
+00:01:12,462 --> 00:01:19,491
+positive. and so that's where we start,
+it's a tableau, it's really a the matrices
+
+11
+00:01:19,491 --> 00:01:25,016
+and vectors that we have of input to the
+problem, all put into a single array. And,
+
+12
+00:01:25,220 --> 00:01:32,098
+and that's again just to reduce the amount
+of code you have to worry about. so the
+
+13
+00:01:32,098 --> 00:01:40,138
+idea is that when we run the algorithm,
+what all we're doing is transforming a few
+
+14
+00:01:40,138 --> 00:01:47,383
+entries in this array. and when we're
+done, this is the representation of the
+
+15
+00:01:47,383 --> 00:01:54,628
+equations that we ended up with, with
+before. and what they tell us is the
+
+16
+00:01:56,760 --> 00:02:04,081
+immediately, they tell us the value of the
+objective function. And not only that,
+
+17
+00:02:04,081 --> 00:02:11,866
+they tell us what, how many barrels of
+beer and ale to make cuz we're sitting at
+
+18
+00:02:11,866 --> 00:02:17,149
+point where we have our A and B A and B in
+the basis. And the, and the therefore, the
+
+19
+00:02:17,149 --> 00:02:24,748
+slack variables are zero so it tell us
+immediately that we better make 28 barrels
+
+20
+00:02:24,748 --> 00:02:32,181
+of beer and twelve barrels of ale. so
+that's the idea. we just work with the
+
+21
+00:02:32,181 --> 00:02:38,859
+elements in this tableau. And then, all
+we're going to do is write the code to
+
+22
+00:02:38,859 --> 00:02:46,052
+build the tableau and then to do the
+pivots. and this is very straightforward
+
+23
+00:02:46,309 --> 00:02:52,559
+Java code so it's going to be
+2-dimensional array, clearly. we have our
+
+24
+00:02:52,559 --> 00:02:59,923
+number of constraints and our number of
+variables. so and so we'll write a
+
+25
+00:03:00,180 --> 00:03:08,389
+constructor that takes the, the
+constraints. and the, then the array of
+
+26
+00:03:08,389 --> 00:03:15,422
+five for the constraints and the
+coefficients for the object ive function
+
+27
+00:03:15,422 --> 00:03:23,195
+as argument. so it picks out m and n, and
+so how big an array do we need? m + one
+
+28
+00:03:23,195 --> 00:03:28,284
+n + n + one.
+So we just make that array and just fill
+
+29
+00:03:28,284 --> 00:03:37,420
+it in from our argument. Fill in first the
+coefficients and then put the initial
+
+30
+00:03:37,420 --> 00:03:44,318
+values of the slack variables along the
+diagonal here. Java rays are initialized
+
+31
+00:03:44,318 --> 00:03:49,597
+to zero so we're going to have to
+initialize all of the others. and then,
+
+32
+00:03:49,597 --> 00:03:55,029
+you put the objective function in the
+right-hand side of the constraint
+
+33
+00:03:55,029 --> 00:04:01,226
+equations into the tableau simple as that.
+So, every one of those lines of that code
+
+34
+00:04:01,226 --> 00:04:06,964
+is completely transparent so that's
+building the initial, initial values of
+
+35
+00:04:06,964 --> 00:04:17,204
+the tableau. so now we have to find the
+column that is going to, we're going to
+
+36
+00:04:17,204 --> 00:04:23,731
+pivot on. So, we're going to need to pivot
+on some entry in the array. It's going
+
+37
+00:04:23,731 --> 00:04:30,424
+have to be in row p and column q in the
+rule we've given, which is called Bland's
+
+38
+00:04:30,424 --> 00:04:37,117
+Rule. Remember, Bland is the one who wrote
+the classic Scientific American article
+
+39
+00:04:37,117 --> 00:04:43,562
+about beer. So, we use Bland's Rule to
+just go through and look at the last row,
+
+40
+00:04:43,562 --> 00:04:49,520
+which is the objective function and look
+for a positive. So that's all it does, it
+
+41
+00:04:49,520 --> 00:04:53,990
+just goes through and looks for positive.
+if it finds positive it returns that
+
+42
+00:04:53,990 --> 00:04:57,928
+column, and that's what we're going to
+use. so it's the first one that's
+
+43
+00:04:57,928 --> 00:05:02,345
+positive. If you line them up positive, it
+always returns the first one. and if it
+
+44
+00:05:02,345 --> 00:05:08,062
+can't find one, then it's optimal we can
+stop. So that's the entering column. we
+
+45
+00:05:08,062 --> 00:05:15,617
+also have to find the entering row. and to
+find the entering row, we use the minimum
+
+46
+00:05:15,617 --> 00:05:23,700
+ratio rule. so we just go through for all
+of possible rows we just do this
+
+47
+00:05:23,700 --> 00:05:31,522
+calculation involving the ratio between
+the current element and the element that
+
+48
+00:05:31,522 --> 00:05:37,391
+we would pivot on. we only worry about the
+positive ones and so, it's just a little
+
+49
+00:05:37,391 --> 00:05:42,164
+check. And again, if there's a tie, you
+choose the first one and a simple
+
+50
+00:05:42,164 --> 00:05:47,904
+calculation going through all the entries
+to figure out which row gives you the
+
+51
+00:05:47,904 --> 00:05:53,000
+means ratio and then return p. so now, we
+have p and q where we want to pivot.
+
+52
+00:05:54,280 --> 00:06:02,413
+that's in, and so we have the values p and
+q and we just go throu gh and do the
+
+53
+00:06:02,413 --> 00:06:07,168
+pivot. and then, this is the same
+calculation that you do for Gaussian
+
+54
+00:06:07,168 --> 00:06:13,698
+elimination. scale everything, zero out in
+q, and then and then scale the row And
+
+55
+00:06:13,698 --> 00:06:19,086
+then, I'm not going to do the details of
+that calculation. that's what you get when
+
+56
+00:06:19,086 --> 00:06:24,285
+you solve for one variable, substituting
+into the other equations. It's the same
+
+57
+00:06:24,475 --> 00:06:31,324
+calculation as for when you're solving for
+simultaneous equations. and that's it. the
+
+58
+00:06:31,324 --> 00:06:40,603
+simplex algorithm is just until you get a
+-one return from Bland, you just compute
+
+59
+00:06:40,603 --> 00:06:47,624
+q, you compute p and pivot. And, and keep
+going and going until you're done. And
+
+60
+00:06:47,624 --> 00:06:54,664
+then, to look at your maximized value,
+just look in the corner. not too much code
+
+61
+00:06:54,664 --> 00:07:01,204
+to implement the bare bones implementation
+of simplex. It's a fairly straightforward
+
+62
+00:07:01,204 --> 00:07:07,453
+algorithm. Now, what's remarkable about it
+is, remember, in multiple dimensions the
+
+63
+00:07:07,671 --> 00:07:13,256
+number of points in the simplex could be
+high, could be exponential. But what's
+
+64
+00:07:13,256 --> 00:07:18,530
+remarkable about this simplex algorithm,
+and still today, even somewhat mysterious,
+
+65
+00:07:18,530 --> 00:07:23,739
+but certainly very mysterious for the
+first several decades that it was used, is
+
+66
+00:07:23,739 --> 00:07:29,079
+that it seems to find the answer after
+just a linear number of pivots. this, all
+
+67
+00:07:29,079 --> 00:07:34,238
+those points out there on the simplex. but
+when Delta Airlines is scheduling it's
+
+68
+00:07:34,421 --> 00:07:38,762
+airline pilots or another company is
+looking for a way to drill or whatever,
+
+69
+00:07:38,762 --> 00:07:43,652
+Walmart's trying to move its trucks
+around. these huge problems with millions
+
+70
+00:07:43,652 --> 00:07:48,784
+of variables it's linear time. It could be
+exponential time, but it's linear time.
+
+71
+00:07:48,784 --> 00:07:54,140
+That's why it's been so effective. now,
+you could use other pivoting rules and
+
+72
+00:07:54,140 --> 00:07:59,497
+there are certainly been a huge amount of
+research on trying to figure out exactly
+
+73
+00:07:59,684 --> 00:08:04,666
+what to do. nobody knows a pivot rule
+that'll guarantee that the algorithm is
+
+74
+00:08:04,666 --> 00:08:10,023
+fast, it runs in polynomial time. most of
+them are known to be exponential in the
+
+75
+00:08:10,023 --> 00:08:15,380
+worst case, but the real, again, the
+real-world problems maybe aren't worst
+
+76
+00:08:14,694 --> 00:08:21,615
+case. and certainly people have looked at
+all different ways to look at it to try to
+
+77
+00:08:21,615 --> 00:08:27,355
+understand why this simplex algorithm
+usually takes polynomial time. this is a,
+
+78
+00:08:27,355 --> 00:08:35,093
+a recen t paper on the topic. now there
+are things that can happen during the
+
+79
+00:08:35,093 --> 00:08:43,627
+execution of the algorithm that we've
+glossed over. one, one thing is that you
+
+80
+00:08:43,627 --> 00:08:48,906
+could get stuck in that you could have a
+new basis. You could make this
+
+81
+00:08:48,906 --> 00:08:54,492
+substitution but still wind up at the same
+extreme point. Like if a line, a bunch of
+
+82
+00:08:54,492 --> 00:09:00,468
+lines intersect at the same extreme point.
+so that's called stalling. and that would
+
+83
+00:09:00,468 --> 00:09:06,119
+be that, that's not a good situation that
+you have to watch out for. and the other
+
+84
+00:09:06,119 --> 00:09:11,250
+thing is when you have this kind of
+degeneracy, you could, you could get in a
+
+85
+00:09:11,250 --> 00:09:16,901
+cycle where you go through different basis
+always corresponding the same extreme
+
+86
+00:09:16,901 --> 00:09:23,928
+point. It doesn't seem to occur in
+practice in the way that we implement it
+
+87
+00:09:23,928 --> 00:09:27,726
+and the way that anyone would implement
+it. Just choosing the first one, that's
+
+88
+00:09:27,726 --> 00:09:32,023
+Bland's rule is going to guarantee that at
+least you, you don't get caught in an
+
+89
+00:09:32,023 --> 00:09:36,120
+infinite loop which would be bad. That
+doesn't seem to happen anyway. But it's a
+
+90
+00:09:36,120 --> 00:09:41,357
+problem to think about. there's a number
+of other things that have to be thought
+
+91
+00:09:41,357 --> 00:09:48,032
+about in order to actually try to use this
+to schedule airlines or whatever. so you,
+
+92
+00:09:47,760 --> 00:09:53,891
+you, you, you certainly have to be careful
+to avoid stalling. one thing is that there
+
+93
+00:09:53,891 --> 00:09:59,541
+tend to be, most of the equations tend to
+involved relatively few variables. and
+
+94
+00:09:59,772 --> 00:10:05,260
+people who have experience with
+calculating these systems of equations
+
+95
+00:10:05,260 --> 00:10:11,907
+know that in some situations you can find
+yourself filled up with lots of non-zero
+
+96
+00:10:11,907 --> 00:10:19,072
+values. so you want to take a, a rule that
+meant implements of things with sparse
+
+97
+00:10:19,256 --> 00:10:24,035
+matrix with, so your amount of space you
+take is proportional to the number of
+
+98
+00:10:24,035 --> 00:10:29,426
+non-zero entries. so, and we, we looked a
+couple of times at some data structures of
+
+99
+00:10:29,426 --> 00:10:33,959
+that sort, and that's certainly a
+consideration in simplex implementations.
+
+100
+00:10:34,143 --> 00:10:38,921
+the other thing that we haven't talked
+about much in this course, but whenever
+
+101
+00:10:38,921 --> 00:10:43,638
+you're working with floating point
+approximations of real numbers, and you're
+
+102
+00:10:43,638 --> 00:10:48,845
+making a lot of calculations you have to
+make sure that you have control over the
+
+103
+00:10:48,845 --> 00:10:54,201
+errors in the calculations. and scientific
+compu tation is certainly concerned with
+
+104
+00:10:54,201 --> 00:10:58,874
+keeping control of that situation and
+something that we haven't talked about
+
+105
+00:10:58,874 --> 00:11:07,435
+much in this course. and the other thing
+is that actually it could be the case that
+
+106
+00:11:07,666 --> 00:11:13,984
+your constraints are unfeasible, there's
+no way to satisfy them. and it's a bad
+
+107
+00:11:13,984 --> 00:11:20,378
+idea to run simplex for unfeasible
+situation cuz it won't ever get to the
+
+108
+00:11:20,378 --> 00:11:26,927
+optimum. So typically, what we have to do
+in practice is run a different simplex
+
+109
+00:11:26,927 --> 00:11:32,538
+algorithm on con transformed version of
+the problem. And there's theory, really
+
+110
+00:11:32,538 --> 00:11:37,883
+interesting theory behind that all. and
+it's, you use the same code to figure out
+
+111
+00:11:37,883 --> 00:11:43,163
+in-feasibility, but something has to be
+done. and the other possibility is there
+
+112
+00:11:43,163 --> 00:11:48,830
+aren't enough constraints. so that you
+missed with one of those half-planes. You
+
+113
+00:11:48,830 --> 00:11:54,110
+missed somewhere, and then it gets
+infinite. and that's also a situation that
+
+114
+00:11:54,303 --> 00:11:59,777
+you want to avoid. And with the code that
+we gave, that would be the case where you
+
+115
+00:11:59,777 --> 00:12:04,895
+use Bland's Rule to find a column, and.
+You're looking for a row and there's no
+
+116
+00:12:04,895 --> 00:12:09,984
+row, so you have to check for that as
+well. and each one of these things is
+
+117
+00:12:09,984 --> 00:12:14,946
+complicate, complicated enough that in
+this case we'd probably say the best
+
+118
+00:12:14,946 --> 00:12:21,052
+practices. don't, don't go in and try to
+implement a simplex unless you're prepared
+
+119
+00:12:21,052 --> 00:12:26,841
+to devote a really substantial amount of
+time to it. and there's really, no need to
+
+120
+00:12:26,841 --> 00:12:31,866
+do that nowadays because basic
+implementations of simplex are readily
+
+121
+00:12:31,866 --> 00:12:37,704
+available in many different programming
+environments. and routinely, nowadays,
+
+122
+00:12:37,945 --> 00:12:44,920
+people solve LPs with millions of
+variables airline and they're so easy to
+
+123
+00:12:44,920 --> 00:12:51,254
+reduce practical problems to an AP, and
+LP. Just throw in another constraint. Any
+
+124
+00:12:51,254 --> 00:12:57,453
+constraints that you might have a certain
+pilot doesn't want to be scheduled early
+
+125
+00:12:57,453 --> 00:13:02,464
+in the day, or late in the day, or union
+rules, or whatever. You just put all these
+
+126
+00:13:02,464 --> 00:13:07,977
+things in as constraints without worrying
+that much about it. And then, add more
+
+127
+00:13:07,977 --> 00:13:13,176
+variables, whatever you need to do. and
+then send it to an industrial strength
+
+128
+00:13:13,176 --> 00:13:19,400
+solver and people nowadays solve LPs with
+huge numbers of variables. And not only
+
+129
+00:13:19,400 --> 00:13:24,740
+are there solv ers.
+Nowadays, there's modeling languages that
+
+130
+00:13:24,975 --> 00:13:32,121
+make it even easier to write down the LP.
+and so, there's plenty of resources
+
+131
+00:13:32,121 --> 00:13:38,717
+available to make use of the simplex
+algorithm nowadays. and it's important.
+
+132
+00:13:38,717 --> 00:13:44,606
+This is a really, you know, important
+quote from just a few, few years ago
+
+133
+00:13:44,606 --> 00:13:52,065
+that's worth reviewing. so, they have this
+is so widely used. They have benchmarks on
+
+134
+00:13:52,065 --> 00:13:57,936
+how well linear programming
+implementations do. So, even in 1988, it's
+
+135
+00:13:57,936 --> 00:14:03,882
+not all that far back, they have a
+benchmark that would have taken 82 years
+
+136
+00:14:04,090 --> 00:14:10,175
+to solve and even that's just a guess. and
+using the best linear programming
+
+137
+00:14:10,175 --> 00:14:16,270
+algorithms of the day would take 82 years.
+Just fifteen years later, you could solve
+
+138
+00:14:16,270 --> 00:14:22,416
+the same problem in one minute, that's a
+factor of 43 million. of this, factor of
+
+139
+00:14:22,416 --> 00:14:28,797
+1000 was due to increased processor speed,
+so fifteen years we have computers that
+
+140
+00:14:28,797 --> 00:14:35,410
+are 1000 times faster but 43,000 is due to
+algorithm improvements. And there has been
+
+141
+00:14:35,410 --> 00:14:41,479
+more even since then. So, the importance
+of knowing good algorithms and working
+
+142
+00:14:41,479 --> 00:14:48,270
+with good algorithms is unquestioned, in
+this case. and, of course, this algorithm
+
+143
+00:14:48,270 --> 00:14:55,740
+is still being heavily, heavily studied.
+so, it's starting with Dantzig's simplex
+
+144
+00:14:55,740 --> 00:15:03,299
+algorithm and other basic knowledge about
+the algorithm and about linear programming
+
+145
+00:15:03,299 --> 00:15:08,589
+that was applied in practice in nineteen
+48.
+
+146
+00:15:08,598 --> 00:15:14,988
+The, the basic idea of linear programming
+actually precedes Danlig, Dantzig, and
+
+147
+00:15:14,988 --> 00:15:21,301
+actually wound up with a Nobel Prize. but
+what's interesting is rhere was, that
+
+148
+00:15:21,301 --> 00:15:28,102
+algorithm was so good, there was actually
+not much development on it for about three
+
+149
+00:15:28,102 --> 00:15:34,565
+decades. But then, an amazing surprising
+result Khachiyan proved that you could
+
+150
+00:15:34,565 --> 00:15:40,952
+solve linear programming problems in
+polynomial time. that was quite a quite a
+
+151
+00:15:40,952 --> 00:15:47,182
+shock at the time and we'll talk more
+about that in the last lecture of the
+
+152
+00:15:47,182 --> 00:15:53,687
+course. And then since then, knowing that
+there are algorithms that potentially
+
+153
+00:15:53,687 --> 00:15:59,549
+could beat simplex, people have actually
+developed algorithms that do beat simplex.
+
+154
+00:15:59,549 --> 00:16:05,617
+And so, there's still a great deal of
+research going on, on the simplex on
+
+155
+00:16:05,617 --> 00:16:11,409
+implementations of linear programmi ng
+solvers. So that's quick outline of what
+
+156
+00:16:11,409 --> 00:16:14,720
+it means to implement and solve linear
+programs.

@@ -1,0 +1,227 @@
+The first string sorting algorithm that
+we're going to look at is actually the
+basis for several more complicated
+algorithms is called key-indexed counting
+and it's very useful on a particular
+special situation. but let's take a quick
+review of where we left off with sorting.
+so we considered a number of sorting
+algorithms starting with insertion sort,
+and then merge sort, quick sort and
+heapsort. And we got to the point where we
+could find an algorithm that's heapsort
+that guarantees to sort NL items and time
+proportional to N log N without using
+extra space, unfortunately not stable. And
+all these algorithms were useful, or are
+useful for any type of generic key as long
+as it implements the comparative
+operation. and not only that, we prove
+that, any algorithm that just uses
+compares has to use number of compares
+proportional to N log base 2N. So, in a
+very important sense, merge sort, or
+heapsort for example, or optimal. you
+can't use syntatically fewer compares,
+for, either one and, and, with heapsort,
+you can't use less, extra space. So why do
+we consider, other sorting algorithms?
+there was a lower bound, what, what, why
+are we thinking about this? And the
+question is, can we do better and
+obviously we're here because, the answer
+is that we can do better and if we don't
+depend on compares. The lower bound, the
+one assumption made by the lower bound is
+that we use compares, but we don't always
+need to use compares. And so let's look at
+an example. Key-indexed counting is a fine
+example of that. and it's representative
+of fairly common situation where, in
+sorting application, where it happens to
+be that the keys that we're using to sort
+are small integers. So, in this, this
+case, this is supposed to mimic an
+application where there's students and
+they're assigned to sections. There's not
+too many sections and we want to get the
+thing sorted. so we want to distribute the
+students by section and so we want to sort
+according to the section number and that's
+a small integer. And the implication of
+knowing that the key is a small integer
+is, that we can use the key as an array
+index and, and by knowing that the key is
+an array index, we can arrange for fast
+sort. so lots of applications for that
+when we have maybe a phone numbers, we can
+sort by area code or if you have a string
+you just want to sort by the first letter,
+you can do it that way. And actually, that
+idea leads to efficient sorting algorithm
+actually two different ways. now don't
+forget that we're sorting according to a
+sort key, but usually we're sorting bigger
+generic items that have other information
+associated with if you were just sorting
+the small integers, you could just count
+how many 1's there are, how many 2's there
+are and like that, and then in one path
+and if there's three 1's, just output
+three 1's and so forth. but the
+complication is that we have to carry the
+associated information along so we have to
+work a bit harder than that. so, here's
+the code for this method called
+key-indexed counting, and, let's look at a
+demo. So here's the key-indexed counting
+demo. Now, to make this a little less
+confusing in not so many numbers, we're
+going to use lower case a for zero, b for
+one, c for two and like that. So it's the
+a - first letter of the alphabet, and
+however you want to think of it. so, and
+we're already going to look at six.
+So we're supposing that we're sorting this
+array that has six different small
+integers and we're using lower case
+letters to represent the integers so that
+we can easily distinguish between the keys
+and this. So now, let's look at, the
+processing for this. So the first thing
+that we do is we go through and we count
+the frequency of occurrence of each letter
+and, so the way that we do that is we keep
+an array. now their arrays actually got to
+be one bigger than number of different
+key, keys that we have and the number of
+different small integers that we have. So
+in this case array of size seven.
+And just this, make the code a little
+cleaner, we keep the number of a's in
+count of one, the number of b's in count
+of two and so forth. and s o if we're,
+once we've set up, that's what we want to
+do, then its trivial to go ahead and count
+the frequencies. we'd simply go through,
+for i from zero to N, we'd go through our
+input. and when we, a of i, when we access
+a value in our input, it's a small
+integer. So it's zero, one, two, three,
+four, or five and we simply add one to
+that integer, and use it to index into
+that array. So when we see an a, that's
+zero, then we're, incrementing count of
+one, and we see a b, that's one, we're
+incrementing count of two and so forth. so
+in this case, we increment count
+corresponding to b and then a and c and
+like that. And everytime we encounter a
+new key, we simply increment one of these
+counters. In one pass through we get an
+array that gives us the number of a's,
+b's, c's, d's, e's and f's. That's the
+first path of key-indexed counting, count
+the frequencies of each letter, using the
+key as an index. now the next step is, is
+called computing cumulus, and that's a
+really easy thing as well. all we do is we
+go through the count array and simply at
+each step we add the current one to the
+sum computed so far. So if we look before,
+we had two a's and three b's, so that
+means there's five letters less than c.
+that's the a's and the b's, and they're
+six letters less than d and eight letters
+less than e and so forth. And that's just
+obtained by, we start with two, add three
+to it, get five, add one to it to get
+five.
+And with that one passed through the count
+array, then we can find out for example,
+there are six keys less than d and eight
+keys less than e. And those cumulus tell
+us where the d's go in the output. There's
+six keys less than d, and eight keys less
+than e, so the d's have to go in a6 and
+a7. So this is an array of indices that is
+going to tell us how to distribute the
+keys in the output. So that's the next
+step, is access the cumulus using the key
+as the index to move items. So let's take
+a look at. So now, remember when we see an
+a, we're just going to count that as zero,
+so we're going to go to count zero and
+that will access this entry in the count
+ar ray.
+So, we go through the whole array to be
+sorted and we move each key exactly to
+where it has to go and we'll do that one
+at, at time now. So when I is zero we're
+looking at the d, the count array
+corresponding to d has six, so it says,
+just put d in there and increment that. It
+means if you get another d, it's going to
+go into seven.
+And these things, the way we pre-computed
+them, are not going to run into one
+another. So now, a, we go, that goes in
+zero, and we increment the count array
+corresponding to a. next thing is c, and
+so that's going to says to put it in five
+and then increment, the count array
+corresponding to c, and f, it says put it
+in nine.
+Next is b, we put it in two.
+Sorry another f, we put in ten.
+Next is b that we put in wo. So you can
+see the keys from the input are getting
+distributed in the output according to the
+counts and the cumulus that we've
+pre-computed. so now we get the other d
+which goes into seven, we get the, another
+b which goes into three, and then
+increment the four for where the next one
+goes, f goes into eleven.
+The last b goes into four, the e goes into
+a, and the second a goes into one.
+So that's move items again, simply by
+using the key as index into the count
+array. and then the last step is to just
+copy the sorted array back into the
+original input. that's a demo of
+key-indexed counting. Quick summary of
+key-indexed counting, we make one pass
+through the array to count frequencies of
+each letter using the key as an index,
+then we go through that count array to,
+compute cumulus just by adding each new
+one into the running sum. then we use
+those cumulates, and access that using key
+as index to actually move items over and
+get them in sorted order, and then move
+back into the original array. what's the
+running time of this algorithm? Well, the
+analysis is actually quite simple, because
+it's just a couple of loops through the
+array that we sorted, and through the
+count array. and the key, key fact to
+note, that it takes time proportional to N
+plus R and space proportional to N + R.
+Now R, remember is our array that excess
+the number of different character values.
+so, so for asking, maybe that's the 205th.
+and, and for generic data maybe it's four.
+And N, we're assuming we're sorting huge
+files. So really, this is linear time in
+many, many practical situations. there's
+also the question of, is it stable? Yeah,
+it's actually stable. because when we do
+the move, we move things with equal keys
+in the order that we see them, we keep
+them in the order that we see them. That's
+just the way the method works. So we have
+for this special situation, we have a
+linear time stable sorting method which
+beats the N log N and it's useful in many
+practical situations.

@@ -1,0 +1,439 @@
+Today we're going to talk about data
+compression. Now this is a family of
+algorithms that, everyone uses. and it's
+based on, many of the classical ideas,
+that we've covered in terms of,
+implementing basic algorithms. we'll start
+with a introduction, just what data
+compression is. So the idea is to reduce
+the size of a file. really for two primary
+reasons. One is to save some space when
+storing it. and the other is to save some
+time with transmitting it. And often
+having significant savings is not too
+difficult because most files have, plenty
+of redundancy. but of course we're
+interested in efficient algorithms that
+can guess, get the best savings possible.
+so, you might think that with the way that
+technology, has been improving over recent
+years. That we wouldn't really need
+compression, we can just buy a bigger,
+faster disk. but the problem with that
+idea is, that even though. Moore's law
+tells us that we're going to get, twice as
+much space every one and a half to two
+years. It's also the case that we,
+whatever space we have, we're going to
+want to fill it up, with, better, higher
+quality, data. so you want a higher
+resolution movie if you get more space.
+And if we can remove redundancy, you're
+always going to want to do that. So it's a
+cheap way to, save space, that allows us
+to do more with the space that we have
+available. this is a report last year on
+big data. Every day we could create 2.5
+quintillion bites of data, so much that 90
+percent of the data in the world today has
+been created in the last two years alone.
+if we can use data compression to cut that
+amount of data in half then that's all the
+data in the world created in a year. So
+this is a very interesting topic to
+consider from an algorithmic point of
+view. Because the basic concepts some of
+them date back to the 1950's. when it was
+extremely important to save time when
+transmitting information cuz of, or space.
+because it was so costly. but some of the
+best technology, algorithmic technology,
+has devel-, been developed recently, and
+much of it uses, the data structures that
+we've considered for other applications.
+And we'll see that as we get into the
+topic. so, just specific applications
+that, maybe are familiar for file
+compression. All file systems and, and
+disks have built-in, compression
+technologies. Such as, as zip, and b-zip
+and many others of similar type.
+Technologies. And the multimedia,
+everybody's familiar with, the JPEG and
+MP3 and MPEG, and all those sorts of
+things for images, sound and video. Those
+are all about data compression. and for
+communication, now, that's, what has, what
+enabled, fax, and also enables new
+technologies, like Skype, the ability to,
+reduce the, amount of data that you
+actually need to send. for any kind of
+technology, is gonna, help, improve
+things, and improve the quality of what
+you can do. . Also, the types of massive
+amounts of data that, people are saving,
+nowadays. Google and Facebook and other, ,
+other web giants are saving lots of data.
+And they're going to be able to save more,
+because of data compression. now from a
+theoretical point of view the type of
+compression that we're going to consider,
+lossless compression is very simple
+conceptually. So we think of a, we talk
+about a bitstream rema, everything can be
+encoded in bits, so we might as well just
+consider a, a stream of bits that we want
+to compress and we'll call that B. In a
+data compression algorithm it's going to
+be a black box that goes ahead and takes
+those bits and produces a compressed
+version, which is many fewer bits. and I
+will call that C of B. But we hope that
+it's many fewer bits. and so that's what
+we save or we send, but then we need a
+companion algorithm, an expansion
+algorithm, that takes C of B and produces
+B back. That's lossless compression. We
+want to get back precisely the same bits
+that we put in. And that's very important,
+in many applications. It's not so
+important in some applications, like
+images and video where you're happy with
+an approximation and the original a bit
+strained but we're not going to consider
+that kind of algorithm. We're just going
+to consider a lossless compression, where
+maybe it's a program or that you can't
+afford to lose a single bit. Now it turns
+out that where we talk about in terms of
+evaluating our algorithms, it's what's the
+compression ratio. Now, we also care about
+efficiency. We don't want to spend a lot
+of time creating CFB, but the compression
+ratio is the measure that we use to
+compare algorithms; and we're interested
+in knowing the percentage of bits, a
+percentage of the size would be that we're
+able to save. And surprisingly even for
+natural languages texts we can get, 50 to
+75% or even better compression ratios. Now
+just in the larger context, data
+compression has been with us since
+antiquity. it's always better to try to
+express what you're doing concisely.
+Mathematical notation is an example of
+that, or number systems, or even natural
+languages. Communications Technology has
+evolved; it definitely has to do with data
+compression from braille to morse code to
+the telephone system. Those are all ways
+of trying to, they depend on, trying to
+achieve good data compression. In a modern
+life, everybody's trying to get pictures
+or movies on their devices, and it's
+definitely enabled by good data
+compression. So, something to think about,
+what role data compression is going to
+play in the future. But, it's really hard
+to see it going away. Number one, it is
+effective. Number two, it is not that
+difficult to implement, and it's in
+software. So, you don't have to buy a
+bigger disk to have a good compression
+algorithm in many situations. here's a
+simple example that sprung up just in
+recent years. so we've talked about in
+other applications that genome is a string
+over a four letter alphabet. and the
+string might be huge. It might be billions
+of letters. And so, and there might, and
+there might be lots of them, for different
+individuals and different species. so the
+huge genome data base is out there with
+these very long strings of the alphabet A,
+C, T and G. Now, the standard way to store
+them in standard programming language,
+standard computers, is to use ascii, and
+there's eight bits per character, and so
+if you have an n bit genome, genomic
+string, it'll be eight n bits. If it's a
+billion, characters, it's eight billion
+bits. but just look at the problem. really
+there's only four characters. You can get
+by with just two bits per character. So,
+that's one quarter the storage. if you
+spent X dollars on this space to store
+your stuff, you could spend X over $four.
+And that might be a significant number.
+And, the fact in general, if you know you
+have a small alphabet you can get a
+savings in this way. This seems very
+obvious and straight forward, but it's
+amazingly true that in the 1990's when
+generally, data basis started to emerge
+there were four times too big. They used
+ASCII then, didn't think to use this
+trivial coding that could have cut costs
+by one fourth. so again, if it's so easy
+to do, why not do it? If you can cut your
+cost by a factor of four. And where else,
+would you give up, reducing cost by a
+factor of four so easily. So that's why
+we're interested in data compression. Now
+we're going to need some tools that are
+slightly different from the tools that
+we've been using in order to write
+effective data compression algorithms. And
+so we've got , extensions to our standard
+in and standard out libraries that work
+with bits. so, these are what we want to,
+what the methods that we're going to use
+to write bits to standard output and
+standard input. So, these bit streams are
+different than a standard in, standard
+out. They're binary standard in, binary
+standard out. And so, what we can do is
+read Boolean, which is just read one bit,
+or to save some processing, we can read
+eight bits of data and put it in a care.
+Or in general, R bits, where R is less
+than eight, and put it into a care value.
+And we can also, if we want, put it into
+nth values long and boule in a similar
+methods. And we don't have to read all the
+bits if we've got some. , a scheme where
+we only wanna use a certain number of
+them. but the idea is that, we can read a
+variable number of bits, and get'em ready
+for processing easily, by putting them in
+one of Java's, primitive types. And
+conversely, we have binary standard out,
+where we can write a bit. or we can write,
+eight bits, or we can write any number of
+bits from a care value or from an int
+value, or any others. So this allows us to
+take in bit streams and to write out bit
+streams and takes care of all the encoding
+between Java primitive types and bit
+streams. And it's not too difficult to use
+and it's very intuitive. And you'll see
+when we come to code. just to, give an
+example of how just having this, can save
+space. this is just a simple example of
+representing a date. So if you, represent
+the date, 12/31/1999, as an ASCII
+character string, in Java. then, when you
+write out the string, you've got one, two,
+three, four, five, six, seven, eight,
+nine, ten characters. in each one of the
+characters is eight bits so that's a total
+of 80 bits. so the standard ASCII encoding
+is to just look up the ASCII of the one
+and that's 00110001 and then the two and
+so forth. So in the slash 31 and so forth.
+So for each character we've got eight bits
+and we put them up and that's 80 bits. If
+it was Unicode there would be even more
+bits. So that's one way that you might
+consider representing a date with bits.
+Now if we represent it as three nth
+values, that's not so effective a way to
+do it. The month is a nth, the day is an
+nth and the year's an nth and each one of
+those is going to be 32 bits. and that's
+the total of 96 bits though that's, that's
+actually even worse. by the month in all
+these things are within small ranges. So,
+with binary standard out we can say, well,
+we're learning right out the right most
+four bits of the month end cuz that give
+us a number between zero and sixteen and
+months between one and twelve. And the
+five bits of the day. And you input that
+again, and that's, between zero and 31.
+And that's going to cover any possible
+day. and then twelve bits for the year.
+And if we do that .
+Then we have a total of 21 bits. and
+there's a little bit of extra at the end,
+because our byte streams, our bits really
+are implemented, reasonably in most
+situations as byte streams. so they're
+going to get carved into chunks of size,
+eight by, hardware or, their drivers. And
+so, we always round up to the nearest
+multiple of eight to get the proper
+alignment on bytes. but that's still
+pretty, significant savings from 80 to 24,
+just by having, the ability to, write out
+portions of, INT values. And if we had a
+billion dates, then that would be a huge
+cost savings that would translate to
+dollars, as well. the other thing, that we
+do to give some visual impression of our
+effectiveness of our compression
+algorithms particularly in the text, is to
+look at different ways to examine the
+contents of a bit-stream. so we have on
+the book site A binary dump program that,
+prints out, the bits, sixteen bits at a
+time, rows of sixteen bits at a time. And
+then the total number of bits. so, this
+file aver.text is, a standard character
+stream. so everything's encoded with,
+eight bits. and so there's twelve
+characters and it's 96 bits. And you can
+see what all the bits are. Or, sometimes
+it's convenient to use a hex dumpler. We
+just read the hex digits considering the
+bits, four bits at a time. And so those 96
+bits are twelve bytes, or 24 hex digits.
+And we print it out so that we can see
+them. Another thing that's useful
+sometimes for big files is to look at the
+bits as a pitcher where we just do a. Give
+the width and the height of a pixel window
+and just map the bits to white squares and
+black squares. So this is the same
+aver.text. It's just that you can see that
+they all start with zero one much more
+easily. This visual representation
+sometimes gives an interesting perspective
+into what a compressed or what a bunch of
+bits looks like. So, this is just the hex
+to ASCII conversion table that, that if
+you are not familiar with it it's a quick
+way to find the hexadecimal corresponding
+to an ASCII character. So, you look up sa
+y R in the table and that's in row five
+and column two. So it's 52. So this is a
+52 for the R in Abracadabra. And so those
+are the basic tools, that we are going to
+use when we talk about compression
+algorithms. Now there's one thing that's,
+really important to think about. and
+that's the idea that, you cannot have a
+compression algorithm that can compress
+every file. despite the fact that,
+somebody has, patented that. And, and
+there's a claim that, methods for data
+compression is capable of compressing all
+files. and, also, this, this is another,
+thing that came out of Slash Dot a few
+years ago, where a company had announced a
+breakthrough in data compression that does
+a 100 to one losses compression of random
+data. And unfortunately, they do say, if
+this is true, our then withdrawals got a
+lot smaller. Cause, there's no way that is
+true, and lets look at why that's the
+case. Proposition is no algorithm can
+compress every bit string. Here's one easy
+way to prove it, not by contradiction. So,
+let's suppose that we have an algorithm
+MUI that can go ahead and compress every
+possible bit string. So we take a bit
+string and we use our algorithm to
+compress it, to get a smaller bit string.
+But since our algorithm can compress every
+bit string. Why not use it on that one?
+Use it on that one, you get a smaller one.
+Then we keep going. Since it's a compress,
+can compress every bit string, eventually
+we get down to a bit string of size one.
+And since it can compress that one, it
+gets down to zero. So if you can have an
+algorithm that compresses every bit
+string, it means that you can compress all
+bit strings to zero bits, and that's
+absurd. So that's a proof by
+contradiction. Or another way to see the
+same thing is just by counting. So let's
+say you've got an algorithm that can
+compress all 1000 bit strings, just to
+pick a number. Now there's a lot of 1000
+bit strings. There's two^1000 of them. but
+how many of those, can be encoded with 99,
+999 bits or fewer. Well. Just one plus two
+plus four, and the powers of two up to
+two, and out to the 99, 999. Or, like less
+than 500, that's. so that's way fewer than
+the total number of, of possible bit
+strings. Well, it says it's one if you add
+up the sum that's 2,501. So, there's one
+that can't be compressed. So, that's it.
+So, if you want to say do fewer bits, you
+have much worse problem. only one out of
+every two forty ninth can be encoded with
+less than 500 bits. It's just the smaller
+number of git, bits gives you way number,
+way fewer possible bit strings and You
+have to, be able to get your original bit
+string back. So, the smaller number of
+bits gives you, a limit on the number of,
+bit strings that you can possibly
+compress. so, we can't have universal data
+compression. And if you want to convince
+yourself of that, now just try running
+your favorite compression algorithm on the
+, result of what it produces. Say for a
+photo most good compression algorithms
+will figure out that you're doing that,
+and just give you the same file back. So
+at least it won't make it get larger but
+there's plenty of, of methods out there
+that will make your file larger. there's
+another kind of basic idea. and, and that
+is that there's no way to find the best
+way to compress a file. And if you think
+about it, it can be extremely complicated.
+This is just an example that illustrates
+the point. But it's also a relevant
+example, cuz it applies to so much of the
+data that we deal with. So at the top is a
+picture dump of a million bit file. So
+that's a million bits and it's, those are
+random bits. Well they're not random,
+they're pseudorandom. what do I mean,
+pseudorandom? Well we talked about that.
+they're generated by a program. And, this
+is a Java program that uses a pseudo
+random number generator to generate bits.
+And, that's where those bits came from.
+But if you think about it, this program is
+representation of those million bits. It's
+only a couple of dozen characters, so, you
+know, if you want to find the optimal way
+to compress those bits, one of the things
+you would have to consider is this program
+T hat's a pretty compact way to represent
+a million bit. And, if you think about it
+so much of the data that's out there
+actually was created by a program so,
+compression amounts to finding the program
+that creates, created the data. And,
+that's obviously a pretty difficult
+problem in fact it's known that it's
+undecideable. So, let's not think that we
+can find the best possible compression
+algorithm. and the other point that I want
+to finish with in the introduction is, to
+realize that when we're talking about,
+compressing, say English language, it's
+amazing to see that actually there's a lot
+of, redundancy in the English language.
+and so this is, a, . A perturbed version
+of an English language paragraph that
+shows that you can change letters and even
+delete letters and still figure out what
+it says. and actually at the end, it's you
+really need the first and last two
+letters, in a lot of situations to,
+really, figure out readability. so, there,
+there is a lot of freedom, because there's
+so much redundancy. And since there's so
+much re, redundancy, we can actually do,
+really well on, on compressing English
+language texts, for example. So that's an
+introduction to data compression and we'll
+take a look at algorithms next.

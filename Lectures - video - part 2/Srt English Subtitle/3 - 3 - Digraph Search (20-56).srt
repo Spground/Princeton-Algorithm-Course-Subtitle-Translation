@@ -1,0 +1,958 @@
+1
+00:00:04,080 --> 00:00:10,870
+Okay. First, we're gonna look at the
+search algorithm for, digraphs and this is
+
+2
+00:00:10,870 --> 00:00:17,036
+the finding paths, what are all the
+vertices that we can get to from a given
+
+3
+00:00:17,036 --> 00:00:23,861
+vertex along a directed path. and again,
+this is, little more complex for a digraph
+
+4
+00:00:23,861 --> 00:00:30,115
+it would seem, than for a graph. so in
+this case, those are the, that's the set
+
+5
+00:00:30,115 --> 00:00:36,369
+of vertices that you can get to, from the
+given vertex x, s. Notice that, this set
+
+6
+00:00:36,369 --> 00:00:42,771
+is characterized by every edge crossing
+the boundary, it goes in. if there were an
+
+7
+00:00:42,771 --> 00:00:49,703
+edge that went out, that would give,
+another member of the set.. well actually,
+
+8
+00:00:49,970 --> 00:00:57,441
+looks more complicated to a human, but to
+the computer, it looks exactly, precisely
+
+9
+00:00:57,441 --> 00:01:03,721
+the same. in fact. the method that we
+looked at for undirected graphs is
+
+10
+00:01:03,721 --> 00:01:10,435
+actually a digraph processing algorithm.
+it treats, every connection between two
+
+11
+00:01:10,435 --> 00:01:17,069
+vertices as two directed edges, one in
+each direction. So, DFS, that we looked at
+
+12
+00:01:17,069 --> 00:01:23,770
+last time is actually a digraph algorithm.
+And we used precisely the same code. So to
+
+13
+00:01:23,770 --> 00:01:30,348
+visit a vertex V, we mark the vertex as
+visited, and recursively visit all
+
+14
+00:01:30,348 --> 00:01:39,180
+unmarked vertices W, that you can get to
+from V. let's look at the demo, just to, .
+
+15
+00:01:39,180 --> 00:01:44,592
+Reinforce that. So, here's a sample
+digraph with the edges over at the right.
+
+16
+00:01:44,800 --> 00:01:50,837
+let's look at that first search on that
+digraph. so, we're going to look at the
+
+17
+00:01:50,837 --> 00:01:56,318
+vertices that we can get to from vertex
+zero in this digraph. Again, we have two
+
+18
+00:01:56,318 --> 00:02:02,147
+vertex index to raise. one called marked,
+which says whether we can get there from
+
+19
+00:02:02,147 --> 00:02:07,490
+V, and the other called edge two, which
+gives us the vertex that took us there.
+
+20
+00:02:07,710 --> 00:02:13,743
+with that we can recover the paths from
+vertex zero to each vertex that can be
+
+21
+00:02:13,743 --> 00:02:20,071
+reached from vertex zero. So we start off
+by visiting vertex zero and now check the
+
+22
+00:02:20,071 --> 00:02:26,104
+edges that are adjacent to it with
+directed edges going out. so there's five
+
+23
+00:02:26,324 --> 00:02:32,652
+and then there's gonna be one. but five is
+unmarked so we have to re-cursedly visit
+
+24
+00:02:32,652 --> 00:02:40,967
+five. So we mark five, and we say we got
+there from zero. so the path from, to five
+
+25
+00:02:40,967 --> 00:02:48,149
+is zero to five. and so now we're gonna
+recursively visit all the unmarked
+
+26
+00:02:48,149 --> 00:02:53,679
+vertices pointed to from five .
+In this case it's just four. My four is
+
+27
+00:02:53,679 --> 00:03:00,169
+unmarked so we're gonna recursively visit
+four and say we got there from five. and
+
+28
+00:03:00,169 --> 00:03:06,142
+now recursively we have to check all the
+unmarked vertices pointing from four.
+
+29
+00:03:06,363 --> 00:03:12,557
+there's three. and two, first we do three
+and that's unmarked. so we gotta visit
+
+30
+00:03:12,557 --> 00:03:18,702
+three. and say that we got there from
+four. and now to visit three. We've looked
+
+31
+00:03:18,702 --> 00:03:24,199
+at all the vertices pointing from three.
+we can check five. We've already been to
+
+32
+00:03:24,199 --> 00:03:29,894
+five that's marked so we don't have to do
+anything. and then we check two. two is
+
+33
+00:03:29,894 --> 00:03:35,324
+unmarked so we continue with the depth
+first search and visit two. so now to
+
+34
+00:03:35,523 --> 00:03:41,218
+visit we mark two, and say we've got there
+from three. and now we check the vertices
+
+35
+00:03:41,218 --> 00:03:46,516
+that we can get two from two. In this case
+it's zero, which we've already been to.
+
+36
+00:03:46,516 --> 00:03:52,579
+And three, which we've already been to.
+so. now we're done with vertex two. and we
+
+37
+00:03:52,579 --> 00:03:58,477
+can return and continue the search from
+three well actually that was the last one
+
+38
+00:03:58,477 --> 00:04:03,972
+from three, so we're done with three as
+well. so now we're at four. We still have
+
+39
+00:04:03,972 --> 00:04:09,534
+checked the edge from four to two. so now
+we do that. And of course we've been to
+
+40
+00:04:09,534 --> 00:04:14,908
+two, so we don't have any further
+processing. and we're done with four. the,
+
+41
+00:04:14,908 --> 00:04:21,726
+, four was the only edge we get to from
+five. So we're going to be done with five
+
+42
+00:04:21,726 --> 00:04:28,309
+as well. and then, what about zero, well
+we have to check one. 1's not visited, so
+
+43
+00:04:28,309 --> 00:04:34,872
+we visit one, mark it. and we turn and
+then we're done with zero, and that gives,
+
+44
+00:04:35,095 --> 00:04:41,264
+the set of all vertices that are reachable
+from zero, and not only that the edge to
+
+45
+00:04:41,264 --> 00:04:46,713
+array. Gives the information that we need
+to reconstruct the path from any of those,
+
+46
+00:04:46,713 --> 00:04:51,912
+from zero to any of those vertices using
+precisely the same method that we used
+
+47
+00:04:51,912 --> 00:04:57,111
+before. We get the four from five, we get
+the five from zero, so zero, five, four is
+
+48
+00:04:57,111 --> 00:05:03,080
+the path to four. And we can do that for
+any vertex in that cell. Okay. So what
+
+49
+00:05:03,080 --> 00:05:10,580
+about the code? the code is exactly the
+same as for , undirected graphs. That's
+
+50
+00:05:10,580 --> 00:05:16,753
+the code for undirected graphs. that we
+looked at last time to get the code for
+
+51
+00:05:16,753 --> 00:05:23,164
+digraphs, we just changed the name, its
+the s ame code, otherwise. the recursive,
+
+52
+00:05:23,164 --> 00:05:29,143
+the constructor, builds the array of
+marked vertices, and also builds edge too,
+
+53
+00:05:29,143 --> 00:05:35,626
+just to, avoid clutter, left that one off
+this slide, and then it makes the call to
+
+54
+00:05:35,626 --> 00:05:41,893
+DFS. then the recursive DFS does the work.
+It marks the vertex and for every adjacent
+
+55
+00:05:41,893 --> 00:05:47,726
+vertex. If its not marked, it does the
+DFS. and then the client can ask whether
+
+56
+00:05:47,726 --> 00:05:52,090
+any ver-, any given vertex is reachable
+from s after the constructor has done its
+
+57
+00:05:52,090 --> 00:05:57,080
+work. that's depth-first search in
+directed graphs, actually, we already did
+
+58
+00:05:57,080 --> 00:06:03,158
+it. now here's just a couple of
+applications where this kind of code is
+
+59
+00:06:03,158 --> 00:06:10,115
+used. one is, a so called program control
+flow analysis. actually every program can
+
+60
+00:06:10,115 --> 00:06:16,610
+be viewed as a digraph. where, the
+vertices are basic blocks of instructions
+
+61
+00:06:16,610 --> 00:06:23,186
+that are just executed one after the other
+with no conditionals. and then edges
+
+62
+00:06:23,186 --> 00:06:29,922
+represent, a, jump. If there's an if
+statement, vertex left, two edges going
+
+63
+00:06:29,922 --> 00:06:37,299
+out of it, or, or a loop, which involves a
+conditional. So, , analyzing a program,
+
+64
+00:06:37,540 --> 00:06:43,002
+people write systems in analyse program,
+to look at their structure by studying
+
+65
+00:06:43,002 --> 00:06:48,797
+their diagrams, for example. one thing
+that happens often is there's unreachable
+
+66
+00:06:48,797 --> 00:06:54,724
+code. another, another thing you might
+want to do is determine whether you can
+
+67
+00:06:54,724 --> 00:07:01,077
+get to this exit or not, by doing this
+digraph processing. so that's actually a
+
+68
+00:07:01,299 --> 00:07:09,805
+widely used technique in, in developing
+software, software development. to try to
+
+69
+00:07:09,805 --> 00:07:15,426
+improve code by doing this kind of
+digraph-processing. And ofcourse these
+
+70
+00:07:15,426 --> 00:07:23,907
+digraphs can be huge. another classic use
+of depth for search in digraphs is garbage
+
+71
+00:07:23,907 --> 00:07:32,664
+collection that is used in systems like
+Java where data structures or digraphs. we
+
+72
+00:07:32,664 --> 00:07:41,035
+build objects and then we create
+references to other objects. and so the
+
+73
+00:07:41,035 --> 00:07:49,443
+data that any programs use is really set
+as a digraph. So there's the idea of
+
+74
+00:07:49,443 --> 00:07:57,537
+roots, so your program has e-. Some. live
+objects, that it can access through,
+
+75
+00:07:57,770 --> 00:08:04,446
+whatever state, it's in, but, a language
+like Java, there's, automatic garbage
+
+76
+00:08:04,446 --> 00:08:10,423
+collection, which means the programmer,
+when it's done with an object, maybe it
+
+77
+00:08:10,423 --> 00:08:16,711
+overwrites one of these pointers or
+something. there's gonna be some, blocks,
+
+78
+00:08:16,711 --> 00:08:23,387
+that, are not directly accessible by the
+program. and so, what's interesting is,
+
+79
+00:08:23,387 --> 00:08:29,792
+the set of reachable objects that, can be
+indirectly access. By the program starting
+
+80
+00:08:29,792 --> 00:08:35,898
+and following a chain of pointers. so
+those are the ones that can't be collected
+
+81
+00:08:35,898 --> 00:08:41,539
+or reclaimed by the system for reusing the
+memory. But all the other ones, the gray
+
+82
+00:08:41,539 --> 00:08:48,244
+ones that can't be reached by the program
+there's no reason to . Keep them live, you
+
+83
+00:08:48,244 --> 00:08:54,876
+may as well collect them and return them
+for use, re-use. So there's a so-called
+
+84
+00:08:54,876 --> 00:09:01,521
+marked and sweep out rhythm that actually
+dates back to 1960, where. We run DFS to
+
+85
+00:09:01,521 --> 00:09:07,434
+mark all ritual objects. and then go
+through and sweep through all possible
+
+86
+00:09:07,434 --> 00:09:14,077
+objects. And if it's object is unmarked
+it's garbage so add it to the list of free
+
+87
+00:09:14,077 --> 00:09:20,647
+memory. and that's a classic method that's
+still widely used. it uses an extra bit
+
+88
+00:09:20,866 --> 00:09:26,779
+per object'cause you have to have to have
+that for the mark. But still, it's
+
+89
+00:09:26,998 --> 00:09:33,821
+effective and useful digraph solution. So
+DFS with reachability that we've just
+
+90
+00:09:33,821 --> 00:09:40,868
+showed and path finding is similar. And
+there's a couple of other simple digraph
+
+91
+00:09:40,868 --> 00:09:48,002
+problems that we'll consider. These are so
+far examples. But it's also interesting
+
+92
+00:09:48,002 --> 00:09:54,785
+that DFS is the basis for solving digraph
+problems that are not so simple or
+
+93
+00:09:54,785 --> 00:10:01,479
+immediate to solve. And this was pointed
+out 40 years ago by Bob Tarjan in a
+
+94
+00:10:01,479 --> 00:10:07,339
+seminal paper that showed that. First
+search, can allow us to solve problems
+
+95
+00:10:07,339 --> 00:10:13,668
+that seem pretty complicated actually, in
+linear time, and we're gonna look at an
+
+96
+00:10:13,668 --> 00:10:20,735
+example of that later on. so that's depth
+for search. what about breadth for search.
+
+97
+00:10:20,735 --> 00:10:28,148
+Well in the same way that we saw for depth
+for search every undirected graph is
+
+98
+00:10:28,148 --> 00:10:34,674
+actually a digraph that has edges in both
+direction. So bfs is really a directed
+
+99
+00:10:34,674 --> 00:10:41,603
+graph algorithm and we can use exactly the
+same code to find shortest paths from a
+
+100
+00:10:41,603 --> 00:10:48,209
+source to any given vertex. So we use a
+que. We put the source on a que and mark
+
+101
+00:10:48,209 --> 00:10:54,404
+it as visited and. And as long as the
+queue is non-empty, we remove the least
+
+102
+00:10:54,404 --> 00:11:00,947
+recently added vertex and add to the que
+ue and mark as visited all the unmarked
+
+103
+00:11:00,947 --> 00:11:07,491
+vertices that you can get to from that
+vertex. And the same proof shows that BFS
+
+104
+00:11:07,491 --> 00:11:14,035
+computes shortest paths, the ones with the
+fewest number of edges from S to each
+
+105
+00:11:14,035 --> 00:11:20,087
+other vertex in the digraph in time
+proportional to in linear time. So you
+
+106
+00:11:20,087 --> 00:11:29,219
+want the GPS in your car, you BFS when
+you're driving around lower Manhattan. So,
+
+107
+00:11:29,459 --> 00:11:36,257
+let's look at the demo again just to see,
+the distinction between, breadth first
+
+108
+00:11:36,257 --> 00:11:43,215
+search, in digraphs and see how it works.
+So this is a, a small graphing, a smaller
+
+109
+00:11:43,215 --> 00:11:50,013
+digraphic and with six vertices and eight
+edges. we take a Q and we take a source
+
+110
+00:11:50,013 --> 00:11:56,731
+vertex and put on the Q to get started.
+then, Q is not empty, so remove zero and
+
+111
+00:11:56,731 --> 00:12:03,350
+we check all, all vertices that are
+adjacent that we get to. So. we're gonna,
+
+112
+00:12:03,682 --> 00:12:13,911
+in zero was zero distance, from zero, so
+first we will check two. and that one is
+
+113
+00:12:14,191 --> 00:12:20,782
+not marked, so we mark it and put it on
+the queue. and then we'll check one. and
+
+114
+00:12:20,782 --> 00:12:26,393
+that one's not marked, so we mark it and
+put it on the queue. then we're done with
+
+115
+00:12:26,393 --> 00:12:33,616
+zero. now queue's not empty so we pull the
+least recently added off, that's two. and
+
+116
+00:12:33,616 --> 00:12:39,935
+now we're going to check the vertices, you
+can get from two. I noticed both one and
+
+117
+00:12:39,935 --> 00:12:45,410
+two are distance one from zero. And now,
+since we're going from two, everything
+
+118
+00:12:45,410 --> 00:12:50,814
+that we encounter will be distance two
+from the source. So we find four, it's
+
+119
+00:12:50,814 --> 00:12:56,290
+distance two from the source, and we get
+there from vertex two. Unmarked, so we
+
+120
+00:12:56,290 --> 00:13:02,172
+fill in those data structures and put it
+on the queue. and then we're done with
+
+121
+00:13:02,172 --> 00:13:08,006
+two, so we go back to the queue, and 1's
+on the queue. So we pull one off and it's
+
+122
+00:13:08,006 --> 00:13:14,205
+distance one from zero. Remember the first
+showed that everything in the queue is one
+
+123
+00:13:14,205 --> 00:13:19,894
+of two distance, either k or k plus one.
+In this case, we've got one at distance
+
+124
+00:13:19,894 --> 00:13:25,584
+one, four at distance two. So now we're
+going to pull one off the queue. M- and
+
+125
+00:13:25,584 --> 00:13:30,316
+look at the edges you can get to, places
+you can get to from one. Now we check two
+
+126
+00:13:30,491 --> 00:13:35,931
+but that's already marked so we ignore it.
+and then we're done with one. Now four is
+
+127
+00:13:35,931 --> 00:13:42,130
+left on the Q so we pull it off and check
+adjacent vertices. In this case three,
+
+128
+00:13:42,130 --> 00:13:48,485
+it's unmarked so we put it on the Q. Then
+we're done with four. Then from three we
+
+129
+00:13:48,485 --> 00:13:54,762
+check five and that's unmarked and it's
+one more distance from the source so we
+
+130
+00:13:54,762 --> 00:14:01,039
+put it on the Q. And then finally. Oh we
+check two which we already visited so we
+
+131
+00:14:01,039 --> 00:14:07,333
+don't have to, to do anything. And then
+finally we pull five off the Q. check. Or
+
+132
+00:14:07,333 --> 00:14:12,382
+you get two from five and it's zero, which
+is marked, so we're done. and so that's
+
+133
+00:14:12,382 --> 00:14:18,279
+breadth-first search whig, which gives us
+this directed tree from the source. Which
+
+134
+00:14:18,279 --> 00:14:23,816
+gives the shortest path to all the
+vertices that you can get to from that
+
+135
+00:14:23,816 --> 00:14:30,410
+source. you can use a version of this to
+solve a more general problem known as the
+
+136
+00:14:30,410 --> 00:14:36,590
+multiple-source shortest paths problem. In
+this problem you're given a digraph and a
+
+137
+00:14:36,590 --> 00:14:42,480
+set of source vertices, and you want to
+find the shortest path from any vertix in
+
+138
+00:14:42,480 --> 00:14:47,932
+the set to each other vertix. So for
+example, in this case if the set is one,
+
+139
+00:14:47,932 --> 00:14:54,207
+seven, and ten, what's the shortest path
+to four? From one of those vertices. Well,
+
+140
+00:14:54,207 --> 00:15:01,439
+it turns out in this case to be seven, six
+to four. Shortest path to five is seven,
+
+141
+00:15:01,439 --> 00:15:07,542
+six, zero, five. Shortest path to twelve
+is ten to twelve. That's a more general
+
+142
+00:15:07,542 --> 00:15:13,628
+problem but it's actually easy to solve.
+How do we implement this? We just use a
+
+143
+00:15:13,628 --> 00:15:20,098
+different constructor. We just use BFS but
+initialize by, put all the source vertices
+
+144
+00:15:20,098 --> 00:15:26,183
+on the queue to get started. So that is
+every vertex is, so you put those on the
+
+145
+00:15:26,183 --> 00:15:32,499
+queue and they're zero from the desired
+source. And then any vertex you can get to
+
+146
+00:15:32,499 --> 00:15:38,965
+from any one of those is going to be. One
+and so forth, so the results still gives
+
+147
+00:15:38,965 --> 00:15:44,764
+away. The edge to array will still give a
+way to get from any vertex, the shortest
+
+148
+00:15:44,764 --> 00:15:50,073
+way to get from any vertex to each of the
+sour-, source vertices. here's an
+
+149
+00:15:50,073 --> 00:15:57,325
+application of depth-first search. Let's
+say you want to crawl the whole web, well,
+
+150
+00:15:57,325 --> 00:16:04,328
+all the web that you can access from some
+starting web page, say like Princeton's
+
+151
+00:16:04,328 --> 00:16:10,996
+starting webpage. Again, the digraph
+model, each vertex is a webpage, each edge
+
+152
+00:16:10,996 --> 00:16:17,915
+is a link on that webpage to some other
+webpage. and so all we want to do is get
+
+153
+00:16:17,915 --> 00:16:24,440
+to all the other vertices on the web. And,
+so solution is, well, we don't actually
+
+154
+00:16:24,440 --> 00:16:31,504
+build the digraph we just use an implicit
+digraph, because for every web page we can
+
+155
+00:16:31,732 --> 00:16:38,720
+find the links to other web pages on it
+and we'll just build those as we encounter
+
+156
+00:16:38,720 --> 00:16:45,176
+them. So we're gonna start with a source,
+which is the root web page. We're gonna
+
+157
+00:16:45,176 --> 00:16:51,701
+have a queue of the sites that we still
+need to explore. what we're going to do is
+
+158
+00:16:51,701 --> 00:16:58,439
+also have a set of discovered websites,
+this corresponds to our marked array but
+
+159
+00:16:58,439 --> 00:17:05,254
+since we don't know how many vertices
+there are on the web all we're going to do
+
+160
+00:17:05,254 --> 00:17:11,757
+is keep track of the ones that we've been
+to. so this is, don't use the vertex
+
+161
+00:17:11,757 --> 00:17:18,259
+indexed array we don't even bother with
+because we'll just use the vertex names
+
+162
+00:17:18,494 --> 00:17:25,100
+and do the look up as indicated we could
+do. So all we do is In the, is but for a
+
+163
+00:17:25,100 --> 00:17:31,680
+search the same method is if the queue's
+not empty. Take a website off of the cue.
+
+164
+00:17:31,680 --> 00:17:36,605
+And just add to the queue all the websites
+to which it links. but all of those
+
+165
+00:17:36,605 --> 00:17:41,653
+websites, you check whether they're in the
+set of the ones that you've seen already.
+
+166
+00:17:41,835 --> 00:17:47,247
+now, you might run out of space, for this
+set before you get to the whole web. but
+
+167
+00:17:47,247 --> 00:17:53,735
+anyway, conceptually, this is a way that
+you could go. one thing to think about is
+
+168
+00:17:54,056 --> 00:18:03,986
+why not use DFS for this. well One reason
+is you, you're gonna go far away in your
+
+169
+00:18:03,986 --> 00:18:10,160
+search for the web. Maybe, maybe that's
+what you want, but the real problem, in
+
+170
+00:18:10,160 --> 00:18:16,570
+point of fact is there's some web pages
+that would trap such a search by creating
+
+171
+00:18:16,570 --> 00:18:22,744
+new web pages and make links to'em the
+first time that you visit'em. So, they,
+
+172
+00:18:22,979 --> 00:18:29,466
+trap searches like that by, cuz DFS would
+always go to a new web page like that and
+
+173
+00:18:29,466 --> 00:18:35,255
+it'd keep creating new ones and you
+wouldn't get very far. With breadt-first
+
+174
+00:18:35,255 --> 00:18:41,670
+search you're taking a wide search of the
+pages that are close. and that's often
+
+175
+00:18:41,670 --> 00:18:48,302
+maybe what you want for such a search.
+and, just to how simple the idea is, this
+
+176
+00:18:48,302 --> 00:18:56,006
+is complete code for a, it's kind of a
+bare bones web crawler but it'll get to a
+
+177
+00:18:56,006 --> 00:19:03,971
+lot of websites. so let's look at, do this
+example because again it really indicates
+
+178
+00:19:03,971 --> 00:19:10,983
+the power of using appropriate
+abstractions to implement the algorithms
+
+179
+00:19:10,983 --> 00:19:18,476
+that we're interested in. so this one
+we're gonna use a cue. Queue of strings so
+
+180
+00:19:18,686 --> 00:19:25,392
+that's the websites that we have to still
+yet to go to. and then a set of strings is
+
+181
+00:19:25,392 --> 00:19:31,610
+gonna be the ones that we've already been
+to that's equivalent to the marked array.
+
+182
+00:19:31,858 --> 00:19:39,569
+we'll start with Princeton's website. add
+it to the queue of places we have to go
+
+183
+00:19:39,569 --> 00:19:46,450
+and also mark it. Discovered that ad just
+means mark it. so now, while the queue's
+
+184
+00:19:46,450 --> 00:19:54,854
+not empty. What we're going to do is read
+the raw HTML from the next website in the
+
+185
+00:19:54,854 --> 00:20:02,430
+queue. So this is code using our input
+library that gets that job done. And then,
+
+186
+00:20:02,430 --> 00:20:09,267
+this is a little fooling around with
+regular expressions. We'll talk about
+
+187
+00:20:09,267 --> 00:20:16,381
+algorithms like this later on, that
+essentially tries to find all URLs within
+
+188
+00:20:16,381 --> 00:20:23,408
+the text of that website. And for all of
+those URL's. And we'll. Look at workers
+
+189
+00:20:23,408 --> 00:20:29,968
+behind this code later on in this course.
+For all those URL's it's gonna check. If
+
+190
+00:20:29,968 --> 00:20:36,837
+it's marked that's discovered doc contains
+and if it's not marked it'll say it will
+
+191
+00:20:36,837 --> 00:20:44,420
+mark it and put it on the queue. a very s-
+simple program with a very powerful effect
+
+192
+00:20:44,420 --> 00:20:47,900
+that illustrates breadth-first search.

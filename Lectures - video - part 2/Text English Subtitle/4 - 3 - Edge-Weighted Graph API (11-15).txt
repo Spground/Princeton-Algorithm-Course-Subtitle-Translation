@@ -1,0 +1,230 @@
+So, before we can develop code for our
+implementations we need to settle on an
+API for edge weighted graphs.
+Now this actually needs a bit of
+discussion.
+It would seem to be simple to add weights.
+But there's a few technicalities that it's
+easy to understand.
+But it's going to take a little
+explanation.
+So, the whole idea is that we need an edge
+abstraction.
+Before for directed graphs, undirected
+graphs, we're talking about graphs in
+terms of connections, and the edges were
+really implicit.
+So, for a vertex, we would keep a bag of
+vertices that its connected to but we
+wouldn't explicitly represent edges.
+For weighted edges, we're going to need to
+do that.
+So we're going to start out with an the
+just for processing edges.
+Now, it's simple. The constructor is just
+going to create an edge.
+So, what is an edge?
+A weighted edge is two vertices that they
+connect, that, it connects and then a
+double value, which is the weight.
+So that's clearly one thing we have to do
+is, is construct the edge.
+Now what do we want to do when we process
+edges?
+Well, one thing we want to do is compare
+two edges, so that is, we want to compare
+the weights in, in a typical compare and
+return a negative value of less than zero
+if equal and a positive value of one just
+like any other compare.
+So we have one the method that takes an
+edge as argument and compares that edge to
+this edge for sure.
+We want to be able to extract the weight
+and have a string representation of the
+edge.
+But then, what about getting the vertices
+out of the edge?
+Well, the fact is that the, usually in
+the, in the algorithm, we're holding on,
+to a vertex.
+And generally, what we want to do is get
+the other vertex.
+So, if we have a vertex v that we're
+holding on to, what we want is the other
+vertex.
+So well that's the way that will get the
+vertex to that a given edge.
+We're on a vertex and we have an edge we
+want to get the edge that, that, the
+vertex that, that connects to,
+We just call the other method.
+And if we have an idiom, we're just
+getting started then, then we are happy to
+take either vertex.
+So we have either and other for getting
+the vertices out of the edges and we
+almost always do this kind of idiom where
+we pick out and we, we have an edge e that
+we have to process.
+We pick out either edge, and we put that
+in v,
+And we pick out the other edge, and put
+that in w.
+So that's just a, a code for getting us
+the v and w without adopting some
+convention on how to use those names that
+might be required if you tried to access
+the instance variables directly or through
+gutter methods.
+So, that's the edge API.
+So it's easy to implement.
+So, now we're going to have instance
+variables for v and w in the weight.
+The constructor just sets those instance
+variables.
+Either just returns v arbitrarily ag, then
+other, given a vertex that vertex is v, V
+or returns w, otherwise, it turns v, so
+that's easy.
+And then, compared to is straightforward,
+just using the weight instance variable of
+this, which is the keyword referring to
+this object and that which is the argument
+edge that we're given.
+So, that's a complete implementation of
+the weighted edge API and now our MST
+algorithms can be clients of that.
+So well first, first we need a graph API
+that has weighted edges.
+So we're going to use edge-weighted graph.
+And it's going to have the same
+characteristics of the graph and
+undirected graph API that we articulated
+before.
+So we're going to create empty graph with
+a certain number of vertices and we do
+that so we can use vertex index arrays as
+internal data structures.
+We'll have a created a weighted graph from
+an input stream then the main operation to
+build graphs is just to add edges.
+And then the key operation that all the
+algorithms want to perform as usual is
+uniterable but give all the edges adjacent
+to a given vertex.
+So now, we want the edges themselves cuz
+they have the weights.
+Not just the vertex that it's connected
+to.
+So, this, with the edge API, the edge
+abstraction we get the edge, which gives
+us the weight and the other vertex at the
+same time.
+Since we're using edges as distinct
+entities it's easy to allow self loops in
+parallel edges in the graph API and it
+doesn't have any impact on the MST
+algorithms.
+So, we'll go ahead and do that.
+How do we represent edge-weighted graphs?
+I, well, it's the straightforward
+extension of what we did for undirected
+graphs.
+We're going to maintain a vertex index
+array of edge lists.
+So for every vertex we have a list of the
+edges connected to that vertex.
+For example in this graph weighted graph,
+there is an edge the ones connected to
+vertex zero, or an edge that connects and
+six and zero and has a weight 0.58 and an
+edge that connects two and zero and has
+0.26, zero and four has 0.38, zero and
+seven has 0.16. As with our undirected
+graph representations each edge object is
+going to appear twice.
+Once for each vertex that it connects.
+And it's actually not an object, it's a
+reference to an object in Java.
+So, a graph is a vertex index array of
+bags of edges.
+Since it's undirected each edge is going
+to appear twice.
+So, when we build a graph just as with
+undirected unweighted graphs we have to
+add,, If, if we have an edge that connects
+v and w we have to add that edge to both v
+and w's adjacency list.
+Otherwise it's quite similar to R code for
+graph.
+We have a bag of edges instead of a bag of
+integers, which were vertex indices.
+Constructor builds the bag.
+And builds the array and then fills the
+bag associated, associated with each
+vertex as a new empty bag.
+And then add, add edge, adds the edge to
+both v and w's bag.
+And interval just returns the bag
+associated with the given vertex and
+that's all the edges that are incident on
+that vertex.
+And that's a bag which is interval.
+So, again, as for all the algorithms that
+we've been looking at, the clients will
+just iterate.
+Usually, you have a vertex, and it'll
+iterate through the edges adjacent to that
+vertex.
+So that's the representation of the graph.
+What about representing the MST?
+Well, usually the client of an MST
+algorithm is going to want to have us
+compute the MST for a given edge-weighted
+graph.
+So, we'll just do that in a class named
+MST and make that the constructor.
+So then, as usual, in our graph processing
+paradigm, the constructor will do all the
+work.
+And then the client can ask queries about
+what happened.
+And in this case, what's relevant is, what
+are the edges in the MST?
+And the MST client is just going to want
+to iterate through those edges.
+It might also want the total weight of the
+MST, so we can provide that, too.
+So for example if we take a, an example
+with our tiny edge-weighted graph,
+We're going to have the number of
+vertices, the number of edges and then, a
+list of vertex pairs, which are the edge
+connections and the associated weights.
+Ahm the what we'll want is the this is the
+test client is just going to print the
+edges in the MST the middle-weight edges
+that connect them all instead the edges on
+MST and the weight.
+And this is the code for that test client.
+So we build an input stream which is given
+the argument, so that's the filename. and
+then, we use the constructor from the
+stream to build an edge-weighted graph.
+Then we do an MST calling the MST
+constructor with that graph is an argument
+that creates an MST.
+And then, we use the iterator.
+That mst.edges will give us some interval
+set of the edges that are in the MST that
+it computed in the constructor.
+And it will print out the edges using
+two-string for edge and then print out the
+weight.
+So that's the code that gives the test
+client for this MST API.
+So, for that graph, we get that output
+with that code.
+So, that's a, the quick introduction to
+the API, APIs we use for MSTs.

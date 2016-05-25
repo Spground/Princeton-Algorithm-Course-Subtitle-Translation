@@ -1,0 +1,1028 @@
+1
+00:00:02,880 --> 00:00:06,853
+Welcome back, today we're going to talk
+about balance search trees,
+
+2
+00:00:06,853 --> 00:00:12,150
+Which will lead us to an ultimate symbol
+table implementation that can provide fast
+
+3
+00:00:12,340 --> 00:00:17,130
+performance for all the simulative options
+we've looked at, guaranteed.
+
+4
+00:00:17,130 --> 00:00:22,038
+So here's the review of where we were with
+single tables.
+
+5
+00:00:22,255 --> 00:00:27,019
+We took a look at the last time at the
+binary search tree,
+
+6
+00:00:27,236 --> 00:00:32,866
+Which if things are well modeled by random
+exertions, have a great performance.
+
+7
+00:00:33,083 --> 00:00:39,002
+They get search and insert on in time
+proportion for log base two of N and they
+
+8
+00:00:39,002 --> 00:00:44,055
+support ordered operations.
+But really our goal is to have these
+
+9
+00:00:44,055 --> 00:00:48,386
+operations be guaranteed to take time
+proportional to log N,
+
+10
+00:00:48,603 --> 00:00:54,114
+Because we don't have control over the
+order of operations and they may not be
+
+11
+00:00:54,114 --> 00:00:57,606
+random at all.
+And in fact, in many real applications,
+
+12
+00:00:57,606 --> 00:01:01,733
+they're not very random.
+So that's what were going to look at now
+
+13
+00:01:01,733 --> 00:01:07,320
+is try to find an implementation that can
+guarantee to be fast for all the symbol
+
+14
+00:01:07,320 --> 00:01:09,260
+table operations.
+.
+
+15
+00:01:09,260 --> 00:01:14,172
+That's our challenge.
+So what we're going to talk about to do
+
+16
+00:01:14,172 --> 00:01:19,744
+it, is an algorithm, that actually pretty
+old algorithm called 2-3 trees, and a
+
+17
+00:01:19,744 --> 00:01:25,457
+particular implementation that requires
+very little code, called left leaning red
+
+18
+00:01:25,457 --> 00:01:31,381
+black BSTs and then we'll talk about a
+generalization called B-trees. And these
+
+19
+00:01:31,381 --> 00:01:36,460
+methods are all widely used throughout our
+computational infrastructure.
+
+20
+00:01:38,500 --> 00:01:45,187
+To start, we'll talk about 2-3 search
+trees, which is a model that underlies the
+
+21
+00:01:45,406 --> 00:01:50,148
+concise and efficient implementation that
+we're going to look at.
+
+22
+00:01:50,148 --> 00:01:56,131
+So, the 2-3 tree is a way to generalize
+BSTs to provide the flexibility that we
+
+23
+00:01:56,131 --> 00:02:00,728
+need to guarantee fast performance.
+And the idea is very simple,
+
+24
+00:02:00,728 --> 00:02:06,127
+We allow one or two keys per node.
+That is, we allow for the possibility of
+
+25
+00:02:06,127 --> 00:02:09,994
+something called a 3-node that can hold
+two keys,
+
+26
+00:02:09,994 --> 00:02:15,674
+But then it has to have three children.
+In a regular BST node, the 2-node, we have
+
+27
+00:02:15,674 --> 00:02:20,190
+one link for the keys that are less than
+the key in the node, and one link for the
+
+28
+00:02:20,190 --> 00:02:24,279
+keys that are greater.
+In a 3-node, we need three links, one for
+
+29
+00:02:24,279 --> 00:02:29,867
+less, one for between and one for greater.
+Another property of these 2-3 trees is
+
+30
+00:02:29,867 --> 00:02:35,029
+that we are going to have perfect balance,
+That is every path from the route to a
+
+31
+00:02:35,029 --> 00:02:38,790
+null link is going to have the same link
+in the 2-3 tree.
+
+32
+00:02:38,790 --> 00:02:46,121
+So, as I mentioned, the symmetric order is
+part of the definition of a 2-3 tree.
+
+33
+00:02:46,121 --> 00:02:51,648
+Every 3-node has three links and two keys.
+The left link is for the keys that are,
+
+34
+00:02:51,648 --> 00:02:56,850
+points to a 2-3 tree with the keys that
+are smaller than the smaller of the two
+
+35
+00:02:56,850 --> 00:03:01,077
+keys in the 3-node.
+The middle link points to a 2-3 tree that
+
+36
+00:03:01,077 --> 00:03:04,459
+contains all the keys that are between the
+two keys.
+
+37
+00:03:04,459 --> 00:03:09,661
+And the right link points to all, 2-3 tree
+containing all the keys that are larger
+
+38
+00:03:09,661 --> 00:03:12,913
+than the larger of the two keys in the
+3-node.
+
+39
+00:03:12,913 --> 00:03:17,010
+Okay, let's take a look at a demo of
+searching in a 2-3 tree.
+
+40
+00:03:17,010 --> 00:03:23,407
+So say we have this 2-3 tree here and we
+want to search for whether or not H is one
+
+41
+00:03:23,407 --> 00:03:26,818
+of the keys in the tree.
+So we start at the root,
+
+42
+00:03:26,818 --> 00:03:30,815
+Compare the search key against the key or
+keys in the node.
+
+43
+00:03:30,815 --> 00:03:36,436
+And follow the link corresponding to the
+interval that we know must contain the
+
+44
+00:03:36,436 --> 00:03:41,923
+search key by definition of the tree and
+then we recursively continue the search.
+
+45
+00:03:41,923 --> 00:03:47,409
+So, if we're looking for H, it's less than
+M, so the only place it could be in this
+
+46
+00:03:47,409 --> 00:03:50,051
+2-3 tree is in the 2-3 tree on the left
+link,
+
+47
+00:03:50,051 --> 00:03:54,656
+So we follow the left link.
+Now, we compare H with E and J, and in
+
+48
+00:03:54,656 --> 00:04:00,359
+this case it's between, so now we are
+going to take the middle link, that's the
+
+49
+00:04:00,359 --> 00:04:06,212
+only place that H possibly could be.
+In this case, that node, one node 2-3 tree
+
+50
+00:04:06,212 --> 00:04:11,315
+contains H, so that's a search hit.
+Let's take another example for
+
+51
+00:04:11,315 --> 00:04:15,217
+unsuccessful search, a key that's not in
+the tree.
+
+52
+00:04:15,217 --> 00:04:19,270
+As usual, we start at the root.
+It's less, so we go left.
+
+53
+00:04:19,270 --> 00:04:23,383
+And it's less than both keys,
+So, if it's in the tree, it would have to
+
+54
+00:04:23,383 --> 00:04:26,982
+be in the left link and it's between those
+two keys.
+
+55
+00:04:26,982 --> 00:04:31,540
+So if it's in the tree, it would have to
+be on the middle link.
+
+56
+00:04:31,540 --> 00:04:34,922
+And that link is null, so that's a search
+miss.
+
+57
+00:04:34,922 --> 00:04:40,951
+So the search is a natural generalization
+of the search in, binary search trees.
+
+58
+00:04:41,172 --> 00:04:46,675
+Now what about inserting?
+Well, it's a similar type of strategy as
+
+59
+00:04:46,675 --> 00:04:53,502
+with regular binary search trees, except
+that we manipulate the two and 3-node to
+
+60
+00:04:53,502 --> 00:04:58,964
+keep perfect balance in the tree.
+So the easy case is if the key winds up in
+
+61
+00:04:58,964 --> 00:05:04,930
+a 2-node at the bottom, like this one.
+Suppose we're inserting K. K is less than
+
+62
+00:05:04,930 --> 00:05:09,762
+M so we go left.
+K is greater than both the keys, so we go
+
+63
+00:05:09,762 --> 00:05:14,030
+right.
+K is less than L, so the search ends at
+
+64
+00:05:14,030 --> 00:05:19,219
+the left link of L.
+And to perform an insertion all we need to
+
+65
+00:05:19,219 --> 00:05:23,990
+do is replace that 2-node with a 3-node
+containing K.
+
+66
+00:05:23,990 --> 00:05:28,676
+Now, K is inserted into the 2-3 tree and
+it satisfies all the rules.
+
+67
+00:05:28,886 --> 00:05:34,553
+Now if we're inserting into a 3-node at
+the bottom, we have to do more work.
+
+68
+00:05:34,553 --> 00:05:40,149
+And specifically, the work we do is, we
+add the key to a 3-node to create a
+
+69
+00:05:40,149 --> 00:05:45,955
+temporary 4-node and then split up that
+four node and move it's middle key into
+
+70
+00:05:45,955 --> 00:05:48,403
+the parent.
+So, let's see an example.
+
+71
+00:05:48,613 --> 00:05:54,000
+If we are going to insert Z into this
+tree, it's greater than N, so we go to the
+
+72
+00:05:54,000 --> 00:05:59,770
+right. It's greater than R, so we go to
+the right. And now it's greater than x,
+
+73
+00:05:59,770 --> 00:06:05,779
+and that's a null link to the right of x,
+so the search ends there and are, what we
+
+74
+00:06:05,779 --> 00:06:11,935
+want to do is insert Z into that 3-node.
+And the way we do it is, first make a
+
+75
+00:06:11,935 --> 00:06:15,820
+temporary 4-node that replaces that
+3-node.
+
+76
+00:06:15,820 --> 00:06:23,339
+And then that's not a 2-3 tree cuz it's
+got that one 4-node with three keys and
+
+77
+00:06:23,339 --> 00:06:27,705
+four links.
+But what we can do is split that 4-node
+
+78
+00:06:27,705 --> 00:06:34,436
+and pass the middle key up to its parent.
+So split into two 2-node and pass the
+
+79
+00:06:34,436 --> 00:06:40,502
+middle key to the parent.
+That's kind of a magical operation and
+
+80
+00:06:40,502 --> 00:06:45,407
+believe me, it's easier to get done in the
+implementation than the graphics.
+
+81
+00:06:45,407 --> 00:06:50,834
+But now you can see that, that local
+transformation on the 2-3 tree completes
+
+82
+00:06:50,834 --> 00:06:54,366
+the insertion.
+Now, if that parent were a 3-node, it
+
+83
+00:06:54,366 --> 00:06:59,924
+would become a temporary 4-node and would
+continue the process moving up the tree.
+
+84
+00:07:00,120 --> 00:07:03,913
+That's a demo of search and insertion in a
+2-3 tree.
+
+85
+00:07:03,913 --> 00:07:06,660
+So, let's look at a double split like
+that.
+
+86
+00:07:06,660 --> 00:07:10,039
+So, say we're inserting L in, into this
+tree.
+
+87
+00:07:10,039 --> 00:07:16,296
+So, it goes down to the middle, and winds
+up needing to be inserted in the, 3-node
+
+88
+00:07:16,296 --> 00:07:20,035
+in the middle.
+So we're going to convert that into a
+
+89
+00:07:20,394 --> 00:07:23,271
+4-node.
+Now, L is the middle key of that one,
+
+90
+00:07:23,271 --> 00:07:29,240
+So we're going to split that 4-node into,
+two 2-nodes and move L to the parent.
+
+91
+00:07:30,140 --> 00:07:36,603
+The 4-node had four links, and the two
+2-nodes have four lengths, so nothing has
+
+92
+00:07:36,603 --> 00:07:41,506
+to be changed below.
+And then this insertion into the parent
+
+93
+00:07:41,506 --> 00:07:47,510
+changed it from a two, a 3-node into a
+4-node essentially adding a length cuz of
+
+94
+00:07:47,510 --> 00:07:52,666
+the split with the two 2-nodes where there
+was only one 3-node before.
+
+95
+00:07:52,666 --> 00:07:56,726
+But now, that's not a 2-3 tree, so we have
+to split again.
+
+96
+00:07:56,726 --> 00:08:02,269
+And in this case there is no paren, so we
+create a new one and the height of the
+
+97
+00:08:02,269 --> 00:08:06,717
+tree increases by one.
+That's the only time the height of a 2-3
+
+98
+00:08:06,717 --> 00:08:12,418
+tree changes, when the roots splits the
+height introduces increases by one.
+
+99
+00:08:12,420 --> 00:08:18,477
+So, that's a demo of insertion into a
+3-node at the bottom, in a 2-3 tree that
+
+100
+00:08:18,477 --> 00:08:24,336
+percolates all the way to the top.
+Now let's look at constructing a 2-3 tree
+
+101
+00:08:24,336 --> 00:08:29,569
+from an initially empty tree.
+So if we start by just inserting a key,
+
+102
+00:08:29,569 --> 00:08:35,170
+well, that just creates a 2-node
+containing that key, and that's legal 2-3
+
+103
+00:08:35,170 --> 00:08:39,076
+tree, so we're fine.
+Now, inserting E into that well, it's
+
+104
+00:08:39,076 --> 00:08:46,003
+going to B if it's in the tree left of S,
+that's a null lin. So we need to convert
+
+105
+00:08:46,003 --> 00:08:50,693
+that 2-node into a 3-node.
+Okay? And that's the legal of 2-3 trees,
+
+106
+00:08:50,693 --> 00:08:56,239
+So we stop inserting A into that.
+We convert that 3-node into a temporary
+
+107
+00:08:56,586 --> 00:09:01,993
+4-node, but then we need to split that
+4-node moving E to the parent and that
+
+108
+00:09:01,993 --> 00:09:07,817
+creates a new, root node and increases the
+size of the tree by one, But now that's a
+
+109
+00:09:07,817 --> 00:09:12,960
+legal 2-3 tree so we stop.
+Insert R into that, it goes to the right
+
+110
+00:09:12,960 --> 00:09:15,215
+of E.
+Convert into a 3-node,
+
+111
+00:09:15,215 --> 00:09:21,562
+Now insert C into that. it goes to the
+left of E, has to be joined with A into a
+
+112
+00:09:21,562 --> 00:09:25,571
+new 3-node.
+Again, that's a legal 2-3 tree and we
+
+113
+00:09:25,571 --> 00:09:28,327
+stop.
+Now we insert H, that kind of goes to the
+
+114
+00:09:28,327 --> 00:09:33,254
+right of E.
+That 3-node gets converted into a 4-node.
+
+115
+00:09:33,254 --> 00:09:38,600
+That's a temporary 4-node and we split and
+move R to the parent,
+
+116
+00:09:39,384 --> 00:09:44,363
+Now that parent's a legal and there's
+nothing more to be done.
+
+117
+00:09:44,363 --> 00:09:48,514
+We, have a legal three tree,
+2-3 tree. Insert X,
+
+118
+00:09:48,788 --> 00:09:52,173
+It's bigger than R,
+Goes to the right.
+
+119
+00:09:52,447 --> 00:09:58,120
+There's a 2-node, there's room for the X.
+Insert P,
+
+120
+00:09:58,340 --> 00:10:02,381
+That goes between E and R.
+The 2-node containing H,
+
+121
+00:10:02,601 --> 00:10:07,377
+Right link is null,
+So we convert that 2-node into a 3-node
+
+122
+00:10:07,377 --> 00:10:12,741
+and now we have a legal 2-3 tree.
+Now, you, you can see this next insertion
+
+123
+00:10:12,741 --> 00:10:16,047
+is going to cause some splitting wherever
+it is.
+
+124
+00:10:16,268 --> 00:10:19,060
+So insert L,
+That's between E and R.
+
+125
+00:10:19,060 --> 00:10:25,231
+So it goes in the, 3-node containing H and
+P and we convert that into a temporary
+
+126
+00:10:25,599 --> 00:10:29,420
+4-node.
+Split that 4-node, moving L to the parent.
+
+127
+00:10:29,420 --> 00:10:33,348
+Now that parents of 4-node and that has to
+be split,
+
+128
+00:10:33,567 --> 00:10:38,951
+And we create a new root node.
+And then the height of the tree grows by
+
+129
+00:10:38,951 --> 00:10:42,079
+one.
+And that's a legal 2-3 tree, so we stop.
+
+130
+00:10:42,079 --> 00:10:47,536
+So, those local transformations,
+converting a 2-node to a 3-node or
+
+131
+00:10:47,536 --> 00:10:52,629
+converting a three to a four, and then
+splitting and passing a node up.
+
+132
+00:10:52,629 --> 00:10:58,813
+Those are the, only operations we need to
+consider to get balance in our search
+
+133
+00:10:58,813 --> 00:10:59,900
+trees.
+Alright.
+
+134
+00:10:59,900 --> 00:11:06,326
+So as I've mentioned and this diagram
+shows, the splitting of 4-node and a 2-3
+
+135
+00:11:06,326 --> 00:11:11,857
+tree is a local transformation.
+It only involves changing a constant
+
+136
+00:11:11,857 --> 00:11:16,169
+number of links.
+So, in this example, it shows the general
+
+137
+00:11:16,169 --> 00:11:21,212
+situation, when the 4-node to be split is
+the middle length,
+
+138
+00:11:21,212 --> 00:11:24,872
+But the same is true if it's a left or
+right.
+
+139
+00:11:24,872 --> 00:11:28,394
+And those six subtrees drawn could be
+huge.
+
+140
+00:11:28,394 --> 00:11:33,904
+They could contain millions of keys,
+But it doesn't matter what they contain.
+
+141
+00:11:33,904 --> 00:11:38,833
+We don't touch them at all,
+Nor do we touch anything above this node
+
+142
+00:11:38,833 --> 00:11:44,415
+in the tree until the split happens.
+So the transformation that splits that b,
+
+143
+00:11:44,415 --> 00:11:50,096
+c, d, node and inserts the C into the
+3-node at the root, just involves, making
+
+144
+00:11:50,096 --> 00:11:56,795
+that 3-node into a temporary 4-node.
+And making that, 4-node into two 2-nodes
+
+145
+00:11:56,795 --> 00:12:02,758
+and adjusting the lengths appropriately.
+Just a constant number of operations and
+
+146
+00:12:02,758 --> 00:12:09,813
+that's why, this operation, is, in
+general, efficient. so let's look at the
+
+147
+00:12:10,164 --> 00:12:17,640
+just the global properties that these
+manipulations preserve.
+
+148
+00:12:17,872 --> 00:12:24,707
+The two things that are critical is that
+the, in a, in a 2-3 tree, we always have
+
+149
+00:12:24,707 --> 00:12:28,839
+symmetric order.
+That is the word that we defined, for
+
+150
+00:12:29,085 --> 00:12:32,652
+2-nodes and 3-nodes, and we also have the
+perfect balance.
+
+151
+00:12:32,652 --> 00:12:36,341
+The distance from the root to the bottom
+is always the same.
+
+152
+00:12:36,341 --> 00:12:40,891
+And to prove that, we just need to show
+that each transformation maintains
+
+153
+00:12:40,891 --> 00:12:45,994
+symmetric order and perfect balance, and
+these are all the possible transformations
+
+154
+00:12:45,994 --> 00:12:49,868
+that we could do.
+If we split the root, then, that's the,
+
+155
+00:12:49,868 --> 00:12:54,849
+what happens at the root, and if there was
+perfect balance before, there's perfect
+
+156
+00:12:54,849 --> 00:12:59,611
+balance after, with the height one bigger.
+If the parent was a 2-node then the
+
+157
+00:12:59,611 --> 00:13:04,717
+transformation is a local transformation
+and if you look at where the links are,
+
+158
+00:13:04,717 --> 00:13:09,886
+then it's easy to see by induction that if
+there was perfect balance before there's
+
+159
+00:13:09,886 --> 00:13:13,996
+perfect balance afterward,
+Because we didn't change anything about
+
+160
+00:13:13,996 --> 00:13:16,923
+the perfect balance in any of those
+subtrees.
+
+161
+00:13:16,923 --> 00:13:21,344
+And that's true in every case.
+If the 3-nodes at the right and this one
+
+162
+00:13:21,344 --> 00:13:25,391
+is one higher and those four are one lower
+and afterwards it's the same.
+
+163
+00:13:25,391 --> 00:13:29,813
+If there was perfect balance before
+there's perfect balance afterwards,
+
+164
+00:13:29,813 --> 00:13:32,907
+because we didn't change the height of any
+nodes.
+
+165
+00:13:32,907 --> 00:13:35,982
+We just moved things around locally within
+nodes.
+
+166
+00:13:36,174 --> 00:13:40,658
+And this is when this parent is a 3-node,
+then there's the tree cases,
+
+167
+00:13:40,658 --> 00:13:44,950
+If we split up the last split at the
+middle and split at the right,
+
+168
+00:13:44,950 --> 00:13:49,452
+And again, changing the four node to, to a
+2-nodes and adding links.
+
+169
+00:13:49,637 --> 00:13:54,387
+If there was perfect balance before,
+there's perfect balance after, because we
+
+170
+00:13:54,387 --> 00:13:57,780
+didn't change the heights of anything else
+in the tree.
+
+171
+00:13:58,027 --> 00:14:04,870
+So our operations maintain symmetric order
+and perfect balance in a 2-3 tree.
+
+172
+00:14:05,092 --> 00:14:10,592
+So, that's going to give us, a very easy
+way to describe a performance.
+
+173
+00:14:10,815 --> 00:14:17,280
+The call, or operations have costs that's
+proportional to the path link from the,
+
+174
+00:14:17,503 --> 00:14:23,003
+height to the bottom, and every path from
+the root to a null link has the same
+
+175
+00:14:23,003 --> 00:14:25,827
+length.
+How long can those paths be?
+
+176
+00:14:25,827 --> 00:14:31,846
+Well, it's not hard to see that the, in
+the worst case, if they're all 2-nodes,
+
+177
+00:14:31,846 --> 00:14:35,860
+that's the longest they can be is log base
+two of N.
+
+178
+00:14:35,860 --> 00:14:41,748
+Now, and if they're all 3-nodes, it would
+be log base three of N, which is less,
+
+179
+00:14:41,748 --> 00:14:47,567
+It's about 0.63 log base two of N.
+So, all the paths in a 2-3 tree with N
+
+180
+00:14:47,567 --> 00:14:53,035
+nodes have to have length between those
+two bounds and those are pretty small
+
+181
+00:14:53,035 --> 00:14:56,813
+numbers.
+For a million nodes, that's between twelve
+
+182
+00:14:56,813 --> 00:15:00,396
+and twenty.
+And, if, if it's a billion nodes, that's
+
+183
+00:15:00,396 --> 00:15:04,952
+between eighteen and 30.
+Those are remarkably small numbers, so
+
+184
+00:15:04,952 --> 00:15:09,649
+we're going to have guaranteed
+performance, even for huge databases,
+
+185
+00:15:10,029 --> 00:15:14,561
+We're going to be able to guarantee that
+we can get search and insert them with
+
+186
+00:15:14,561 --> 00:15:17,960
+just eighteen to 30 operations and it's
+quite remarkable, really.
+
+187
+00:15:18,220 --> 00:15:24,686
+So, here's what our table, will look like,
+when we finish the implementation of 2-3
+
+188
+00:15:24,686 --> 00:15:27,956
+trees.
+Every operation is guaranteed to be a
+
+189
+00:15:27,956 --> 00:15:31,524
+constant times log n.
+Now, the constant depends on the
+
+190
+00:15:31,895 --> 00:15:37,693
+implementation, exactly what kind of
+manipulations we need to do to convert,
+
+191
+00:15:38,362 --> 00:15:44,327
+3-nodes to 4-nodes and so forth.
+But it's, easy to see from demo and from
+
+192
+00:15:44,327 --> 00:15:48,869
+the diagrams that those are going to be
+constant, guaranteed logarithmic
+
+193
+00:15:48,869 --> 00:15:54,483
+performance for all operations, which is
+certainly what we want in a symbol table
+
+194
+00:15:54,483 --> 00:15:57,394
+implementation Now what about the
+implementation?
+
+195
+00:15:57,394 --> 00:16:02,076
+Well, we're actually not going to talk
+about a direct implementation of 2-3
+
+196
+00:16:02,076 --> 00:16:07,354
+trees, because it's kind of complicated.
+It's cumbersome to maintain multiple node
+
+197
+00:16:07,354 --> 00:16:10,580
+types.
+You might need, a multiple compares to
+
+198
+00:16:10,580 --> 00:16:14,814
+move down the tree.
+If there's a two, a 3-node, it takes more
+
+199
+00:16:14,814 --> 00:16:18,578
+compares than a 2-node,
+So, it's complicated to analyze.
+
+200
+00:16:18,780 --> 00:16:23,821
+We have to take track, keep track the
+links as we go up and down the tree to
+
+201
+00:16:23,821 --> 00:16:28,189
+take, handle the splitting,
+And there's, and there's a lot of cases.
+
+202
+00:16:28,391 --> 00:16:34,070
+I drew all the cases and, and, there's a,
+whether you're splitting into the middle
+
+203
+00:16:34,070 --> 00:16:37,881
+of a 4-node or the right of a 2-node,
+there's just a lot of cases.
+
+204
+00:16:37,881 --> 00:16:42,690
+So, you could do it but we're not going to
+because there's a much easier way.
+
+205
+00:16:42,690 --> 00:16:48,370
+So that's 2-3 trees,
+A, a model for implementing balanced trees
+
+206
+00:16:48,370 --> 00:16:50,960
+in guaranteed logarithmic time.

@@ -1,0 +1,511 @@
+Next we're going to look at Ternary 
+search tries, which is another data 
+structure that new data structure, that 
+responds to the problem of too much 
+memory space used by our way tries. 
+this is a very easy to describe and 
+implement data structure. 
+And it came out of the same paper that 
+Jon Bentley and I wrote in the 1990s when 
+we developed the three way Ternary 
+quicksort. 
+the idea is now we're going to actually 
+store characters in nodes in values. 
+but, we're not going to store whole keys 
+in there, just characters. 
+but we're not going to use this idea of a 
+big array, where a nominal link is an 
+implicit value of a character, actually 
+going to store the characters. 
+but what we're going to do is, make each 
+node have three children not two, like in 
+a binary search tree. 
+And not r, like in a Nr way trie, but 
+exactly three and the three children are 
+for the trie corresponding to smaller 
+keys. 
+The trie corresponding to trees that 
+start with the same, character in the tri 
+corresponding to larger trees. 
+And just given this, this des, 
+description and experience with many of 
+the data structures that now, we've 
+talked about already in this course. 
+many of you could go off and implement 
+this data structure, and we'll see how 
+simple the implementations are. 
+but still let's work through precisely 
+what the data structure looks like. 
+'cuz sometimes the recursive code looks 
+almost too simple and kind of mass 
+understanding. 
+So this is the representation of trie's, 
+that we started with. 
+and all we do with Ternary search trees 
+is it's, it's almost like having a binary 
+search tree representation of the 
+non-null links for every node. 
+so, in this case we're going to have an 
+ad, an s at the root, and that depends on 
+where your keys are inserted. 
+and the key idea is, the middle link 
+coming off the root node, is a link to 
+the TSTs that have all the keys that 
+start with S, with S stripped off. 
+now, but for the left and right links 
+those are for keys that start with some 
+letter that appears before S on the left, 
+and after S on the right. 
+and then say, on the left, the node for B 
+is, if you go down this link, it's all 
+the keys that start with B. 
+Otherwise the B is just to divide the 
+ones that are less, from the ones that 
+are bigger, and so forth. 
+and again, if you [COUGH] search for a 
+key by say, look search for SHE, so 
+that's going down middle links and 
+matching keys. 
+Then some nodes will have values 
+associated with them, that's the value 
+associated with the last letter, last 
+character in the search key. 
+So, that's what the data structure looks 
+like. 
+and I'd begin to describe the search 
+algorithm, it's quite simple given the 
+definition of the data structure. 
+Again, we follow links corresponding to 
+each character of a key. 
+If we have a character that's less than 
+the character in the node, we go left, if 
+we have one that's greater, we can go 
+right. 
+and if it's equal we move to the next 
+character, and take the middle link. 
+so this is an example of a search for a 
+SEA. 
+Start with S, that's a match, we take the 
+middle link. 
+Now the next character is E that's a 
+mismatch and E is less than 8, so we go 
+to the left. 
+now we find a note that has E, and we 
+didn't update our pointer into the key 
+character, because we didn't find a 
+match. 
+So, we're still looking at the E, and 
+now, now we can match that E, so we go 
+down the middle link. 
+Now we're looking at the A in the search 
+key, and that's less than L, so we go to 
+the left. 
+now we're still looking at the A in the 
+search key, and that's a match and it's 
+the last character in key, so, we return, 
+the value associated with the last 
+character in the key. 
+So, it's the same basic algorithm, that 
+we used for trie's except, we just have a 
+different way to decide whether we match 
+the character. 
+We explicitly store characters in nodes. 
+We follow middle link on a match, and 
+update the pointer in our key character. 
+Otherwise, we, we follow the left or 
+right link, because we know that the key 
+is going to be found in the left or right 
+sub-tree. 
+And each node has exactly three links. 
+So here's a example of search in a TST, 
+again this is the example I just talked 
+about in a dynamic form, form. 
+So, if S is the first character in the 
+key, matches the S in the first node of 
+tree, so we take the middle link, and 
+move on to the second character in the 
+key which is e. 
+Compare that against h, it's not a match 
+in fact it's less, so we go left. 
+So, now we're still looking at e and c, 
+and it's a match with the character in 
+the node that we're currently processing. 
+So, we take the middle, and now we move 
+to the next character in the key which is 
+a. 
+And now we take a compared to l, and a is 
+less, so we go left, we're still looking 
+at the a, didn't updated it, 'cuz it's 
+not a match, and now it is a match. 
+and it's the last character in the key, 
+so we look at the value, and that's the 
+value we return. 
+what about unsuccessful search? 
+well, let's see how that works. 
+So, for shelter, it starts with an S, so 
+we take the middle link, second, and move 
+to the second character. 
+Second character's an h, and that's a 
+match. 
+So, we take the middle link, and move to 
+the next character. 
+Third character's an e and third 
+character, and that, that's also a match. 
+So again, we take the middle link, and 
+move to the next character. 
+the fourth character's an l, that's also 
+a match. 
+So, again, we take the middle link, and 
+move to the next character. 
+Now the next character is a t, which is 
+not a match, so we want to move to the 
+right but moving to the right takes us to 
+a null link. 
+So that means that shelter is not in the 
+TST and, and so we return null. 
+Again, in every, in every step what we do 
+is completely well-defined. 
+and any search for a key that in the TST, 
+it's going to return it's associated 
+value. 
+Any search for any other key, is either 
+going to, go out on a null link, or end 
+on a node that involves a mismatch. 
+so, with that basic idea, let's take a 
+more detailed look in the demo, of how 
+the tree gets constructed. 
+and following through this demo, will 
+give you a pretty good feeling for how 
+these trees are constructed. 
+So, we're going to associate the value 0 
+with a string, SHE. 
+so, again every time we move to a new 
+letter, we have to create a new node, 
+until we get to the end of the key. 
+And at which case, we put the, associated 
+the value with the node that contains the 
+last character in the key. 
+so, that's the starting point. 
+key is a sequence of characters down the 
+middle links that [COUGH] goes to from 
+the root to some node. 
+And the value is in the node that 
+corresponds to the last character. 
+so, how do we put a new one in this tree 
+so the in this Ternary search trie. 
+Our first character is S, so we go down 
+the middle. 
+Our next character is not a match so 
+[COUGH] we go to the left, and it's a 
+null link but we have a node that we want 
+to put there. 
+That's the one corresponding to the 
+second letter, in sell's so we do that, 
+and then we make nodes with middle links, 
+going until we get to the last character 
+in sell's, and we associate that with the 
+value 1. 
+So, what about SEA, let's see how that 
+one works. 
+so, first character is S, so I take the 
+middle link, second character is e which 
+is less than h and not a match so we move 
+to the left and continue looking for the 
+e. 
+now this node we find the e, so we take a 
+middle link, and move to the next node 
+[COUGH] next character which is a, a is 
+less than l. 
+it's not a match so we go to the left, 
+that's a null linl, and that's where we 
+put our a, and we associate it with the 
+value 2. 
+OK, here's sh, shells so we have a match 
+at s, go to the middle link, and go to 
+the next letter, match h middle link next 
+letter. 
+and then we go down and add the three 
+nodes corresponding to the last three 
+letters and put a three at the node 
+corresponding to the last letter. 
+OK? 
+now B Y we look at S not a match it's 
+less, so we're going to go to the left, 
+that's a null link. 
+That's where we put our first character, 
+and then we go down the middle link to 
+add the node for the last character,and 
+then ah,associate the value for there. 
+and then B is a similar thing on the 
+right. 
+And then go for the t and h and e, and 
+that gets our share with the value 5. 
+SEA again, it's associative, so we do the 
+search, so S is a match. 
+So we go down the middle link, and move 
+to the next letter. 
+E is less than h so we go to left, and 
+keep looking for e. 
+Now we find e is a match, so we go down 
+the middle link, and move to the next 
+letter. 
+that's a, which is less than l, so we go 
+to the left to look for the a, and there 
+we find it. 
+and we're [COUGH] building an associate 
+symbol table, so we update and overwrite 
+the old value with the new value, 6. 
+S, H, O, R, E. 
+we match the S, match the h, now we're on 
+O, that does not match e, so we go to the 
+right, and keep looking for O. 
+Now, we don't find it, so we create a new 
+node for O, R, E, and then put the value 
+7 in the values associated with the last 
+character in that key. 
+so, that's the construction of a Ternary 
+search tree containing eight keys. 
+Let's take a look at a slightly bigger 
+Ternary search trie. 
+so here's our example with three letter 
+words. 
+now for that example, we didn't show all 
+the null links, but there's lots of null 
+links, 26 null links in each leaf for 
+this 26 way trie. 
+And there's other null links higher in 
+the tree, and actually counting up 
+there's over a thousand null links in 
+this tiny 26 way trie. 
+But in a TST, it's got about the same 
+number of nodes it's actually got more 
+nodes, because it's got one for each 
+character. 
+And the other ones correspond to links, 
+but not that many more nodes. 
+But the key thing is, it has many fewer 
+null links, because there's only three 
+links per node. 
+And this effect is obviously going to be 
+much more dramatic when R is much bigger. 
+like a 256 way trie or even a unicode 
+65,000 way trie. 
+that's the key benefit of TSTs, that and 
+they're much more space-efficient, then 
+our way trie's for large R. 
+so, let's take a look at the 
+implementation in Java, and then we'll 
+look at the code, and then we'll talk 
+some more about performance. 
+oh, the representation in Java is very 
+straightforward, as I said many of you 
+could code this up, just from the 
+description. 
+what does a node have to have? 
+It's going to have a value, it's going to 
+have a character. 
+it's going to have references to left, 
+middle, and right TSTs. 
+and that's what it's built from. 
+so whereas the standard trie 
+representation has a ray of links with 
+characters implicit. 
+TST has explicit characters with only 
+three links per node. 
+so that's TST representation and then 
+given the representation the code is 
+follows almost immediately. 
+with our standard setup if we're supposed 
+to, now we use, we call a recursive 
+routine, giving the root as first 
+argument. 
+And give the tree returned going to give 
+a reference that back to the root. 
+so our recursive routine takes a node and 
+returns a node and for most of the time, 
+it, it doesn't do much. 
+But when it can do node, is created this 
+this code is effective, because any link 
+we go down, we replace with a link that 
+we got back, our standard setup. 
+so, the recursive port routine if we're 
+that character d, we pull out the d 
+character. 
+if once we've done that, if our node is 
+null, we create a new node and give it 
+that character. 
+and now we test our character in our 
+search key, against the character in the 
+given node. 
+Either the one we just created, or the 
+one we happen to be on. 
+if if it's equal, it will fall through to 
+test if we are on the last key. 
+If we're not, if, if we're on the last 
+character in the key we just reset the 
+value. 
+if its equal and we're not on the last 
+character in the key, we go down the 
+middle link. 
+and we replace that link with what we get 
+by going down the middle link by moving 
+to the next character in the key. 
+otherwise, we go either down the left or 
+right link under the same circumstances, 
+without moving to the next character in 
+the key. 
+so that's extremely straightforward code 
+for put in Ternary search trie's. 
+and again, get is even simpler. 
+it's a similar set up that we've used 
+several times before. 
+Use a recursive routine that returns a 
+node, and we pull our value out of that 
+node. 
+we don't have to cast in this case, cause 
+we're not running arrays, and our nodes 
+just has the value type in it. 
+and if we get a null node back, yea, we 
+return null that its not there, the 
+recursive routine will pull out the 
+character if its less than our if our 
+search character is less we go to the 
+left. 
+And if its greater we go to the right, 
+and if its equal we and we're not at the 
+end of the key, we go down to the middle 
+and we move to the end of the key. 
+If its equal and we are at the end of the 
+key, we return the node. 
+And even that node, is going to contain a 
+value or it's not, but that's what we'e 
+return. 
+so, extremely straightforward 
+implementation of both get and put for 
+Ternary search drives. 
+so this, adds this line to our table, 
+where, the amount of space taken for 
+Ternary search trie's is just three 
+lengths you know, plus the value 
+character in each node. 
+so similar to what red-black BST and 
+hashes would use, so no space 
+disadvantage. 
+the determining the cost of search hits 
+and search miss, these values are given 
+for random keys, and they're the subject 
+of deep analysis. 
+but it's not too many. 
+Le, Let's, let's put it that way. 
+And our experimental results bear that 
+out. 
+So, for, for a search miss in a Ternary 
+search trie, you don't have to look at 
+the whole key. 
+Usually, you look at maybe fewer 
+characters than than the whole key, and 
+actually these results are, are for 
+typical, or random. 
+but actually TSD's really shine, in the 
+case where data is not random. 
+they very well adapt to the data. 
+like text written in English language, is 
+not really language really random. 
+And you can see that Ternary search trees 
+actually out perform both hashing and red 
+black BSTs for our benchmark, which is 
+deduping these big text files. 
+[COUGH] now you, you can go ahead and try 
+to get worst case guarantees. 
+By using rotations to balance the the the 
+internal binary search tree's 
+corresponding to each character in, in 
+TSTs. 
+although that's probably normally not 
+worth the trouble. 
+but the bottom line is that TST is at 
+least it's as fast as hashing for string 
+keys and it's it's space efficient for 
+sure. 
+And it's pretty easy to speed it up. 
+the idea is to speed it up, that works 
+extremely well in practice is to, use our 
+way of branching, at the be, at the top 
+of the TST. 
+so rather than fool around with the 
+first, couple of characters, simply do a 
+big branching at the root. 
+You can do r way branching at the root of 
+26, but in practice, it's pr, proven it 
+works fine to do, let's say, r squared 
+way branching at the root. 
+and immediately take care of the first 
+two characters, which is the common case, 
+and then get down to small TSTs. 
+and there's variations of this, that you 
+might imagine, but this is a really 
+simple one that almost always works. 
+you have to deal especially with one and 
+two letter words. 
+and we'll leave that for exercise. 
+but with that change now we get a, an 
+algorithm that's is definitely faster 
+than hashing in red-black BSTs for our 
+benchmarks. 
+and that'll turn out to be the case, for 
+many applications. 
+So, just to summarize what are the trade 
+offs between TSTs and hashing? 
+for hashing you have to examine the 
+entire key, in order to compute the hash 
+function. 
+we talked about examples, where people 
+try to skip doing that, and wind up with 
+performance problems. 
+Not much difference between a hit and a 
+miss in a hashing, and there's a lot of, 
+of reliance and maybe difficulty of 
+implementation ah,depending on the hash 
+function. 
+and also, hashing is really only good for 
+search and insert. 
+the other kinds of operations that we'd 
+like to perform in symbol table when 
+there's order in the keys is not 
+supported by hashing. 
+with TSTs, it only works for strings or 
+if you have keys that are numbers, then 
+you can rework them into strings, or 
+string like things. 
+And that's that's a restriction but does 
+cover a huge number of applications. 
+it, it only examines the key characters 
+that it needs to, and in particular, a 
+search miss might involve only a few 
+characters. 
+So, in typical applications you'll get 
+sub-linear performance in TSTs. 
+You can get searches done without looking 
+at the whole key. 
+the other thing is there's other, the 
+ordered symbol table operations you can, 
+you know easily support with TSTs. 
+just by extending, what we did for binary 
+search tree. 
+and even more important there's other 
+interesting operations that we can add 
+for string keys. 
+that are very useful, and we'll see 
+applications, and implementations of 
+these, in just a minute. 
+so the bottom line is that this data, is 
+a relatively new data structure. 
+but, its better than the classic ones for 
+important applications. 
+Its faster than hashing particular for 
+search misses. 
+and its got more flexibility even than 
+red black BSTs, and that's what we will 
+talk about soon, but that's an 
+introduction to TSTs. 
+

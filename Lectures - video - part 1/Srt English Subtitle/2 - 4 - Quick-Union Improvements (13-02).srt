@@ -1,0 +1,589 @@
+1
+00:00:02,041 --> 00:00:07,088
+Okay. So, we've looked at the quick union
+and quick find algorithms. Both of which
+
+2
+00:00:07,088 --> 00:00:13,034
+are easy to implement. But simply can't
+support a huge dynamic connectivity
+
+3
+00:00:13,034 --> 00:00:18,151
+problems. So, how are we going to do
+better? That's what we'll look at next. A
+
+4
+00:00:18,151 --> 00:00:23,731
+very effective improvement, it's called
+weighting. And it might have occurred to
+
+5
+00:00:23,731 --> 00:00:28,764
+you while we are looking at these
+algorithms. The idea is to when
+
+6
+00:00:28,764 --> 00:00:34,735
+implementing the quick union algorithm
+take steps to avoid having tall trees. If
+
+7
+00:00:34,735 --> 00:00:41,873
+you've got a large tree and a small tree
+to combine together what you want to try
+
+8
+00:00:41,873 --> 00:00:48,184
+to do is avoid putting the large tree
+lower, that's going to lead to long tall
+
+9
+00:00:48,184 --> 00:00:54,376
+trees. And there's a relatively easy way
+to do that. What we'll do is we'll keep
+
+10
+00:00:54,376 --> 00:01:00,577
+track of the number of objects in each
+tree and then, we'll maintain balance by
+
+11
+00:01:03,558 --> 00:01:05,049
+always making sure that we link the root
+of the smaller tree to the root of the
+
+12
+00:01:06,539 --> 00:01:12,176
+larger tree. So, we, we avoid this first
+situation here where we put the larger
+
+13
+00:01:12,176 --> 00:01:18,053
+tree lower. In the weighted algorithm, we
+always put the smaller tree lower. How we,
+
+14
+00:01:18,053 --> 00:01:27,470
+let's see how we implement that. Let's see
+a demo first. Okay, so again start out in
+
+15
+00:01:27,470 --> 00:01:34,790
+our normal starting position, where
+everybody's in their own tree. And for
+
+16
+00:01:35,059 --> 00:01:42,249
+when there's only two items to link it, it
+works, works the same way as before. But
+
+17
+00:01:42,249 --> 00:01:48,725
+now, when we have eight to merge with four
+and three, we put the eight as the child,
+
+18
+00:01:48,725 --> 00:01:56,408
+no matter which order their arguments
+came, because it's the smaller tree. So,
+
+19
+00:01:56,408 --> 00:02:02,368
+six and five doesn't matter, whichever one
+goes down doesn't matter. Nine and four,
+
+20
+00:02:02,368 --> 00:02:09,710
+so now, nine is the small one four is the
+big one. So, nine is going to be the one
+
+21
+00:02:09,710 --> 00:02:20,136
+that goes down below. Two and one, five
+and zero. So now, five and zero five is in
+
+22
+00:02:20,136 --> 00:02:33,812
+the bigger tree so zero goes below. Seven
+and two, two is in the bigger tree so
+
+23
+00:02:33,812 --> 00:02:46,129
+seven goes below. Six and one they're in
+equal size trees. And seven and three,
+
+24
+00:02:46,129 --> 00:02:59,272
+three is in the smaller tree so it goes
+below. So, the weighted algorithm always
+
+25
+00:02:59,272 --> 00:03:08,686
+makes sure that the smaller tree goes
+below. And again, we wind up with a single
+
+26
+00:03:08,686 --> 00:03:15,571
+tree representing all the objects. But
+this time, we h ave some guarantee that no
+
+27
+00:03:15,571 --> 00:03:21,267
+item is too far from the root and we'll
+talk about that explicitly in a second.
+
+28
+00:03:21,267 --> 00:03:27,980
+So, here's an example that shows the
+effect of doing the weighted quick union
+
+29
+00:03:27,980 --> 00:03:35,236
+where we always put the smaller tree down
+below for the same set of union commands.
+
+30
+00:03:35,236 --> 00:03:42,939
+This is with a hundred sites and 88 union
+operations. You can see in the top the big
+
+31
+00:03:42,939 --> 00:03:49,768
+tree has some trees, some nodes, a fair
+distance from the root. In the bottom, for
+
+32
+00:03:49,768 --> 00:03:55,908
+the weighted algorithm all the nodes are
+within distance four from the root. The
+
+33
+00:03:55,908 --> 00:04:01,207
+average distance to the root is much, much
+lower. Let's look at the Java
+
+34
+00:04:01,207 --> 00:04:06,557
+implementation and then we'll look in more
+detail at, at that quantitative
+
+35
+00:04:06,557 --> 00:04:12,286
+information. So, we used the same data
+structure except, now we need an extra
+
+36
+00:04:12,286 --> 00:04:17,569
+array, that for each item, gives the
+number of objects in the tree routed at
+
+37
+00:04:17,569 --> 00:04:22,971
+that item. That will maintain in the union
+operation. Find implementation is
+
+38
+00:04:22,971 --> 00:04:28,589
+identical to for quick union, you're just
+checking whether the roots are equal. For
+
+39
+00:04:28,589 --> 00:04:34,009
+the union implementation, we're going to
+modify the code to check the sizes. And
+
+40
+00:04:34,009 --> 00:04:40,118
+link the root of the smaller tree to the
+root of the larger tree in each case. And
+
+41
+00:04:40,118 --> 00:04:46,049
+then after changing the id link, we also
+change the size array. If we make id, i a
+
+42
+00:04:46,049 --> 00:04:52,241
+child of j, then we have to increment the
+size of j's tree by the size of i's tree.
+
+43
+00:04:52,241 --> 00:04:58,495
+Or if we do the other way around, then we
+have to increment the size of i's tree by
+
+44
+00:04:58,495 --> 00:05:04,849
+the size of j's tree. So, that's the full
+code in white for implementing quick
+
+45
+00:05:04,849 --> 00:05:12,424
+union. So, not very much code but much,
+much better performance. In fact we can
+
+46
+00:05:12,424 --> 00:05:19,194
+analyze the running time mathematically
+and show that defined operation, it takes
+
+47
+00:05:19,194 --> 00:05:25,225
+time proportional to how far down the
+trees are in the node in the tree, the
+
+48
+00:05:25,225 --> 00:05:31,445
+nodes are in the tree, but we can show
+that it's guaranteed that the depth of any
+
+49
+00:05:31,445 --> 00:05:37,989
+node in the tree is at most the logarithm
+to the base two of N. We use the notation
+
+50
+00:05:37,989 --> 00:05:43,974
+Lg always for logarithm to the base two.
+And, and, so for, if N is a thousand,
+
+51
+00:05:43,974 --> 00:05:49,246
+that's going to be ten, if N is a million
+that's twenty, if N is a billion that's
+
+52
+00:05:49,246 --> 00:05:55,745
+30. It's a very small number compared to
+N. So, let's look at the proof of that. We
+
+53
+00:05:55,745 --> 00:06:02,046
+do some mathematical proofs in, in this
+course when they're critical such as this
+
+54
+00:06:02,046 --> 00:06:07,981
+one. And why is it true that the depth of
+any node x is, at most, log base two of N?
+
+55
+00:06:07,981 --> 00:06:13,850
+Well, the key to understanding that is to,
+take a look at exactly when does the depth
+
+56
+00:06:13,850 --> 00:06:21,347
+of any node increase? When does it go down
+further in the tree? Well. The x's depth
+
+57
+00:06:21,347 --> 00:06:29,697
+will increase by one, when its tree, T1 in
+this diagram, is merged into some other
+
+58
+00:06:29,697 --> 00:06:37,835
+tree, T2 in this diagram. Well, at that
+point we said we only do that if the size
+
+59
+00:06:37,835 --> 00:06:45,331
+of T2 was bigger than the or equal to size
+of T1. So, when the depth of x increases,
+
+60
+00:06:45,331 --> 00:06:52,662
+the size of its tree at least doubles. So,
+that's the key because that means that the
+
+61
+00:06:52,662 --> 00:06:58,305
+size of the tree containing x can double
+at most log N times because if you start
+
+62
+00:06:58,305 --> 00:07:05,205
+with one and double log N times, you get N
+and there's only N nodes in the tree. So,
+
+63
+00:07:05,205 --> 00:07:11,631
+that's a sketch of a proof that the depth
+of any node x is at most log base two of
+
+64
+00:07:11,631 --> 00:07:18,605
+N. And that has profound impact on the
+performance of this algorithm. Now instead
+
+65
+00:07:18,605 --> 00:07:24,548
+of the initialization always takes time
+proportional to N. But now, both the union
+
+66
+00:07:24,548 --> 00:07:31,010
+and the connected or find operation takes
+time proportional to log base two of N.
+
+67
+00:07:31,010 --> 00:07:37,477
+And that is an algorithm that scales. If N
+grows from a million to a billion, that
+
+68
+00:07:37,477 --> 00:07:43,668
+cost goes from twenty to 30, which is
+quite not acceptable. Now, this was very
+
+69
+00:07:43,668 --> 00:07:50,089
+easy to implement and, and we could stop
+but usually, what happens in the design of
+
+70
+00:07:50,089 --> 00:07:57,004
+algorithms is now that we understand what
+it is that gains performance, we take a
+
+71
+00:07:57,004 --> 00:08:02,075
+look and see, well, could we improve it
+even further. And in this case, it's very
+
+72
+00:08:02,075 --> 00:08:09,072
+easy to improve it much, much more. And
+that's the idea of path compression. And
+
+73
+00:08:09,072 --> 00:08:17,066
+this idea is that, well, when we're trying
+to find the root of the tree containing a,
+
+74
+00:08:17,066 --> 00:08:24,361
+a given node. We're touching all the nodes
+on the path from that node to the root.
+
+75
+00:08:24,568 --> 00:08:30,422
+While we're doi ng that we might as well
+make each one of those just point to the
+
+76
+00:08:30,422 --> 00:08:37,299
+root. There's no reason not to. So when
+we're looking, we're trying to find the
+
+77
+00:08:37,299 --> 00:08:43,580
+root of, of P. After we find it, we might
+as well just go back and make every node
+
+78
+00:08:43,580 --> 00:08:51,046
+on that path just point to the root.
+That's going to be a constant extra cost.
+
+79
+00:08:51,046 --> 00:08:57,088
+We went up the path once to find the root.
+Now, we'll go up again to just flatten the
+
+80
+00:08:57,088 --> 00:09:03,099
+tree out. And the reason would be, no
+reason not to do that. We had one line of
+
+81
+00:09:03,099 --> 00:09:10,016
+code to flatten the tree, amazingly.
+Actually to make a one liner code, we use
+
+82
+00:09:10,016 --> 00:09:15,058
+a, a simple variant where we make every
+other node in the path point to its
+
+83
+00:09:15,058 --> 00:09:19,885
+grandparent on the way up the tree. Now,
+that's not quite as good as totally
+
+84
+00:09:21,000 --> 00:09:26,077
+flattening actually in practice that it
+actually is just about as good. So, with
+
+85
+00:09:26,077 --> 00:09:32,555
+one line of code, we can keep the trees
+almost completely flat. Now, this
+
+86
+00:09:32,828 --> 00:09:41,987
+algorithm people discovered rather early
+on after figuring out the weighting and it
+
+87
+00:09:41,987 --> 00:09:49,588
+turns out to be fascinating to analyze
+quite beyond our scope. But we mentioned
+
+88
+00:09:49,588 --> 00:09:55,749
+this example to illustrate how even a
+simple algorithmah, can have interesting
+
+89
+00:09:55,749 --> 00:10:02,203
+and complex analysis. And what was proved
+by Hopcroft Ulman and Tarjan was that if
+
+90
+00:10:02,203 --> 00:10:07,792
+you have N objects, any sequence of M
+union and find operations will touch the
+
+91
+00:10:07,792 --> 00:10:16,014
+array at most a c (N + M lg star N) times.
+And now, lg N is kind of a funny function.
+
+92
+00:10:16,248 --> 00:10:22,067
+It's the number of times you have to take
+the log of N to get one. And the way to
+
+93
+00:10:22,067 --> 00:10:28,061
+think, it's called the iterated log
+function. And in the real world, it's best
+
+94
+00:10:28,061 --> 00:10:36,126
+to think of that as a number less than
+five because lg two^ 65536 is five. So,
+
+95
+00:10:36,126 --> 00:10:42,528
+that means that the running time of
+weighted quick union with path compression
+
+96
+00:10:42,784 --> 00:10:49,990
+is going be linear in the real world and
+actually could be improved to even a more
+
+97
+00:10:49,990 --> 00:10:56,504
+interesting function called the Ackermann
+function, which is even more slowly
+
+98
+00:10:56,504 --> 00:11:03,611
+growing than lg<i>. And another point
+about this is it< /i> seems that this is</i>
+
+99
+00:11:03,611 --> 00:11:09,813
+so close to being linear that is t ime
+proportional to N instead of time
+
+100
+00:11:09,813 --> 00:11:15,925
+proportional to N times the slowly growing
+function in N. Is there a simple algorithm
+
+101
+00:11:15,925 --> 00:11:22,008
+that is linear? And people, looked for a
+long time for that, and actually it works
+
+102
+00:11:22,008 --> 00:11:27,700
+out to be the case that we can prove that
+there is no such algorithm. So, there's a
+
+103
+00:11:27,700 --> 00:11:32,502
+lot of theory that goes behind the
+algorithms that we use. And it's important
+
+104
+00:11:32,502 --> 00:11:38,022
+for us to know that theory and that will
+help us decide how to choose which
+
+105
+00:11:38,022 --> 00:11:43,480
+algorithms we're going to use in practice,
+and where to concentrate our effort in
+
+106
+00:11:43,480 --> 00:11:48,796
+trying to find better algorithms. It's
+amazing fact that was eventually proved by
+
+107
+00:11:48,796 --> 00:11:54,181
+Friedman and Sachs, that there is no
+linear time algorithm for the union find
+
+108
+00:11:54,181 --> 00:12:00,293
+problem. But weighted quick union with
+path compression in practice is, is close
+
+109
+00:12:00,293 --> 00:12:05,844
+enough that it's going to enable the
+solution of huge problems. So, that's our
+
+110
+00:12:05,844 --> 00:12:11,713
+summary for algorithms for solving the
+dynamic connectivity problem. With using
+
+111
+00:12:11,713 --> 00:12:17,128
+weighted quick union and with path
+compression, we can solve problems that
+
+112
+00:12:17,128 --> 00:12:23,109
+could not otherwise be addressed. For
+example, if you have a billion operations
+
+113
+00:12:23,109 --> 00:12:28,845
+and a billion objects I said before it
+might take thirty years. We can do it in
+
+114
+00:12:28,845 --> 00:12:34,212
+six seconds. Now, and what's most
+important to recognize about this is that
+
+115
+00:12:34,212 --> 00:12:40,012
+its the algorithm design that enables the
+solution to the problem. A faster computer
+
+116
+00:12:40,012 --> 00:12:45,529
+wouldn't help much. You could spend
+millions on a super computer, and maybe
+
+117
+00:12:45,529 --> 00:12:51,165
+you could get it done in six years instead
+of 30, or in two months but with a fast
+
+118
+00:12:51,165 --> 00:13:02,056
+logarithm, you can do it in seconds, in
+seconds on your own PC.

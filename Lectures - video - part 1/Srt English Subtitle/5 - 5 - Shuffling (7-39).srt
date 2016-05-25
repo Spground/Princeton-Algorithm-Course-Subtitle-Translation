@@ -1,0 +1,354 @@
+1
+00:00:02,098 --> 00:00:08,005
+Next we're going to look at an easy
+application of sorting to related problem
+
+2
+00:00:08,005 --> 00:00:14,025
+called Shuffling. So, suppose you have a
+deck of cards. One of the things that you
+
+3
+00:00:14,025 --> 00:00:20,004
+might want to try to do is to simply
+rearrange those cards into random order,
+
+4
+00:00:20,004 --> 00:00:25,558
+that's called shuffling. Here's a way to
+get shuffling done using a sort and seems
+
+5
+00:00:25,558 --> 00:00:31,545
+like the opposite. The idea is, just
+generate a random real number for every
+
+6
+00:00:31,545 --> 00:00:37,364
+array entry and then sort using those
+random numbers as the keys. That's an
+
+7
+00:00:37,364 --> 00:00:44,808
+effective way to get things shuffled. And
+it's possible to prove that, that produces
+
+8
+00:00:44,808 --> 00:00:49,217
+a uniformly random permutation of the
+input if there's no duplicate values,
+
+9
+00:00:49,217 --> 00:00:54,615
+assuming that you have a real numbers that
+are generated uniformly at random. And
+
+10
+00:00:54,615 --> 00:00:59,917
+that's just means that it's well shuffled
+that every possible way of shuffling the
+
+11
+00:00:59,917 --> 00:01:05,144
+deck appears with the equal probability.
+That's fine but it requires a sort and a
+
+12
+00:01:05,144 --> 00:01:09,948
+sort seems like a lot of work for this
+problem and the question is, can we do
+
+13
+00:01:09,948 --> 00:01:14,704
+better? Can we have a faster way to
+shuffle? Do we really need to pay the cost
+
+14
+00:01:14,704 --> 00:01:19,430
+of a full sort? The answer to that
+question is, no. There's actually a very
+
+15
+00:01:19,430 --> 00:01:25,674
+easy way to rearrange an array so that
+the result is a uniformly random
+
+16
+00:01:25,674 --> 00:01:33,054
+permutation. It only require a linear time
+to get the job done. Let's look at the
+
+17
+00:01:33,054 --> 00:01:40,235
+demo. The idea this to pass through the
+array from left to right with an index i
+
+18
+00:01:40,235 --> 00:01:46,765
+as we've been doing but now we start with
+the array in order. And actually, it
+
+19
+00:01:46,765 --> 00:01:53,253
+doesn't matter how we start the array and
+every time we pick an integer between
+
+20
+00:01:53,253 --> 00:01:59,418
+0 and i uniformly at random and, and
+swap a[i] with that integer. So, let's
+
+21
+00:01:59,418 --> 00:02:05,584
+look at the beginning, we don't do
+anything just swap it with itself. Now,
+
+22
+00:02:05,584 --> 00:02:11,586
+with i = 2 or i pointing to the second
+card we generate a random integer in
+
+23
+00:02:11,586 --> 00:02:18,375
+between 0 and i, in this case it's the
+one to the left and we swap those.
+
+24
+00:02:18,375 --> 00:02:24,660
+Increment i, generate a random integer,
+this time it's going to be the first one
+
+25
+00:02:24,660 --> 00:02:30,952
+again, swap them. Increment i, generate a
+random integer, swap them. Increment i,
+
+26
+00:02:30,952 --> 00:02:38,833
+generate a random integer, swap them. And
+continue in that way. Swap. So for every
+
+27
+00:02:38,833 --> 00:02:47,422
+i, we do exactly one swap. Now, card could
+be involved in more than one swap but
+
+28
+00:02:47,422 --> 00:02:55,151
+that's not an issue. The point is that the
+cards to the left of i are shuffled there
+
+29
+00:02:55,419 --> 00:03:02,136
+uniform, randomly shuffled. On this case,
+i and r are the same. There's no swap.
+
+30
+00:03:03,044 --> 00:03:09,764
+Increment i, generate a random r, swap them.
+And at the end we have the deck shuffled.
+
+31
+00:03:09,764 --> 00:03:16,472
+That's a linear time shuffling algorithm
+making use of randomness. It was proved
+
+32
+00:03:16,472 --> 00:03:22,530
+through actually a long time ago even
+before computer implementations that if
+
+33
+00:03:22,530 --> 00:03:28,546
+you do that, you get a uniformly random
+permutation and it only takes linear time.
+
+34
+00:03:28,546 --> 00:03:36,148
+So, that's definitely a way to get a deck
+shuffled quite easily. Easy to implement.
+
+35
+00:03:36,491 --> 00:03:44,799
+Now it's key that the uniform random
+number will be between 0 and i-1. You'll
+
+36
+00:03:44,799 --> 00:03:51,477
+often see programmers thinking that
+they're implementing a shuffle and they
+
+37
+00:03:51,477 --> 00:03:56,756
+just choose for every entry, they just
+choose random place in the array to
+
+38
+00:03:56,756 --> 00:04:03,530
+exchange it with and that doesn't really
+work. You could do the items between i and
+
+39
+00:04:03,530 --> 00:04:09,296
+n-1, the ones that you haven't seen
+yet and that would also work but doing a
+
+40
+00:04:09,296 --> 00:04:15,694
+whole array doesn't give you a uniformly
+random result. So, with that one caveat,
+
+41
+00:04:15,694 --> 00:04:22,511
+this code is almost trivial. And it's a
+method in our standard random class. Now
+
+42
+00:04:22,730 --> 00:04:28,984
+if you're going to be using random methods
+that depend on randomness in real
+
+43
+00:04:28,984 --> 00:04:35,204
+applications, you do have to be careful.
+So this is just an example about software
+
+44
+00:04:35,204 --> 00:04:41,332
+security. There's a lot of difficult and
+deep issues to worry about and so for our
+
+45
+00:04:41,332 --> 00:04:46,937
+security and we're not going to worry
+about all of them. But one thing that we
+
+46
+00:04:46,937 --> 00:04:52,698
+can do is make sure that our algorithms
+work as advertised. So, here's an example
+
+47
+00:04:52,698 --> 00:04:59,123
+of an implementation for online poker.
+Here's the code that you can find on the
+
+48
+00:04:59,123 --> 00:05:06,712
+web for how to shuffle a deck of cards and
+that's pretty similar to our code but it's
+
+49
+00:05:06,712 --> 00:05:15,458
+actually got a few bugs, more than a few
+bugs. So first one is the way that random
+
+50
+00:05:15,458 --> 00:05:23,473
+works it's actually never gets to 52 which
+means that the last card just stays it can
+
+51
+00:05:23,473 --> 00:05:29,798
+end up in the last place. So, it's
+definitely not shuffled because of that.
+
+52
+00:05:29,798 --> 00:05:37,761
+Maybe that one's minor but it also is
+picking a random card from the whole deck
+
+53
+00:05:38,019 --> 00:05:45,504
+as we just pointed out that's not uniform.
+Should be between 1 and i or between
+
+54
+00:05:45,738 --> 00:05:53,210
+i+1 and 52. Another problem is in
+this implementation that the random uses
+
+55
+00:05:53,444 --> 00:05:59,972
+just a 32 bit seed that if you do that,
+there's not enough possible shuffles. The
+
+56
+00:05:59,972 --> 00:06:05,999
+number of possible shuffles is, is, is
+much more, if n, if n is 52, it's 52
+
+57
+00:06:05,999 --> 00:06:11,828
+factorial which is a lot bigger than two
+to the 32nd. So, it's not close to a
+
+58
+00:06:11,828 --> 00:06:17,767
+random or uniform. And the other thing is
+that, the seed is just a number of
+
+59
+00:06:17,767 --> 00:06:23,085
+milliseconds since midnight and that cuts
+down the number of shuffles even more. And
+
+60
+00:06:23,085 --> 00:06:28,629
+in fact, it didn't take that much hacking
+for someone to realize that after seeing
+
+61
+00:06:28,629 --> 00:06:33,974
+five cards and figuring out what the
+server clock was doing, you could get all
+
+62
+00:06:33,974 --> 00:06:39,016
+the future cards in a real time in a program.
+And that's a pretty tough thing to have
+
+63
+00:06:39,016 --> 00:06:44,666
+happen if you're implementing online
+poker. You might want to make sure that if
+
+64
+00:06:44,666 --> 00:06:49,769
+you're advertising that you're doing a
+random shuffle, that you go ahead and do
+
+65
+00:06:49,769 --> 00:06:56,694
+so. And the famous quote in this many
+similar quotes, the generation of random
+
+66
+00:06:56,694 --> 00:07:03,108
+numbers is too important to be left to
+chance. So, if your business does depend
+
+67
+00:07:03,108 --> 00:07:10,039
+on shuffling people have looked at all
+sorts of options including using hardware
+
+68
+00:07:10,039 --> 00:07:15,466
+random number generators and these
+various tests available to make sure that
+
+69
+00:07:15,466 --> 00:07:21,866
+it's random and you'd better use good
+shuffling code that's our topic but the
+
+70
+00:07:21,866 --> 00:07:29,018
+bottom line is don't think that it's easy
+to shuffle a deck of cards. So that's
+
+71
+00:07:29,620 --> 00:07:40,060
+shuffling - our first non-trivial sorting
+application.

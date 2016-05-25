@@ -1,0 +1,564 @@
+1
+00:00:02,089 --> 00:00:07,064
+Now we're going to take a look at what
+happens when we have significant numbers
+
+2
+00:00:07,064 --> 00:00:12,050
+of duplicate keys which is not at all
+unusual in practical applications. So, in,
+
+3
+00:00:12,050 --> 00:00:17,084
+in fact, often, the purpose of a sort is
+to bring items with equal keys together
+
+4
+00:00:17,084 --> 00:00:23,039
+for like the example that I gave where we
+had cities and time. There's a lot of
+
+5
+00:00:23,039 --> 00:00:28,375
+detailed data and the time and maybe the
+whole goal of the sort is to group them by
+
+6
+00:00:28,375 --> 00:00:33,880
+cities so we can ship out the data for
+each city, to each city and there's plenty
+
+7
+00:00:33,880 --> 00:00:40,000
+of other examples like that in data
+processing where we find maybe remove
+
+8
+00:00:40,000 --> 00:00:45,096
+duplicates from a mailing list or all the
+job applicants that we get, we might want
+
+9
+00:00:45,096 --> 00:00:51,776
+to sort them by the college attendant. So
+the sort does huge files with huge numbers
+
+10
+00:00:51,776 --> 00:00:57,089
+of duplicate keys. So, a sort, it's
+worthwhile to take a careful look at what
+
+11
+00:00:57,089 --> 00:01:02,482
+the implication of that is. So again,
+typical characteristics we have a huge
+
+12
+00:01:02,482 --> 00:01:09,497
+file but small number of different key
+values. So let's look at our algorithms in
+
+13
+00:01:09,497 --> 00:01:15,923
+that situation. So Mergesort, it doesn't
+matter that much what the key values are
+
+14
+00:01:15,923 --> 00:01:22,425
+like and it's actually, we can show that
+Mergesort always uses between one-half, N
+
+15
+00:01:22,425 --> 00:01:29,679
+log N and N log N compares. Quicksort
+actually, they're up until the 1990s the
+
+16
+00:01:29,679 --> 00:01:35,550
+most widely used implementation took
+quadratic time. For files with large
+
+17
+00:01:35,550 --> 00:01:40,985
+numbers of equal keys and that was
+actually found by applications user and,
+
+18
+00:01:40,985 --> 00:01:46,988
+and that's the standard Quicksort that was
+in all the textbooks almost all the
+
+19
+00:01:46,988 --> 00:01:53,872
+textbooks if you did not stop the
+partitioning on equal keys it would run in
+
+20
+00:01:53,872 --> 00:02:00,710
+quadratic time. So we want to do better
+than this. So the mistake happens if we
+
+21
+00:02:00,710 --> 00:02:06,130
+put all the items equal to the
+partitioning item on one side which is a
+
+22
+00:02:06,130 --> 00:02:11,996
+natural way to implement it and the
+consequence is if you have all the keys
+
+23
+00:02:11,996 --> 00:02:19,147
+equal, then partitioning doesn't really do
+anything. You just peels off one key to do
+
+24
+00:02:19,147 --> 00:02:25,423
+file size n then you get a sub file size n
+- one and then n - two and so forth and
+
+25
+00:02:25,423 --> 00:02:30,732
+the result is a quadratic tim e algorithm.
+Our implementation, we stopped the
+
+26
+00:02:30,732 --> 00:02:35,882
+partitioning scans on items equal to the
+partitioning item and then in that case,
+
+27
+00:02:35,882 --> 00:02:40,548
+when all the keys are equal, it's going to
+divide it exactly in the middle. And then
+
+28
+00:02:40,548 --> 00:02:43,875
+in that case, when all the keys are equal,
+it's going to divide at exactly in the
+
+29
+00:02:43,875 --> 00:02:46,843
+middle. And then in that case you get an N
+log N compares. But actually when you
+
+30
+00:02:46,843 --> 00:02:51,425
+think about it, why don't we just put all
+the items equal to the partitioning item
+
+31
+00:02:51,425 --> 00:02:56,642
+in place. That's, that's really a
+desirable way to look at it and let's take
+
+32
+00:02:56,642 --> 00:03:01,114
+a look at that option. So the goal is so
+called three way partitioning. So what we
+
+33
+00:03:01,114 --> 00:03:05,772
+want to do is get the array into three
+parts so then now we have two pointers
+
+34
+00:03:05,772 --> 00:03:10,364
+into the middle. One that is the boundary
+between the keys that are less than the
+
+35
+00:03:10,364 --> 00:03:15,318
+partitioning element and those that are
+equal of the partitioning element. Another
+
+36
+00:03:15,318 --> 00:03:19,469
+one that's the boundary between the keys
+that are equal of partitioning elements
+
+37
+00:03:19,469 --> 00:03:24,245
+and the one that is greater. And then in
+the middle are all the equal keys and
+
+38
+00:03:24,245 --> 00:03:30,464
+that's what we'd like to arrange. Now
+until the 1990s, conventional wisdom among
+
+39
+00:03:30,464 --> 00:03:36,842
+people implementing system was, wasn't
+worth doing this. But, but actually it's a
+
+40
+00:03:36,842 --> 00:03:43,893
+problem that Edsger Dijkstra had proposed
+in the 70s as an example of, of
+
+41
+00:03:43,893 --> 00:03:50,050
+programming problem. He was really
+interested in analyzing correctness of
+
+42
+00:03:50,050 --> 00:03:57,034
+programs and showing that this how you
+could convince yourself that this program
+
+43
+00:03:57,034 --> 00:04:03,717
+was operating as expected. But in the
+1990s we figured out that really this was
+
+44
+00:04:03,717 --> 00:04:10,624
+going to be an effective way to sort. And
+this was taking a look at the Qsort that a
+
+45
+00:04:10,624 --> 00:04:17,431
+user found was broken and, and now, this
+method is incorporated into some plenty of
+
+46
+00:04:17,431 --> 00:04:23,052
+system sorts. So let's take a look at how
+it works with the demo its more
+
+47
+00:04:23,052 --> 00:04:28,548
+complicated than standard Quicksort
+partitioning. A bit more complicated
+
+48
+00:04:28,548 --> 00:04:34,507
+because there's more to do. So now we have
+our i pointer which is right to the left
+
+49
+00:04:34,507 --> 00:04:40,112
+of stuff we haven't seen ye t and then, we
+have two other pointers that maintain,
+
+50
+00:04:40,112 --> 00:04:46,069
+maintain these boundaries everything to
+the right of gt is known to be greater
+
+51
+00:04:46,069 --> 00:04:52,572
+than partitioning element. Everything to
+the left of lt is known to be less and
+
+52
+00:04:52,572 --> 00:04:59,932
+between lt and i is known to be equal. And
+all the method does is maintain this in
+
+53
+00:04:59,932 --> 00:05:07,709
+variants so let's do an example or two and
+see how that works. So we increment i and
+
+54
+00:05:07,709 --> 00:05:14,939
+then figure out what to do. So, now it's
+less than the partitioning element. So,
+
+55
+00:05:15,910 --> 00:05:22,197
+what we want to do is increment lt's. So
+now we have one that's definitely less
+
+56
+00:05:22,197 --> 00:05:28,309
+than the partitioning element and lt is,
+is pointing at the partitioning element.
+
+57
+00:05:28,529 --> 00:05:34,057
+And so now in, increment both lt and i so
+that's the first case there. So now we
+
+58
+00:05:34,057 --> 00:05:39,077
+have a second item b. That's less than the
+partitioning element so exchange with lt
+
+59
+00:05:39,077 --> 00:05:44,084
+and increment them both. So, we're moving
+the smaller ones than the partitioning
+
+60
+00:05:44,084 --> 00:05:49,097
+element to the left of lt and keeping lt
+pointing on a partitioning element. Now,
+
+61
+00:05:49,097 --> 00:05:54,079
+what about when we get one that's greater
+than the partitioning elements? So, in
+
+62
+00:05:54,079 --> 00:05:59,086
+that case, we exchange greater the one
+over at the right with i and decrement gt.
+
+63
+00:05:59,086 --> 00:06:04,093
+So now, we have one over to the right that
+we know is greater than the partitioning
+
+64
+00:06:04,093 --> 00:06:09,797
+element. Notice that we didn't increment i
+because that element z that is over in the
+
+65
+00:06:09,797 --> 00:06:14,784
+right, really hasn't been compared to the
+partitioning element yet. But we did
+
+66
+00:06:14,784 --> 00:06:21,107
+decrement gt so we made progress. So now
+what happens here, now i is pointing to a
+
+67
+00:06:21,107 --> 00:06:28,730
+bigger one so we're going to exchange it
+with the one at gt and decrement gt again.
+
+68
+00:06:28,976 --> 00:06:35,068
+And again, y is bigger, so exchange it,
+decrement gt. Now we have the c, that one
+
+69
+00:06:35,068 --> 00:06:41,878
+smaller so that's the first case. So we'll
+move it to the left of lt and increment
+
+70
+00:06:41,878 --> 00:06:48,187
+both lt and i. W is a bigger one, let us
+to go over to the right. Now we have i
+
+71
+00:06:48,187 --> 00:06:53,509
+pointing to an element that's equal to the
+partitioning element. And what are we
+
+72
+00:06:53,509 --> 00:06:59,109
+supposed to do then? Well, to maintain the
+variant there we just need to increment i.
+
+73
+00:06:59,109 --> 00:07:04,263
+And again it 's pointing to one that's
+equal of partitioning element increment i.
+
+74
+00:07:04,263 --> 00:07:09,387
+And now one more time and now it's
+pointing to one that's greater so we
+
+75
+00:07:09,387 --> 00:07:15,025
+exchange that with gt and decrement gt and
+i is pointing to the one that was there
+
+76
+00:07:15,025 --> 00:07:20,375
+and that ones smaller. So we exchange it
+will lt and increment both i and lt and
+
+77
+00:07:20,375 --> 00:07:25,392
+now where the point, where the pointers
+have crossed i and gt across there's
+
+78
+00:07:25,392 --> 00:07:31,296
+nothing that we haven't examined yet. So,
+our partitioning is complete. Here's a
+
+79
+00:07:31,296 --> 00:07:37,676
+trace of Dijkstra 3-way partitioning for
+his problem which is when there's just
+
+80
+00:07:37,676 --> 00:07:44,315
+three different values in the file. Our
+problem we were treating partitioning,
+
+81
+00:07:44,315 --> 00:07:51,051
+equal of partitioning element as one value
+less than as another and greater than as
+
+82
+00:07:51,051 --> 00:07:56,090
+another. And so this, this trace
+illustrates how we always make some
+
+83
+00:07:56,090 --> 00:08:04,816
+progress and eventually we get the file
+sorted. The implementation is amazingly
+
+84
+00:08:04,816 --> 00:08:11,525
+simple. The whole partitioning process for
+three-way partitioning and the modern
+
+85
+00:08:11,525 --> 00:08:18,380
+programming language like Java simply
+maintains the invariances described in the
+
+86
+00:08:18,380 --> 00:08:24,882
+demo. If we find one that's less we
+exchange i and lt and increment them both.
+
+87
+00:08:24,882 --> 00:08:31,207
+If it's greater we exchange i and gt and
+decrement that. Otherwise, we increment i.
+
+88
+00:08:31,426 --> 00:08:37,137
+Could, could hardly be simpler. In fact,
+is simpler in many ways than these
+
+89
+00:08:37,366 --> 00:08:44,091
+standard implementation of Quicksort. In
+fact, there's an argument for just using
+
+90
+00:08:44,091 --> 00:08:51,816
+this implementation of Quicksort and
+forgetting about horse because it performs
+
+91
+00:08:51,816 --> 00:08:59,022
+so well in so many practical situations.
+Here's a visual trace of 3-way Quicksort
+
+92
+00:08:59,022 --> 00:09:05,882
+for situation with plenty of equal keys.
+And again, when there's a lot of equal
+
+93
+00:09:05,882 --> 00:09:12,853
+keys then there's going to be place where
+one of those is chosen, it's partitioning
+
+94
+00:09:12,853 --> 00:09:19,661
+element then a big chunk of the array gets
+handled just in a partitioning process.
+
+95
+00:09:20,335 --> 00:09:28,062
+Now, there's actually some deeper reasons
+why this method is important and one thing
+
+96
+00:09:28,062 --> 00:09:33,816
+to do is to realize that the lower bound
+that we talked about before depended on
+
+97
+00:09:33,816 --> 00:09:40,062
+the keys being distinct. So, worst case
+for lower bounds is when the keys are all
+
+98
+00:09:40,062 --> 00:09:46,094
+distinct. But if we have a situation where
+there are a lot of equal keys, that model
+
+99
+00:09:46,094 --> 00:09:52,793
+is wrong. It's not too difficult to get a
+similar lower bound for the model when we
+
+100
+00:09:53,027 --> 00:09:59,028
+know that there are some equal keys. So,
+for example this is a rather complicated
+
+101
+00:09:59,028 --> 00:10:05,008
+formula but not too bad but in a sense
+that if you know that the i-th key, it
+
+102
+00:10:05,008 --> 00:10:10,767
+occurs xi times you can write down a lower
+bound for the number of comparisons that
+
+103
+00:10:10,767 --> 00:10:16,711
+are going to be required in the worst
+case. And, what's interesting about three
+
+104
+00:10:16,711 --> 00:10:22,718
+way partitioning is that the number of
+compares that it uses is equal to this
+
+105
+00:10:22,718 --> 00:10:29,141
+lower bound within a constant factor. So
+that's entropy-optimal and what that means
+
+106
+00:10:29,141 --> 00:10:34,712
+is whatever the distribution of equal keys
+in there, this thing is going to use a
+
+107
+00:10:34,712 --> 00:10:40,928
+number of compares that's proportional to
+the best that you could possibly do. The
+
+108
+00:10:40,928 --> 00:10:47,266
+proof for this fact is quite beyond the
+scope of this course but it's still an
+
+109
+00:10:47,266 --> 00:10:53,275
+important fact. And the, the bottom line
+is that if you randomize the order and use
+
+110
+00:10:53,275 --> 00:10:59,252
+three-way partitioning then there's lot of
+applications where your sort routine is
+
+111
+00:10:59,252 --> 00:11:05,478
+going to be linear not N log N so it will
+be much more faster than Mergesort and you
+
+112
+00:11:05,478 --> 00:11:11,594
+know, the methods for really a broad class
+of applications. So, taking a look at
+
+113
+00:11:11,594 --> 00:11:23,860
+equal keys is carefully is something that
+can lead us to very efficient Quicksort

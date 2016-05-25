@@ -1,0 +1,375 @@
+So that's a regular expression,
+pattern-matching that we implement by
+constructing and simulating a
+nondeterministic finite state machine.
+Really, one of the most ingenious
+algorithms that we look at in this course.
+next we'll look at some applications. so,
+the most famous is called, Grep and this
+is what Ken Thompson implemented in the
+initial Unix. And it was a very, very
+important tool for programmers working on
+the tiny really tiny, computers that were
+available at that time. it was really
+important to be able to ask questions
+about programs of this type. and it
+allowed the development of bigger and
+bigger computational infrastructure like
+the Unix Operating System that's still
+widely used today. so Grep was a simple
+command. what you want to do is take a
+regular expression as a command line
+argument and print the lines from standard
+input to have some substring that's
+matched by the regular expression.
+Programmers use that all the time to try
+to figure out what variables they use in
+what part of what programming. many
+programmers, use Grep every day still
+today. and here's how we implement it
+using the code that you know, we've talked
+about so far. so first thing is, is create
+the RE that we're going to match to make
+it more like subscreen search. We just
+care for the things in there anywhere at
+all. So we put a dot star before and after
+and we enclose it in parenthesis just cuz,
+cuz our code simplified, if our RE's
+enclosed in parenthesis. Build an NFA from
+that regular expression. and then as long
+as there's an align in standard input, we
+read the line and we ask if the NFA
+recognizes it. So the constructor builds
+the NFA and recognizes is the simulation.
+if one NFA on that string, if it's there,
+you print it out. if it doesn't recognize
+it the final accept state is not in the
+substrateq you could get to, for that
+string, it won't print it out. And we just
+do that for every line in the input.
+pretty, amazingly simple implementation,
+although, quite elegant, conceptually.
+It's a very, Elegant, and, and, ef ficient
+permutation of this basic process.
+Absolutely correct. so, in the bottom line
+for it is in the worst case it's the same
+as for the, elementary substring search
+algorithm that we looked at when we first
+started talking about string searching and
+it's really amazing. the brute force
+algorithm that you come up with of
+tri-matching the string, the single string
+at every character position. The worst
+case is time proportional to M times N.
+But here we have a regular expression
+which specifies an infinite set of
+patterns. And we can tell if any one of
+those infinite set of patterns is matched
+by our string in the same worst case kind.
+it's really an amazing algorithm that's
+Ken Thompson, Grep. Once you have Grep
+available, then crossword puzzles become a
+lot easier. a lot of it's standard in UNIX
+to a dictionary or if you can't find one
+on your system, we have it on the book
+site that simply has all the words on the
+dictionary, all the lower case one per
+line. and if you have a crossword puzzle
+where you're missing a couple of letters
+you can just Grep for in words.txt for
+and, and leave, don't care is for those
+letters, and it'll tell you the, the
+things you can put in there. In this case
+it's the one that has exactly that many
+letters. It's stricter. so that's a
+typical, application and I'm sure lots of
+people use it that way now. now for
+industrial strength nowadays there's, a
+lot of things that people expect when
+using regular expressions. our
+implementation doesn't have character
+classes. it doesn't have the extra meta
+characters like plus and other things. the
+idea of capturing which actually get the
+part of the string that satisfies, that
+matches the regular expression of various
+different extensions of closure. and then
+there's the idea of greedy versus
+reluctant matching. So, for example, if
+you have a regular expression, blink.
+/blink which you'd find in HML for the
+blinking text. there's two possibilities.
+so called reluctant matching would be like
+the tightest match, matches that you'd
+get. You h ave two of them but then, the
+greedy matching would get as much text as
+it possibly could in different
+applications, you might want different
+things. Capturing means give me the
+substring that matches. and so those
+things are not difficult to add to the
+basic code that we've done and all that
+has to be in industrial strength
+implementation. many programming systems
+have Grep that have all these sorts of
+things. again originated, originated in
+Unix in the 1970s and nowadays, every
+language has to have some kind of extended
+regular expression facility. there's,
+language Unix commands like Grep and lock,
+and old programmer's tools like EAMCs.
+There's modern programmer's tools like
+Perl or PHP Python and Javascript. All of
+these things have regular expression
+processing. and so, programmers demand
+this facility nowadays. in fact, Perl is
+an example of an entire language that's
+built on regular expressions. and again
+there is various command line options you
+can say run it for each line and you have
+replacement facilities and many other
+things that is, is certainly a worthwhile
+facility for any programmer to use
+nowadays and many programmers use these
+things. Now to, again to go back to the
+slide that was filled up with a regular
+expression you want to use these things
+wisely there are definitely computational
+tasks, where it might be better to just
+write a Java program, not try to use a
+regular expression. So every tool has it's
+place and try not to do everything with
+the regular expression language. in Java
+various facilities, are built in to
+different parts of the Java library. and
+so and understanding how the
+implementation works. you can understand
+how to use these. so one simple,
+implementation is in the Java string
+library. so if there's a, you have a
+string called input and another string
+called regexp and the matches method in
+the string library will return the bullion
+that says if the strings in the line which
+you know, described by the regular
+expression. so this is just a simple stub
+that I call validate that takes a regular
+expression and an input from the command
+line, unless you know if the, the, the
+string is in the line that's described by
+the regular expression. So, like as I dent
+one, two, three, and leave a little Java
+identifier giving that regexp legal Java
+identifiers that we looked at earlier and
+so forth. so that's one thing that's built
+in to Java. So in Java programs you can
+use regular expression pattern-matching in
+that simple way. another thing, another
+kind of task that is better handled with a
+that's handled with this Java
+implementation as the idea of harvesting.
+so we want to print all the sub strings of
+the input that match a given RE. So, say
+this is the fragile X syndrome we want to
+harvest all the patterns from the DNA
+that, have this property that starts with
+gcg and ends with ctg and has any number
+of these triple gcg or cth, triples
+inside. or maybe you want to harvest the
+same program harvests all the e-mail
+addresses from a web page. That's kind of
+amazing that the same program can work for
+two such diverse tasks. that's, that's a
+testimony to the utility of this
+abstraction. so how do we do harvesting
+within Java? Well it's got a, Java has two
+classes called pattern and matcher that
+implement regular expression
+pattern-matching basically by, as we did,
+separating the construction of the machine
+from the simulation. so this is what the
+code looks like for harvester. We take our
+regular expression as the first command
+line argument and we setup an input stream
+from the second command line argument, can
+be a file or a webpage. and then we read
+the input stream. then we use Java's
+pattern class, to, to build a pattern
+which essentially is an NFA that is
+constructed from the regular expression.
+in the pattern class, has a method called
+a matcher and that essentially creates an
+NFA stimulator from that NFA for that
+text. and, so that's a machine that not
+only does matching in the way that we did,
+but it also finds a match and keeps track
+of what's called group, which is the
+substring that caus e the match. so it
+adds that extra code to do these things
+that are useful in this illustrates one
+line of code for each one of those
+facilities. That is, create the NFA,
+create the simulator find the next match
+and get the substring that cause the
+match. That's an implementation of
+harvester that can go through and do
+things like get fragile X indicators from
+a chromosome or get e-mail addresses from
+a web page. And of course, you could
+extend that to print out the index of
+where they occur and other things. this is
+a very powerful facility to have in a
+programming language and Java certainly
+has it. Now there is a caveat about this
+that's really important. this introduces
+the idea that we talked about with hashing
+and this is another example of the
+algorithmic complexity attack. And that
+is, if you know something about the way
+that a website is implemented at facility.
+in this case, it's possible to implement
+regular expression pattern-matching in a
+not so efficient way and atypically,
+actually, the implementations that we see
+out in the wild like the ones in Unix or,
+or Java or Perl, do not guarantee
+quadratic performance the way we have.
+They do not guarantee the running time's
+going to be proportional to the product or
+the length of the string and the length of
+the regular expression. In fact, they go
+exponential. again, going back to Kleene's
+theorem, it's relatively simple to prove.
+it's not so difficult to develop an
+implementation that is more like Kleene's
+theorem, but it can take exponential time.
+and you can try it yourself in Java or
+Perl, if you try to look for a match for
+this regular expression in a string like
+that, you add just a couple of characters
+to the string then running time will
+double. again, going back to our
+algorithmic performance lectures. if
+that's what happens, if I just add one
+thing and my running time doubles that
+means I have exponential time. and so if
+I'm using a facility that has one of these
+exponential time implementations then,
+this is, what's called a SpamAssassin reg
+ular expression. it's going to take
+exponential time on certain e-mail
+addresses and, somebody can create trouble
+by sending such addresses to a mail server
+the mail server will take exponential time
+just trying to determine if it's spam or
+not. and by having an inefficient
+algorithm, a server like that is
+definitely subject to such a tax.
+generally, you don't want to have
+exponential algorithms you particularly
+don't want to have exponential algorithms
+if you have arbitrary clients out there
+that can cause trouble for you. a another
+pitfall is things that kind of look like
+regular expressions but aren't actually
+regular expressions. So it's common to
+have the backslash one notation. So that's
+supposed to match the self expression that
+was matched earlier. So this thing dot
+plus back slash one is a string that is
+two copies of something, like couscous or
+with at least one character. and this one
+is a similar one. This one actually is
+number of ones is not prime. it matches,
+so you can write pretty sophisticated
+computational thing just with these little
+references. but there's a problem and it's
+a fundamental problem, is that . that
+kinds of languages of the sets of strings
+that you specify with such notation are
+not regular. That is, like I said, it's a
+point you can't write a regular expression
+to specify. and so these are examples like
+strings to the form ww For sum W, you
+can't write a regular expression that,
+will recognize, that will describe all
+such strings. There are even scientific
+applications like complemented
+palindromes. So that's like a palindrome,
+but also complements a's to t's and c's
+and g's. So that's another, example. And
+if they're not regular, then Kleene's
+theorem doesn't hold. there's no NFA that
+corresponds to them, and in fact we're,
+we'll talk in a couple of lectures about
+intractability. in fact, nobody knows an
+efficient method for guaranteeing
+performance when you have back references.
+so, if you're allowing back references
+you're pretty much subject to performance
+attacks like the one we just mentioned.
+and that's where, we'll will finish up
+this lecture. this is an amazingly
+elegant, and efficient, and ingenious
+algorithm, and it's based on the theory of
+computation that has been studied since
+the 1930's and it's the basis for much of
+the programming, programming languages
+that we do. it's really worth
+understanding this theory and Grep is a
+wonderful example of why it's important to
+understand theory like this. it really it
+takes us to the next level of algorithms
+and that's writing programs that translate
+a program to machine code. actually, what
+we've looked at, both for KMP and for Grep
+are examples of compiler, they're simple
+examples of compiler. for KMP, we took a
+string and we built a DFA. For Grep, we
+took an RE and we built an NFA. and all
+Java C does is take Java language code and
+translate it to a byte code. Now, it uses
+more complicated theorems and laws from
+theory of computation to get the job done,
+because a java program is also not
+regular. But, it really is worthwhile
+thinking about the progression from KMP to
+a Java compiler. Whereas in Java compiler,
+you have a program, now, you want to
+compile of and know if it's legal you want
+to get byte code and then you've got a
+java simulator, and that's not so
+substantially different from what we just
+did for Grep in a stage along the way.
+that's quite interesting to see this kind
+of context to get us such a practically
+useful and important algorithm. so the
+summary is we did some from the standpoint
+of the program, we implemented substring
+search by simulating a DFA and we
+implement a regular expression
+pattern-matching by simulating an NFA.
+from theoretician what's interesting about
+these abstractions is that NFAs and DFAs
+and RE are equivalent in power. if you can
+describe a set of strings for one of them,
+you could describe a set of strings with
+any of them. so that's interesting. And
+also interesting is that there's
+limitations, there's sets of strings like
+palindromes and so forth, that you can't
+specify with a DFA or, o r an NFA. but
+from a student in an algorithms class it,
+it really is you know, worthwhile to see
+that these principles are not just theory.
+they're a practical use and this is an
+essential paradigm all throughout computer
+science. you know, we want to find an
+intermediate abstraction that we can
+understand and make sure we pick the right
+one, and then we pick clients that can use
+it in a real implementations that can
+implement it. And by building the right
+intermediate abstraction, we can solve
+some important practical problems. those
+are the lessons that Grep teaches us.

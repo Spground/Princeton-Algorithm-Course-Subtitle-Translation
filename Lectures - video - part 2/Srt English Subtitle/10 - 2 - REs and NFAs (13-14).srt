@@ -1,0 +1,664 @@
+1
+00:00:03,180 --> 00:00:08,850
+Before we can get to the algorithm, we
+have to consider another abstract concept
+
+2
+00:00:08,850 --> 00:00:15,469
+in the NFA and take a look at the NFA's
+now. first of all, there's a duality, a
+
+3
+00:00:15,469 --> 00:00:21,760
+well-known duality between regular
+expressions and DFAs. DFA is a discrete,
+
+4
+00:00:21,760 --> 00:00:26,757
+finite automaton. that's an abstract
+machine from, theoretical computer
+
+5
+00:00:26,757 --> 00:00:32,411
+science. which is a very simple idea. It's
+a state machine for recognizing whether a
+
+6
+00:00:32,411 --> 00:00:37,342
+given string is in a given set. And, if
+you're not familiar with those, they are
+
+7
+00:00:37,868 --> 00:00:43,587
+very easy to understand and we'll, look at
+some examples. in a little summary from
+
+8
+00:00:43,587 --> 00:00:48,715
+basic theoretical computer science,
+there's a very important theorem called
+
+9
+00:00:48,715 --> 00:00:54,847
+Kleene's theorem that, was, developed
+actually here at Princeton in the 30's and
+
+10
+00:00:54,847 --> 00:01:00,032
+it says that, for any discrete finite
+state automaton, there exists a regular
+
+11
+00:01:00,032 --> 00:01:05,695
+expression that describes the same set of
+strings. And equivalently, for any regular
+
+12
+00:01:05,695 --> 00:01:11,494
+expression, there's a DFA that recognizes
+the same set of strings. and this is just,
+
+13
+00:01:11,699 --> 00:01:16,501
+an example. and if you have seen this,
+this sort, this sort of thing will be
+
+14
+00:01:16,501 --> 00:01:21,652
+familiar and if we have, if you haven't
+you know, and you will understand better
+
+15
+00:01:21,652 --> 00:01:27,283
+as we get into it. So, a discreet finite
+state machine is a machine that has states
+
+16
+00:01:27,283 --> 00:01:32,914
+that are labeled and it has transitions
+from state to state that are labeled with
+
+17
+00:01:32,914 --> 00:01:38,133
+characters. And, the way that it works is,
+if it's in a state and it reads like for
+
+18
+00:01:38,133 --> 00:01:43,489
+every state is well defined is the next
+character is zero or one it's another
+
+19
+00:01:43,489 --> 00:01:48,260
+state to go to. So for example at state
+zero if you see a zero you stay in state
+
+20
+00:01:48,260 --> 00:01:52,691
+zero, if you see a one you go to state
+one. In state one if you see a zero you
+
+21
+00:01:52,691 --> 00:01:57,294
+stay in state one, if you see a one you go
+to state two, and so forth. So at every
+
+22
+00:01:57,294 --> 00:02:02,880
+state. read a character and go to the well
+defined next state. That's a discreet a
+
+23
+00:02:02,880 --> 00:02:09,370
+deterministic final state automaton. and
+so, that's the machine you start it up on
+
+24
+00:02:09,370 --> 00:02:15,814
+a string, and it reads all of the
+characters in the string. and then, if it,
+
+25
+00:02:16,058 --> 00:02:21,442
+ends up in a state that's so called
+terminal state, and started on the start
+
+26
+00:02:21,442 --> 00:02:25,031
+state the terminal state is just in
+dicated by this X that are on this
+
+27
+00:02:25,031 --> 00:02:31,720
+example. It ends up in the right state you
+say that it recognizes a set of strings.
+
+28
+00:02:31,967 --> 00:02:38,327
+and so that's a way to determine if a
+given string is in a specified set. The
+
+29
+00:02:38,327 --> 00:02:45,430
+machine specifies the set. In an RE the,
+we specify the set by writing characters
+
+30
+00:02:45,430 --> 00:02:51,459
+and stars and meta-characters in
+parenthesis and this regular expression
+
+31
+00:02:51,790 --> 00:02:56,226
+recognizes these same set of strings.
+Describes these set of same, same set of
+
+32
+00:02:56,226 --> 00:03:01,494
+strings that's recognized by this DFA.
+Hank Leany's theorem showed that it's
+
+33
+00:03:01,494 --> 00:03:08,242
+always possible, to, construct such a
+machine. So that gives a, a basic plan for
+
+34
+00:03:08,516 --> 00:03:14,580
+developing a pattern matching
+implementation. and this is developed by
+
+35
+00:03:14,580 --> 00:03:20,460
+Ken Thompson at Bell labs, one of the
+developers of UNIX, and, and this facility
+
+36
+00:03:20,460 --> 00:03:25,990
+was an important part of early UNIX and
+developed this idea based on the
+
+37
+00:03:26,200 --> 00:03:31,750
+well-known theorem from theoretical
+computer science. is let's try to build a
+
+38
+00:03:31,750 --> 00:03:36,573
+machine, the same way as we did for
+Knuth-Morris-Pratt, where we have no
+
+39
+00:03:36,573 --> 00:03:42,076
+backup in the text input string. so we
+just got a finite state machine. With
+
+40
+00:03:42,076 --> 00:03:47,647
+Knuth-Morris-Pratt we built a, a machine
+for recognizing the one string how about
+
+41
+00:03:47,647 --> 00:03:53,718
+building one for multiple strings and that
+would give us a linear time guarantee. so
+
+42
+00:03:53,718 --> 00:04:01,963
+the unruling extractions is determine if
+it's FSA or DFA and the basic plan is to
+
+43
+00:04:01,963 --> 00:04:09,976
+just go ahead and take your pattern. It
+describes a set of strings and use that to
+
+44
+00:04:09,976 --> 00:04:15,439
+build a DFA and then simulate the DFA with
+the Texas input, the same way we did for
+
+45
+00:04:15,439 --> 00:04:19,943
+Knuth-Morris-Pratt And if it accepts, we
+say we have a match. If it rejects, we
+
+46
+00:04:19,943 --> 00:04:28,320
+don't have a match. this is a, a fine plan
+but it's got a flaw. the bad news is that
+
+47
+00:04:28,610 --> 00:04:35,430
+The plan is infeasible because the number
+of states in the DFA might be exponential
+
+48
+00:04:35,657 --> 00:04:42,326
+in the length of the RE. So, for it's got
+too many states Kleene's, the proof of
+
+49
+00:04:42,326 --> 00:04:48,205
+Kleene's theorem, standard proof of
+Kleene's theorem , involves the
+
+50
+00:04:48,205 --> 00:04:53,921
+exponential number of states. and it's not
+that difficult to prove if you're
+
+51
+00:04:53,921 --> 00:05:00,311
+interested be sure to look it up. But from
+a practical, standpoint, too many states,
+
+52
+00:05:00,515 --> 00:05:06,214
+you can't use that as a basis for
+algorithm. But there's an easy revision.
+
+53
+00:05:06,443 --> 00:05:11,944
+And again, this gets back. It will, it
+will give us a quadratic time guarantee,
+
+54
+00:05:11,944 --> 00:05:17,750
+and actually, in, in real life, it's
+usually linear, and all we do is change
+
+55
+00:05:17,750 --> 00:05:24,091
+the abstraction to use a non-deterministic
+finite state machine, an NFA, rather than
+
+56
+00:05:24,091 --> 00:05:31,027
+a DFA. so, in the same basic plan, we're
+going to build an NFA. It's a, it's a
+
+57
+00:05:31,027 --> 00:05:39,378
+different kind of machine, but actually,
+it's also the case that, that, oh yeah.
+
+58
+00:05:39,378 --> 00:05:45,512
+For any regular expression we can build on
+NFA so and in vice versa cleaning stand to
+
+59
+00:05:45,512 --> 00:05:50,172
+this and so we're going to simulate with
+the NFA with the text as input. And so,
+
+60
+00:05:50,172 --> 00:05:54,359
+what do we, what do we mean by
+non-determined as a finite state machine?
+
+61
+00:05:54,359 --> 00:05:59,651
+That's what we have to talk about next.
+and we'll just do it with this example
+
+62
+00:05:59,651 --> 00:06:06,217
+that we used throughout this lecture. So,
+It's very similar to the DFA that we have
+
+63
+00:06:06,217 --> 00:06:12,201
+before, now we're going to put the
+characters in the states and actually, the
+
+64
+00:06:12,201 --> 00:06:18,684
+kind of NFA that we're going to build,
+we're going to have one state for every
+
+65
+00:06:18,684 --> 00:06:26,145
+character in a regular expression. So this
+is an NFA, corres-, corresponding to this
+
+66
+00:06:26,145 --> 00:06:33,225
+regular expression. just, to, We, we
+always enclose the regular expressions in
+
+67
+00:06:33,225 --> 00:06:40,136
+parentheses. just to, make everything
+work. and then, Got this regular
+
+68
+00:06:40,136 --> 00:06:47,300
+expression here. A star B or ACD. then,
+we're going show how to build, this NFA.
+
+69
+00:06:47,493 --> 00:06:52,452
+and then, simulate it, to recognize the
+regular expression. And, how is it
+
+70
+00:06:52,452 --> 00:06:56,960
+different than a DFA So, there's a
+character in every state, and if the
+
+71
+00:06:56,960 --> 00:07:01,726
+character's a text character, it's the
+same as before. We read that text
+
+72
+00:07:01,726 --> 00:07:07,101
+character and moved to the next state. But
+it's a more general kind of machine,
+
+73
+00:07:07,101 --> 00:07:12,936
+because states also have what's called
+epsilon transition. And with an epsilon
+
+74
+00:07:12,936 --> 00:07:18,546
+transition the machine is allowed to
+change the state without scanning any
+
+75
+00:07:18,546 --> 00:07:25,118
+text. So, at the beginning the machine go
+from zero to one, to two, back to one, I'm
+
+76
+00:07:25,118 --> 00:07:31,398
+sorry, two to three, back to two or it go
+from zero to one over to six there's lots
+
+77
+00:07:31,398 --> 00:07:38,004
+of places the machine could go, without
+scanning any text character. but we do
+
+78
+00:07:38,004 --> 00:07:44,773
+have the black matc h transitions that
+scan text characters and so those are the
+
+79
+00:07:44,773 --> 00:07:50,769
+rules the machine operates by. And, the,
+final rule is when does it accept, when
+
+80
+00:07:50,769 --> 00:07:55,993
+does it decide a strings in the pattern.
+It accepts if there's any sequence of
+
+81
+00:07:55,993 --> 00:08:01,150
+transitions that scans all the text
+characters and ends in the accept case.
+
+82
+00:08:01,357 --> 00:08:06,411
+it's a way of specifying an infinite set
+of strings. but it's got this
+
+83
+00:08:06,411 --> 00:08:11,672
+non-determinism. It's not always
+determined what the machine, will do next.
+
+84
+00:08:11,672 --> 00:08:16,934
+It's a little bit of a mind blowing
+concept in theoretical computer science.
+
+85
+00:08:16,934 --> 00:08:22,403
+But this particular example actually shows
+how such, such a concept can be made
+
+86
+00:08:22,403 --> 00:08:27,851
+concrete and actually give us a widely
+useful algorithm. One way to think of a
+
+87
+00:08:27,851 --> 00:08:33,492
+non-deterministic machine is a machine
+that has super powers and can guess the
+
+88
+00:08:33,492 --> 00:08:39,302
+proper sequence of state transitions to
+get to the end. Get to the accept state.
+
+89
+00:08:39,538 --> 00:08:45,501
+another way to think about is the
+sequences if you provide us particular
+
+90
+00:08:45,501 --> 00:08:51,777
+sequences that's a proof that the machine
+accepts the text. and so this is a real
+
+91
+00:08:51,777 --> 00:08:58,368
+machine. We don't have a real machines
+that can guess the right answer but it's a
+
+92
+00:08:58,368 --> 00:09:04,330
+completely well specified abstract
+machine, and we can write a program to
+
+93
+00:09:04,330 --> 00:09:10,580
+stimulate it's operation, and that's what
+we are going to do. So let's just make
+
+94
+00:09:10,580 --> 00:09:17,318
+sure that everyone's got the concept down.
+So, say we have the question is 4A is
+
+95
+00:09:17,318 --> 00:09:24,142
+followed by BD, is that accepted by this
+NFA down here? and the answer is yes
+
+96
+00:09:24,142 --> 00:09:30,795
+because there is a sequence of legal
+transitions that ends up in state eleven.
+
+97
+00:09:30,795 --> 00:09:37,362
+So in this case, we'll take an epsilon
+transition from zero to one to two and
+
+98
+00:09:37,362 --> 00:09:43,975
+then we'll... We've got 4A's so we'll chew
+up four A's, one, tw-, I'm sorry. One, and
+
+99
+00:09:43,975 --> 00:09:49,605
+then go back. Two, and then go back.
+Three, and then go back. Four, and then
+
+100
+00:09:49,605 --> 00:09:56,266
+we'll be in state three. And then at that
+point, we'll decide to take this epsilon
+
+101
+00:09:56,266 --> 00:10:02,372
+transition. We'll assume your machine
+decides to take this one. then it
+
+102
+00:10:03,482 --> 00:10:10,690
+recognizes the B and moves to state five.
+And then, at state five, it no place to go
+
+103
+00:10:10,690 --> 00:10:16,838
+but to state eight. and then, takes the
+epsilon transition to the state nine. It
+
+104
+00:10:16,838 --> 00:10:22,689
+recognizes the D that takes it out to ten
+and eleven. So, there is a sequence of
+
+105
+00:10:22,689 --> 00:10:28,910
+state transitions that get to a eleven and
+recognizes all the characters and the
+
+106
+00:10:28,910 --> 00:10:35,065
+strings, so therefore it's matched. what
+about So the, It's true that there is
+
+107
+00:10:35,574 --> 00:10:40,987
+sequences that the machine might guess and
+go to the wrong state or stall, it doesn't
+
+108
+00:10:40,987 --> 00:10:45,571
+matter as long as there's some sequence
+and we are going to assume that the
+
+109
+00:10:45,571 --> 00:10:50,156
+machine always guesses the right one. So
+for example, if the machine just
+
+110
+00:10:50,156 --> 00:10:54,996
+recognizes three A's, one, two, three, and
+then went to state four, it would get
+
+111
+00:10:54,996 --> 00:11:00,281
+stuck because there's no way for it to get
+out of state four because state four is
+
+112
+00:11:00,281 --> 00:11:05,131
+looking for a B, and it's sitting on an A,
+and so forth. So, there's definitely,
+
+113
+00:11:05,300 --> 00:11:09,759
+things that the machine could do that
+would be wrong, but we don't care, as long
+
+114
+00:11:09,759 --> 00:11:15,650
+as there's some way for it to get through.
+and then, what about if it's a string
+
+115
+00:11:15,650 --> 00:11:22,691
+that's not in a language recognized by the
+state. the machine, well, so we have to
+
+116
+00:11:22,691 --> 00:11:28,996
+argue about all possible sequences and,
+prove that, no sequence of legal
+
+117
+00:11:28,996 --> 00:11:35,955
+transition, is transitions ends in state
+eleven. and that, seems to be, a fairly
+
+118
+00:11:35,955 --> 00:11:42,958
+complicated sort of argument. So in this
+case the machine could recognize a bunch
+
+119
+00:11:42,958 --> 00:11:50,061
+of A's, and then go to state four. But
+again, there's no B, so there's no way
+
+120
+00:11:50,061 --> 00:11:56,446
+it's going to get out of state four. and,
+so you can make a general argument like
+
+121
+00:11:56,685 --> 00:12:02,758
+looking at the machine that's any string
+that it recognizes, it has to end in D and
+
+122
+00:12:02,758 --> 00:12:08,734
+this one doesn't end in D. that's a, much
+more complicated thing, than we're talking
+
+123
+00:12:08,734 --> 00:12:14,054
+about, is to try to come up with, a,
+simple machine that will decide whether or
+
+124
+00:12:14,054 --> 00:12:20,059
+not a string, is in the, language that it
+specifies. so the question, so question
+
+125
+00:12:20,059 --> 00:12:25,002
+that we have is, we have this non
+deterministic machine, how are we going to
+
+126
+00:12:25,458 --> 00:12:31,125
+decide whether a given string is in the
+language that it recognizes. So for
+
+127
+00:12:31,125 --> 00:12:36,931
+deterministic machines, like we used for
+Knuth-Morris-Pratt it's very easy, because
+
+128
+00:12:36,931 --> 00:12:42,595
+at every time, there's only one possible
+transition. But for non-deterministic, if
+
+129
+00:12:42,595 --> 00:12:48,897
+you're, in some states, there's, multiple
+ways to go, and you have to, figure out
+
+130
+00:12:48,897 --> 00:12:54,491
+the right transition. But actually, the
+situation isn't so bad. and what we can do
+
+131
+00:12:54,491 --> 00:12:59,730
+is, to simulate the NFA, is just to make
+sure that we consider all possible,
+
+132
+00:12:59,943 --> 00:13:05,326
+transition sequences. And that's what our
+algorithm for a regular expression pattern
+
+133
+00:13:05,326 --> 00:13:09,460
+matching is going to be based on. that's
+what we will look at next.

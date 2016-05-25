@@ -1,0 +1,85 @@
+.
+Today, we're gonna talk about minimum
+spanning trees.
+This is a terrific topic for this course,
+because it combines a number of classic
+algorithms with modern data structures to
+solve a variety of huge problems that are
+important in practical applications
+nowadays.
+We'll start with a brief introduction.
+What is a minimal spanning tree?
+Well it's a defined on a graph Now we
+generalized the idea of a graph one more
+time to allow weights on the edges, so
+these are positive numbers associated with
+each edge.
+And let say the graph is connected, so we
+have a connected graph with weighted
+edges, Now a spanning tree of a graph.
+Is a subgraph that is connected and has no
+cycles.
+So, out of all the spanning trees, we want
+to find one that has minimum wait.
+So, that's not a spanning tree, cause it's
+not connected.
+This set of black edges is not a spanning
+tree cause it's not a cyclic.
+But here's one that is a spanning tree.
+And if you add up the weights of all the
+edges, four+6+8+5+11+9+7 that's 50.
+And you could see, maybe you could get
+another spanning tree by removing this
+edge and adding that edge that'd have
+slightly higher weight.
+And so the goal is to find a spanning tree
+of minimum weight.
+Now, there is a bird force algorithm that
+is impractical, impractical and probably
+would be difficult even to growth up.
+And that is, let's try all possible
+spanning trees.
+Now, certainly, we wanna do better than
+that.
+Here are some examples of some huge
+spanning trees that are being worked on in
+practice nowadays.
+This is a bicycle route's in Seattle.
+And it kind of gives a quick way from
+downtown out to the suburbs.
+You can see.
+This is, the idea of an MST as a model of
+natural phenomenon.
+And there are many observed natural
+phenomenon that, seem to be well modeled
+by spanning trees.
+This is a purely random graph.
+And, a minimal spanning tree of that
+random graph.
+And this is, the, a image that came up in
+cancer research, having to do with the
+arrangement of nuclei and epithelium.
+And you can see that this tree that's
+observed in nature is quite similar in
+character to the MSD of the random graph,
+so that's another example.
+This is an example from image processing.
+A process known as dithering, to remove
+fuzziness in medical and other images.
+In computing the MSD of a huge graph built
+from such images is yet another
+application.
+So it's, bottom line for this introduction
+is, MST is easily defined.
+It's the, minimum weight set of edges that
+now connect the vertices in a way to
+graph.
+And its got the verse applications from
+dithering, and face verification, to road
+networks and satellite imagery, to
+ethernet networks into network designs of
+all kind, and it goes back a long way, to
+the, even early twentieth century for
+electrical and hydraulic networks, So
+that's an introduction to the idea of a
+minimum spanning tree.

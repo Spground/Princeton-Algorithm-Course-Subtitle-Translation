@@ -1,0 +1,383 @@
+Okay. First, we're gonna look at the
+search algorithm for, digraphs and this is
+the finding paths, what are all the
+vertices that we can get to from a given
+vertex along a directed path. and again,
+this is, little more complex for a digraph
+it would seem, than for a graph. so in
+this case, those are the, that's the set
+of vertices that you can get to, from the
+given vertex x, s. Notice that, this set
+is characterized by every edge crossing
+the boundary, it goes in. if there were an
+edge that went out, that would give,
+another member of the set.. well actually,
+looks more complicated to a human, but to
+the computer, it looks exactly, precisely
+the same. in fact. the method that we
+looked at for undirected graphs is
+actually a digraph processing algorithm.
+it treats, every connection between two
+vertices as two directed edges, one in
+each direction. So, DFS, that we looked at
+last time is actually a digraph algorithm.
+And we used precisely the same code. So to
+visit a vertex V, we mark the vertex as
+visited, and recursively visit all
+unmarked vertices W, that you can get to
+from V. let's look at the demo, just to, .
+Reinforce that. So, here's a sample
+digraph with the edges over at the right.
+let's look at that first search on that
+digraph. so, we're going to look at the
+vertices that we can get to from vertex
+zero in this digraph. Again, we have two
+vertex index to raise. one called marked,
+which says whether we can get there from
+V, and the other called edge two, which
+gives us the vertex that took us there.
+with that we can recover the paths from
+vertex zero to each vertex that can be
+reached from vertex zero. So we start off
+by visiting vertex zero and now check the
+edges that are adjacent to it with
+directed edges going out. so there's five
+and then there's gonna be one. but five is
+unmarked so we have to re-cursedly visit
+five. So we mark five, and we say we got
+there from zero. so the path from, to five
+is zero to five. and so now we're gonna
+recursively visit all the unmarked
+vertices pointed to from five .
+In this case it's just four. My four is
+unmarked so we're gonna recursively visit
+four and say we got there from five. and
+now recursively we have to check all the
+unmarked vertices pointing from four.
+there's three. and two, first we do three
+and that's unmarked. so we gotta visit
+three. and say that we got there from
+four. and now to visit three. We've looked
+at all the vertices pointing from three.
+we can check five. We've already been to
+five that's marked so we don't have to do
+anything. and then we check two. two is
+unmarked so we continue with the depth
+first search and visit two. so now to
+visit we mark two, and say we've got there
+from three. and now we check the vertices
+that we can get two from two. In this case
+it's zero, which we've already been to.
+And three, which we've already been to.
+so. now we're done with vertex two. and we
+can return and continue the search from
+three well actually that was the last one
+from three, so we're done with three as
+well. so now we're at four. We still have
+checked the edge from four to two. so now
+we do that. And of course we've been to
+two, so we don't have any further
+processing. and we're done with four. the,
+, four was the only edge we get to from
+five. So we're going to be done with five
+as well. and then, what about zero, well
+we have to check one. 1's not visited, so
+we visit one, mark it. and we turn and
+then we're done with zero, and that gives,
+the set of all vertices that are reachable
+from zero, and not only that the edge to
+array. Gives the information that we need
+to reconstruct the path from any of those,
+from zero to any of those vertices using
+precisely the same method that we used
+before. We get the four from five, we get
+the five from zero, so zero, five, four is
+the path to four. And we can do that for
+any vertex in that cell. Okay. So what
+about the code? the code is exactly the
+same as for , undirected graphs. That's
+the code for undirected graphs. that we
+looked at last time to get the code for
+digraphs, we just changed the name, its
+the s ame code, otherwise. the recursive,
+the constructor, builds the array of
+marked vertices, and also builds edge too,
+just to, avoid clutter, left that one off
+this slide, and then it makes the call to
+DFS. then the recursive DFS does the work.
+It marks the vertex and for every adjacent
+vertex. If its not marked, it does the
+DFS. and then the client can ask whether
+any ver-, any given vertex is reachable
+from s after the constructor has done its
+work. that's depth-first search in
+directed graphs, actually, we already did
+it. now here's just a couple of
+applications where this kind of code is
+used. one is, a so called program control
+flow analysis. actually every program can
+be viewed as a digraph. where, the
+vertices are basic blocks of instructions
+that are just executed one after the other
+with no conditionals. and then edges
+represent, a, jump. If there's an if
+statement, vertex left, two edges going
+out of it, or, or a loop, which involves a
+conditional. So, , analyzing a program,
+people write systems in analyse program,
+to look at their structure by studying
+their diagrams, for example. one thing
+that happens often is there's unreachable
+code. another, another thing you might
+want to do is determine whether you can
+get to this exit or not, by doing this
+digraph processing. so that's actually a
+widely used technique in, in developing
+software, software development. to try to
+improve code by doing this kind of
+digraph-processing. And ofcourse these
+digraphs can be huge. another classic use
+of depth for search in digraphs is garbage
+collection that is used in systems like
+Java where data structures or digraphs. we
+build objects and then we create
+references to other objects. and so the
+data that any programs use is really set
+as a digraph. So there's the idea of
+roots, so your program has e-. Some. live
+objects, that it can access through,
+whatever state, it's in, but, a language
+like Java, there's, automatic garbage
+collection, which means the programmer,
+when it's done with an object, maybe it
+overwrites one of these pointers or
+something. there's gonna be some, blocks,
+that, are not directly accessible by the
+program. and so, what's interesting is,
+the set of reachable objects that, can be
+indirectly access. By the program starting
+and following a chain of pointers. so
+those are the ones that can't be collected
+or reclaimed by the system for reusing the
+memory. But all the other ones, the gray
+ones that can't be reached by the program
+there's no reason to . Keep them live, you
+may as well collect them and return them
+for use, re-use. So there's a so-called
+marked and sweep out rhythm that actually
+dates back to 1960, where. We run DFS to
+mark all ritual objects. and then go
+through and sweep through all possible
+objects. And if it's object is unmarked
+it's garbage so add it to the list of free
+memory. and that's a classic method that's
+still widely used. it uses an extra bit
+per object'cause you have to have to have
+that for the mark. But still, it's
+effective and useful digraph solution. So
+DFS with reachability that we've just
+showed and path finding is similar. And
+there's a couple of other simple digraph
+problems that we'll consider. These are so
+far examples. But it's also interesting
+that DFS is the basis for solving digraph
+problems that are not so simple or
+immediate to solve. And this was pointed
+out 40 years ago by Bob Tarjan in a
+seminal paper that showed that. First
+search, can allow us to solve problems
+that seem pretty complicated actually, in
+linear time, and we're gonna look at an
+example of that later on. so that's depth
+for search. what about breadth for search.
+Well in the same way that we saw for depth
+for search every undirected graph is
+actually a digraph that has edges in both
+direction. So bfs is really a directed
+graph algorithm and we can use exactly the
+same code to find shortest paths from a
+source to any given vertex. So we use a
+que. We put the source on a que and mark
+it as visited and. And as long as the
+queue is non-empty, we remove the least
+recently added vertex and add to the que
+ue and mark as visited all the unmarked
+vertices that you can get to from that
+vertex. And the same proof shows that BFS
+computes shortest paths, the ones with the
+fewest number of edges from S to each
+other vertex in the digraph in time
+proportional to in linear time. So you
+want the GPS in your car, you BFS when
+you're driving around lower Manhattan. So,
+let's look at the demo again just to see,
+the distinction between, breadth first
+search, in digraphs and see how it works.
+So this is a, a small graphing, a smaller
+digraphic and with six vertices and eight
+edges. we take a Q and we take a source
+vertex and put on the Q to get started.
+then, Q is not empty, so remove zero and
+we check all, all vertices that are
+adjacent that we get to. So. we're gonna,
+in zero was zero distance, from zero, so
+first we will check two. and that one is
+not marked, so we mark it and put it on
+the queue. and then we'll check one. and
+that one's not marked, so we mark it and
+put it on the queue. then we're done with
+zero. now queue's not empty so we pull the
+least recently added off, that's two. and
+now we're going to check the vertices, you
+can get from two. I noticed both one and
+two are distance one from zero. And now,
+since we're going from two, everything
+that we encounter will be distance two
+from the source. So we find four, it's
+distance two from the source, and we get
+there from vertex two. Unmarked, so we
+fill in those data structures and put it
+on the queue. and then we're done with
+two, so we go back to the queue, and 1's
+on the queue. So we pull one off and it's
+distance one from zero. Remember the first
+showed that everything in the queue is one
+of two distance, either k or k plus one.
+In this case, we've got one at distance
+one, four at distance two. So now we're
+going to pull one off the queue. M- and
+look at the edges you can get to, places
+you can get to from one. Now we check two
+but that's already marked so we ignore it.
+and then we're done with one. Now four is
+left on the Q so we pull it off and check
+adjacent vertices. In this case three,
+it's unmarked so we put it on the Q. Then
+we're done with four. Then from three we
+check five and that's unmarked and it's
+one more distance from the source so we
+put it on the Q. And then finally. Oh we
+check two which we already visited so we
+don't have to, to do anything. And then
+finally we pull five off the Q. check. Or
+you get two from five and it's zero, which
+is marked, so we're done. and so that's
+breadth-first search whig, which gives us
+this directed tree from the source. Which
+gives the shortest path to all the
+vertices that you can get to from that
+source. you can use a version of this to
+solve a more general problem known as the
+multiple-source shortest paths problem. In
+this problem you're given a digraph and a
+set of source vertices, and you want to
+find the shortest path from any vertix in
+the set to each other vertix. So for
+example, in this case if the set is one,
+seven, and ten, what's the shortest path
+to four? From one of those vertices. Well,
+it turns out in this case to be seven, six
+to four. Shortest path to five is seven,
+six, zero, five. Shortest path to twelve
+is ten to twelve. That's a more general
+problem but it's actually easy to solve.
+How do we implement this? We just use a
+different constructor. We just use BFS but
+initialize by, put all the source vertices
+on the queue to get started. So that is
+every vertex is, so you put those on the
+queue and they're zero from the desired
+source. And then any vertex you can get to
+from any one of those is going to be. One
+and so forth, so the results still gives
+away. The edge to array will still give a
+way to get from any vertex, the shortest
+way to get from any vertex to each of the
+sour-, source vertices. here's an
+application of depth-first search. Let's
+say you want to crawl the whole web, well,
+all the web that you can access from some
+starting web page, say like Princeton's
+starting webpage. Again, the digraph
+model, each vertex is a webpage, each edge
+is a link on that webpage to some other
+webpage. and so all we want to do is get
+to all the other vertices on the web. And,
+so solution is, well, we don't actually
+build the digraph we just use an implicit
+digraph, because for every web page we can
+find the links to other web pages on it
+and we'll just build those as we encounter
+them. So we're gonna start with a source,
+which is the root web page. We're gonna
+have a queue of the sites that we still
+need to explore. what we're going to do is
+also have a set of discovered websites,
+this corresponds to our marked array but
+since we don't know how many vertices
+there are on the web all we're going to do
+is keep track of the ones that we've been
+to. so this is, don't use the vertex
+indexed array we don't even bother with
+because we'll just use the vertex names
+and do the look up as indicated we could
+do. So all we do is In the, is but for a
+search the same method is if the queue's
+not empty. Take a website off of the cue.
+And just add to the queue all the websites
+to which it links. but all of those
+websites, you check whether they're in the
+set of the ones that you've seen already.
+now, you might run out of space, for this
+set before you get to the whole web. but
+anyway, conceptually, this is a way that
+you could go. one thing to think about is
+why not use DFS for this. well One reason
+is you, you're gonna go far away in your
+search for the web. Maybe, maybe that's
+what you want, but the real problem, in
+point of fact is there's some web pages
+that would trap such a search by creating
+new web pages and make links to'em the
+first time that you visit'em. So, they,
+trap searches like that by, cuz DFS would
+always go to a new web page like that and
+it'd keep creating new ones and you
+wouldn't get very far. With breadt-first
+search you're taking a wide search of the
+pages that are close. and that's often
+maybe what you want for such a search.
+and, just to how simple the idea is, this
+is complete code for a, it's kind of a
+bare bones web crawler but it'll get to a
+lot of websites. so let's look at, do this
+example because again it really indicates
+the power of using appropriate
+abstractions to implement the algorithms
+that we're interested in. so this one
+we're gonna use a cue. Queue of strings so
+that's the websites that we have to still
+yet to go to. and then a set of strings is
+gonna be the ones that we've already been
+to that's equivalent to the marked array.
+we'll start with Princeton's website. add
+it to the queue of places we have to go
+and also mark it. Discovered that ad just
+means mark it. so now, while the queue's
+not empty. What we're going to do is read
+the raw HTML from the next website in the
+queue. So this is code using our input
+library that gets that job done. And then,
+this is a little fooling around with
+regular expressions. We'll talk about
+algorithms like this later on, that
+essentially tries to find all URLs within
+the text of that website. And for all of
+those URL's. And we'll. Look at workers
+behind this code later on in this course.
+For all those URL's it's gonna check. If
+it's marked that's discovered doc contains
+and if it's not marked it'll say it will
+mark it and put it on the queue. a very s-
+simple program with a very powerful effect
+that illustrates breadth-first search.

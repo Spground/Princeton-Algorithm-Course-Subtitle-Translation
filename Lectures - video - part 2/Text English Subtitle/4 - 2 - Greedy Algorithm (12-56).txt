@@ -1,0 +1,316 @@
+To introduce the algorithms for minimum
+spanning tree, we're going tp look at a
+general algorithm called a greedy
+algorithm.
+It's a good example of a general principle
+in algorithm design that will help us,
+prove correctness of our algorithms.
+To begin we'll make some simplifying
+assumptions.
+First we assume that the edge weights are
+all distinct, and that the graph is
+connected.
+And this is just to simplify the
+presentation.
+As a consequence of these two exhumptions
+we know that the minimum spanning tree
+exists and is unique.
+Our algorithms will still work when edge
+winks are not distinct.
+And if the graph is not connected, it'll
+find spanning trees or components.
+But these two assumptions simplify the
+presentation.
+Now, to understand our algorithms we're
+going to start with a general operation on
+graph called making a cut.
+So a cut in a graph is a partition of its
+vertices into two non-empty sets,
+And we'll indicate that just by coloring
+some of the vertices grey and others
+white.
+So that's a partition of the two sets: the
+grey vertices and the white vertices.
+Every vertex is either grey or white,
+And there's at least one in each set.
+Now, given a cut, the crossing edge
+connects a vertex in one set with a vertex
+in the other. So every edge that connects
+a grey vertex to a white vertex is a
+crossing edge.
+So that's, a second definition.
+That gives us a way to talk about, inches
+and graphs when we compete them into a
+spanning tree.
+So an important property that is relevant
+to MST algorithms is that, given any cut
+at all,
+The cut defines a set of crossing edges.
+The minimum weight crossing edge is in the
+MST. Remember no two edges have the same
+weight so there's a single edge that has
+minimum weight from the edges in the edges
+in the cut.
+So in this case the thick red edge is the
+minimum weight, it's the shortest edge
+connecting a grey vertex to the white one
+and that, that edge has to be in the MST.
+That's the cut property.
+So here's a, just a quick proof of that
+property.
+I'll hand wave a bit through the
+discussions of the proof.
+It's a.
+Usually not appropriate to fully dimension
+proofs in the lectures.
+So you should look at the book and the
+underlined materials to be sure that you
+understand the proofs or, or re-read these
+slides.
+But I'll try to give all the steps.
+So, we're trying to prove the cut
+property.
+Giving any cut the crossing edge in many
+ways to MST.
+So let's suppose the contradiction.
+So suppose that we have a minimum-weight
+crossing edge that's not in the MST.
+So, in this case, that edge E, suppose
+it's not in the MST.
+So it means that some, one of the other
+crossing edges has to be in the MST.
+Otherwise the MST wouldn't be connected.
+Then if you add E to the MST you get a
+cycle.
+And some other edge in that cycle has to
+be a crossing edge.
+That's the way to think about it.
+Remember MST is a minimal way to connect
+the graph.
+And if you add an edge to a, a tree you
+get a cycle.
+And then some other edge that has to be a
+crossing edge.
+But if you remove that edge and add e then
+you're going to get a spanning tree.
+And that spanning tree is smaller than the
+one that you had.
+So, that, supposition had to be a
+contradiction.
+So, it has to be that the minimum weight
+crossing edge is in the MST.
+So that's the, cut property.
+So, and now given that property, we can
+develop what's called a greedy algorithm,
+Which is the easiest algorithm, we can
+come up with.
+So what we're going to do is start with,
+all edges colored grey.
+Find any cut that has no black crossing
+edges.
+The algorithm's going to color some of the
+edges black.
+And color the minimum-weight edge of that
+cut black, and just repeat the algorithm.
+Finding any cut with no black crossing
+edges, color the minimum-weight edge
+black, and keep going until you have v
+minus one edges that are colored back.
+And the claim is that that's going to
+compute an MST.
+Let's look at a demo of that, just to make
+sure that we follow what's going on.
+So we start with all edges colored gray.
+We're supposed to find a cut with no black
+crossing edges and colors minimum weight
+edge black.
+Well, that could be any cut.
+In this case, we'll take the cut that, has
+three, two, and six on one side and, one,
+zero, zero, one, four, five, seven on the
+other side.
+Look at all the crossing edges.
+Minimum white crossing edge is the one
+from zero to two, so the, that's the one
+that we'll color black.
+So now we have zero, two and the MST is
+color black.
+So again, any cut that doesn't have a
+black crossing edge, so in this case,
+let's do the cut that just has five on one
+side and all the odds on the other side.
+In this case, there's three crossing
+edges, the smallest one is five, seven,
+color that one black.
+Again, any cut that has no black crossing
+edges.
+So let's just take six the cut that has
+six on one side and all the others and the
+other.
+Two, six is the minimum crossing edge so
+six, two.
+And so we put that one on the MST.
+As we get more and more black edges it's
+going to be harder to find a cut with no
+black crossing edges.
+But we press on.
+So now let's do the cut with zero, two,
+four, and six on one side colored white.
+And one, three, five, and seven on the
+others.
+So there's a lot of crossing edges that
+cut.
+But the smallest one is the one between
+zero and seven, so that's the one that we
+color black and add to the MST.
+So now we have four edges, and our next
+cut now one and three on one side.
+A smallest edge in that, right, the
+smallest crossing edge for that cut is
+two, three.
+Now one more, now let's put one and four,
+now almost all the edges left are crossing
+edges.
+So one and four are one side, all the rest
+are in the other.
+And, the minimum weight crossing edge is
+the one from one to seven.
+Now notice, in this case, we got the nodes
+in the tree on one side of the kit, cut.
+And the nodes not in the tree on the other
+side of the cut.
+One of our algorithms will always have
+that property.
+So now, we add one to seven.
+Seven in seven to that,
+And now the last thing, is to.
+The only cut that, has no black edges is
+the one that puts four on one side, and
+all the rest on the other.
+And the minimum way of crossing edge for
+that one is, five, four.
+So now, we've got. eight vertices,
+And seven vertices in the seven edges in
+the MST. so we found the MST.
+We've got V minus one edge is color black
+and we found the MST.
+So the greedy algorithm was a very general
+algorithm.
+We're allow to find any cut at all that
+has no black cras crossing edges.
+So let's do the correctness proof.
+And then we'll look at some specific
+instances of the greedy algorithm.
+So.
+First of all since we took the minimum
+crossing edge of a cut always to color
+black any black edge is in the MST.
+That's the cut property.
+Do a cut no black crossing edges you can
+color black, that's in the MST.
+So that's first observation.
+Now when we have.
+Fewer than v minus one black edges.
+There has to be a cut that has no black
+crossing edges.
+That is the algorithm doesn't get stuck.
+And so the way to think about that is just
+take the verticies in one of the connected
+components, and make that the cut.
+Then there's gonna be, since that's a
+connected component there's gonna be no
+black edges in the crossing edges for, for
+that cut.
+So the algorithm doesn't get stuck.
+If the, if you don't have an MST yet,
+there's going to be some cut with no black
+crossing edges.
+And that's it.
+The greedy algorithm computes the MST.
+Any edge colored black is in the MST,
+And you can always add to the set of black
+edges.
+Now if you don't have v minus one once you
+have v minus one you've got v minus one
+edges that are in the MST. The MST has v
+minus one edges greedy algorithm computes
+mst.
+So now what we want to do is
+implementations of the greedy algorithm
+or, or specializations of it really that
+differ first of all in the way that they
+choose the cut.
+Which cut are we going to use?
+And also, the way in which they find the
+minimum weight edge in the cut.
+Again, those could both be, expensive
+operations.
+And prohibitively, prohibitively expense,
+expensive for huge graphs.
+What we're going to look at is, two
+classic implementations called Kruskal's
+Algorithm and Prim's Algorithm.
+Although, in both cases, we use modern
+data structures to make them efficient for
+huge graphs.
+And there's another interesting algorithm
+called Boruvka's Algorithm, that, that
+kind of combines the two briefly
+mentioned.
+Now before getting to those, what about
+removing the two simplifying assumptions?
+So what happens if you have, a situation
+where the edge weights are not all
+distinct?
+So in this, case, 1-2 and 2-4.
+Both have the same edge weight.
+Well so also do one three and three four.
+And so it means there's multiple MSTs.
+So in this case the, there's two different
+MSTs.
+So the greedy algorithm is still correct,
+it turns out, our correctness proof
+doesn't quite work, but that can be fixed
+with a little bit of work.
+So the fact is it's still correct.
+And if the graph is not connected, as I
+mentioned, then what we'll get is what's
+called a minimum spanning forest, which is
+the MST of each component.
+Essentially it's like independently
+computing the MSTs of the components.
+But.
+Basically what the greedy algorithm gives
+us is an easy way to prove correctness for
+specific algorithms.
+All we have to show is that they're
+finding a cut and taking a minimum weight
+edge from that cut.
+And then we can prove correctness of a
+more complicated algorithm.
+In general, in algorithm design this is
+proven to be affective in all kinds of
+domains.
+Trying to come up with a general algorithm
+that you can prove works efficiently and
+then using that to help design specific
+ones.
+The point is, ladies and gentlemen, that
+greed, for lack of a better word, is good.
+Greed is right.
+Greed works.
+Greed clarifies, cuts through and captures
+the essence of the evolutionary spirit.
+Greed in all of it's forms.
+Greed for life, for money, for love,
+knowledge, has marked the upward surge of
+mankind.
+And greed, you mark my words, will not
+only save Teldar Paper,
+But that other malfunctioning corporation
+called the USA.
+Thank you very much.
+.
+Great, great.
+Fly me to the moon, and let me play among
+the stars. .

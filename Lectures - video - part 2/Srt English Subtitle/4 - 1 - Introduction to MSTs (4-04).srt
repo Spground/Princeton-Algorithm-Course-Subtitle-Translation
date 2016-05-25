@@ -1,0 +1,213 @@
+1
+00:00:00,000 --> 00:00:06,168
+.
+Today, we're gonna talk about minimum
+
+2
+00:00:06,168 --> 00:00:10,263
+spanning trees.
+This is a terrific topic for this course,
+
+3
+00:00:10,263 --> 00:00:16,372
+because it combines a number of classic
+algorithms with modern data structures to
+
+4
+00:00:16,372 --> 00:00:21,995
+solve a variety of huge problems that are
+important in practical applications
+
+5
+00:00:21,995 --> 00:00:25,633
+nowadays.
+We'll start with a brief introduction.
+
+6
+00:00:25,633 --> 00:00:31,218
+What is a minimal spanning tree?
+Well it's a defined on a graph Now we
+
+7
+00:00:31,218 --> 00:00:37,245
+generalized the idea of a graph one more
+time to allow weights on the edges, so
+
+8
+00:00:37,245 --> 00:00:41,361
+these are positive numbers associated with
+each edge.
+
+9
+00:00:41,361 --> 00:00:47,240
+And let say the graph is connected, so we
+have a connected graph with weighted
+
+10
+00:00:47,240 --> 00:00:53,632
+edges, Now a spanning tree of a graph.
+Is a subgraph that is connected and has no
+
+11
+00:00:53,632 --> 00:00:58,322
+cycles.
+So, out of all the spanning trees, we want
+
+12
+00:00:58,322 --> 00:01:05,201
+to find one that has minimum wait.
+So, that's not a spanning tree, cause it's
+
+13
+00:01:05,201 --> 00:01:09,617
+not connected.
+This set of black edges is not a spanning
+
+14
+00:01:09,617 --> 00:01:14,661
+tree cause it's not a cyclic.
+But here's one that is a spanning tree.
+
+15
+00:01:14,661 --> 00:01:23,542
+And if you add up the weights of all the
+edges, four+6+8+5+11+9+7 that's 50.
+
+16
+00:01:23,755 --> 00:01:29,439
+And you could see, maybe you could get
+another spanning tree by removing this
+
+17
+00:01:29,439 --> 00:01:33,773
+edge and adding that edge that'd have
+slightly higher weight.
+
+18
+00:01:33,986 --> 00:01:38,320
+And so the goal is to find a spanning tree
+of minimum weight.
+
+19
+00:01:38,320 --> 00:01:44,742
+Now, there is a bird force algorithm that
+is impractical, impractical and probably
+
+20
+00:01:44,957 --> 00:01:50,380
+would be difficult even to growth up.
+And that is, let's try all possible
+
+21
+00:01:50,380 --> 00:01:54,163
+spanning trees.
+Now, certainly, we wanna do better than
+
+22
+00:01:54,163 --> 00:01:57,586
+that.
+Here are some examples of some huge
+
+23
+00:01:57,586 --> 00:02:03,326
+spanning trees that are being worked on in
+practice nowadays.
+
+24
+00:02:03,326 --> 00:02:09,459
+This is a bicycle route's in Seattle.
+And it kind of gives a quick way from
+
+25
+00:02:09,459 --> 00:02:12,840
+downtown out to the suburbs.
+You can see.
+
+26
+00:02:13,078 --> 00:02:18,086
+This is, the idea of an MST as a model of
+natural phenomenon.
+
+27
+00:02:18,325 --> 00:02:24,605
+And there are many observed natural
+phenomenon that, seem to be well modeled
+
+28
+00:02:24,605 --> 00:02:28,421
+by spanning trees.
+This is a purely random graph.
+
+29
+00:02:28,659 --> 00:02:32,793
+And, a minimal spanning tree of that
+random graph.
+
+30
+00:02:33,032 --> 00:02:39,948
+And this is, the, a image that came up in
+cancer research, having to do with the
+
+31
+00:02:39,948 --> 00:02:47,977
+arrangement of nuclei and epithelium.
+And you can see that this tree that's
+
+32
+00:02:47,977 --> 00:02:55,224
+observed in nature is quite similar in
+character to the MSD of the random graph,
+
+33
+00:02:55,224 --> 00:03:01,168
+so that's another example.
+This is an example from image processing.
+
+34
+00:03:01,412 --> 00:03:08,171
+A process known as dithering, to remove
+fuzziness in medical and other images.
+
+35
+00:03:08,171 --> 00:03:14,522
+In computing the MSD of a huge graph built
+from such images is yet another
+
+36
+00:03:14,522 --> 00:03:18,839
+application.
+So it's, bottom line for this introduction
+
+37
+00:03:18,839 --> 00:03:23,918
+is, MST is easily defined.
+It's the, minimum weight set of edges that
+
+38
+00:03:23,918 --> 00:03:26,910
+now connect the vertices in a way to
+graph.
+
+39
+00:03:26,910 --> 00:03:34,512
+And its got the verse applications from
+dithering, and face verification, to road
+
+40
+00:03:34,512 --> 00:03:41,745
+networks and satellite imagery, to
+ethernet networks into network designs of
+
+41
+00:03:41,745 --> 00:03:48,884
+all kind, and it goes back a long way, to
+the, even early twentieth century for
+
+42
+00:03:48,884 --> 00:03:55,838
+electrical and hydraulic networks, So
+that's an introduction to the idea of a
+
+43
+00:03:55,838 --> 00:03:57,600
+minimum spanning tree.

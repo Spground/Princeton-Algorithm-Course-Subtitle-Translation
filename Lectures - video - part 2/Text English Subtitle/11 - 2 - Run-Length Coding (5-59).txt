@@ -1,0 +1,110 @@
+As a warm up we're going to look at run
+length encoding, which is actually an
+effective method in many applications.
+Simple method that's very effective. It's
+based on the idea that it's very often the
+case in a bit string that you have long
+runs of repeated bits. So in this case,
+there's a long run of zeros followed by a
+medium length run of ones, another medium
+length run of zeros, and then more ones.
+So there's 40 bits but only switches from
+zero to one in three places. And so what
+you can do is rather than write out all
+the bits. We can write counts to represent
+alternating runs of zeroes and ones. A
+very simple method. So in this case,
+there's fifteen zeroes, seven ones, seven
+zeroes and eleven ones. And, with four
+bits to represent each one of these
+counts, we can just write fifteen, seven,
+seven, and eleven to get, instead of 40
+bits, get down to sixteen bits. That's
+effective, whether there's long runs of
+zeroes and ones, in a bitstream. now, you
+have to decide how many bits to use to
+store the counts. it's not necessarily a
+good idea to use, say, 32 bits. and maybe
+four is too small. So, in our code, we use
+eight bits. So that'll handle runs up to
+256 bits. we used four in the example
+above, but in a realistic thing, it's fine
+to use eight. and then if we have longer
+runs, then we have to figure out what to
+do. if the run length is bigger than the
+mass count, well, we can just intersperse
+runs of length zero. And there's one way
+to handle it, there's other ways to handle
+it too. But this is a very simple scheme
+that covers all the bases and can be a
+very effective. and . For example,
+consider a bit map representation of this
+slide. There's huge long runs, saved with
+black and white. There's huge long runs of
+white that, depending on the resolution,
+might be hundreds or 1000 bits, but could
+be represented with just a few counts. and
+so in many applications of bit maps of
+texts and other things like that, this is
+very effective and it's used in all kinds
+of technologies like Jpeg and fax and
+others. and it's very simple t o
+implement. So this is our warmup data
+compression algorithm that implements
+run-length encoding. Actually we left the
+compress for the book. this is just the
+expand. so I'm given a bunch of counts.
+how do I reproduce the original
+uncompressed text string into . It's as
+simple as that. So log R is the number of
+bits per count. and so basically what we
+do is read log R bits at a time into an
+end, whatever the value is, so we put that
+into the end run. So, that's a number
+between zero and 256, which is the maximum
+you can get in eight bits. and then,
+starting with zero the first count. That's
+the number of zeroes we need to write, so
+we just write them one, one bit at a time.
+Zero at one bit at a time, and then we
+flip the bit to make it one. and read the
+next count, and now we, we write out that
+many 1s and so forth. So this is a ten
+line program that does, expansion for, run
+length and coding. and you can, think
+about it or look at the book, for, how to
+do, compression. it's just as simple. so
+this is just the, an example of the
+effectiveness of, learning some coding
+for, one letter, the letter Q, in a, in a
+typical black and white scheme doing. Even
+for a single letter, there's, lots of,
+redundancy, lots of runs of 0s. so with a
+relatively small, number of counts. we
+can, represent a, a bitmap. and this is
+the hard case. actually, most of a printed
+page is all this blank space, as I said.
+so, Typically. If you just don't compress
+at all and you have an eight and a half by
+eleven piece of paper with three hundred
+pixels per inch, that'd be eight million
+bits. But most of those are white, and
+typically with run length and coding, you
+can get substantial savings simply by
+basically counting the white bits. And
+even when there's letters involved, you
+can get, say maybe there's only three
+thousand characters. That's another
+example. If it's all text then maybe the
+text itself is a great way to compress it.
+or the program or the document processor
+that produced the text, but now we're
+starting to get into undecidabi lity
+issues. So lets think more in terms of a,
+a page that has a, an image, a drawing,
+and some text and so forth. so it makes
+sense to start with a bitmap and then use
+as few bits a possible. And then run
+length encoding's going to be very
+effective. that's our warm up case for
+data compression.

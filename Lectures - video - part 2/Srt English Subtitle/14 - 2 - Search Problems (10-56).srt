@@ -1,0 +1,553 @@
+1
+00:00:05,660 --> 00:00:10,733
+To get started, we're going to introduce
+the idea of search problem which
+
+2
+00:00:10,733 --> 00:00:16,306
+encompasses many of the fundamental
+problems that we want to try to solve. so
+
+3
+00:00:16,306 --> 00:00:22,022
+here's a familiar problem from secondary
+school, we'll call it LSOLVE. So, the
+
+4
+00:00:22,022 --> 00:00:27,630
+problem is, given system of linear
+equations find a solution. so, we've got
+
+5
+00:00:27,630 --> 00:00:34,313
+simultaneous equations involving the
+variables x1, x0, x1, and x2, and what we
+
+6
+00:00:34,313 --> 00:00:40,419
+need to do is find a solution. In this
+case, these three equations have the
+
+7
+00:00:40,419 --> 00:00:45,449
+solution x0 = -one, x1 = two, and x2 =
+two.
+
+8
+00:00:45,452 --> 00:00:51,640
+If you plug those values in for x0, x1,
+and x2 and those equations, they, you'll
+
+9
+00:00:51,640 --> 00:00:57,473
+find that they satisfy those equations.
+in, in secondary school you learn how to
+
+10
+00:00:57,473 --> 00:01:03,969
+solve those with Gaussian elimination or
+eliminate a variable at a time. so that's
+
+11
+00:01:03,969 --> 00:01:10,392
+LSOLVE. now, last time we talked about
+linear program, programming. and that's a
+
+12
+00:01:10,392 --> 00:01:16,520
+similar problem that you can almost cast
+as the following given a system of linear
+
+13
+00:01:16,520 --> 00:01:21,753
+inequalities, you know, find a solution.
+Actually for LP we do a little bit more
+
+14
+00:01:21,957 --> 00:01:27,994
+because we also try to optimize. But, this
+is a fine characterization of a way to
+
+15
+00:01:27,994 --> 00:01:33,862
+formulate the problem. So now, we just
+have inequalities. and again, there's a
+
+16
+00:01:33,862 --> 00:01:39,361
+solution. actually, the first part of the
+computational burden in linear programming
+
+17
+00:01:39,361 --> 00:01:44,732
+is to know whether there's a solution or
+not before you can even apply the simplest
+
+18
+00:01:44,732 --> 00:01:51,152
+method. so we in this case, there is some
+equations on the left, and on the right
+
+19
+00:01:51,152 --> 00:01:57,202
+there's values that if you plug those
+values into those equations, they satisfy
+
+20
+00:01:57,202 --> 00:02:03,098
+it. So, that's minor inequalities of
+satisfiability. here's another one.
+
+21
+00:02:03,328 --> 00:02:09,378
+suppose that again we have inequalities
+but suppose that we insist that the
+
+22
+00:02:09,378 --> 00:02:14,968
+variables be zero or one. and actually,
+this is a special case of linear
+
+23
+00:02:14,968 --> 00:02:21,373
+programing that comes up to be useful as a
+model in many situations where the
+
+24
+00:02:21,373 --> 00:02:27,390
+variables modeled as I say, what's going
+on in an electronic circuit or maybe other
+
+25
+00:02:27,578 --> 00:02:32,341
+situations where we just did want, want
+them to be zero or one. And we had an
+
+26
+00:02:32,341 --> 00:02:37,856
+example of this when we were talking about
+bipartite matching reduction to linear
+
+27
+00:02:37,856 --> 00:02:43,520
+program, programming. so that's in this
+case, you take those equations, those
+
+28
+00:02:43,520 --> 00:02:49,960
+inequalities and you put in those values.
+And sure enough, x1 + x2 is bigger than
+
+29
+00:02:49,960 --> 00:02:56,050
+one, x0 + x2 is bigger to the one but the,
+the some of the three of them it's less
+
+30
+00:02:56,050 --> 00:03:01,376
+than or equal to two, so that's a
+solution. and this is just one more so
+
+31
+00:03:01,376 --> 00:03:05,605
+those are all called satisfiability
+problems. So, you have a bunch of
+
+32
+00:03:05,605 --> 00:03:10,518
+equations, with variables. And you have
+values for the variables. And you want to
+
+33
+00:03:10,518 --> 00:03:15,555
+know if the variables satisfy the
+equation. and the simplest satisfiability
+
+34
+00:03:15,555 --> 00:03:20,779
+problem is the one that just uses Boolean
+values. given a system of Boolean
+
+35
+00:03:20,779 --> 00:03:26,234
+equations where the variables are either
+true or false, and then the equations are
+
+36
+00:03:26,234 --> 00:03:31,999
+just made up of or an and connective in
+the presentation. And, and you, you're
+
+37
+00:03:31,999 --> 00:03:38,849
+checking whether in a bunch of when an
+expression involving truth values is true
+
+38
+00:03:38,849 --> 00:03:47,392
+or false in the prime means not. So, not
+x1 or x2 and x0 or x2 equals true. that's
+
+39
+00:03:47,689 --> 00:03:56,217
+going to be true in that case. that's
+going to be satisfied in that case because
+
+40
+00:03:56,217 --> 00:04:04,304
+x1 equals false, so not s1 is true. So the
+first term is true here. not x1 is true so
+
+41
+00:04:04,304 --> 00:04:09,426
+that, or whatever is true. and then this
+term here, x0 or x2, x2 is true. So, both
+
+42
+00:04:09,426 --> 00:04:14,163
+those terms are true and we're adding
+them, so it's true. And you should go
+
+43
+00:04:14,163 --> 00:04:19,605
+through and check each of the equations to
+make sure that those truth values satisfy
+
+44
+00:04:19,605 --> 00:04:24,391
+those equations. So, those are fundamental
+problems. They're very similar in nature.
+
+45
+00:04:24,564 --> 00:04:29,251
+and there's lots and lots of applications
+where people want to find efficient
+
+46
+00:04:29,251 --> 00:04:33,792
+solutions for these problems. so the
+question is, how do these things fit into
+
+47
+00:04:33,792 --> 00:04:38,451
+our theory? Which of these have algorithms
+that are guaranteed to run in polynomial
+
+48
+00:04:38,451 --> 00:04:42,548
+time? When you look at the problems, they
+didn't look really all that much
+
+49
+00:04:42,548 --> 00:04:47,594
+different. well, for LSOLVE, we have
+Gaussian elimination and other ways to
+
+50
+00:04:47,594 --> 00:04:53,350
+solve Gaussian elimination works in n
+cubed time or end of three halves time
+
+51
+00:04:53,350 --> 00:04:58,771
+where n's the size of the input. but what
+about the other ones? do they have
+
+52
+00:04:58,771 --> 00:05:04,594
+polynomial time algorithms? well, LP I
+mentioned briefly at the end of the last
+
+53
+00:05:04,594 --> 00:05:09,279
+lecture. yeah. It was proven but actually
+was open for decades. It wasn't until
+
+54
+00:05:10,818 --> 00:05:17,660
+solved where we knew that there existed a
+guaranteed polynomial time algorithm for
+
+55
+00:05:17,660 --> 00:05:22,613
+linear programming. And then it was
+decades later before those algorithms were
+
+56
+00:05:22,796 --> 00:05:27,749
+brought to the point where they could
+compete with simplex in practice. but it
+
+57
+00:05:27,749 --> 00:05:32,682
+happened. that was a problem, we didn't
+know whether there was a polynomial time
+
+58
+00:05:32,682 --> 00:05:37,725
+algorithm for many, many years even though
+people were trying to find it. but with
+
+59
+00:05:37,725 --> 00:05:42,588
+articulating this division in the theory
+helped with the idea of let's get, let's
+
+60
+00:05:42,588 --> 00:05:49,725
+find a polynomial time algorithm and
+someone did. and so, that's was certainly
+
+61
+00:05:49,725 --> 00:05:55,484
+difficult to bring that about, but it
+happened. And then, you might say, well
+
+62
+00:05:55,484 --> 00:06:00,720
+that gives some hope that we could do
+others. But actually for integer linear
+
+63
+00:06:00,720 --> 00:06:05,820
+programming, you just take linear
+programming and restrict the variables to
+
+64
+00:06:05,820 --> 00:06:10,989
+have zero or one values, or Boolean
+satisfiability. nobody knows a polynomial
+
+65
+00:06:10,989 --> 00:06:16,361
+time algorithm. And, in fact, few people
+believe that a polynomial time algorithm,
+
+66
+00:06:16,361 --> 00:06:21,529
+guaranteed polynomial time algorithm
+exists for these problems. But, we still
+
+67
+00:06:21,529 --> 00:06:28,710
+don't know for sure. that's the topic of
+today's lecture. Now, all of these things
+
+68
+00:06:28,710 --> 00:06:35,157
+are examples of search problems. and we
+characterize them this way cuz it's an
+
+69
+00:06:35,157 --> 00:06:41,388
+intuitive way to describe really the
+problems that we want to solve. so the
+
+70
+00:06:41,388 --> 00:06:48,279
+idea is that the problem has, lots of
+problem instances, its input. and what you
+
+71
+00:06:48,279 --> 00:06:54,994
+want to do in a search problem is find a
+solution, or report that there's no
+
+72
+00:06:54,994 --> 00:07:00,825
+solution. so, there's just one
+requirement. And the requirement that
+
+73
+00:07:00,383 --> 00:07:06,480
+distinguish, distinguishes a search
+problem from just any problem is that we
+
+74
+00:07:06,480 --> 00:07:13,194
+have to be able to efficiently check that
+the given solution is in fact the
+
+75
+00:07:13,194 --> 00:07:18,519
+solution. Say, in that efficiently in this
+lecture means in poly, guaranteed
+
+76
+00:07:18,519 --> 00:07:24,300
+polynomial time in the size of the input.
+And for the problems that I just gave
+
+77
+00:07:24,541 --> 00:07:31,204
+they're definitely search problems.
+because just take a look at what they are.
+
+78
+00:07:31,204 --> 00:07:37,325
+So, for LSOLVE, the problem is input
+instances are just systems of linear
+
+79
+00:07:37,325 --> 00:07:43,855
+equations. So, matrix of N squared
+numbers, N  N + one numbers. And solution
+
+80
+00:07:43,855 --> 00:07:49,900
+is just three numbers. And to check the
+solution, just plug in the values to
+
+81
+00:07:49,900 --> 00:07:56,511
+verify each equation so that's certainly
+polynomial time in the size of the input.
+
+82
+00:07:56,511 --> 00:08:02,395
+So, LSOLVE is a search problem. And
+similarly, LP is a search problem. LP
+
+83
+00:08:02,631 --> 00:08:09,401
+characterized in this way. you've got a
+system of linear inequalities and you're
+
+84
+00:08:09,401 --> 00:08:15,220
+given a solution, you can efficiently
+check that, that solution satisfy those
+
+85
+00:08:15,220 --> 00:08:19,512
+inequalities. These satisfiability
+problems are all search problems. In
+
+86
+00:08:19,512 --> 00:08:24,540
+interlinear programming, you have the
+inequalities. you get values that are zero
+
+87
+00:08:24,540 --> 00:08:29,445
+or one. You can plug them in the equations
+and check. That's what characterizes a
+
+88
+00:08:29,445 --> 00:08:34,595
+search problem. It's got a small solution
+that we can efficiently check whether it's
+
+89
+00:08:34,595 --> 00:08:41,557
+a solution and satisfy the same. You've
+got the truth values, you've got the
+
+90
+00:08:41,557 --> 00:08:48,050
+equations and then you plug in values and
+verify each equation. now, what we're
+
+91
+00:08:48,050 --> 00:08:53,588
+doing is distinguishing search problems
+from other kinds of problems that are very
+
+92
+00:08:53,588 --> 00:08:58,658
+similar. And actually, the theory works
+for these other kinds of problems. One
+
+93
+00:08:58,658 --> 00:09:03,862
+kind is called a decision problem where
+it's just problems that have a yes, no
+
+94
+00:09:03,862 --> 00:09:09,709
+answer. in, another one is optimization
+problems which are problems of where you
+
+95
+00:09:09,709 --> 00:09:15,571
+want to find the best solution in some
+sense like linear probic, programming or
+
+96
+00:09:15,571 --> 00:09:21,709
+shortest path. but the theory that we're
+about to lay out all the major conclusions
+
+97
+00:09:21,709 --> 00:09:27,709
+hold for any one of these classes of
+problems. it's just that it's best to fix
+
+98
+00:09:27,709 --> 00:09:34,261
+on one to make sure that there's no holes
+in any of the statements that we make. so
+
+99
+00:09:34,261 --> 00:09:39,563
+we're doing that at the outset with the
+search problem. Now, and, and, and so you
+
+100
+00:09:39,563 --> 00:09:47,032
+can imagine so if one way to check that if
+you have a problem that finds a solution
+
+101
+00:09:47,032 --> 00:09:52,925
+to a linear programming problem, you can
+specify it in such a way that it's a
+
+102
+00:09:52,925 --> 00:09:59,366
+decision block. Is there a solution that
+satisfies another given inequality linear,
+
+103
+00:09:59,571 --> 00:10:05,121
+combination of the value's less than a
+certain value? And then you can use binary
+
+104
+00:10:05,121 --> 00:10:10,877
+search or something to do the, the final m
+aximiza, minimization for linear program,
+
+105
+00:10:10,877 --> 00:10:15,700
+programming, and so forth. There's all
+kinds of way to move among these problems.
+
+106
+00:10:15,700 --> 00:10:21,530
+But we're going to focus on search
+problems. so here's another one factor. so
+
+107
+00:10:21,530 --> 00:10:27,579
+given an inv, integer, find a nontrivial
+factor,. might find, it might take a lot
+
+108
+00:10:27,579 --> 00:10:33,780
+of computation to try to find a factor.
+but if somebody gives you a factor, then
+
+109
+00:10:33,780 --> 00:10:39,754
+all you have to do is long divide. So
+again, factor is a search problem. so
+
+110
+00:10:39,754 --> 00:10:46,106
+those are some examples of the basic types
+of problems that we're foing to consider
+
+111
+00:10:46,333 --> 00:10:48,980
+when we investigate intractability.

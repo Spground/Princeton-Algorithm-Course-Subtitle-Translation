@@ -1,0 +1,350 @@
+My key index counter is a great algorithm
+but that's not the end of the story.
+It's also useful for creating a more
+general purpose algorithm for strings.
+The first one we'll look at is called LSD
+radix sort, Least Significant Digit for
+string sorting.
+And the idea is a very simple one.
+We have strings so we're gonna consider
+now a small example where the strings are
+all the same length.
+And again that's often true in practical
+applications account numbers and so forth.
+String that uses, sort these, may all be
+the same length.
+And what we're gonna do is consider.
+The character positions in the strings,
+and move from right to left.
+The algorithm, is to just stably sort
+using key index counting, on, the chara-,
+deed character of the key, where deed goes
+from the right end and decreases.
+So, this is, a stable sort.
+Of those twelve keys, sorting on the
+right-most character, the B's go before
+the D's go before the Es.
+It's crucial that the sort be stable in
+this application, and that's why we
+checked with key index counting to make
+sure that it was stable.
+So it's a stable sort on, on the right
+most character.
+And then all we do is move from right to
+left and do now the second character.
+And this now is a stable sort of those
+same keys on the second character.
+So now the ones with A in the second
+character come before the one with B and
+so-forth.
+And not only that, it's stable, so their
+relative order is maintained, BAB, CAB,
+FAD, BAD, and so-forth.
+And then.
+To finish this.
+Sort.
+Now we do it on the first key.
+And the magic of LSD radix sorting is eh,
+once you do it on the first key then the
+strings are all sorted.
+So, that's three passes, one for each
+character in the string.
+Each taking linear time and we get a
+string sort.
+That's LSD sort.
+Now we need to prove that it works.
+And so this is a simple proof by induction
+that it worked.
+After we have done I passes then we can
+assume by induction that the strings are
+sorted on the last I characters.
+So we are just showing that for two, after
+two passes. it sorted on the last two
+characters thats we're assuming by
+induction.
+So now what about the next character that
+we are sorting.
+Well, there's two things that can happen.
+If two strings are different on the first
+key, then, the key index sound is gonna do
+the job.
+A string that starts with B is gonna come
+before one that starts with a D, and so
+forth.
+So if they're different on the sort key,
+the key index sort puts them in order.
+If they're the same on a sort key then
+stability does the job.
+So all the ones with that stay on order
+because we've insisted on a stable sort.
+That's a simple proof by induction that
+LSD string sorts fixed length strings in a
+descending order.
+And it's really easy to implement.
+This is a complete.
+Java implementation of LSD string sort.
+So we're explicitly working with radix
+r256.
+=
+256 and where the radix comes in, the
+value of the radix comes in, is that's the
+size of the array that we use for the,
+counts and the accumulants.
+We need one for each character.
+For each possible character value, we're
+gonna index into that array that has to be
+that big.
+And all this is, is the code for key index
+counting.
+And then all we do is take a variable t
+that goes down from this is the strings of
+fixed width w And we start at the
+rightmost character and go down to the
+first character.
+And instead of dealing with a-ah, our
+string A of I2 we're just look at the deed
+character which is a character.
+Otherwise just with that replacement and
+that replacement it's the same code as we
+looked at for key index counting.
+So let's do key index counting on the deed
+character going down from the width from
+right to left.
+That's remarkably compact code.
+And that's gonna be the method of choice
+for lots of situations with fixed length
+keys as the sort key.
+And, and it gives us another look at the
+performance of sorting out algorithms.
+That gives us another line in the table
+that we're requiring that, that be, they
+be fixed length keys, there's ways to work
+around that.
+And we'll consider another algorithm that
+deals with that in a minute.
+But again it's often or typically the case
+that the.
+Width of the keys is not that long.
+It's a small constant.
+And therefore, we have a linear time
+algorithm.
+This even works if the keys are binary
+numbers represented in a binary word.
+We can break them up into groups of small
+number of bytes Say, 64 byte number can be
+broken up into 88 eight bytes characters
+or four sixteen byte characters.
+For sixteen byte characters, W would be
+four and you can get a huge array of that
+kind of numbers sorted in just the four
+passes through the array.
+If they don't have the same length we have
+to do some extra work.
+It's an interesting problem to think
+about.
+We're, we're gonna look at a different
+method in a minute.
+So here's the type of question that
+somebody might could ask for a job
+interview.
+Actually, a web services company, every
+day, might be in the position of needing
+sort a million or a billion 32 bit or 64
+byte integers.
+And an algorithm student, in interviewing,
+might could ask what sorting method do you
+use?
+Now, senator.
+You hear Google and I like to think of the
+presidency as a job interview.
+Now it's hard to get a job. as president.
+Right. And, and you're going through that
+obviously now.
+It's also hard to get a job at Google.
+Right.
+[laugh] We, we have questions.
+And we ask our candidates questions.
+And this one is from Larry Schwimmer.
+Okay.
+[laugh].
+You guys think I am kidding?
+It's right here.
+What is the most efficient way to sort a
+million 32 bit integers?
+Well I, no, no, no, no, no, I, I think the
+bubble sort would be the wrong way to go.
+Come on, who told him this?
+Okay.
+I didn't see computer science in the
+background.
+We've got our spies in there.
+Well.
+'Kay.
+Let's ask, let's ask a different interview
+[laugh] question.
+[laugh].
+So the bottom line is if you want a good
+job maybe, you wanna know about LSD string
+sort.
+Actually, this method has been around for,
+really a long time.
+So we'll start with a little bit of a
+story.
+So what did people do, in the nineteenth
+century when, they wanted to take a
+census?
+And actually, the story is that, for the
+1880 census, it was actually obsolete,
+before it was completed.
+It took 1,500 people seven years to
+manually process the data.
+So, during that time there was room for
+some invention, and a man named Herman
+Hollerith developed an automated machine
+that could help do the census faster.
+So what his idea was to use punch cards to
+record data.
+The kind of data that was taken in the
+census.
+And then the machine could tabulate the
+data by sorting one column at, at time.
+And we'll look a byte at how it does that
+in just a minute.
+And the idea was that the re-, result of
+that was that the next census finish
+really much earlier and under budget,
+'cause this machine automated much of the
+process.
+And that had a really a profound effect on
+the development of computing 'cause punch
+cards, it turned out were useful not just
+for census but for many other
+applications.
+For accounting and for many other for
+business processes and for many decades,
+punch cards were the primary medium that
+was used to store, enter, and process
+data.
+And Hollerith's company for building this
+machine later emerged with a bunch of
+other companies.
+And in 1924 that company became known as
+IBM.
+And actually, punch cards were used up
+into the 70's' And even in the 80's' in
+some places.
+So, if, it's important.
+Let's take a little break and talk about
+the role of LSD string sort.
+For you know, a couple of decades people
+who wrote programs were working with
+punched cards.
+And in courses at universities, if you
+want to write a program, you wrote it by
+putting one line on each punched card.
+In your program, therefore, was a deck, a
+long deck of punched cards.
+If you had a 1000 line program, you had
+1000 punched cards.
+They came in boxes that held 2,000, and
+people would carry around these boxes of
+punch cards that, that were their
+programs.
+To enter the program there was a thing
+called a card punch which had a, which had
+a keyboard kind of like a typewriter, but
+all it did, you could see the cards, and
+it'd actually punche holes in the card
+with what you typed.
+Now there was a huge so then, you, you're
+program was punched cards.
+And there was a machine called a card
+reader which would take the cards in and
+convert those punches back into, into
+binary and characters that again, could be
+processed on the computer and then you get
+your results printed out on paper in a
+line printer.
+So for many, many years people programmed
+by making decks of punched cards handing
+them to an operator who put them on a card
+reader and then waiting for the printed
+output to come out.
+There were other devices, but this was the
+main thing for a long time.
+And lots of people learned to program this
+way.
+Now, there was a huge flaw in the system
+though.
+The flaw was, if you dropped the deck,
+then your program was completely scrambled
+and out of order.
+And you had no program.
+You had to go through the cards and find
+the first line and, then find the second
+line.
+Well, people figured out to work around
+for this really almost right from the
+beginning, cause this is clearly
+intolerable, situation, and, the, along
+with the same room with the card punch,
+There was a thing called a card sorter,
+And the card punch did one other thing
+automatically. every time you punched a
+card.
+It would go to the last six columns of the
+card and it would put in, a number.
+Actually they skip by ten So, it would be.
+The first card would be card ten then
+twenty, 30. And your cards would be
+numbered up to six digits, so you could
+have thousands of cards sequentially.
+So when you typed in your program, you get
+the cards numbered, in order.
+If you wanted to add a few lines to a
+program, you had room to add a couple of
+numbers and, re-punch the numbers, but,
+nuh, the whole point was, that all the
+time when you're holding on to a card
+deck, the cards are in order, by number on
+the right hand column.
+And if you dropped it, all you needed to
+do was sort it.
+Or if the m-, machine operator dropped it,
+that was not viewed as a big deal for your
+cards to get [laugh] out of order, because
+there was this machine that could sort
+cards.
+And the way that it worked was, LSD Rate
+exort, the LSD string sort on those
+characters that are the numbers that keep
+the card in order.
+They would, you'ld start on the right
+column.
+And there was a physical thing, you'd set
+to a call and, it was gonna sort on, you
+put the deck in, and it'd distribute, the
+ones with zero in the first bin, or ones
+with one in the second bin, all the way
+up, it'd, and of all the cards it start
+with zero would come in, and it was
+stable, whatever order the cards were in,
+that's the order they'd appear in the
+pile, and then you'd pick them up, and
+you'd have a new deck, and it'd be all
+sorted on the right-most column.
+Then you move over for one position from
+right to left, and run the cards through
+again.
+So if running the cards through the card
+sorter six times, you could get your deck
+sorted.
+So, every programmer knew LSD radix sort.
+For decades, it was not something that
+was, difficult to teach, 40 years ago.
+And, these, this equipment, is now all
+pretty much gone.
+But LSD radix sort, is still a good
+algorithm to know. Not related is
+something else that was going on with
+those initials at that time.

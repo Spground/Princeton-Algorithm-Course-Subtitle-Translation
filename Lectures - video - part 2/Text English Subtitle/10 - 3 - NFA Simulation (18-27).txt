@@ -1,0 +1,342 @@
+Now, first we're going to look at the
+process of simulating the operation of an
+NFA. And in order to do that, we have to
+look at the representation. so for state
+names we're just going to use the integers
+from zero to N and those are just indexes
+into the regular expression strain with
+one extra one for the except state. So, if
+RE has M characters, we've got M plus one
+states. and then, we forget the
+match-transitions. so for with this, we'll
+just keep the regular expression in an
+array. and then for characters that are
+not metacharacters that are just
+characters from the alphabet there's
+match-transition just to the next element
+just to add one, so that's an implicit
+representation of the match-transitions.
+and then the next thing is the epsilon
+transitions. So, since there might be
+multiple edges leaving from any given
+state and it is directed, it always says,
+go from this state to another one we'll
+use directed graph. So we just have a
+bunch of edges with given vertex names.
+And that's convenient. That's what we use
+for our graph processing algorithms, was
+indexes for vertex names. so, this is
+totally well-suited to building a digraph
+using the basic digraph processing methods
+that we talked about when doing graph
+processing. so, that's our representation
+and then given that representation it's
+very, you know, straightforward to find
+out for any state what are the possible
+next states and if it's got a character in
+a possible next state is to match a
+character in angle up one otherwise it's
+the vertices that they are pointed to by
+the edges and its adjacency list does have
+epsilon transitions. So, let's take a look
+at just given that basic idea, that we can
+always get to the transition from any
+given state how we're going to do a
+simulation? and so, the idea is summarized
+by this diagram here. what, what we're
+going to do is at every step each text
+character that the machine does read,
+we're going to keep track of the, the set
+of all possible states where the NFA could
+be after reading in the i, I text ch
+aracter.
+So, say, we've done that and, you know,
+there's this is just a schematic. So,
+there's a bunch of states that we could
+get to after reading i characters. Now in
+some of those states they, they are
+labeled with characters. and if that
+character matches our text character, they
+can take us to another state. So, say, in
+this case, there is three of them that
+matches and the other one has some other
+character or different character and it
+couldn't take us to another state. So,
+that gives us a all the possible states
+that you could be in just after reading
+the i plus first symbol. And now, what we
+do is take a look at the possible null
+transitions that we could go to from those
+states. And that might take us to lots of
+other states. but that's all the machine
+could do. It could read a character. And
+then it can take a bunch of null
+transitions. and but that's all it knows
+how to do. And that will give us all the
+possible states that it could be in after
+reading i1 plus one symbols. And then, we
+just continue in that from every one of
+those states. some of them match the
+character match the character, and then,
+look at all the epsilon transitions. So,
+that's the basic idea is to simply keep
+track of all possible states the NFA could
+be in after reading the first i text
+characters. so the only thing that's
+complicated is how do we get all the
+states that we could reach by epsilon
+transition. and we'll look at that in just
+a second. It's actually very
+straightforward. But let's look at a demo
+first. so this is our machine for A<i>B or
+A, or AC followed by D. and let's suppose</i>
+it has this input. So, let's do this demo.
+Okay. So, we're going to, to check if the
+input is matching the pattern. we're going
+to start the machine in state zero and so
+the zero is one of the states, you could
+reach from the start. and then now we want
+to get to all the states that you could
+reach by epsilon transitions from the
+start. and so there's a bunch of them so
+we could go to one and from one, we could
+go to either two or six. from two, we
+could go to three. From three, we could go
+to two or four. so we could get to all
+those places from the start without
+scanning a single character. So, zero,
+one, two, three, four, and six the machine
+could be in any one of those states before
+it scans a single character. so, that's
+where it could be after zero characters.
+But what about now after the first
+character? Well, out of those states only
+two and six involve matching an A. So the
+only thing that could happen next to read,
+the machine could do next, is to read the
+A in either state two or state six. I know
+there's going to be match-transitions. So
+in the first case, it goes to three and,
+and the second case, it goes to seven. So,
+the stead of states, it can be reachable
+just after matching the A, is just three
+and seven. But now from those states it
+might get somewhere with epsilon
+transitions. We have to look at the
+epsilon transition graphs and what states
+could it go to from epsilon transitions
+from these two. well, from three, seven
+has nowhere to go, and from three it could
+go either to two or four. from two, it
+could go back to three so the total number
+states that it could be after matching A
+is two, three, four, and seven. and so
+that's one step. We've matched one
+character, and we have kept track of all
+possible states the machine could be in
+after matching that character. Now, what
+about the next character? You can see,
+these four states take us all different
+ways. You could have an A, a B, or a C
+next, and it could get somewhere. But it
+happens, we have an A, and the only one of
+these states that matches an A is two. So,
+after matching the second A the only place
+it could get to is three. and so that now,
+we have only one state to work with. But
+where could we get with via epsilon
+transitions, from three? and so, well, you
+can go from three to four or two. Well, we
+did this before. And then, from two back
+to three. So, we could be in two, three,
+or four after matching two As. so that's
+all the possible states we could be in
+after mat ch, after matching the two As.
+now, what's next is B, only state four
+matches to B, so the only place we could
+be right after matching the B is in state
+five. And that's after matching the B, now
+what about epsilon transitions? Well,
+state five has an epsilon transition to
+state eight. so we could take that one and
+eight has got one to nine. So it could be
+an either five, eight, or nine after
+matching AAB and then following all of the
+epsilon transitions. but its really
+important to keep in mind, there's no
+other state the machine could be and it
+doesn't have any other way to get to after
+matching AAB it couldn't get state seven
+or six or two. those are the only possible
+states it could be in. since we're, each
+time, progressing through the input we're
+making progress to the end for sure. So
+now to finish up this example the only
+state out of those three that matches D is
+state nine. and so, that's a
+match-transition that reads the D. and the
+only place you could be after matching
+AABD is state ten. and then now, we follow
+epsilon transitions. and that Epsilon
+transition could take us to eleven. so,
+the only place that machine could be after
+matching ABD is ten or eleven. Now, our
+condition on whether we accept the string
+or not is whether we could get to the
+accept state, and in this case, we could.
+it is possible for the machine to get from
+zero to the accept state and read all the
+input characters so that simulation is
+approved, that the machine accepts the
+input AABD when simulated its operation,
+all possible ways and we managed to find
+the accept state. Of course, if we had
+tried some input that the machine doesn't
+recognize, we'd get stuck somewhere and
+either not get through the input or have
+no possible states it could be in. and
+that would be a proof that it does not
+accept since we try all possibilities. So,
+the only thing that's complicated in this
+computation is reachability. but actually
+from our study of digraphs this is the,
+one of the simplest problems that we
+discussed. what we really discussed was
+single source reachability. That is given
+the source, can you find all vertices that
+are reachable from that source? And that
+was Depth Firts Search. so we have very
+simple depth first search but also in that
+API we put vertices reachable from a set
+of sources, so an iterable of sources and
+so can we get the, the, what we really
+need is all vertices reachable from a
+given source from its source set of
+vertices. and it's easy using DFS. You
+just run it from each of the sources and
+you don't unmark the ones that you get to
+and that stops DFS from revisiting any
+vertices and it marks all the vertices
+that you could get to from that set. So,
+its just a simple extension of our DFS
+implementation. it's going to run in time
+proportional to the number of edges plus
+number of vertices in the digraph and it's
+a very simple computation digraph
+reachability. so given that capability
+which we discussed in graph processing the
+implementation of in a, in the NFA
+stimulation is very straightforward. so
+this is a, a data type that implements the
+NFA. so, we have a constructor that takes
+a regular expression as its argument. and
+it's going to build the NFA and its got a,
+a method to build the digraph that we'll
+talk about later but, but its also got a,
+a client method recognizes where the
+client can after the NFA is constructed,
+it can that they could text string and
+return true or false by simulating the
+operation. so we'll take a look at the
+building the digraph in a second but the
+one that we're talking about now is
+simulating the operation of the NFA once
+it's built for a given text string. and
+this is the complete code and it's
+expresses in code what we talked about in
+English during the demo. it's amazingly
+compact implementation of this idea of
+simulating the operation of an NFA. So we
+keep a, a bag of integers or set of
+integers called PC, that's kind of like
+program counter. So, that's the set of all
+possible states that the NFA could be in.
+so and we build a DFS from our epsilon
+transition graph. so the first thing that
+we do is do a, a, a for we put on to the,
+the PC all the states that you could get
+to from state zero. so that's build a DFS
+that marks all the states you could get to
+from state zero and then go through and
+put all of the states on, on to the PC.
+So, that's our starting point, is all the
+places that you could get to via epsilon
+transitions from state zero. So now during
+the execution of this for loop PC is the
+thing that we have all the states that you
+could reach after scanning past the ith
+character, so we initialize for the 0th
+character. And then all we do is for
+everyone one of those states well, first
+thing we do is test if we reach the accept
+state. If we reach the accept state we're
+going to have nothing, we're, we have
+nothing left to do. if we have a match,
+that is, if the a character in the RE if
+that state position matches our ith text
+character, then we're going to keep
+another set of possible states called
+match. So, those are the ones you could
+get to just after matching a text
+character. And so, we'll just add V. plus
+one. So, if we find a matching character
+at V, we just go to V plus one, that's the
+implicit match-transition. and here, we'll
+throw in, don't care, cuz it's so easy to
+do if the regular, regular expressions
+says, I don't care what character matches
+then throw that one to. so this just adds
+don't care to the implementation. and so
+we do that for all states in our PC in the
+states we can, can be in just before, just
+while looking at the ith character. If we
+have a match then we put the next states
+into a match. So now, what we have to do
+is follow the, epsilon transitions from
+match. So now, we build another DFS which
+gives us marks all the states that you
+could reach by starting with any of the
+states in match. and now when we build a
+new PC, we'll just set PC to a new, new
+bag, and put all the marked states for
+that search. So, those are all the ones
+that you could get to via epsilon
+transitions right after a match, and put
+that in the PC. Now. we have a new PC. and
+we've r ead the ith, character and we go
+to the i plus first character, and simply
+continue. so, when we're done with all of
+the text then we can test if we made it to
+the accept state. that is, if any of the
+states in our current set of states is the
+accept state, we return true. and if we
+didn't get to the accept state after all
+of that, we return false. A very compact
+code that takes advantage of our
+implementation of reachability for
+digraphs in a, a reasonable way to
+simulate the operation of an NFA by
+keeping track of all reachable states. so,
+what about the N analysis? Well it's easy
+to see that the not difficult to see that
+if our text is N-character and we have an
+M-character pattern. the worst that can
+happen is that we take time proportional
+to M times N. and that's just because for
+everyone of the characters we have a set
+of states, a set of all possible states.
+And we iterate through that set of
+possible states a few times. we even run
+DFS on it, but that's linear. and there's
+the extra point that the number of edges
+that we have is less than 3M. No node has
+more than three edges leaving it. So the
+total amount of time for each character is
+proportional to M and there's
+N-characters, so there are any
+proportional to M times N. So, that's the,
+the cost of the simulation. Of course a
+lot of times, the size of the set of
+states is much smaller than that. so in
+many real world problems, it's closer to
+linear. that's NFA simulation.

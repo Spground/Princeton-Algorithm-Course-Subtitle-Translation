@@ -1,0 +1,243 @@
+Okay. We're going to finish up by talking
+a little bit about different approaches to
+dealing with needing to solve intractable
+problems. this, actually, a lot of
+different ways to proceed when you run
+into an intractable problem. One idea is
+to exploit it. In fact, an example of
+this, a very successful example of this is
+modern cryptography. People using the
+internet for commerce, or for interaction
+through digital signatures and other
+mechanisms are absolutely relying on
+modern cryptography for security and
+privacy. and that's all based on the RSA
+cryptosystem, or much of it. and it's
+based on the idea that multiplying two
+N-bit integers is relatively easy. This
+and a, brute force multiplication
+algorithm gets it done in quadratic time
+when there's faster ways. So that's
+polynomial time. So in order to encrypt
+something, you need to multiply things,
+but in order to break something, you would
+need to factor things. That's exploiting
+interactability. Nobody knows a good way
+to factor. A factor is not MP complete, by
+the way, not known to be MP complete. So
+it doesn't, in fact, not quite as hard as
+other problems. But still nobody knows a
+fast way. So but this is an example of
+exploiting suspected problems, that's
+suspected to be intractable. In fact,
+there's other ways to make money [UNKNOW
+put, put some challenges and go ahead and
+factor this number towards $30,000. . Some
+of these things have been , prices have
+already been claimed but it may be easier
+to go after this than after the, the
+millionth and actually [UNKNOWN] and
+Idilin were just not just but professors
+at MIT when they came up with this and
+they realized that. the important
+commercial potential of this And actually
+created a company based on the difficulty
+of factoring that sold for 2.1 billion
+dollars not that long ago. And it's the
+basis for, internet commerce. so these
+possibilities for making a lot of money
+out of, understanding the difficulty of
+computation, are not imaginary. they're
+quite real. so, I, talk briefly about the
+complexity of fac tors.
+That's, another problem like, LP is that,
+it's current status is what LP was in the
+70s. we're using it, a lot of people were
+doing it we knew that the worst case was
+of simplex was exponential. we'd like to
+classify it, like to know if there's a
+poly time, nomial time algorithm, but
+nobody knew one. And then the big surprise
+for LP was that Catching came up with a, a
+polynomial time algorithm and, and, then,
+you know, and people went to work. For
+factor we're kind of in the same
+situation. It's NMP. Being as we saw, it's
+just a, search problem but. , it's not
+known or believed to be either NP or NP
+complete. But again who knows. so what if
+it turns out that P equals NP. so, so that
+would mean that now it factors in P and
+that would . It's not just the math. that
+would mean, there'd be an easy way to
+break the, RSA crypto system which is in
+wide use. people could, break codes by,
+just by factoring. and that, that would
+not be a good thing for the modern
+economy. actually, something that
+attracted a lot of attention, although
+it's almost twenty years ago now. was a
+result by Peter Shore that said, that,
+There's a device, not quite a real device,
+called a quantum computer. At least one
+that you can imagine building that solves
+factoring in polynomial time. So that
+raises the question of, do we still
+believe the extended Church-Turing thesis.
+There are plenty of people that are not so
+sure and are working hard on trying to
+build devices that might have a big impact
+on this kind of theory. well, actually we
+create, and has created a, a new theory
+based on how difficult is it to do things
+with these sorts of devices. Okay, but in
+general, suppose you have a intractable
+problem, what are you going to do to cope
+with it? Well, there's a number of things
+that people have done really successfully.
+so remember what it means to be
+intractable. so a problem's intractable
+if, in, in, in the sense that we don't
+know a polynomial time problem that's
+guaranteed to solve any instance. Now so
+maybe you can give up on, on, on e of the
+three key features of that statement.
+maybe we don't care if we can solve every
+possible instance. Maybe it's only the
+instances that are gonna arrive in the
+real world, arise in the real world that
+matter. so or maybe you can even simplify
+the problem and that's the one that you
+really need to solve. So for example, if
+you restrict. Satisfiability to have at
+most two literals per equation, can solve
+in linear time. Or even if you just insist
+that there be at most one of the literals
+per equation be not negated. That's called
+a Horn-SAT. There's a linear time
+algorithm for that. So maybe your problem
+is you're trying to solve too hard a
+problem, and you can come up with a more
+special case of the problem that's
+actually the one you want to solve that
+you could solve. So that's definitely one
+way to cope with interactability. another
+thing is optimality. we've been talking
+about search problems but this is, this is
+more a statement about Mm-hm, . But,
+optimization problems, we're looking for
+the best solution or we're looking for a
+proximate solutions. where you take away
+the guarantee that the solution's perfect
+in some way. So for example, the traveling
+sales person problem. People can find ways
+to get tours that are close to the best
+possible tour, but maybe not the best. And
+there's many, many other example of this.
+Where people are looking for good
+solutions, without trying to guarantee
+that they're optimal. And those, maybe
+those solutions are very close to optimal,
+or at least, close enough that you can use
+the solution and move on. if you
+understand the quality of the solution
+that you have, that might be, good enough.
+But and again, the idea of approximation
+algorithm and where you really can prove
+what the quality is. So for example
+there's a max three set that guarantees to
+satisfy seven-eighths of the clauses. And,
+actually these algorithm they're really
+coming at the fine line between what's
+tractable and intractable. And so, for
+example the, if you want to do 7/8's plus
+anything then it mea ns that P equals MP,
+if you can do that in polynomial time P
+equals MP there are lots and lots of
+amazing results of this sort out there.
+but anyway, in practice relaxing
+condition, that you find the perfect
+solution sometimes can get a long way in
+practice. and then the other thing is
+guaranteed polynomial time. We're talking
+about worse case behavior. but there's
+solutions out there. for example, there's
+a SAT solver that was done here at
+Princeton that can solve 10,000 variable
+SAT instances. Or, as we, as I mentioned,
+there's solvers out there for integer
+linear programming that will solve huge
+instances of real world problems. Worst
+case behaviour may be observed in a real
+world, might even be hard to find real
+world problems. This is, definitely a lot
+of room here, to not find solutions that,
+might be efficient for the class of
+problems, that you want to solve. and I
+just want to finish up with one of the
+most famous NP complete problems which is
+the so-called Hamilton path problem. and
+so that's given a graph, you want to find
+a path that visits every vertex exactly
+once. And simple path, so I can't reuse
+any edge. So that's a solution to the
+Hamilton Path probelem for this graph.
+Another way to characterize it is a
+longest path problem, longest simple path
+problem in a graph. If you have one of
+visit every edge eactly once, that's not
+difficult. It's actually in the book. But
+Hamilton path is NP complete. that's a
+natural problem that's MP complete. and
+actually this is it's empty incomplete,
+but here's a really simple exponential
+time algorithm for computing the Hamilton
+path. it's just our depth for search
+algorithm where we mark nodes and
+recursively go through all the edges all
+the vertices adjacent to the current
+vertex. and if they're not marked, go
+ahead and visit them recursively, marking
+all the nodes that we see. The only
+difference from the depth first search, is
+this thing here. Where, when we're done,
+with our recursive call on a node we,
+unmark it. And what that does is make this
+code try a ll possible paths. And there's
+an exponential number of paths. so, so
+define program for doing it for small
+graphs. But it's going to take exponential
+time for big graphs. But the longest path
+problem is NP complete, and we're going to
+finish up with a, a, a song that was
+composed by a John Hopkins student, one
+time when he was having trouble, thinking
+about this idea. Woh, oh, oh, oh, find the
+longest path. Woh, oh, oh, oh. Find the
+longest path. Woh, oh, oh, oh. Find the
+longest path. If you said P is NP tonight,
+there would still be papers left to write.
+I have a weakness, I am addicted to
+completeness. And I kep searching for the
+longest path. The algorithm I would like
+to see is of polynomial degree. But it's
+elusive, nobody has found conclusive
+evidence that we can find a longest path.
+I have been working for so long. I swear
+it's right, and he marks it wrong. Some
+how I'll feel sorry when it's done, GPA
+2.1 is more than I hope for. Gary,
+Johnson, Karp and other men (and women
+too). Tried to make it order N log N. Am I
+a mad fool if I spend my life in Grad
+School, forever following the longest
+path. Woh, oh, oh, oh, find the longest
+path. Woh, oh, oh, oh, find the longest
+path. Woh, oh, oh, oh, find the longest
+path. that's a fine sentiment on which to
+end this class on algorithms. I hope that
+all of you out there are inspired to face
+the computational challenges of the future
+with the algorithms and the concepts that
+you've learned in this class. so, that's
+all. Keep searching, so long.

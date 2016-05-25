@@ -1,0 +1,999 @@
+1
+00:00:01,087 --> 00:00:07,328
+Welcome back. Next we're going to talk
+about Binary Search Trees, a classic data
+
+2
+00:00:07,328 --> 00:00:12,439
+structures that'll enables us to provide
+efficient implementation of symbol table
+
+3
+00:00:12,439 --> 00:00:17,860
+and out rhythms. [cough] Let's look at the
+basic Binary Search Tree data structure
+
+4
+00:00:18,094 --> 00:00:23,979
+with Heaps we talk about implicit
+representation of trees with an array. For
+
+5
+00:00:23,979 --> 00:00:28,493
+Binary Search Trees we're going to talk
+about actually explicit tree data
+
+6
+00:00:28,493 --> 00:00:35,015
+structures. A binary search tree is a
+binary tree in symmetric order. Let's look
+
+7
+00:00:35,015 --> 00:00:40,096
+at the meaning of those words. So, a
+binary tree is an explicit data structure.
+
+8
+00:00:40,096 --> 00:00:47,233
+It's got what we call nodes which contain
+information and every node's got two links
+
+9
+00:00:47,233 --> 00:00:53,841
+to Binary Trees that are disjoint from one
+another, a left tree and right tree
+
+10
+00:00:53,841 --> 00:00:59,969
+associated with each node. Each node has a
+left tree and a right tree. Links can be
+
+11
+00:00:59,969 --> 00:01:06,150
+null. Left tree can be null and right tree
+can be null or both. We refer to every
+
+12
+00:01:06,150 --> 00:01:13,072
+node in the tree as the root of a sub-tree
+and [cough] referred to, the nodes below.
+
+13
+00:01:13,312 --> 00:01:20,142
+Each node is its children so this is the
+right child of the root. And that's a left
+
+14
+00:01:20,142 --> 00:01:25,986
+link, and so forth. So that's the
+definition of a binary tree. A binary
+
+15
+00:01:25,986 --> 00:01:32,220
+search tree, each node has a key and every
+nodes key is larger than all the keys in
+
+16
+00:01:32,220 --> 00:01:38,110
+its left subtree and smaller than all the
+keys in its right subtree. This is a
+
+17
+00:01:38,110 --> 00:01:43,945
+different ordering than we have to heap if
+we have a node larger than both its
+
+18
+00:01:43,945 --> 00:01:49,435
+children, this one, every node is between
+the values, the value of every node is
+
+19
+00:01:49,435 --> 00:01:54,879
+between the values of the nodes in its two
+subtrees. So the nodes to the left of e
+
+20
+00:01:54,879 --> 00:02:00,702
+are smaller and nodes to the right of e
+are larger. [cough] now we're going to use
+
+21
+00:02:00,702 --> 00:02:05,118
+these to implement symbol tables and
+there's values associated with each key
+
+22
+00:02:05,118 --> 00:02:09,907
+when appropriate, we'll write the values
+in smaller numbers next to the keys. But
+
+23
+00:02:09,907 --> 00:02:14,701
+usually, we're just going to worry about
+the keys and we'll keep the values, in the
+
+24
+00:02:14,701 --> 00:02:19,403
+nodes along with them [cough] so that's
+binary search trees. A binary tree in
+
+25
+00:02:19,403 --> 00:02:24,618
+symmetric order that's the data structur e
+that we're going to use to implement
+
+26
+00:02:24,618 --> 00:02:30,527
+symbol table operations. So how are we're
+going to represent binary search trees in
+
+27
+00:02:30,527 --> 00:02:35,648
+Java? Well, we're going to extend our
+implementations of linked list structures
+
+28
+00:02:35,648 --> 00:02:40,896
+to have two references instead of just
+one. So first of all, is the, there's a
+
+29
+00:02:40,896 --> 00:02:46,551
+node at the root. So, a binary search tree
+in Java is just going to be referenced to
+
+30
+00:02:46,551 --> 00:02:51,607
+a root node. And every node's got four
+fields, a key and a value, and references
+
+31
+00:02:51,607 --> 00:02:56,634
+to the left subtree, that contains the
+smaller keys, and the right subtree that
+
+32
+00:02:56,634 --> 00:03:03,251
+contains the larger keys. So, here's what
+the, [cough] code is based on. The, inner
+
+33
+00:03:03,251 --> 00:03:10,577
+class that we used to implement nodes has,
+one, two, three, four instance variables.
+
+34
+00:03:10,847 --> 00:03:16,889
+All of which are private as usual. A key
+of type key, a value of type value and
+
+35
+00:03:16,889 --> 00:03:23,017
+then references to a left and a right
+node. For convenience, we'll provide a
+
+36
+00:03:23,017 --> 00:03:28,525
+constructor that takes the key and value
+as argument and fills in the key and value
+
+37
+00:03:28,525 --> 00:03:35,055
+instance variables then the left and right
+links are initialized to null. And our
+
+38
+00:03:35,055 --> 00:03:41,016
+data structure then will be a root that
+points to a node in the tree and then that
+
+39
+00:03:41,016 --> 00:03:46,085
+node will point to subtrees and that will
+be the data structure that we use for
+
+40
+00:03:46,085 --> 00:03:53,363
+symbol tables. So here's the skeleton of
+our symbol table implementation. It's for
+
+41
+00:03:53,363 --> 00:03:59,887
+comparable keys associated with values and
+those are both generic types. The only
+
+42
+00:03:59,887 --> 00:04:07,093
+instance variable is a link to the root
+node called root. The inner class node is
+
+43
+00:04:07,093 --> 00:04:12,997
+the code that was given on the previous
+slide, and then we'll need implementations
+
+44
+00:04:12,997 --> 00:04:18,678
+of put and get, and we'll also look at an
+implementation of delete, and an iterator
+
+45
+00:04:18,678 --> 00:04:23,801
+as well. So that's our skeleton
+implementation, let's look at the keys. So
+
+46
+00:04:23,992 --> 00:04:30,238
+let's look at search first. So here's a
+binary search tree let's do a demo of what
+
+47
+00:04:30,238 --> 00:04:37,963
+different searches will look like in this
+tree. So there's a tree so S is at the
+
+48
+00:04:37,963 --> 00:04:45,299
+root everybody to the left of is less than
+S over to the right is bigger. So this is
+
+49
+00:04:45,299 --> 00:04:51,072
+a dynamic data structure that kind of
+follows the same rule as binary search. So
+
+50
+00:04:51,072 --> 00:04:56,419
+to look for a, to do a search for the key
+H in this tree, we start at the root and
+
+51
+00:04:56,419 --> 00:05:02,315
+we compare our key against the key at the
+root. And in this case, H is less so all
+
+52
+00:05:02,315 --> 00:05:08,152
+that says to us is that if H is in the
+tree, it has to be to the left cuz
+
+53
+00:05:08,152 --> 00:05:13,671
+everybody to the right is greater than S.
+So we move to the left and compare H
+
+54
+00:05:13,671 --> 00:05:19,028
+against the root of the left subtree. In
+this case that's E. Now H is greater so
+
+55
+00:05:19,028 --> 00:05:25,497
+that says we should go right. Now we can
+pair H against the root of the right
+
+56
+00:05:25,497 --> 00:05:32,414
+subtree of E, and that's R and it's less
+so we have to go left cuz everybody to the
+
+57
+00:05:32,414 --> 00:05:38,957
+right of R is bigger and H is smaller. And
+eventually if the key is in the tree,
+
+58
+00:05:38,957 --> 00:05:45,625
+we're going to hit it. In this case we, we
+find H as the left sub tree of R in
+
+59
+00:05:45,866 --> 00:05:52,529
+[cough] that's a search hit and then for
+the get operation, we can return the value
+
+60
+00:05:52,529 --> 00:05:58,615
+that's stored in that node along with the
+key H. What about an unsuccessful search?
+
+61
+00:05:58,841 --> 00:06:04,826
+Well the same rules follow. If it's in the
+tree, it's gotta be according to the left
+
+62
+00:06:04,826 --> 00:06:09,606
+or right, according to whether it's
+smaller or larger than the key at the
+
+63
+00:06:09,606 --> 00:06:14,354
+route. In this case, if we're searching
+for G, it's gotta go left, because it's
+
+64
+00:06:14,354 --> 00:06:19,471
+less than S. When we come against the E,
+we gotta go right because it's bigger than
+
+65
+00:06:19,471 --> 00:06:24,452
+E against the R, we have to go left,
+because it's less than R. We come against
+
+66
+00:06:24,452 --> 00:06:30,141
+the H, we have to go left. And then we
+come off a null link, and all that says is
+
+67
+00:06:30,141 --> 00:06:36,903
+that there's no place in this tree where G
+could be so G is not there. So that's a
+
+68
+00:06:36,903 --> 00:06:43,684
+search miss. And the get operation would
+return null in that case. What about
+
+69
+00:06:43,684 --> 00:06:49,788
+insertion? Well, to insert a new key, all
+we do is follow the same steps as we did
+
+70
+00:06:49,788 --> 00:06:56,003
+for search. That following off that null
+link and again, we'll just, for G, travel
+
+71
+00:06:56,003 --> 00:07:01,654
+down the tree until we come to the, null
+link. Really, what we're saying is when we
+
+72
+00:07:01,654 --> 00:07:07,747
+go to the left link of H, it says, if G is
+in the tree, it has to be down this link.
+
+73
+00:07:07,966 --> 00:07:14,536
+Since it's not there to in sert G, all we
+need to do is just put it there and that's
+
+74
+00:07:14,536 --> 00:07:20,277
+how we insert a new node into a binary
+search tree. Alright, here's the code
+
+75
+00:07:20,277 --> 00:07:26,740
+corresponding to the process that we just
+demo. And it's quite straight forward
+
+76
+00:07:26,962 --> 00:07:33,068
+simple code as simple as binary search
+really. We start at the root then we set
+
+77
+00:07:33,271 --> 00:07:39,528
+variable x to be the root and that's going
+to be the pointer to the current node as
+
+78
+00:07:39,528 --> 00:07:46,353
+we move down the tree. As long as our, our
+current node x is not null what we'll want
+
+79
+00:07:46,353 --> 00:07:52,064
+to do is a comparison between the key at
+node x and our search key. If our search
+
+80
+00:07:52,064 --> 00:07:57,239
+key is less, we go to the left. If it's
+greater we go to the right. And if it's
+
+81
+00:07:57,239 --> 00:08:02,381
+equal we don't even have to test that,
+that's why it's in grey. If it's not
+
+82
+00:08:02,381 --> 00:08:08,013
+greater or lesser it has to be equal, than
+we return the value right at that node. If
+
+83
+00:08:08,013 --> 00:08:13,903
+we get to the bottom and our current node
+is null and that's falling off the bottom
+
+84
+00:08:13,903 --> 00:08:19,982
+of the tree we return null and that's
+equivalent to saying our buyer convention
+
+85
+00:08:19,982 --> 00:08:25,305
+that, that key is not in our data
+structure, or not in our symbol table. So
+
+86
+00:08:25,305 --> 00:08:31,111
+that's very straightforward implementation
+of the get operation for symbol tables
+
+87
+00:08:31,111 --> 00:08:37,711
+with a binary search tree representation.
+Now, what's the cost? Well, we went down a
+
+88
+00:08:37,711 --> 00:08:43,718
+path in the tree so it's one plus the
+depth of the node in the tree. [cough] So
+
+89
+00:08:43,718 --> 00:08:50,107
+what about search well search for put
+there's two cases. If the if we're
+
+90
+00:08:50,107 --> 00:08:56,023
+supposed to associate a value with a key.
+If the key's already in the tree then
+
+91
+00:08:56,246 --> 00:09:02,237
+we're just going to reset the value. If
+they key's not in the tree then we add a
+
+92
+00:09:02,237 --> 00:09:07,830
+new node at the bottom. So now it's a
+little bit tricky the way that we
+
+93
+00:09:07,830 --> 00:09:14,217
+implement it since we're using we use a
+recursive implementation. And the reason
+
+94
+00:09:14,217 --> 00:09:19,705
+we do this is that it generalizes to give
+us more efficient data structures later
+
+95
+00:09:19,705 --> 00:09:26,000
+on. So, what we'll do is use a recursive
+implementation that as it moves down the
+
+96
+00:09:26,000 --> 00:09:31,885
+tree it'll return a link up higher in the
+tree. And so when we insert a new node L
+
+97
+00:09:31,885 --> 00:09:38,064
+say in this tree we go down that path, we
+create a new node and then return the link
+
+98
+00:09:38,064 --> 00:09:43,172
+to that node higher up. There's ways to
+implement that don't involve this, but
+
+99
+00:09:43,172 --> 00:09:49,495
+its, the code is so simple and it extends
+to more powerful data structures later on
+
+100
+00:09:49,711 --> 00:09:55,574
+that we'll introduce this right now and,
+and you'll see how it works. So here's
+
+101
+00:09:55,574 --> 00:10:01,159
+the, this is very concise recursive code
+but its tricky because of that last point
+
+102
+00:10:01,159 --> 00:10:09,049
+so its worth reading carefully. So, we're
+going to use a recursive method put. That
+
+103
+00:10:09,411 --> 00:10:18,476
+put a associate a value with a key in the
+tree. And that recursive [cough] method is
+
+104
+00:10:18,476 --> 00:10:25,280
+going to return a node. So the client
+method put of course, just is supposed to
+
+105
+00:10:25,280 --> 00:10:30,315
+do the association so it has a void
+return. But what we'll do is invoke a
+
+106
+00:10:30,315 --> 00:10:35,858
+recursive method starting at the root and
+whatever link gets returned, we'll set
+
+107
+00:10:35,858 --> 00:10:42,000
+that to root. So right away, we can see,
+let's suppose that we have an empty tree
+
+108
+00:10:42,000 --> 00:10:49,212
+where root is null. So then if we put with
+null as the first argument, then null is
+
+109
+00:10:49,212 --> 00:10:55,211
+the first argument. What we do is we say
+if, if the argument is null, return a
+
+110
+00:10:55,211 --> 00:11:01,552
+reference to a new node that associates
+key with value and then that one has null
+
+111
+00:11:01,552 --> 00:11:07,090
+links. So in this case, that first call
+will return a link and whatever link gets
+
+112
+00:11:07,090 --> 00:11:13,095
+returned, that will be set to root. So,
+without any extra special code we insert a
+
+113
+00:11:13,095 --> 00:11:19,766
+node into an empty tree. And that works,
+again, recursively say we have one node in
+
+114
+00:11:19,766 --> 00:11:26,861
+the tree, and we have a new key to
+associate. And let's say that key is less
+
+115
+00:11:26,861 --> 00:11:33,348
+than the key at the root. So, so now we do
+put in it's actually a link to that one
+
+116
+00:11:33,348 --> 00:11:39,852
+node that's got two null links. So it's
+not null so we'll compare our key against
+
+117
+00:11:39,852 --> 00:11:45,584
+the key in that node. If that comparison
+comes out left, here's how we do the
+
+118
+00:11:45,805 --> 00:11:51,870
+insert. We change our left link which is
+right now it's null to whatever put
+
+119
+00:11:51,870 --> 00:11:57,692
+returns. So what's put going to return?
+Well, that left link is null, so what's
+
+120
+00:11:57,692 --> 00:12:03,342
+going to happen is, in that call x is
+null. It's going to be cre ated a new node
+
+121
+00:12:03,342 --> 00:12:08,272
+and the link to that node will be returned
+and that's the link that we'll put in the
+
+122
+00:12:08,272 --> 00:12:13,020
+left. This is a very concise code that
+otherwise we'd have various cases about
+
+123
+00:12:13,020 --> 00:12:19,909
+saving which link we went down in order to
+reset that later on. So now the best way
+
+124
+00:12:19,909 --> 00:12:25,957
+having looked at those small examples, the
+best way to understand this code is
+
+125
+00:12:25,957 --> 00:12:32,076
+recursively. Let's believe that it works
+for small cases which we have just done.
+
+126
+00:12:32,076 --> 00:12:37,262
+So, lets see what the code does. So if x
+is null, we want to create a new node and
+
+127
+00:12:37,262 --> 00:12:41,617
+return the link to that node. So, even if
+it's a huge tree down at the bottom, we
+
+128
+00:12:41,617 --> 00:12:46,107
+just came of a null link. We just want to
+create a new node with our new key and
+
+129
+00:12:46,107 --> 00:12:51,707
+return a link to that node, that's all we
+want to do. Now, we can assume that put is
+
+130
+00:12:51,707 --> 00:12:59,100
+going to return a link to a sub-tree that
+contains our new key and if our new key is
+
+131
+00:12:59,100 --> 00:13:04,977
+smaller than the key at the node that,
+that we're processing now, then [cough] we
+
+132
+00:13:04,977 --> 00:13:10,419
+want to insert the new key value there and
+the new node on the left otherwise, we
+
+133
+00:13:10,419 --> 00:13:16,428
+want to insert on the right. Most of the
+time, the link that we get back will be
+
+134
+00:13:16,428 --> 00:13:23,299
+same as the link that we put in but for
+the bottom node it will be different. So,
+
+135
+00:13:23,299 --> 00:13:29,277
+if put works properly inserting a new node
+on the left, then that's what we want our
+
+136
+00:13:29,277 --> 00:13:35,310
+left link to be. If it works properly,
+putting in the subtree on the right,
+
+137
+00:13:35,310 --> 00:13:41,537
+that's what we want our right link to be.
+And by the way, if we find a key that's in
+
+138
+00:13:41,537 --> 00:13:47,267
+the tree already, then we just want to
+reset the value. And in all of these cases
+
+139
+00:13:47,267 --> 00:13:53,929
+where we're on a node that already
+existed, we just want to return the link
+
+140
+00:13:53,929 --> 00:13:59,380
+to that node. Again, when we look at more
+sophisticated values we'll be returning
+
+141
+00:13:59,380 --> 00:14:04,398
+something else. So it's worthwhile you
+know, checking that you believe that this
+
+142
+00:14:04,398 --> 00:14:10,178
+code implements the simple binary search
+tree algorithm that we demoed where when
+
+143
+00:14:10,178 --> 00:14:15,474
+we fall off a null link we created a new
+node and replaced that null link with the
+
+144
+00:14:15,474 --> 00:14:21,102
+new node . So that's insert for a binary
+search tree in a symbol table. And again,
+
+145
+00:14:21,102 --> 00:14:26,258
+the cost of this is the number of compares
+is equal to one plus the depth of the
+
+146
+00:14:26,258 --> 00:14:31,441
+node. We just go down a path in the tree.
+Now, what's interesting about binary
+
+147
+00:14:31,441 --> 00:14:36,819
+search trees is that there are many
+different binary search trees that
+
+148
+00:14:36,819 --> 00:14:42,926
+correspond to the same set of keys. So the
+number it compares is going to depend on
+
+149
+00:14:42,926 --> 00:14:47,787
+the order in which the keys come in. And
+that's a key feature of binary search
+
+150
+00:14:47,787 --> 00:14:53,458
+trees that we'll come back to again when
+we look at more sophisticated data
+
+151
+00:14:53,458 --> 00:14:59,159
+structures. So it depends on how the keys
+come in. The shape of the, of the tree
+
+152
+00:14:59,159 --> 00:15:04,539
+could be well in the best case so it would
+be perfectly balanced. And one of the
+
+153
+00:15:04,539 --> 00:15:09,875
+things we'll look at is algorithms that
+come very, very close to achieving that
+
+154
+00:15:09,875 --> 00:15:15,069
+goal. The typical, typical case it'll be
+sort of balanced. Now but one problem is
+
+155
+00:15:15,069 --> 00:15:20,099
+if the keys come in and, and really
+unfortunately, if they come in, in a
+
+156
+00:15:20,099 --> 00:15:26,019
+natural order. Like if they come in, in
+order, that's the worst case. We don't get
+
+157
+00:15:26,019 --> 00:15:31,052
+any benefit from having it in a tree
+shape. It's no different than a link list.
+
+158
+00:15:31,249 --> 00:15:37,171
+So we'll, we'll come back to dealing with
+that worse case in the next lecture. But
+
+159
+00:15:37,171 --> 00:15:41,636
+the point is, the tree shape depends on
+the order of insertion. Now, but let's
+
+160
+00:15:41,636 --> 00:15:47,562
+look at what's happened or visualize what
+happens when keys come in, in random
+
+161
+00:15:47,562 --> 00:15:54,930
+order. So the tree grows from the bottom
+in the little side to side motion it's
+
+162
+00:15:54,930 --> 00:16:02,250
+just accommodating room for each new key
+as it's added. But you could see that even
+
+163
+00:16:02,250 --> 00:16:09,379
+for this case which is hundreds of keys,
+the length of the path from top to bottom
+
+164
+00:16:09,379 --> 00:16:16,280
+is not so much. In this case, the maximum
+distance from the top to the bottom is
+
+165
+00:16:16,280 --> 00:16:23,061
+sixteen the average is only nine and the
+best you could in a perfectly balanced
+
+166
+00:16:23,061 --> 00:16:30,017
+tree it would be seven. So it's pretty
+well balanced which means that our search
+
+167
+00:16:30,017 --> 00:16:37,114
+and insert cost in this case for 255 keys
+is only going to be sixteen quite a bit
+
+168
+00:16:37,114 --> 00:16:45,449
+less. So one remark before we do the
+analysis is that actually binary search
+
+169
+00:16:45,449 --> 00:16:53,343
+trees correspond exactly to Quicksort
+partitioning. In the binary search tree,
+
+170
+00:16:53,579 --> 00:16:58,750
+we have a node at the root and we have
+everybody smaller to the left, and
+
+171
+00:16:58,750 --> 00:17:04,251
+everybody larger to the right. In
+Quicksort partitioning, after the random
+
+172
+00:17:04,251 --> 00:17:10,800
+shuffling we have the partitioning element
+and then we process everybody to the left
+
+173
+00:17:10,800 --> 00:17:16,595
+independently of everybody to the right.
+So it's a [cough] there's a direct
+
+174
+00:17:16,595 --> 00:17:21,732
+correspondence. If there is no duplicate
+keys Quicksort processes them and referred
+
+175
+00:17:21,732 --> 00:17:26,185
+them out in BSTs and if there's no
+duplicate keys there's a one-to-one
+
+176
+00:17:26,185 --> 00:17:31,291
+correspondence between what happens with
+Quicksort and what happens with binary
+
+177
+00:17:31,291 --> 00:17:36,551
+search trees. And we point that out
+because that helps with the mathematical
+
+178
+00:17:36,551 --> 00:17:42,083
+analysis. In fact, this correspondence
+with Quicksort partitioning tells us we
+
+179
+00:17:42,083 --> 00:17:49,044
+can take that proof and prove that if you
+insert in distinct keys into a BST, in
+
+180
+00:17:49,044 --> 00:17:55,073
+random order, then the expected number of
+compares for a search and an insert is two
+
+181
+00:17:55,073 --> 00:18:04,164
+natural log N. So again about 1.38 log
+base two of N almost the best that you
+
+182
+00:18:04,164 --> 00:18:10,660
+could do. It also has been shown actually
+not that long ago, that the expected
+
+183
+00:18:10,660 --> 00:18:16,891
+height of the tree if they're inserted in
+random order, the height that's the worst
+
+184
+00:18:17,090 --> 00:18:22,741
+case length of a path in the tree. This is
+the average path in a tree, this is the,
+
+185
+00:18:22,946 --> 00:18:28,622
+the worst of all the keys. This is about
+four natural log N. So, if you have the
+
+186
+00:18:28,622 --> 00:18:34,738
+keys in random order the binary search
+tree gives efficient search and insert.
+
+187
+00:18:34,959 --> 00:18:41,768
+Now but there is this problem that the
+actual worst case height if the keys come
+
+188
+00:18:41,768 --> 00:18:48,223
+in, in order and reverse order and other
+natural orders that the time could be
+
+189
+00:18:48,223 --> 00:18:53,808
+proportional to n. So, we have this
+summary which is looking pretty good,
+
+190
+00:18:54,014 --> 00:19:00,559
+because we have the average case for both
+operations, the search and insert, to be
+
+191
+00:19:00,559 --> 00:19:07,050
+1.39 log N and that's probabilistic if
+they are in random order, its extremely
+
+192
+00:19:07,050 --> 00:19:12,124
+likely to be there. But the problem by
+comparison with sorting is, we don't get
+
+193
+00:19:12,124 --> 00:19:17,044
+to randomize the order the client is
+providing the keys. So we're going to need
+
+194
+00:19:17,044 --> 00:19:22,161
+something better to provide the guarantee
+than just randomly ordering the keys.
+
+195
+00:19:22,337 --> 00:19:26,935
+That's what we're going to be looking at
+next when we look at more efficient
+
+196
+00:19:26,935 --> 00:19:31,942
+algorithms. But first we're going to look
+at the implementation of order and
+
+197
+00:19:31,942 --> 00:19:36,972
+operations with the binary search tree
+structure. It expands like binary search
+
+198
+00:19:36,972 --> 00:19:41,863
+to handle all these convenient client
+operations in a very natural manner.
+
+199
+00:19:41,863 --> 00:19:46,879
+That's the implementation of binary search
+trees for symbol tables. They give
+
+200
+00:19:46,879 --> 00:19:57,069
+sufficient implementation of both search
+and insert.

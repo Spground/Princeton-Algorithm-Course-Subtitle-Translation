@@ -1,0 +1,404 @@
+1
+00:00:03,407 --> 00:00:10,166
+next we're gonna talk about 3-way radix
+quicksort which is that algorithm that
+
+2
+00:00:10,393 --> 00:00:14,722
+combines the benefits of quicksort and MSD
+radix sort.
+
+3
+00:00:14,950 --> 00:00:21,936
+This algorithm actually came to me into
+development during the development of this
+
+4
+00:00:21,936 --> 00:00:25,656
+course.
+As it turns out, radix sorting, while it
+
+5
+00:00:25,656 --> 00:00:29,762
+was really well known to everyone in the
+60's and70's.
+
+6
+00:00:29,957 --> 00:00:35,589
+It was kind of lost sight of for a while
+in the'80's as people moved to a higher
+
+7
+00:00:35,589 --> 00:00:40,509
+level of programming languages.
+And it wasn't so easy or effecient to get
+
+8
+00:00:40,509 --> 00:00:44,523
+characters out of keys.
+You had to either work with numbers.
+
+9
+00:00:44,717 --> 00:00:47,631
+You had to use abstractions like compared
+to.
+
+10
+00:00:47,825 --> 00:00:50,868
+And radix sort got kind of lost for a
+while.
+
+11
+00:00:51,062 --> 00:00:55,400
+But then string processing became more and
+more important as.
+
+12
+00:00:55,400 --> 00:01:01,120
+Computers became bigger and faster and so
+we needed to talk about how to sort
+
+13
+00:01:01,120 --> 00:01:07,182
+strings and this algorithm is a really
+simple algorithm that comes out when you
+
+14
+00:01:07,182 --> 00:01:13,491
+start to address that problem.
+So, the idea is that what we're gonna do
+
+15
+00:01:13,491 --> 00:01:20,480
+is use 3-way partitioning for quicksort.
+But just by character.
+
+16
+00:01:20,480 --> 00:01:26,668
+So since there's a, we're gonna do one
+character at a time, there's gonna be a
+
+17
+00:01:26,668 --> 00:01:32,697
+lot of equal keys for that character.
+And the idea is that when you do have
+
+18
+00:01:32,697 --> 00:01:38,966
+equal keys, you'll pull'em together with
+those leading characters, and then you
+
+19
+00:01:38,966 --> 00:01:45,637
+could recursively sort the subarrays, but
+you can do the normal quicksort thing for
+
+20
+00:01:45,637 --> 00:01:48,612
+those.
+So for this example, when we partition,
+
+21
+00:01:48,809 --> 00:01:54,058
+first partitioning item, we're going to
+use it's first character, and we're going
+
+22
+00:01:54,058 --> 00:01:58,873
+to divide up into less than that.
+Equal to that and greater than that.
+
+23
+00:01:58,873 --> 00:02:04,345
+And then we re-curse three times, one for
+the greater one for the ones that start
+
+24
+00:02:04,345 --> 00:02:07,364
+with the same character and one for the
+less.
+
+25
+00:02:07,364 --> 00:02:12,890
+That's overview of the algorithm.
+So, let's do just a, a quick trace of the
+
+26
+00:02:12,890 --> 00:02:17,465
+first few recursive calls.
+So, partitioning item, again, is S.
+
+27
+00:02:17,690 --> 00:02:22,265
+We divide it up that way.
+And so now, we're gonna sort the top
+
+28
+00:02:22,265 --> 00:02:28,448
+subarray, the ones that are less than S.
+So we partition that out in B and then we
+
+29
+00:02:28,448 --> 00:02:33,808
+get down to subarrays, size one.
+And the next thing that we need to do is
+
+30
+00:02:33,808 --> 00:02:37,936
+the big middle sub-file.
+We need to sort it on its second
+
+31
+00:02:37,936 --> 00:02:41,340
+character, so the partition item is E this
+time.
+
+32
+00:02:41,340 --> 00:02:45,612
+So we rearrange those to have the ones
+that start with S, E.
+
+33
+00:02:45,612 --> 00:02:48,799
+The ones that are less and there aren't
+any,
+
+34
+00:02:48,799 --> 00:02:55,869
+And the ones that are bigger.
+And so next recursion is on the third
+
+35
+00:02:55,869 --> 00:03:03,564
+letter in that middle subfile.
+In this case, it's A, and so We have, the
+
+36
+00:03:03,564 --> 00:03:10,026
+ones that are equal, so that's the ones
+that start with SEA and the ones that are
+
+37
+00:03:10,026 --> 00:03:14,872
+bigger of the two cells and then move on
+to the next character.
+
+38
+00:03:14,872 --> 00:03:19,950
+So it, it's of the ones that are equal in
+kind of a controlled way.
+
+39
+00:03:20,180 --> 00:03:24,631
+That's a example of a trace for 3-way
+string quicksort.
+
+40
+00:03:24,631 --> 00:03:28,315
+Now it's a program that almost writes
+itself.
+
+41
+00:03:28,545 --> 00:03:34,378
+Once you've seen the idea and you've seen
+an implementation of Quicksort,
+
+42
+00:03:34,609 --> 00:03:41,363
+It's a very minor modification into the
+3-way quicksort that we discussed when we
+
+43
+00:03:41,593 --> 00:03:47,656
+were talking about Quicksort.
+Instead, so we pick out the Dth character.
+
+44
+00:03:47,656 --> 00:03:53,719
+We take d as an argument, we pick out the
+dth character we do the regular
+
+45
+00:03:53,950 --> 00:03:58,330
+Partitioning element.
+Again, picking out.
+
+46
+00:03:58,967 --> 00:04:03,113
+Just the Dth character for each key that
+we look at.
+
+47
+00:04:03,113 --> 00:04:06,939
+And this is the standard three way
+partitioning.
+
+48
+00:04:06,939 --> 00:04:12,998
+And then when we're done with the
+partitioning, we do the array of ones that
+
+49
+00:04:12,998 --> 00:04:18,657
+are less chara-, that Dth characters less
+than the ones that are bigger.
+
+50
+00:04:18,657 --> 00:04:25,035
+And then in the middle, if we had any,
+we'd sort the middle sub-ray and we'd move
+
+51
+00:04:25,035 --> 00:04:30,201
+over one character.
+That's a, a very compact string sorting
+
+52
+00:04:30,201 --> 00:04:35,982
+algorithm that performs very well.
+Now, what about the performance of that
+
+53
+00:04:35,982 --> 00:04:38,340
+algorithm?
+Well, we talked about.
+
+54
+00:04:38,559 --> 00:04:44,279
+Standard quicksort performance.
+And, if we randomly order the keys ahead
+
+55
+00:04:44,279 --> 00:04:47,578
+of time.
+You use 2N natural log int string
+
+56
+00:04:47,578 --> 00:04:51,904
+compares, on average.
+And, the thing is, though, if you have
+
+57
+00:04:51,904 --> 00:04:55,131
+keys that have lots of long common
+prefixes.
+
+58
+00:04:55,131 --> 00:05:01,583
+And this happens in lots of applications.
+Then, those compares are gonna go through
+
+59
+00:05:01,583 --> 00:05:09,493
+all those keys every time.
+That 3-way string quicksort Uses, although
+
+60
+00:05:09,493 --> 00:05:17,990
+the analysis is pretty complicated, it
+uses only 2N ln N character compares, so
+
+61
+00:05:17,990 --> 00:05:23,799
+that's an amazing, a huge savings for
+typical common cases.
+
+62
+00:05:23,799 --> 00:05:31,082
+It doesn't have to, go through the long
+common prefixes that usually cause the
+
+63
+00:05:31,082 --> 00:05:38,276
+problem. And what about versus MSD's or,.
+Well, MSD sort has this caching problem
+
+64
+00:05:38,276 --> 00:05:44,479
+and it's got the count arrays and it's got
+all this overhead involved in maintaining
+
+65
+00:05:44,479 --> 00:05:48,127
+the counts.
+Whereas three way string quick-sort is
+
+66
+00:05:48,127 --> 00:05:53,893
+still cash friendly, 'cause most of the
+time, it's partitioning the same way that
+
+67
+00:05:53,893 --> 00:05:58,417
+normal quick sort is.
+It's still got that short inner loop and
+
+68
+00:05:58,417 --> 00:06:04,117
+it doesn't use any extra space.
+And there's all kinds of applications that
+
+69
+00:06:04,341 --> 00:06:10,170
+for example library call numbers or
+account numbers where long string keys
+
+70
+00:06:10,170 --> 00:06:16,447
+that have non randomness in them.
+This algorithm adapts really well to such
+
+71
+00:06:16,447 --> 00:06:20,706
+situations.
+The bottom line is if you've got string
+
+72
+00:06:20,706 --> 00:06:25,040
+keys, 3-way string quicksort is the method
+of choice.
+
+73
+00:06:25,040 --> 00:06:30,047
+It's simple to implement,
+And it's gonna perform well so I'll
+
+74
+00:06:30,047 --> 00:06:34,680
+probably leave sorting algorithms with
+this bottom line.
+
+75
+00:06:34,954 --> 00:06:43,817
+And the idea is that now we've got a quite
+fast algorithm that, does a linear
+
+76
+00:06:43,817 --> 00:06:51,298
+rhythmic number of character compares,
+And that's in randomly, random keys in
+
+77
+00:06:51,298 --> 00:06:54,929
+some way.
+But even if they're not random, it's
+
+78
+00:06:54,929 --> 00:06:58,560
+difficult to characterize really the worst
+case.
+
+79
+00:06:58,787 --> 00:07:03,779
+But it's more, when data is not or this
+algorithm won't perform well,
+
+80
+00:07:04,006 --> 00:07:10,435
+And even better chance of getting
+sub-linear performance then all the other
+
+81
+00:07:10,435 --> 00:07:14,141
+algorithms.
+That's 3-way radix quicksort.

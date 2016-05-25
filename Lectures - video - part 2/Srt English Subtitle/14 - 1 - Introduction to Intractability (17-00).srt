@@ -1,0 +1,859 @@
+1
+00:00:00,000 --> 00:00:08,137
+. Today, we're going to talk about
+intractability in our last lecture. this
+
+2
+00:00:08,137 --> 00:00:13,203
+is an appropriate topic to close the
+course on because it really lays out for
+
+3
+00:00:13,203 --> 00:00:18,530
+us some of the big challenges of the
+future. most people are taking this course
+
+4
+00:00:18,530 --> 00:00:23,077
+because they're going to want to be
+involved with algorithms, algorithms in
+
+5
+00:00:23,077 --> 00:00:30,857
+the future. and this topic really helps us
+lay out what's ahead. As an introduction,
+
+6
+00:00:30,857 --> 00:00:36,762
+we'll review some very, very basic
+questions about computation. Some of you
+
+7
+00:00:36,762 --> 00:00:43,127
+may be familiar with this subject area
+others may not be at all. So, it will just
+
+8
+00:00:43,127 --> 00:00:49,569
+be a brief review in either case. But some
+of the concepts are relatively easy to
+
+9
+00:00:49,569 --> 00:00:55,628
+understand and so, and they lay a good
+background for starting with computation
+
+10
+00:00:55,858 --> 00:01:01,150
+with intractability. We need to think
+about computation itself first. There are
+
+11
+00:01:01,760 --> 00:01:07,279
+these kinds of questions that came up
+actually about the same time or even
+
+12
+00:01:07,279 --> 00:01:13,288
+before computers actually were invented or
+came into use. Now, what is a general
+
+13
+00:01:13,288 --> 00:01:19,222
+purpose computer? What does that mean? are
+there limits on the power of digital
+
+14
+00:01:19,222 --> 00:01:25,231
+computers? That's another interesting
+question. Are there limits on the power of
+
+15
+00:01:25,231 --> 00:01:31,244
+any machine that we can build? this kind
+of question with the outgrowth of similar
+
+16
+00:01:31,629 --> 00:01:38,096
+questions on mathematics that was posed by
+David Hilbert in the beginning of the
+
+17
+00:01:38,096 --> 00:01:44,023
+twentieth century. and there were some
+very profound thinking going around
+
+18
+00:01:44,023 --> 00:01:50,951
+Hilbert's questions, and later, around the
+questions on computers that initially were
+
+19
+00:01:50,951 --> 00:01:57,264
+related, but then took on a new life of
+their own. To take a look at the idea of
+
+20
+00:01:57,495 --> 00:02:02,895
+what these mathematicians were thinking
+about in the middle of the twentieth
+
+21
+00:02:02,903 --> 00:02:08,555
+century that we call the simple model of
+computation that we looked at when we were
+
+22
+00:02:08,555 --> 00:02:15,758
+working with the KnuthMorrisPratt
+algorithm. so what we did was we imagined
+
+23
+00:02:15,758 --> 00:02:22,134
+a, a machine, an abstract machine called a
+discrete finite automaton or an FSA, a
+
+24
+00:02:22,134 --> 00:02:27,421
+finite state automaton. that is a very
+simple machine where we imagine that it's
+
+25
+00:02:27,421 --> 00:02:32,771
+got a tape that has the input. that's just
+a long strip that's divided into cells.
+
+26
+00:02:32,771 --> 00:02:37,676
+It's got a finite alph, alphabet of
+symbols and it had a tape head that could
+
+27
+00:02:37,676 --> 00:02:43,090
+read one symbol from one cell of the, of
+the tape. And then, based on what it saw,
+
+28
+00:02:43,090 --> 00:02:48,042
+it would move to a different state. It
+would move one cell at a time, read up all
+
+29
+00:02:48,042 --> 00:02:52,881
+the tape, all the input, and if it got to
+the right state, we'd say it'd accept it.
+
+30
+00:02:52,881 --> 00:02:58,325
+That's what we did with KnuthMorrisPratt
+was we imagined this machine and then we
+
+31
+00:02:58,325 --> 00:03:03,044
+built a program that now constructed a
+table which just said what to do, which
+
+32
+00:03:03,044 --> 00:03:08,428
+state to go to for each symbol on the each
+possible symbol on the tape for each
+
+33
+00:03:08,428 --> 00:03:14,234
+state. and then that was a way that we got
+this problem solved. in, a natural
+
+34
+00:03:14,234 --> 00:03:19,612
+question arises when mathematicians and
+theoretical computer scientists first
+
+35
+00:03:19,612 --> 00:03:25,057
+started taking a look at abstract models
+of computation like this is, can you make
+
+36
+00:03:25,057 --> 00:03:30,170
+them more powerful, is there a more
+powerful model of computation than DFA?
+
+37
+00:03:30,170 --> 00:03:35,102
+Well, it didn't, it didn't take long to
+realize, of course the, there's a more
+
+38
+00:03:35,102 --> 00:03:40,824
+powerful model. And actually, the progress
+was almost incremental. You can think of
+
+39
+00:03:40,824 --> 00:03:46,677
+it as being almost incremental where you
+just add a little bit of power to the DFA
+
+40
+00:03:46,874 --> 00:03:52,930
+that we can show, that makes that more
+powerful but, but what's the limit? and
+
+41
+00:03:52,930 --> 00:04:01,379
+actually the, the limit was proposed very
+early on by Turing in here at Princeton in
+
+42
+00:04:01,379 --> 00:04:09,208
+the 1930s. it's a universal model of
+computation where just like the DFA, we
+
+43
+00:04:09,208 --> 00:04:16,506
+imagine a machine that has a finite set of
+states. but instead of just reading the
+
+44
+00:04:16,506 --> 00:04:23,750
+tape, it can write on the tape as well and
+it can move in both directions. so, it, it
+
+45
+00:04:23,750 --> 00:04:30,039
+can store intermediate results on the
+tape. but, other than that, it's very
+
+46
+00:04:30,039 --> 00:04:36,647
+similar to what we imagined for the FSA.
+And now the question is, is there a more
+
+47
+00:04:36,647 --> 00:04:42,742
+powerful model of computation than this
+one? and the remarkable fact is that
+
+48
+00:04:42,742 --> 00:04:48,074
+Turing answered this question in the
+1930s. Actually, he did the work just
+
+49
+00:04:48,074 --> 00:04:54,147
+before he got here to Princeton, and then
+finished the paper. He said, no, there's
+
+50
+00:04:54,147 --> 00:04:59,924
+no more powerful model of computation. In
+fact, many of hailed this as the most
+
+51
+00:04:59,924 --> 00:05:05,892
+important scientific result of the
+twentieth century. because it, it tells us
+
+52
+00:05:06,127 --> 00:05:12,412
+really wha t we need to know about the
+power of the machines that we build. so
+
+53
+00:05:12,412 --> 00:05:19,403
+with Church, who was Turing's adviser here
+at Princeton, the we have the thesis that
+
+54
+00:05:19,638 --> 00:05:26,079
+there's no more powerful machine. Turing
+machines can compute any function that can
+
+55
+00:05:26,079 --> 00:05:32,216
+be computed by a physically harnessable
+process of the natural world. Now, this is
+
+56
+00:05:32,216 --> 00:05:37,050
+not a mathematical theorem because it's a
+statement about the natural world. It's,
+
+57
+00:05:37,050 --> 00:05:43,225
+it's not something that you can prove from
+basic principles. but it is something that
+
+58
+00:05:43,225 --> 00:05:48,964
+you can falsify, you can run an experiment
+that shows it not to be true. And the
+
+59
+00:05:48,964 --> 00:05:54,195
+whole idea behind this thesis and, and
+behind Turing's proof about abstract
+
+60
+00:05:54,195 --> 00:05:59,644
+models of computation is that and we've
+seen it many, many times. So, we can use
+
+61
+00:05:59,644 --> 00:06:05,383
+simulation to prove model equivalence. So,
+we wrote a Java program to simulate a
+
+62
+00:06:05,383 --> 00:06:11,050
+discrete finite automaton, and that means
+that Java's at least as powerful as that.
+
+63
+00:06:11,303 --> 00:06:18,249
+you can write people have shown you can
+write Turing machines that simulate the
+
+64
+00:06:18,249 --> 00:06:23,669
+operation of, of store program computers,
+like the one's that we use. Or if you use
+
+65
+00:06:23,669 --> 00:06:28,716
+an iPhone and you're running an app that's
+written for the Android or vice versa,
+
+66
+00:06:28,716 --> 00:06:33,825
+that simulation that proves models that
+are equivalent, demonstrates that models
+
+67
+00:06:33,825 --> 00:06:38,062
+are equivalent. And that's been an
+extremely effective way for us to
+
+68
+00:06:38,062 --> 00:06:42,299
+understand that different computers have
+similar capabilities. That, you know,
+
+69
+00:06:42,860 --> 00:06:48,115
+you're not going to compute more by build,
+building some new machine. so these had
+
+70
+00:06:48,115 --> 00:06:54,521
+profound implications. And, it's, it's
+really amazing that Turing came up with
+
+71
+00:06:54,521 --> 00:07:01,229
+this so long ago really before computers
+came into use at all. and it means that we
+
+72
+00:07:01,229 --> 00:07:07,032
+don't have to try to invent a more
+powerful machine, or, or language and it
+
+73
+00:07:07,032 --> 00:07:13,513
+really enables rigorous study of the
+computation that we can expect to do in
+
+74
+00:07:13,513 --> 00:07:20,392
+the natural world. so that's the basis for
+the theory of computation. And it's, it's
+
+75
+00:07:20,392 --> 00:07:26,958
+related to the study of algorithms. but,
+because it gives us a simple and universal
+
+76
+00:07:26,958 --> 00:07:33,247
+model of computation. But we haven't
+talked about efficiency. how long does it
+
+77
+00:07:33,247 --> 00:07:40,623
+take to simulate an Android to s imulate
+an iPhone and so forth? So, what about
+
+78
+00:07:40,903 --> 00:07:46,844
+cost? what about time? That's been our
+focus when developing algorithms. and what
+
+79
+00:07:46,844 --> 00:07:53,743
+we want to think about next is how to deal
+with that cost. but first, I just want to
+
+80
+00:07:53,743 --> 00:07:58,944
+lay out the evidence that we have for the
+Church-Turing thesis. That is, it's been
+
+81
+00:07:58,944 --> 00:08:04,205
+eight, eight decades and nobody's found a
+machine that can compete more than we've
+
+82
+00:08:04,205 --> 00:08:09,107
+been computing with the machines that we
+have. And the other thing that was really
+
+83
+00:08:09,107 --> 00:08:14,369
+convincing to the mathematicians in the
+mid-20th century is that people tried all
+
+84
+00:08:14,369 --> 00:08:20,660
+different types of models of computation.
+Church was working on something called the
+
+85
+00:08:20,660 --> 00:08:26,351
+un-typed lambda calculus, which actually
+is the basis for modern programming
+
+86
+00:08:26,351 --> 00:08:31,294
+languages. And there are other
+mathematicians working on recursive
+
+87
+00:08:31,294 --> 00:08:37,136
+function theory and grammars and other
+things. And eventually, essentially, they
+
+88
+00:08:37,136 --> 00:08:43,202
+were all able to use these languages to
+express the formalism of another one, and
+
+89
+00:08:43,202 --> 00:08:49,128
+then therefore, prove them to be all
+equivalent. And that comes in through to
+
+90
+00:08:49,128 --> 00:08:54,772
+the modern day with all programming
+languages. You can write a simulator or a
+
+91
+00:08:54,772 --> 00:09:00,910
+compiler for one programming language and
+another, or a different random access
+
+92
+00:09:00,910 --> 00:09:06,554
+machines, simple machines, like cellular
+automaton. and even computing using
+
+93
+00:09:06,554 --> 00:09:12,621
+biological operations on DNA. or quantum
+computers that you may have heard about.
+
+94
+00:09:12,833 --> 00:09:18,547
+all of these things have turned out to be
+equivalent. So, there's a, a lot of
+
+95
+00:09:18,759 --> 00:09:26,543
+confidence that the Church-Turing thesis
+holds. but what about efficiency? So, this
+
+96
+00:09:26,543 --> 00:09:32,455
+is a similar starting point for the study
+of algorithms. What algorithms are useful
+
+97
+00:09:32,455 --> 00:09:38,560
+in practice? so in order to know what the,
+what useful we're going to consider time
+
+98
+00:09:38,560 --> 00:09:44,669
+and we're going to say that it's an
+algorithm that it's not just that it's in
+
+99
+00:09:44,669 --> 00:09:50,995
+theory, would, would complete the problem
+is that it actually would solve the
+
+100
+00:09:50,995 --> 00:09:57,570
+problem in the time that we have
+available. and just to set a dividing
+
+101
+00:09:57,570 --> 00:10:04,488
+line, it a, a, a clear bright line it, it,
+we're going to say is that we'll consider
+
+102
+00:10:04,488 --> 00:10:10,001
+it to be useful in practice or efficient.
+If it's running time is guaran teed to be
+
+103
+00:10:10,001 --> 00:10:15,716
+bounded by some polynomial in the size of
+the input for all inputs. and for the
+
+104
+00:10:15,716 --> 00:10:21,566
+purpose of this theory, we don't even care
+of what the exponent is, could be n to the
+
+105
+00:10:21,566 --> 00:10:27,348
+100th. now you might argue that's not a
+very useful dividing line but it is a
+
+106
+00:10:27,348 --> 00:10:32,794
+useful starting point. and as you'll see,
+even the starting point has told us a
+
+107
+00:10:32,794 --> 00:10:41,068
+great deal about the kinds of algorithms
+useful in practice. and, this was, this
+
+108
+00:10:41,068 --> 00:10:49,356
+work was started in the 50s.' also, here
+at Princeton. and many, many people looked
+
+109
+00:10:49,356 --> 00:10:56,235
+at models for trying to understand what,
+what this meant. the dividing line is
+
+110
+00:10:56,235 --> 00:11:03,113
+between polynomial as, as I've said, and
+exponential. Exponential is a two the, the
+
+111
+00:11:03,113 --> 00:11:09,909
+n-th power of some constant of greater
+than one to the n-th power. And we'll talk
+
+112
+00:11:09,909 --> 00:11:18,960
+about that in just a second. so sorting is
+useful. It, so anytime it's bounded by a
+
+113
+00:11:18,960 --> 00:11:26,882
+polynomial or, but here's another one
+which is finding the best traveling
+
+114
+00:11:26,882 --> 00:11:33,307
+salesperson tour on endpoints. if you're
+going to try all possible tours that
+
+115
+00:11:33,307 --> 00:11:38,574
+algorithm is not useful in practice
+because n factorial is not bounded by a
+
+116
+00:11:38,574 --> 00:11:44,257
+polynomial in n. Its running time actually
+grows like n to the n-th. so, this is a
+
+117
+00:11:44,257 --> 00:11:49,940
+useful starting point for our theory
+because it's very broad and robust. and if
+
+118
+00:11:49,940 --> 00:11:55,554
+we can put some algorithms in the class
+with sorting and other algorithms in the
+
+119
+00:11:55,554 --> 00:12:01,010
+class with traveling salesperson using
+brute, brute force search, that's going to
+
+120
+00:12:01,010 --> 00:12:05,738
+be useful. It'll tell us which algorithms
+we want to use. We definitely can use the,
+
+121
+00:12:05,738 --> 00:12:11,240
+think about using the first but we can't
+think about using the second. and, and
+
+122
+00:12:11,456 --> 00:12:17,216
+actually, unlike turing machines, where we
+wouldn't actually kinda play turing
+
+123
+00:12:17,216 --> 00:12:23,265
+machine to solve a practical problem. in
+this theory, it's often the case that the
+
+124
+00:12:23,265 --> 00:12:29,169
+polynomial time algorithms will scale to
+help us solve large problems because the
+
+125
+00:12:29,169 --> 00:12:35,120
+constants usually tend to be small. but
+the, the key is the idea of exponential
+
+126
+00:12:35,120 --> 00:12:41,070
+growth and I just want to be sure to
+convince everybody that it's not about,
+
+127
+00:12:41,070 --> 00:12:46,390
+when it comes to exponential growth, it's
+not about the technology. That is a
+
+128
+00:12:46,390 --> 00:12:51,920
+dividing line th at no matter how fast
+your computer is, you can't be running an
+
+129
+00:12:51,920 --> 00:12:57,590
+exponential algorithm and expect to be
+solving a large problem, in just a thought
+
+130
+00:12:57,590 --> 00:13:03,050
+experiment to reconvince everybody of
+that. So let's suppose that, imagine that
+
+131
+00:13:03,050 --> 00:13:09,254
+we had a huge, giant, parallel computing
+devices. This thing is so big that it's
+
+132
+00:13:09,254 --> 00:13:15,605
+got as many processes, processors as there
+are electrons in the universe. So, we have
+
+133
+00:13:15,605 --> 00:13:21,650
+a supercomputer on every electron and
+we'll put the most powerful super computer
+
+134
+00:13:21,650 --> 00:13:27,474
+we can imagine today on every electron in
+the universe. and then, we'll also run
+
+135
+00:13:27,474 --> 00:13:33,371
+each processor for the lifetime, estimated
+lifetime of the universe. so, how big a
+
+136
+00:13:33,371 --> 00:13:39,400
+problem can we solve? Well, it's estimated
+there's ten to the 79th electrons in the
+
+137
+00:13:39,400 --> 00:13:43,994
+universe and supercomputers. Nowadays,
+maybe can do ten to the thirteenth
+
+138
+00:13:44,003 --> 00:13:48,851
+instructions per second. and you can
+quibble about these numbers and make it
+
+139
+00:13:48,851 --> 00:13:53,638
+ten to the twentieth if you want. it's
+estimated the age of the universe in
+
+140
+00:13:53,638 --> 00:13:58,363
+seconds is ten to the seventeenth.
+And if you don't like that, make it ten to
+
+141
+00:13:58,363 --> 00:14:01,984
+the thirtieth.
+You multiply all those numbers together
+
+142
+00:14:02,169 --> 00:14:07,398
+you're going to get a, a relatively small
+number to say a thousand factorial. ten to
+
+143
+00:14:07,398 --> 00:14:13,044
+the seventeenth times ten to the
+thirteenth times ten to the 79th is only
+
+144
+00:14:19,230 --> 00:14:21,868
+ten to the 109th or something.
+Whereas a thousand factorial is way bigger
+
+145
+00:14:21,868 --> 00:14:24,271
+than ten to the 1000th. It's more like
+1000 to the 1000th, alright? So, there's
+
+146
+00:14:24,271 --> 00:14:29,138
+no way that you can imagine solving a
+thousand city TSP problems using that
+
+147
+00:14:29,138 --> 00:14:34,084
+brute force algorithm. You can let your
+computer run but it's not going to finish.
+
+148
+00:14:34,254 --> 00:14:38,745
+technology is out of the picture when we
+have exponential growth. So, that's why
+
+149
+00:14:38,745 --> 00:14:43,236
+it's so important to know algorithms are
+going to require exponential time and
+
+150
+00:14:43,236 --> 00:14:49,272
+which ones aren't. in this theory it would
+seem. let's at least get that
+
+151
+00:14:49,272 --> 00:14:54,867
+classification done. so which problems can
+we solve in practice? We're just going to
+
+152
+00:14:55,286 --> 00:15:01,287
+say that the polynomial time algorithms
+are the ones that we can solve in practice
+
+153
+00:15:01,566 --> 00:15:06,940
+that guaranteed polynomial time
+performance. so that brings us right to
+
+154
+00:15:06,940 --> 00:15:11,615
+the question, which problems have
+polynomial time algorithms? and
+
+155
+00:15:11,824 --> 00:15:18,314
+unfortunately, it's not so easy to know
+that. get stuck right away on trying to do
+
+156
+00:15:18,314 --> 00:15:24,662
+that classification, and that's what
+today's lecture is all about. so, this is
+
+157
+00:15:24,662 --> 00:15:30,495
+a similar bird's eye view to when we
+introduced the classifying algorithms when
+
+158
+00:15:30,495 --> 00:15:36,037
+we're talking about reduction. And
+reduction's a very important tool in this
+
+159
+00:15:36,037 --> 00:15:41,652
+theory as well. So, what we're going to
+say is a problem is intractable if you
+
+160
+00:15:41,652 --> 00:15:47,631
+can't guarantee that you can solve it in
+polynomial time. so what we want to do is
+
+161
+00:15:47,631 --> 00:15:53,433
+prove that the problem's intractable.
+there have been a couple of problems that
+
+162
+00:15:53,433 --> 00:15:59,019
+have been proven to require exponential
+time. but they are a bit, artificial.
+
+163
+00:15:59,019 --> 00:16:04,467
+well, so here's one. Given a constant size
+program, does it halt, and in most case
+
+164
+00:16:04,467 --> 00:16:10,261
+that's or here's another one. Given an N
+by N checkers board, can the first player
+
+165
+00:16:10,261 --> 00:16:15,640
+force a win if you have the force capture
+rule? Well, N by N checkers board for
+
+166
+00:16:15,640 --> 00:16:21,019
+large N is again, that's a, certainly a
+toward problem. But for the many real
+
+167
+00:16:21,019 --> 00:16:26,096
+problems that we actually would write
+this, like to solve, unfortunately,
+
+168
+00:16:26,096 --> 00:16:32,008
+there's been very few successes in proving
+that a problem is intractable. So even
+
+169
+00:16:32,008 --> 00:16:37,580
+though it would seem that you would be
+able to be able to separate problems that
+
+170
+00:16:37,580 --> 00:16:42,676
+can guarantee problems polynomial times
+solutions from problems that require
+
+171
+00:16:42,676 --> 00:16:48,180
+exponential time for some input, there's
+been very little success in proving that.
+
+172
+00:16:48,378 --> 00:16:53,400
+but that's an introduction in a motivation
+for the theory of intractability.

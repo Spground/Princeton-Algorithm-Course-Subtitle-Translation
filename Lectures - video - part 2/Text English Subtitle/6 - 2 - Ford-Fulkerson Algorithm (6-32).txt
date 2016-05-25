@@ -1,0 +1,149 @@
+To get started, we're going to look at a
+general scheme for solving max-flow
+min-cut problems, known as the
+Ford-Fulkerson algorithm,
+Dates back to the 1950s.
+And the idea is to start with no flow
+anywhere.
+So, we initialize all edges to have
+capacity zero.
+And then find any path from s to t, so
+that you can increase the flow along that
+path.
+Now, the simplest case is when the edges
+all go in the same direction from source
+to target.
+We'll look at the other case in a minute.
+In that case, so there is a path, and this
+is the general algorithm that works for
+any path and if there's a path from s to
+t, go ahead and find it.
+And if there's capacity left in each one
+of the edges, if none of them were full,
+then what we want to do is augment the
+flow along that path.
+So we put as much flow as we can through
+that path.
+In this case, we can put ten units of flow
+through each path.
+Through each edge, there's room to put
+ten, and two of the edges fill up in that
+case but we've increased the flow in the
+network by ten in that case.
+And the algorithm is just, continuing that
+way, finding a path.
+So here's another path.
+And this one also the edges all flow from
+source to target.
+And in this case again, we can add ten
+more units a flow cuz the last edge only
+has capacity ten.
+So load up those edges with that flow, and
+now, we've got twenty units a flow in the
+network.
+Notice, when we augment along in edge,
+we're preserving the vertex equilibrium,
+local equilibrium at a vertex property.
+We're putting some flow in and taking the
+same amount of flow out.
+So, here's another augmenting path.
+Now, this one has what's called a backward
+edge.
+So notice that if, the path going from s
+to t goes backwards along that edge,
+And the idea is, that you can augment flow
+through the whole network by removing flow
+in that path.
+That is, if we add five units of flow from
+s to this vertex, and five units of flow
+from s to this vertex, then what we can do
+is remove five units of flow along this
+edge.
+That's to preserve the local equilibrium.
+Essentially, that five units of flow gets
+transferred right through.
+After we remove five units and we add five
+here.
+That's five coming in,
+There's still ten going out.
+And then for the forward edges, we add the
+flow.
+That is, we can augment the flow along an
+augmenting path, by adding flow to forward
+edges and subtracting flow from backward
+edges.
+The maximum amount of flow that we can
+push through is the remaining capacity in
+forward edges and the amount of flow in
+backward edges.
+You can't remove more flow than is there.
+In this case, we can augment the flow in
+the network by five.
+That, fills up the first edge.
+And so now we've got 25 units of flow in
+the network.
+And again, the idea of removing flow from
+a backward edge is very simple.
+It's just a way to ensure that the local
+equilibrium conditions always remains
+satisfied as we're moving along the path.
+In this case there's one more augmenting
+path.
+Okay. And that's, forward, forward,
+forward, forward, backwards along that one
+again and then forward, forward.
+So, and then what's the maximum amount
+that we can push through in this case,
+this one has got five in it and it's got a
+capacity of eight so we can put three more
+units of flow through this network.
+And we get a now we have 28 units of flow
+going through the network.
+And the algorithm terminates when there's
+no way to find an augmenting path from s
+to t.
+And what's that mean?
+That means that every augmenting path,
+Every path from s to t contains either a
+full forward edge or an empty backwards
+edge.
+We can't put more flow through a forward
+edge and we can't remove flow from an
+empty backward edge.
+So when there's no more augmenting paths,
+the algorithm terminates.
+And so that's the algorithm.
+We start with no flow.
+As long as there is an augmenting path,
+We, we find that path and look through the
+path to find the amount, the, amount
+capacit left in the most full forward edge
+and the amount of flow left in the most
+empty back edge.
+And we increase the flow in the path by
+that amount.
+And if we can't find an augmenting path,
+then we're done.
+Now there's a few questions about this.
+So that solves the maximum flow problem.
+We have to look at how to compute and
+min-cut.
+We have to figure out a way to find an
+augmenting path.
+That's not to hard.
+That's similar to many other graph
+processing problems that we have already
+solved.
+And we have to, ensure that or at least
+show that it always computes a max-flow.
+and, there's even a question of does it
+actually terminate?
+Maybe you could get stuck in some kind of
+situation where it removes flow on an edge
+in one path and, adds it in another, and
+so, even analyzing how many times it does
+augmentation, is actually not so
+straightforward.
+So we'll take a look, at these questions.
+That's the Ford-Fulkerson algorithm, the
+general scheme for solving nax-flow.

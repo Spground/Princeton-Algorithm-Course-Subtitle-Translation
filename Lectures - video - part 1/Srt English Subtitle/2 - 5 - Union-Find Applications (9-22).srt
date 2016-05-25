@@ -1,0 +1,478 @@
+1
+00:00:01,006 --> 00:00:06,058
+Alright. Now that we've seen efficient
+implementations of algorithms that can
+
+2
+00:00:06,058 --> 00:00:12,025
+solve the unifying problem for huge
+problem instances let's look to see how
+
+3
+00:00:12,025 --> 00:00:17,095
+that might be applied. There's a huge
+number of applications of Union-find. We
+
+4
+00:00:17,095 --> 00:00:24,005
+talked about dynamic connectivity in
+networks there's many other examples in
+
+5
+00:00:24,005 --> 00:00:30,008
+our computational infrastructure. Down at
+the bottom is one of those important one
+
+6
+00:00:30,008 --> 00:00:36,018
+is in image processing for understanding
+how to label areas in images. We'll see
+
+7
+00:00:36,018 --> 00:00:41,057
+later Kruskal's minimum spanning tree
+algorithm, which is a graph processing
+
+8
+00:00:41,057 --> 00:00:48,009
+algorithm which uses Union-find as a
+subroutine. There's algorithms in physics
+
+9
+00:00:48,009 --> 00:00:54,077
+for understanding physical phenomenon that
+we'll look at an example and many others
+
+10
+00:00:55,000 --> 00:01:00,064
+on this list. So, the one we're going to
+talk about now is called percolation.
+
+11
+00:01:00,086 --> 00:01:07,046
+That's a model for many physical systems
+I'll give an abstract model and then just
+
+12
+00:01:07,046 --> 00:01:13,063
+talk briefly about how it applies to
+physical systems. So let's think of an n
+
+13
+00:01:13,063 --> 00:01:20,076
+by n grid of squares that we call sites.
+And we'll say that each site is open.
+
+14
+00:01:21,001 --> 00:01:27,076
+That's white in the diagram with probably
+P or blocked, that's black of the diagram
+
+15
+00:01:27,076 --> 00:01:34,029
+with probability one - P and we define a
+system to, we say that a system is
+
+16
+00:01:34,029 --> 00:01:40,059
+percolated if the top and the bottom are
+connected by open sites. So the system at
+
+17
+00:01:40,059 --> 00:01:46,089
+the left, you can find a way to get from
+the top to the bottom through white
+
+18
+00:01:46,089 --> 00:01:53,019
+squares, but the system to the right does
+not percolate, there's no way to get from
+
+19
+00:01:53,019 --> 00:02:00,017
+the top to the bottom through white
+squares. So, that's a model for many
+
+20
+00:02:00,017 --> 00:02:05,098
+systems. You can think of for electricity.
+You could think of a vacant site as being
+
+21
+00:02:05,098 --> 00:02:11,091
+a conductor and, and a block site as being
+insulated. And so if there's a conductor
+
+22
+00:02:11,091 --> 00:02:17,091
+from top to bottom then the thing conducts
+electricity. Or, you could think of it as,
+
+23
+00:02:17,091 --> 00:02:23,039
+as water flowing through a porous
+substance of some kind. Where a vacant
+
+24
+00:02:23,039 --> 00:02:28,055
+side is just empty and a block side has
+got some material, and either the water
+
+25
+00:02:28,055 --> 00:02:34,030
+flows through from top to bottom, or not.
+Or you could think of a social network
+
+26
+00:02:34,030 --> 00:02:39,869
+where it's people connected and either
+there's a c onnection between two people
+
+27
+00:02:39,869 --> 00:02:46,063
+or not and these are a way not to get from
+one group of people to another
+
+28
+00:02:46,063 --> 00:02:52,076
+communicating through that social network.
+That's just a few examples of the
+
+29
+00:02:52,076 --> 00:02:58,089
+percolation model. So if we, we are
+talking abouta randomized model where the
+
+30
+00:02:58,089 --> 00:03:05,075
+sites are vacant with the given
+probability. And so it's pretty clear that
+
+31
+00:03:06,005 --> 00:03:11,087
+if it's. Probability that a site is vacant
+is low as on the left, two examples on the
+
+32
+00:03:11,087 --> 00:03:17,002
+left in this diagram, it's not going to
+percolate. There's not enough open site
+
+33
+00:03:17,002 --> 00:03:22,016
+for there to be a connection from the top
+to the bottom. If the probability is high
+
+34
+00:03:22,016 --> 00:03:26,002
+and there is a lot of open sides, it
+definitely is going to percolate. There
+
+35
+00:03:26,002 --> 00:03:30,055
+would be lots of ways to get from the top
+to the bottom. But in the middle, when
+
+36
+00:03:30,055 --> 00:03:35,067
+it's medium, it's questionable whether it
+percolates or not. So the scientific
+
+37
+00:03:35,067 --> 00:03:40,065
+question, or the, mathematical question
+from this model is, how do we know,
+
+38
+00:03:41,005 --> 00:03:46,062
+whether it's going to percolate or not? In
+this problem and in many similar problems,
+
+39
+00:03:46,062 --> 00:03:52,034
+there's what's called a phase transition.
+Which says that, you know, when it's low,
+
+40
+00:03:52,034 --> 00:03:56,072
+it's not going to percolate. When it's
+high, it is going to percolate. And
+
+41
+00:03:56,072 --> 00:04:02,003
+actually, the threshold between when it
+percolates and when it doesn't percolate
+
+42
+00:04:02,003 --> 00:04:07,092
+is very sharp. And actually there is a
+value as N gets large that if you're less
+
+43
+00:04:07,092 --> 00:04:13,089
+than that value it almost certainly will
+not percolate, if you're greater it almost
+
+44
+00:04:13,089 --> 00:04:19,045
+certainly will. The question is what is
+that value. This is an example of a
+
+45
+00:04:19,045 --> 00:04:26,051
+mathematical model where the problem is,
+is very well articulated. What's that
+
+46
+00:04:26,051 --> 00:04:32,092
+threshold value but, nobody knows the
+solution to that mathematical problem. The
+
+47
+00:04:32,092 --> 00:04:37,032
+only solution we have comes from a
+computational model, where we run
+
+48
+00:04:37,032 --> 00:04:42,082
+simulations to try and determine the value
+of that probability. And those simulations
+
+49
+00:04:42,082 --> 00:04:47,093
+are only enable by fast union find
+algorithms, that's our motivating example
+
+50
+00:04:47,093 --> 00:04:53,024
+for why we might need fast union find
+algorithms, so let's look at that. So what
+
+51
+00:04:53,024 --> 00:04:59,053
+we're going to run is called a so called
+Monte Carlo simulation. Where we
+
+52
+00:04:59,053 --> 00:05:06,063
+initialize the whole grid to be block ed
+all black and then we randomly fill in
+
+53
+00:05:06,063 --> 00:05:12,096
+open sites. And we keep going. And every
+time we add an open site, we check to see
+
+54
+00:05:12,096 --> 00:05:18,095
+if it makes the system percolate. And we
+keep going until we get to a point where
+
+55
+00:05:18,095 --> 00:05:24,026
+the system percolates. And we can show
+that the vacancy percentage at the time
+
+56
+00:05:24,026 --> 00:05:29,080
+that it percolates is an estimate of this
+threshold value. So what we want to do is
+
+57
+00:05:29,080 --> 00:05:35,008
+run this experiment millions of times,
+which we can do in a computer, as long as
+
+58
+00:05:35,008 --> 00:05:40,069
+we can, efficiently do the calculation of
+does it percolate or not. That's a Monte
+
+59
+00:05:40,069 --> 00:05:45,064
+Carlo simulation, a computational problem
+that gives us a solution to this,
+
+60
+00:05:45,084 --> 00:05:51,012
+scientifc problem where, mathematical
+problems nobody knows how to solve yet.
+
+61
+00:05:51,012 --> 00:05:56,097
+So, let's, look in a little bit more
+detail of how we're going to use our
+
+62
+00:05:56,097 --> 00:06:03,092
+dynam-, dynamic connectivity model to do
+this. So, it's clear that, we'll create an
+
+63
+00:06:03,092 --> 00:06:09,093
+object corresponding to each site. And
+we'll give'em a name, from zero to N^2-1
+
+64
+00:06:09,093 --> 00:06:16,091
+as indicated here. And then we'll connect
+them together. If they're connected by
+
+65
+00:06:16,091 --> 00:06:23,029
+open sites. So the percolation model on
+the left corresponds to the, connection
+
+66
+00:06:23,029 --> 00:06:28,089
+model on the right, according to what
+we've been doing. Now, you might say,
+
+67
+00:06:28,089 --> 00:06:33,081
+well, what we want to do is, connect,
+check whether any site in the bottom row
+
+68
+00:06:33,081 --> 00:06:39,039
+is connected to any site in the top row,
+and use union find for that. Problem with
+
+69
+00:06:39,039 --> 00:06:44,091
+that is, that would be a brute force
+algorithm. Would be quadratic, right on
+
+70
+00:06:44,091 --> 00:06:50,030
+the face of it. Because it would have N^2,
+calls to find, to check whether they're
+
+71
+00:06:50,030 --> 00:06:55,048
+connected. For each site on the top, I'd
+check each site on the bottom. Much too
+
+72
+00:06:55,048 --> 00:07:01,024
+slow. Instead, what we do is create a
+virtual site on the top and on the bottom.
+
+73
+00:07:01,024 --> 00:07:06,087
+And then, when we want to know whether
+this system percolates, we just check
+
+74
+00:07:06,087 --> 00:07:14,025
+whether the virtual top site is connected
+to the virtual bottom site. So how do we
+
+75
+00:07:14,025 --> 00:07:20,097
+model opening a new site? Well to open a
+site we just connect it to all it's
+
+76
+00:07:20,097 --> 00:07:28,034
+adjacent open sites. So that's a few calls
+to Union but that's easy to implement. And
+
+77
+00:07:28,034 --> 00:07:34,092
+then with that, simple, relationship we
+can use the exactly the code that we
+
+78
+00:07:34,092 --> 00:07:42,000
+developed to go ahead and run a simulation
+for this connectivity problem. And that's
+
+79
+00:07:42,000 --> 00:07:48,082
+where we get the result that, by running
+enough simulations for a big-enough n,
+
+80
+00:07:49,007 --> 00:07:55,409
+that this, percolation threshold is about
+.592746. With this fast algorithm we can
+
+81
+00:07:55,409 --> 00:08:01,693
+get an accurate answer to the scientific
+question. If we use a slow Union-find
+
+82
+00:08:01,693 --> 00:08:06,822
+algorithm we won't be able to run it for
+very big problems and we won't get a very
+
+83
+00:08:06,822 --> 00:08:11,979
+accurate answer. So in summary, we took an
+important problem. The, the dynamic
+
+84
+00:08:11,979 --> 00:08:17,359
+connectivity problem. We modeled the
+problem to try to understand precisely
+
+85
+00:08:17,359 --> 00:08:22,109
+what kinds of data structures and
+algorithms we'd need to solve it. We saw a
+
+86
+00:08:22,109 --> 00:08:26,676
+few easy algorithms for solving the
+problem, and quickly saw that they were
+
+87
+00:08:26,676 --> 00:08:31,953
+inadequate for addressing huge problems.
+But then we saw how to improve them to get
+
+88
+00:08:31,953 --> 00:08:37,300
+efficient algorithms. And then left us
+with, applications that, could not be
+
+89
+00:08:37,300 --> 00:08:42,768
+solved without these efficient algorithms.
+All of this involves the scientific
+
+90
+00:08:42,768 --> 00:08:47,954
+method. For algorithm design where we try
+to develop mathematical models that help
+
+91
+00:08:47,954 --> 00:08:52,343
+us understand the properties of the
+algorithms that we're developing. And then
+
+92
+00:08:52,343 --> 00:08:56,675
+we test those models through
+experimentation enabling us to improve
+
+93
+00:08:56,675 --> 00:09:02,363
+algorithms iterating, developing better
+algorithms and more refined models until
+
+94
+00:09:02,363 --> 00:09:07,061
+we get what we need to solve the practical
+problems that we have of interest. That's
+
+95
+00:09:07,061 --> 00:09:12,165
+going to be the overall architecture for
+studying algorithms that we're going to
+
+96
+00:09:12,165 --> 00:09:14,036
+use throughout the course.

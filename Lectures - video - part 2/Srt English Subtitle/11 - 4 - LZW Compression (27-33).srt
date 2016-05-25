@@ -1,0 +1,1189 @@
+1
+00:00:03,600 --> 00:00:08,196
+So, Huffman coding is an optimal
+prefix-free code. And can we have a better
+
+2
+00:00:08,196 --> 00:00:13,459
+data compression algorithm? and as you
+might suspect the answer is yes. And
+
+3
+00:00:13,459 --> 00:00:19,696
+that's we're going to look at next it the
+LZW algorithm, named after Abraham Lempel
+
+4
+00:00:19,696 --> 00:00:26,185
+and Jacob Ziv, and W is for Terry Welch
+who got involved. and so the way that we
+
+5
+00:00:26,185 --> 00:00:32,594
+improve on Huffman coding is by changing
+the rules under which it operates. And
+
+6
+00:00:32,120 --> 00:00:39,185
+we've already changed the rules once, so
+let's take a high level view. so one idea
+
+7
+00:00:39,185 --> 00:00:46,143
+for codes is that we're going to, for all
+text that we ever encounter, we're going
+
+8
+00:00:45,608 --> 00:00:51,770
+to use the same code or the same model of
+the text. and so everybody's got that
+
+9
+00:00:51,770 --> 00:00:57,672
+model, we don't have to transmit it. but
+the problem is that one text might have a
+
+10
+00:00:57,672 --> 00:01:03,083
+lot of As another one might have a lot of
+Zs. They have different statistical
+
+11
+00:01:03,083 --> 00:01:08,353
+properties. so, it's not going to be
+optimal for a given text. but still, over
+
+12
+00:01:08,353 --> 00:01:14,045
+the preponderance of text that we see this
+can be effective. And so, that's really
+
+13
+00:01:14,326 --> 00:01:19,148
+what an ASCII is. but now, for Huffman,
+well, we consider, we change that rule.
+
+14
+00:01:19,148 --> 00:01:24,519
+And we said, well, we're going to use
+different encodings depending on what the
+
+15
+00:01:24,519 --> 00:01:30,078
+text is. so, we're going to look at the
+text, figure out the frequencies and then,
+
+16
+00:01:30,078 --> 00:01:36,941
+go ahead and create a code that works for
+that text. now, we have to transmit the
+
+17
+00:01:36,941 --> 00:01:43,644
+code. that's what the Huffman's code is.
+for every text we've got a code that's
+
+18
+00:01:43,644 --> 00:01:49,589
+suited for that text. what we're going to
+look at now is another change in the
+
+19
+00:01:49,589 --> 00:01:55,068
+rules, where it's called an adaptive
+model, where we're going to just read the
+
+20
+00:01:55,068 --> 00:02:01,544
+text one character a time. but we're going
+to use the text to update the model and
+
+21
+00:02:01,544 --> 00:02:07,877
+learn about the model as we read it. and
+we're going to assume the decoder does the
+
+22
+00:02:07,877 --> 00:02:13,918
+same thing. And this gives perhaps it does
+give more accurate modelling and better
+
+23
+00:02:13,918 --> 00:02:19,995
+compression over the, throughout the text.
+And it's a very effective method, so let's
+
+24
+00:02:19,995 --> 00:02:28,198
+look at how it works. we'll just do this
+through an example. now, this is, We're
+
+25
+00:02:28,198 --> 00:02:36,301
+going to use hex values. so, in LZW
+encoding we start with our input, which is
+
+26
+00:02:36,587 --> 00:02:44,213
+which is characters. O r say, ASCII
+characters. and what we're going to do is
+
+27
+00:02:44,213 --> 00:02:51,392
+keep a dictionary of code words. and the
+code words are going to be fixed length.
+
+28
+00:02:51,632 --> 00:02:58,196
+and so, we'll use eight bits or two hex
+characters as an output. And we'll start
+
+29
+00:02:58,196 --> 00:03:04,471
+out with just the ASCII value for all the
+characters that we're going to use in the
+
+30
+00:03:04,471 --> 00:03:11,624
+message. so, that's the starting point.
+so, at the beginning, so this is going to
+
+31
+00:03:11,624 --> 00:03:19,048
+be compression for this string here. at
+the beginning we just pick off characters
+
+32
+00:03:19,048 --> 00:03:27,583
+and output their value from the from the
+table. but every character that we read,
+
+33
+00:03:27,583 --> 00:03:34,858
+it gives us a little new information. For
+example, in this case we've seen AB and
+
+34
+00:03:34,858 --> 00:03:41,954
+what we're going to do is say, okay, we've
+seen AB, maybe that occurs again in the
+
+35
+00:03:41,954 --> 00:03:48,493
+text if it does we'll since, since we've
+seen it, we know where it is, we know what
+
+36
+00:03:48,493 --> 00:03:55,175
+it is. we'll just give it the value 81 and
+we'll maintain this table. If we see AB
+
+37
+00:03:55,175 --> 00:04:03,421
+again we'll use those eight bits. so we
+put out the B, but we remember the fact
+
+38
+00:04:03,421 --> 00:04:10,847
+that we saw AB. And similarly, when we see
+BR then that will be an 8-bit code word
+
+39
+00:04:11,166 --> 00:04:18,498
+that we can put out. and the idea is that
+the decoder or the expander can do the
+
+40
+00:04:18,498 --> 00:04:24,953
+same thing. We don't actually have to
+transmit this table. we can know that the
+
+41
+00:04:25,192 --> 00:04:31,736
+expander is going to do the same thing,
+and we'll have the same a table. So now,
+
+42
+00:04:31,736 --> 00:04:39,589
+we see the R. So, this is BR. So then, and
+that's going to be encoded with 82 but the
+
+43
+00:04:39,589 --> 00:04:47,072
+R is asking for R52 so we put that out.
+now we see the A and so, that's going to
+
+44
+00:04:47,072 --> 00:04:55,294
+be 83. If we if we see it again and, but
+the A is just 41 and then the AC is going
+
+45
+00:04:55,294 --> 00:05:02,933
+to be 84 the C is the 43. CA is going to
+be 85 and then 41. and so, what we're
+
+46
+00:05:02,933 --> 00:05:10,149
+doing is building up a table that is a
+model for what the string has and it will
+
+47
+00:05:10,149 --> 00:05:19,564
+allow us to get better compression as we
+get layer into the message. so now, we're
+
+48
+00:05:19,564 --> 00:05:28,851
+reading the A after the B, so D is going
+to be 87. but now, we see that the next
+
+49
+00:05:28,851 --> 00:05:38,137
+letter is B, we look in our table in for
+AB and it's there. So, we can put out 81
+
+50
+00:05:38,137 --> 00:05:48,266
+instead of just putting that A out there.
+So at this point when we look at the B we
+
+51
+00:05:48,266 --> 00:05:55,185
+can know that we had AB. And we can look
+that up on the table and just put out 81.
+
+52
+00:05:55,185 --> 00:06:03,152
+and similarly we when we, but now, when we
+look at the R our previous character was
+
+53
+00:06:03,152 --> 00:06:12,207
+AB. So now, we're going to code ABR with
+88. and again, RA if we look that up in
+
+54
+00:06:12,207 --> 00:06:19,126
+the table and we can put out 83. and now,
+we can remember RAB is going to be 89. so
+
+55
+00:06:19,381 --> 00:06:25,580
+now, what happens next? Now, we look at
+our next characters. we look for the
+
+56
+00:06:25,580 --> 00:06:32,629
+longest prefix that we can match in the
+table and that's going to be the code word
+
+57
+00:06:32,629 --> 00:06:39,844
+that we put out. So in this case, we have
+BR that's in there that's 82. and the next
+
+58
+00:06:39,844 --> 00:06:46,540
+character is A so I'm going to put a BRA
+in there. and now this is the remaining to
+
+59
+00:06:46,540 --> 00:06:53,154
+be encoded and we're going to look for the
+longest prefix that we know the code for,
+
+60
+00:06:53,154 --> 00:07:00,472
+and in this case, it's going to be ABR,
+which is 88. So the previous characters in
+
+61
+00:07:00,472 --> 00:07:08,297
+the text built a model that allow us to
+more effectively encode the text. and
+
+62
+00:07:08,297 --> 00:07:15,864
+that's 88 ABR and then all that's left is
+the last A. so, for this small example
+
+63
+00:07:16,084 --> 00:07:22,897
+the, compression is not great, but the
+idea is still there's definitely some
+
+64
+00:07:22,897 --> 00:07:29,637
+savings in there, cuz these code words,
+the input was 8-bit ASCII code words, and
+
+65
+00:07:29,637 --> 00:07:35,425
+these code words are, are also eight bits,
+and the key thing is we don't have to
+
+66
+00:07:35,425 --> 00:07:41,212
+transmit the table, cuz we can assume that
+the expander is going to rebuild the
+
+67
+00:07:41,212 --> 00:07:48,464
+table, the same way that we built it. so,
+that's the basic idea beside behind LZW
+
+68
+00:07:48,685 --> 00:07:55,055
+compression. We also have a stop character
+at the end that says, it's the end of the
+
+69
+00:07:55,055 --> 00:08:00,927
+message. So, this is the summary of LZW
+compression. we created a symbol table
+
+70
+00:08:00,927 --> 00:08:07,056
+that associates fixed length code words
+with string keys. We initialize it with
+
+71
+00:08:07,056 --> 00:08:13,047
+code words for single character keys. Now,
+when it's time to encode part of the
+
+72
+00:08:13,047 --> 00:08:19,059
+input, we look for the longest string in
+the symbol table that's a prefix of the
+
+73
+00:08:19,059 --> 00:08:24,927
+part of the input we haven't seen. and
+that string, that's the longest one, its
+
+74
+00:08:24,927 --> 00:08:30,940
+the best we can do. we're going to have a
+fixed length code word for that string.
+
+75
+00:08:30,940 --> 00:08:37,133
+And then, we look ahead to the next
+character in the input and add a new entry
+
+76
+00:08:37,133 --> 00:08:44,448
+into the symbol table with tha t one extra
+character. that's the LZW compression. so
+
+77
+00:08:44,696 --> 00:08:51,649
+one question that comes up is how do we
+represent that code table in, in code. And
+
+78
+00:08:51,649 --> 00:08:58,776
+actually, the answer is really simple.
+we're going to use a trie. because what a
+
+79
+00:08:58,776 --> 00:09:06,827
+trie can do for us is if you remember,
+when you looked at the tries, if you don't
+
+80
+00:09:06,827 --> 00:09:15,169
+know, when we looked at tries, what we did
+was support longer prefix match operation.
+
+81
+00:09:15,460 --> 00:09:23,608
+so, this trie represents all the prefixes
+that we have seen so far in the message,
+
+82
+00:09:23,608 --> 00:09:30,567
+and it's very easy if the next four
+characters in the text for ABRA, then we
+
+83
+00:09:30,567 --> 00:09:36,761
+have the code word for it. for anything
+that we've seen in the text we've got a
+
+84
+00:09:36,761 --> 00:09:43,038
+code word for a fixed length code word.
+So, as the trie gets bigger, as we move
+
+85
+00:09:43,038 --> 00:09:49,151
+down more into the trie, we get better
+compression cuz we're using the same
+
+86
+00:09:49,151 --> 00:09:56,960
+length code word to compress more letters.
+so here's the implementation of LZW
+
+87
+00:09:56,960 --> 00:10:05,433
+compression. again very simple
+implementation for such a sophisticated
+
+88
+00:10:05,433 --> 00:10:14,885
+algorithm, really. and we're actually
+going to use the TST so that we'll have to
+
+89
+00:10:14,885 --> 00:10:23,926
+worry about the extra space. and so, first
+thing we do is initialize the TST with a
+
+90
+00:10:23,926 --> 00:10:31,428
+code word for each of the single
+characters, so it's rated XR, so there are
+
+91
+00:10:31,428 --> 00:10:40,022
+different letters. and we'll just put an
+entry into the trie for each one of the
+
+92
+00:10:40,022 --> 00:10:47,375
+letters along with its coding. and so we
+didn't show, we only showed a few letters
+
+93
+00:10:47,620 --> 00:10:54,237
+in the examples, but in general, we'll,
+we'll assign the code word i to each one
+
+94
+00:10:54,237 --> 00:11:02,499
+of the, to the ith letter. and then, the
+rest of the trie is built from the input
+
+95
+00:11:02,499 --> 00:11:10,442
+string. And you know, so the very first
+thing we do is find the longest prefix of
+
+96
+00:11:10,442 --> 00:11:18,452
+the input string in the symbol table. and
+that longest prefix of method just marches
+
+97
+00:11:18,452 --> 00:11:25,100
+down the trie eating off the characters in
+the input string one character at a time
+
+98
+00:11:25,324 --> 00:11:31,834
+until it gets to the bottom, because the
+bottom it has a code word. so it, it
+
+99
+00:11:31,834 --> 00:11:41,189
+actually, the symbol table method actually
+gives us back the string. and so, then we
+
+100
+00:11:41,189 --> 00:11:49,949
+can use that to get the value associated
+with that string out in the symbol, in the
+
+101
+00:11:50,126 --> 00:11:58,943
+second call. And that gives us the code
+word. an d then what we want to do is get
+
+102
+00:11:58,943 --> 00:12:07,711
+the length of that longest prefix match
+and add one more character to it and add
+
+103
+00:12:07,711 --> 00:12:15,169
+which is the next character in the input.
+and add that code word to the to the
+
+104
+00:12:15,463 --> 00:12:23,682
+symbol table. and then scan past that in
+the input. so that's the entire
+
+105
+00:12:24,570 --> 00:12:33,286
+compression algorithm for LZW compression
+using a trie. and so, what it's doing is
+
+106
+00:12:33,286 --> 00:12:40,137
+writing out a fixed-length code word and
+chewing up the longest substring that
+
+107
+00:12:40,137 --> 00:12:45,896
+we've seen before. and then, at the end,
+it writes out a stop close code word, and
+
+108
+00:12:46,100 --> 00:12:52,130
+closes out the input stream. so, using the
+tech, trie technology that we've developed
+
+109
+00:12:52,333 --> 00:12:57,918
+we have a compact implementation of LZW
+compression. now, let's look at the
+
+110
+00:12:57,918 --> 00:13:04,513
+expansion. And expansion is going to be
+basically the same code. All that the
+
+111
+00:13:04,513 --> 00:13:11,572
+expansion algorithm get, gets is the list
+of fixed length code words. and it's going
+
+112
+00:13:11,080 --> 00:13:17,995
+to maintain its own code word table in
+order to get the expansion done. now, we
+
+113
+00:13:17,995 --> 00:13:25,135
+can start it out again by generating the
+table for a each other single letter
+
+114
+00:13:25,135 --> 00:13:31,765
+that's going to be in the message or if
+it's only a few may be. there is some
+
+115
+00:13:31,765 --> 00:13:38,990
+other sliding coding that needs to be done
+at the beginning. but so, it seems 41 in
+
+116
+00:13:39,994 --> 00:13:44,937
+roles are switched. the fixed length code
+words of the key and the values are
+
+117
+00:13:44,937 --> 00:13:50,237
+strings. So, we just look up the key and
+write out the values as we see at 42,
+
+118
+00:13:50,237 --> 00:13:59,985
+that's a B we see. a 41, that's an A. but
+not only do we want to put, put out the,
+
+119
+00:14:01,050 --> 00:14:06,433
+the character corresponding to the code
+word. but we also want to build up code
+
+120
+00:14:06,433 --> 00:14:11,614
+words in the same way that the compression
+method would have done it. So, the
+
+121
+00:14:11,614 --> 00:14:17,401
+compression method I want to see is an AB
+would have associated the string AB with a
+
+122
+00:14:17,401 --> 00:14:25,189
+new key. And now, we read a 52. Look up
+52, that's an R but we also put a new
+
+123
+00:14:25,189 --> 00:14:31,882
+entry in the table for the string BR. Same
+way the compression algorithm would have
+
+124
+00:14:32,718 --> 00:14:41,362
+done. We see 41 we get an A. Now, we put
+RA in the table 43 we put a C and we put a
+
+125
+00:14:41,362 --> 00:14:50,472
+C in the table 41, we put an A. we put CA
+in the table now 81. we look up at our
+
+126
+00:14:50,472 --> 00:14:58,117
+table, and it's I'm sorry. the D is 44 and
+AD in the table. And now 81, we look at
+
+127
+00:14:58,117 --> 00:15:07,834
+up, and we have AB and once we have seen
+the AB then we know the compression were
+
+128
+00:15:07,834 --> 00:15:13,715
+to put DA on the table. And that's a
+little bit tricky because the expansion is
+
+129
+00:15:13,715 --> 00:15:20,043
+kind of one step behind the compression.
+It's got to put out the characters before
+
+130
+00:15:20,043 --> 00:15:25,924
+it knows it. And it does lead to a
+slightly tricky situation that we'll talk
+
+131
+00:15:25,924 --> 00:15:32,028
+about. So now 83 is going to be RA. And
+once we put out the RA, then we know that
+
+132
+00:15:32,252 --> 00:15:39,420
+compression would have done ABR now, so
+now 82 is BR. And again, we know
+
+133
+00:15:39,420 --> 00:15:46,923
+compression would have put RAB in there.
+and 88 is ABR and compression would have
+
+134
+00:15:46,923 --> 00:15:54,241
+put BRA in there. 41 is A and then 80 is
+the stop character. Oh, and we would have
+
+135
+00:15:54,241 --> 00:16:00,910
+put and once it did the a, then it would
+have put ABRA in there. And then, 80 is
+
+136
+00:16:01,374 --> 00:16:07,568
+the stop character. So, that's an
+expansion just building the table in the
+
+137
+00:16:07,568 --> 00:16:12,676
+same way the compression would have and
+then, using the table to figure out the
+
+138
+00:16:12,676 --> 00:16:18,344
+string associated with, with each fixed
+length code word. so this is a summary of
+
+139
+00:16:18,344 --> 00:16:24,570
+expansion which is pretty much the same as
+for compression except the reverse. so
+
+140
+00:16:24,775 --> 00:16:30,673
+we're going to create a symbol table that
+has fixed linked keys and associates
+
+141
+00:16:30,673 --> 00:16:36,590
+string values with them. We put in the
+single character values. we read a key, we
+
+142
+00:16:36,590 --> 00:16:42,192
+find the string value and write it out.
+And then, we update the symbol table from
+
+143
+00:16:42,395 --> 00:16:48,267
+the last the two things that we, the first
+character, the thing we just wrote out and
+
+144
+00:16:48,267 --> 00:16:55,988
+the thing we wrote out before that. and
+again you know, to represent the, the code
+
+145
+00:16:55,988 --> 00:17:04,261
+table this time we can just use an array.
+and because we, our keys are, are fixed
+
+146
+00:17:04,261 --> 00:17:12,157
+linked. And we assign them one, one bit at
+a time. So, we can just store the strings
+
+147
+00:17:12,439 --> 00:17:19,949
+in an array. And use the, the key bits,
+the key values, the fixed bits, key values
+
+148
+00:17:19,949 --> 00:17:26,490
+we get to index into the array and give us
+the right string. so that part's easier.
+
+149
+00:17:26,490 --> 00:17:33,934
+so now there's a tricky case that really
+everyone needs to work through this case a
+
+150
+00:17:33,934 --> 00:17:40,847
+few times to really understand what's
+going on. And it's worth doing once even
+
+151
+00:17:40,847 --> 00:17:47,849
+in lecture. so, let's look at this case
+where we have AB, AB, ABA and just follow
+
+152
+00:17:47,849 --> 00:17:54,167
+through th e algorithm for this for this
+case. so we get an A, and we look it up,
+
+153
+00:17:54,167 --> 00:18:01,384
+and it's 41. and so, that's what we're
+going to put out. and then, we look at the
+
+154
+00:18:01,384 --> 00:18:08,842
+next character. And it's AB so we're going
+to remember 81 in our code word table.
+
+155
+00:18:09,083 --> 00:18:15,980
+then, we read a B. and we look it up, and
+it's 42. and the next character is A. So,
+
+156
+00:18:15,980 --> 00:18:23,573
+we're going to say, well, BA is going to
+be, be 82. then next character is B. We
+
+157
+00:18:23,573 --> 00:18:30,929
+look up AB and we have 81. and so, we can
+put out the 81. And now, the next, look
+
+158
+00:18:30,929 --> 00:18:38,380
+ahead, the next character is A. So, we're
+going to do a code for ABA. That's going
+
+159
+00:18:38,380 --> 00:18:45,377
+to be 83. now, we have the rest of our
+string to be encoded is ABA and our
+
+160
+00:18:45,377 --> 00:18:52,615
+longest prefix match is ABA. so, we're
+going to put out 83. and that's the end of
+
+161
+00:18:52,615 --> 00:18:59,793
+the string. so, we do the 80, which is the
+end of the string. So, that's compression
+
+162
+00:19:00,051 --> 00:19:07,181
+for that string, working the same way as
+for the other example. now, lets look at
+
+163
+00:19:07,181 --> 00:19:15,252
+expansion for this case. they start up the
+same way. so now, we see a 41 and we look
+
+164
+00:19:15,252 --> 00:19:22,790
+it up in our table. and again, this can be
+just an indexed array. so it's going to be
+
+165
+00:19:22,790 --> 00:19:31,844
+a so that's a starting point and now, 42
+is going to be a B and then we look back,
+
+166
+00:19:31,844 --> 00:19:39,658
+we just put out an A and a B so our
+compression algorithm would have encoded
+
+167
+00:19:39,658 --> 00:19:48,374
+an AB as 81, we know that. So now, we can
+when we see 81 we've got AB so we can put
+
+168
+00:19:48,374 --> 00:19:56,416
+a B. and so now, we look at the and we put
+out the AD and the next entry in our table
+
+169
+00:19:56,701 --> 00:20:04,471
+is going to be BA, because that's what our
+compression were to put out. but now, we
+
+170
+00:20:04,471 --> 00:20:10,844
+just got a problem. the next character
+that we see that we need to expand is 83
+
+171
+00:20:11,166 --> 00:20:19,639
+but we need to know what key has value 83
+but it's not in the symbol table yet. so
+
+172
+00:20:19,960 --> 00:20:29,291
+that's definitely a tricky case for the
+now it is possible to when we go through
+
+173
+00:20:29,291 --> 00:20:37,303
+that one again. so I, at the time that we,
+we read the 83, we need to know which key
+
+174
+00:20:37,303 --> 00:20:43,383
+has value 83 before it gets into the
+symbol table. in all of its first
+
+175
+00:20:43,383 --> 00:20:50,111
+characters is going to be A, so that means
+that ABA has convenience with the code. In
+
+176
+00:20:50,111 --> 00:20:56,838
+a book which you can examine has a way to
+test for this case, and it's definitely a
+
+177
+00:20:56,838 --> 00:21:04,621
+tr icky case that at least can be
+considered for LZW expansion. we expand 83
+
+178
+00:21:04,621 --> 00:21:11,012
+at the same time that we put it in the
+symbol table, in this example. okay. So
+
+179
+00:21:11,012 --> 00:21:20,613
+there are all different kinds of details
+for LZW, we've just given one sometimes
+
+180
+00:21:20,613 --> 00:21:29,668
+people find it effective to clear out the
+symbol table after a while v maybe how big
+
+181
+00:21:29,668 --> 00:21:37,258
+do we make this symbol table, how big do
+we let it get. maybe it's not worthwhile
+
+182
+00:21:37,258 --> 00:21:41,942
+to keep older parts of the message. It
+should adapt the pieces of the message.
+
+183
+00:21:42,118 --> 00:21:46,720
+there's many other variations like that,
+that have been developed. so, so, for
+
+184
+00:21:46,720 --> 00:21:53,894
+example, what GIF does, is when the symbol
+table is full, we just throw it away and
+
+185
+00:21:53,894 --> 00:22:00,271
+start over. Unix compress it's throws the
+keeps a measure of how well it's doing.
+
+186
+00:22:00,271 --> 00:22:06,825
+And throws it away when it's not being
+effective. and there's many, many other
+
+187
+00:22:06,825 --> 00:22:12,296
+variations. why not put even longer
+substrings? Why just one character at a
+
+188
+00:22:12,296 --> 00:22:17,611
+time? Why not the double ones and so
+forth. And there have been many variations
+
+189
+00:22:17,611 --> 00:22:23,880
+like that have been develop, developed.
+and actually in the real world the, the
+
+190
+00:22:23,880 --> 00:22:29,603
+development of this tech, technology was
+influenced by patent law. There's a
+
+191
+00:22:29,603 --> 00:22:35,258
+version called LZ77 and another version
+called LZW because these guys worked for a
+
+192
+00:22:35,258 --> 00:22:42,321
+company in the summer and then it was
+patented for a while you couldn't use LZW
+
+193
+00:22:42,321 --> 00:22:47,904
+unless you paid the patent holder. But
+that expired in 2003 and then things
+
+194
+00:22:47,904 --> 00:22:54,901
+started to go up again. so there's lots
+and lots of different effective methods
+
+195
+00:22:54,901 --> 00:23:00,931
+that are variants of LZW. and really to do
+a good job you might also, you need to
+
+196
+00:23:01,601 --> 00:23:08,375
+include Huffman coding for the characters
+or run-length encoding and in really just
+
+197
+00:23:08,375 --> 00:23:14,405
+combinations of these basic, basic methods
+that we talked about that are, are most
+
+198
+00:23:14,405 --> 00:23:21,389
+effective. so you see this technology
+author up computational infrastructure
+
+199
+00:23:21,389 --> 00:23:27,447
+that you use everyday. and, and at the
+time we were talking about tries, they
+
+200
+00:23:27,447 --> 00:23:34,681
+seemed a bit abstract, but actually they
+are, tries are definitely part of the
+
+201
+00:23:34,681 --> 00:23:41,593
+algorithmic infrastructure and they are
+really fine example of a clear, clean,
+
+202
+00:23:41,593 --> 00:23:48,155
+elegent data structure and algorithmic
+idea of be ing used to great effect in the
+
+203
+00:23:48,155 --> 00:23:53,292
+real world. and this is there's people,
+plenty of people still doing that
+
+204
+00:23:53,292 --> 00:23:57,622
+research. Even on lossless data
+compression there's still ideas being
+
+205
+00:23:57,622 --> 00:24:02,957
+developed. and these are the kind that
+does a famous benchmark of set of texts
+
+206
+00:24:02,957 --> 00:24:08,229
+that if you think you have a good new
+compression algorithm you can run it on
+
+207
+00:24:08,229 --> 00:24:13,564
+this benchmark. where it's asking you is a
+seven bits per character, it's eight bit
+
+208
+00:24:13,564 --> 00:24:18,836
+but one of the bits is redundant, so you
+will immediately get down to seven. these
+
+209
+00:24:18,836 --> 00:24:26,143
+are the kinds of compression ratios that
+people have achieved with various mostly
+
+210
+00:24:26,363 --> 00:24:33,181
+levels of variance down to less than half
+of what you can get with asking. but it
+
+211
+00:24:33,181 --> 00:24:38,533
+continues to drive down and there was a
+completely new method called the
+
+212
+00:24:38,533 --> 00:24:44,251
+Burrows-Wheeler method developed in the
+90s' that took a, a big jump down and
+
+213
+00:24:44,251 --> 00:24:51,301
+there's a few more that have continued to
+improve even through the 90s'. So there's
+
+214
+00:24:51,301 --> 00:24:58,291
+still room for improvement in lossless
+data compression, but it's a really fine
+
+215
+00:24:58,291 --> 00:25:05,702
+example of the power of good algorithmic
+technology. so here's our quick summary on
+
+216
+00:25:05,702 --> 00:25:12,363
+data compression. so, we considered two
+classic fundamental algorithm. The first
+
+217
+00:25:12,363 --> 00:25:18,942
+one, Huffman encoding, represents fixed
+length symbols with variable length codes.
+
+218
+00:25:19,189 --> 00:25:25,686
+so the prefix code uses, tries to use
+smaller number of bits for the most
+
+219
+00:25:25,686 --> 00:25:32,465
+frequently used symbols. the other way
+the, the LempelZiv method takes variable
+
+220
+00:25:32,465 --> 00:25:38,897
+length symbols and uses fixed length code.
+So, it's interesting to think about those
+
+221
+00:25:39,130 --> 00:25:45,640
+two ends of the spectrum. there's plenty
+of compression algorithms out there that
+
+222
+00:25:45,640 --> 00:25:52,926
+don't try to get an exact compression, but
+just try to get an approximation using FFT
+
+223
+00:25:52,926 --> 00:25:59,070
+and wavelets and many other mathematical
+techniques. And that's appropriate for
+
+224
+00:25:59,070 --> 00:26:03,932
+things like pictures and movies where
+maybe you can miss a few bits. But
+
+225
+00:26:03,932 --> 00:26:09,739
+lossless compression is still a very
+important when you download an application
+
+226
+00:26:09,739 --> 00:26:15,680
+which is machine code onto your computer.
+you can't afford to have one of the bits
+
+227
+00:26:15,680 --> 00:26:20,610
+be wrong. so that's why lossless
+compression will always be with us.
+
+228
+00:26:20,855 --> 00:26:27,229
+there's a theory on compress ion.
+This theoretical limits that is, is a
+
+229
+00:26:27,229 --> 00:26:34,851
+measure of the and it's called the
+entropy, Shannon entropy of a text that
+
+230
+00:26:34,851 --> 00:26:43,766
+says a, a very fundamental way to indicate
+how much information there is in a text as
+
+231
+00:26:43,766 --> 00:26:51,700
+a function of its frequency. So, it's a
+sum of overall characters of the product
+
+232
+00:26:51,700 --> 00:26:59,100
+of the frequency. The log and the
+frequency with these methods we can get
+
+233
+00:26:59,100 --> 00:27:04,164
+very close to the entropy in some
+theoretical session settings. but actually
+
+234
+00:27:04,164 --> 00:27:10,419
+in, in practice the most effective methods
+uses tricks and techniques that have extra
+
+235
+00:27:10,419 --> 00:27:16,542
+knowledge about the data being compressed
+to really get the most effective kind of
+
+236
+00:27:16,542 --> 00:27:22,065
+results. as I explained, if you're doing a
+page like this, you better use a method
+
+237
+00:27:22,065 --> 00:27:27,848
+that does really well on huge amounts of
+wide space for example. that's LZW
+
+238
+00:27:27,848 --> 00:27:31,400
+compression and our last compression
+algorithm.

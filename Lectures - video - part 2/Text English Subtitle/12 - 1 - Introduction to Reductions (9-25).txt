@@ -1,0 +1,206 @@
+Today we're going to talk about
+reductions. this is something that we've
+done several times throughout the course,
+but we're going to want to take a little
+bit more formal look at it, because it
+plays a critical role in some of the
+advance, advanced topics that we're going
+to want to consider next. Just a quick
+overview of the next few lectures. These
+are advanced topics related to algorithms
+and you can take more advance courses that
+go into all these things in depth. But
+it's important to talk about them in
+context of the algorithm so that we seem
+to put everything into, into perspective
+So what we're going to talk about in this
+lecture is called reduction and it's a
+technique that we use t take the good
+algorithms that we know and use them
+effectively to build more complicated
+algorithms. And as I said, we've done that
+before but it brings up some interesting
+ideas. that are bigger than any particular
+algorithm. And one idea that we've talked
+about is the idea of a problem-solving
+model. We saw that we could use shortest
+paths and max flow to solve problems that
+didn't seem to be related at all. and
+there's a particularly important
+problem-solving model called linear
+programming that we'll talk about in the
+next lecture. but then there's a limit,
+and that brings us to the topic of
+intractability that we'll talk about in
+the last lecture. So we're shifting gears
+from individual problems to thinking about
+problem-solving models that are more
+general than a particular individual
+problem. And also, as part of this, we're
+moving into problems that are much more
+difficult to solve. And not just linear
+and quadratic fast algorithms, but a just
+a different scale. And we'll talk about
+that in the next couple of lectures. And
+then we're not going to really be talking
+that much about code for awhile. It's more
+about the conceptual framework and where
+the problems that you really want to work
+on fit into the big picture. So the, our
+goals are we've looked at some terrific,
+fantastic, very useful classical
+algorithms. But they fit into a larger
+context. we're going to encounter new
+problems. you want to have all those
+algorithms in the tool box, but you also
+under. Want to understand where they fit
+in to the big picture. there's some very
+interesting, important and essential ideas
+that have been developed at in great depth
+over the past several decades. and it's
+important for every practitioner to, have
+a good feeling for, for those ideas and,
+and what they imply. and really, by
+thinking about these big ideas, in
+addition to particular algorithms for
+particular problems, most people find that
+they're inspired to learn much more about
+algorithms. So by way of introduction
+let's talk about what a reduction is. So
+this is just a big bird's eye view. The
+idea is that what we would really like to
+do is if we, if we have a new problem that
+we have solve, we'd like to be able to
+classify the problem according to the cost
+that it's going to take to solve it.
+what's, what's an order of growth of a, of
+an algorithm, a good algorithm or any
+algorithm to solve the problem. And we've
+already touched on this a little bit when
+we talked about sorting algorithms. not
+only did we have a, a good algorithm for
+solving sorting several good algorithms
+but we also developed a lower bound that
+said that no algorithm can do better. And
+so we can think of the sorting problem as
+classified as being order-of-growth,
+linearithmic or N log N. And then we saw
+plenty of linear time algorithms that we
+just examine all the data and we can get
+it solved. And we like to have more things
+like this other algorithms that we need
+quadratic time to solve and so forth. So
+we're going to think about how difficult
+are problems to solve, that's the first
+idea. Now there's really frustrating news
+on this front that we'll be talking about
+over the next couple of lectures. And the
+frustrating news is there are a large
+number of practical problems that we'd
+like to solve that we don't really know
+how hard they are to solve. And that's a
+profound idea that we'll get to soon. so,
+but what we want to talk about in this
+lecture is one of the most important tools
+that we use to try to classify problems.
+and it's actually been very successful, in
+lots of instances. And so if we know that
+we could solve some problem efficiently we
+want to use that knowledge to figure out
+what else we could or could not solve
+efficiently. And that's what reduction is
+all about. It's just a single tool and
+maybe kind of gets to this Archimedes
+quote, give me a lever long and a fulcrum
+on which to place it and I will move the
+world. that's what reduction does for us.
+So here's the basic idea. we say that a
+problem X reduces to a problem Y. If you
+can use a problem that solves Y to help
+solve X. so, what does that mean? This
+schematic diagram gives an idea of what we
+are talking about. so, in the middle, we,
+we assume that we have a, in the middle
+box there, labeled in blue. And so, we
+have an algorithm for solving problem y
+in, it's not really relevant what that,
+algorithm is? It just knows that if you
+have any instance of problem y you can
+solve it. And the idea behind reduction is
+that we take an instance of problem X and
+we transform it into an instance of
+problem Y. Then use the algorithm for Y to
+solve that instance of Y and then
+transform the solution back to the
+solution to be the instance of problem X.
+So we take that transformation into an
+instance of problem y. The transformation,
+the solution back to a solution 2x. Then
+that whole thing enclosed in the box on
+the dotted line is an algorithm for
+problem X. And what's the cost? The cost
+of solving problem X is the cost of
+solving Y. Plus the cost of reduction.
+It's like pre-processing and
+post-processing for, problem Y. Then we
+see a number of calls to Y, in a
+reduction. And the pre-processing and
+post-processing might be, expensive.
+Again, we've seen some specific examples
+of this, and we'll go over it, in a
+minute. so here's a really simple example.
+finding the median, reduces to sorting. So
+in this case problem Y is sorting and so
+we assume that we have a sorting
+algorithm. If you need to find a median,
+then we take the items that's the instance
+of X in this case there's no
+transformation just sort and then once
+they're sorted, you take that sorted
+solution and just pick the middle, middle
+item and return it so the transformation
+of solution is also easy. so the cost of.
+Solving, finding the median is the cost of
+sorting which is N log N plus the cost of
+the reduction which is just constant time.
+If you can sort you can find the median.
+So finding the median reduces to sorting
+so here's a, a second, simple example.
+suppose problem X is the element
+distinctness problem and so that one is,
+you have a bunch of elements. And you want
+to know if they're all different. an easy
+way to solve that, that we looked at back
+in the coding lecture, is, again, just
+sort. We assume that we have a sorting
+algorithm. And then we take that instance
+of, the element, the distinctness problem,
+and just all the elements, and sort them.
+And then after you sort'em, then you can
+just go through, and, any items that are
+equal are going to be adjacent to each
+other. So, simply make a path through, in
+this post processing phrase, and check,
+adjacent pairs for equality, 'cause
+anything equal's going to be right next to
+one other. And that gives a solution to
+the element distinctness problem. So
+again, element distinctness reduces to
+sorting, because you use sorting to solve
+it. And in this case the cost of solving
+element distinctness is the cost of
+sorting and log N, plus cost of reduction,
+this time you have to make a path through
+it. So this means that we can solve
+element distinctness in time proportional
+to N log N. it could be that you could
+find, a algorithm that doesn't use sorting
+to solve element distinctness. But that
+might be a bit of a challenge. by
+reduction. maybe the hard work is done by
+the sorting. and we get an algorithm for
+this other problem. that's the basic idea.
+As long as these cluster reductions not
+too much, that's the basic idea, of being
+able to use red uctions.
+To design new algorithms.

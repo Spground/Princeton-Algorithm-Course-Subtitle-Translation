@@ -1,0 +1,221 @@
+To get started, we're going to introduce
+the idea of search problem which
+encompasses many of the fundamental
+problems that we want to try to solve. so
+here's a familiar problem from secondary
+school, we'll call it LSOLVE. So, the
+problem is, given system of linear
+equations find a solution. so, we've got
+simultaneous equations involving the
+variables x1, x0, x1, and x2, and what we
+need to do is find a solution. In this
+case, these three equations have the
+solution x0 = -one, x1 = two, and x2 =
+two.
+If you plug those values in for x0, x1,
+and x2 and those equations, they, you'll
+find that they satisfy those equations.
+in, in secondary school you learn how to
+solve those with Gaussian elimination or
+eliminate a variable at a time. so that's
+LSOLVE. now, last time we talked about
+linear program, programming. and that's a
+similar problem that you can almost cast
+as the following given a system of linear
+inequalities, you know, find a solution.
+Actually for LP we do a little bit more
+because we also try to optimize. But, this
+is a fine characterization of a way to
+formulate the problem. So now, we just
+have inequalities. and again, there's a
+solution. actually, the first part of the
+computational burden in linear programming
+is to know whether there's a solution or
+not before you can even apply the simplest
+method. so we in this case, there is some
+equations on the left, and on the right
+there's values that if you plug those
+values into those equations, they satisfy
+it. So, that's minor inequalities of
+satisfiability. here's another one.
+suppose that again we have inequalities
+but suppose that we insist that the
+variables be zero or one. and actually,
+this is a special case of linear
+programing that comes up to be useful as a
+model in many situations where the
+variables modeled as I say, what's going
+on in an electronic circuit or maybe other
+situations where we just did want, want
+them to be zero or one. And we had an
+example of this when we were talking about
+bipartite matching reduction to linear
+program, programming. so that's in this
+case, you take those equations, those
+inequalities and you put in those values.
+And sure enough, x1 + x2 is bigger than
+one, x0 + x2 is bigger to the one but the,
+the some of the three of them it's less
+than or equal to two, so that's a
+solution. and this is just one more so
+those are all called satisfiability
+problems. So, you have a bunch of
+equations, with variables. And you have
+values for the variables. And you want to
+know if the variables satisfy the
+equation. and the simplest satisfiability
+problem is the one that just uses Boolean
+values. given a system of Boolean
+equations where the variables are either
+true or false, and then the equations are
+just made up of or an and connective in
+the presentation. And, and you, you're
+checking whether in a bunch of when an
+expression involving truth values is true
+or false in the prime means not. So, not
+x1 or x2 and x0 or x2 equals true. that's
+going to be true in that case. that's
+going to be satisfied in that case because
+x1 equals false, so not s1 is true. So the
+first term is true here. not x1 is true so
+that, or whatever is true. and then this
+term here, x0 or x2, x2 is true. So, both
+those terms are true and we're adding
+them, so it's true. And you should go
+through and check each of the equations to
+make sure that those truth values satisfy
+those equations. So, those are fundamental
+problems. They're very similar in nature.
+and there's lots and lots of applications
+where people want to find efficient
+solutions for these problems. so the
+question is, how do these things fit into
+our theory? Which of these have algorithms
+that are guaranteed to run in polynomial
+time? When you look at the problems, they
+didn't look really all that much
+different. well, for LSOLVE, we have
+Gaussian elimination and other ways to
+solve Gaussian elimination works in n
+cubed time or end of three halves time
+where n's the size of the input. but what
+about the other ones? do they have
+polynomial time algorithms? well, LP I
+mentioned briefly at the end of the last
+lecture. yeah. It was proven but actually
+was open for decades. It wasn't until
+solved where we knew that there existed a
+guaranteed polynomial time algorithm for
+linear programming. And then it was
+decades later before those algorithms were
+brought to the point where they could
+compete with simplex in practice. but it
+happened. that was a problem, we didn't
+know whether there was a polynomial time
+algorithm for many, many years even though
+people were trying to find it. but with
+articulating this division in the theory
+helped with the idea of let's get, let's
+find a polynomial time algorithm and
+someone did. and so, that's was certainly
+difficult to bring that about, but it
+happened. And then, you might say, well
+that gives some hope that we could do
+others. But actually for integer linear
+programming, you just take linear
+programming and restrict the variables to
+have zero or one values, or Boolean
+satisfiability. nobody knows a polynomial
+time algorithm. And, in fact, few people
+believe that a polynomial time algorithm,
+guaranteed polynomial time algorithm
+exists for these problems. But, we still
+don't know for sure. that's the topic of
+today's lecture. Now, all of these things
+are examples of search problems. and we
+characterize them this way cuz it's an
+intuitive way to describe really the
+problems that we want to solve. so the
+idea is that the problem has, lots of
+problem instances, its input. and what you
+want to do in a search problem is find a
+solution, or report that there's no
+solution. so, there's just one
+requirement. And the requirement that
+distinguish, distinguishes a search
+problem from just any problem is that we
+have to be able to efficiently check that
+the given solution is in fact the
+solution. Say, in that efficiently in this
+lecture means in poly, guaranteed
+polynomial time in the size of the input.
+And for the problems that I just gave
+they're definitely search problems.
+because just take a look at what they are.
+So, for LSOLVE, the problem is input
+instances are just systems of linear
+equations. So, matrix of N squared
+numbers, N  N + one numbers. And solution
+is just three numbers. And to check the
+solution, just plug in the values to
+verify each equation so that's certainly
+polynomial time in the size of the input.
+So, LSOLVE is a search problem. And
+similarly, LP is a search problem. LP
+characterized in this way. you've got a
+system of linear inequalities and you're
+given a solution, you can efficiently
+check that, that solution satisfy those
+inequalities. These satisfiability
+problems are all search problems. In
+interlinear programming, you have the
+inequalities. you get values that are zero
+or one. You can plug them in the equations
+and check. That's what characterizes a
+search problem. It's got a small solution
+that we can efficiently check whether it's
+a solution and satisfy the same. You've
+got the truth values, you've got the
+equations and then you plug in values and
+verify each equation. now, what we're
+doing is distinguishing search problems
+from other kinds of problems that are very
+similar. And actually, the theory works
+for these other kinds of problems. One
+kind is called a decision problem where
+it's just problems that have a yes, no
+answer. in, another one is optimization
+problems which are problems of where you
+want to find the best solution in some
+sense like linear probic, programming or
+shortest path. but the theory that we're
+about to lay out all the major conclusions
+hold for any one of these classes of
+problems. it's just that it's best to fix
+on one to make sure that there's no holes
+in any of the statements that we make. so
+we're doing that at the outset with the
+search problem. Now, and, and, and so you
+can imagine so if one way to check that if
+you have a problem that finds a solution
+to a linear programming problem, you can
+specify it in such a way that it's a
+decision block. Is there a solution that
+satisfies another given inequality linear,
+combination of the value's less than a
+certain value? And then you can use binary
+search or something to do the, the final m
+aximiza, minimization for linear program,
+programming, and so forth. There's all
+kinds of way to move among these problems.
+But we're going to focus on search
+problems. so here's another one factor. so
+given an inv, integer, find a nontrivial
+factor,. might find, it might take a lot
+of computation to try to find a factor.
+but if somebody gives you a factor, then
+all you have to do is long divide. So
+again, factor is a search problem. so
+those are some examples of the basic types
+of problems that we're foing to consider
+when we investigate intractability.

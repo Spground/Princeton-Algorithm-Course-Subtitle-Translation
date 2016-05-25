@@ -1,0 +1,91 @@
+. To develop. Digraph processing
+Algorithms, we're going to need an A.P.I.
+We'll use the same design pattern that we
+use for undirected graphs, where we
+develop an A.P.I. for building graphs that
+can serve as a client for all our graph
+processing algorithms. And it's very
+similar, it's not close to identical to
+the undirected graph A.P.I., except the
+class is named digraph. And other than
+that. It's got add edge, where we add a
+directed edge. But now, we're saying it's
+an edge from V to W. and then an iterator.
+that gives the vertices that point from
+the given vertex. So we're getting, those
+were the edges we can travel along to get
+around the graph. We have V and E. and
+another new method that is not relevant
+for undirected graphs is the reverse. So
+that's, a, a method that returns a
+di-graph where all the edges are reversed.
+and we'll see that's an important method
+to have for one of the algorithms that
+we'll talk about today. so here's a
+typical client very similar to the one
+that we did for undirected graphs, where
+we read the diagram from input stream, so
+that's pairs of edges, pairs of vertices
+where, that represent an edge from or one
+vert, first vertex to the second one And
+then for every vertex we'd print out. for
+every edge that you can get to from that
+verte-, for every other vertex you get to
+from that vertex, we put out a,, print out
+a little graphical representation of the
+edge V2W, where the little arrow we use a
+minus sign and a greater than. So for
+example with the input file tinyDG.txt for
+directograph, the one's got thirteen
+vertices, 22 edges. It's got an edge from
+four to two, from to two to three, three
+to two and so forth and if we execute this
+sample client, we get the edges printed
+out. it builds the graph and then prints
+out the edges. By the way, the order in
+which they come out is in order of vertex
+and order in which the judge comes out
+depends on the representation just these
+four graphs. we'll skip through the
+possibilities of keeping a list of edges,
+or using a matrix for, diagr aphs, cause
+again. impractical problems, the graphs
+are huge and sparse, so the average vertex
+degree in-degree and out-degree is low. We
+can't afford, to, keep space proportional
+to the number of possible vertices, that a
+vertex can connect to for each vertex. so,
+it's very similar to or exactly the same,
+really, to the one that we use for
+undirected graphs. We keep a vertex
+indexed array. Where, for each vertex, we
+can keep a bag of all the vertices that
+you can get to from that vertex. So vertex
+six, has out degree four. And there's four
+vertices on its list. Nine, four, eight,
+and zero. And when we process the graph,
+we're gonna visit those vertices, in that
+order. Which is just determined by the
+order in which they appeared in the input.
+So here's the implementation that we used
+for un-directed graphs last time. and
+you'll see that the only difference for
+die graphs is we change graph to die graph
+and we only have one representation of
+each edge, V goes to W. for undirected
+graphs we had W goes to V as well,
+otherwise the code's exactly the same, we
+have an iterator for the vertices adjacent
+to V but that. It's the difference between
+directed graphs and undirected graphs. so
+again the reason we do that is that we can
+get basic graph processing processed in a
+reasonable amount of time. Where every
+time we deal with a vertex we can get to
+its neighbors are the places you can get
+to from that vertex in time proportional
+to the number of vertices. You simply
+can't afford to do that with other
+representations. So that's the digraph
+API. Which is virtually identical to the
+graph API.

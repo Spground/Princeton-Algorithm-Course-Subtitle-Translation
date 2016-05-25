@@ -1,0 +1,388 @@
+1
+00:00:02,580 --> 00:00:05,925
+Today we're going to look at substring
+search algorithms.
+
+2
+00:00:05,925 --> 00:00:09,022
+This is a really fascinating family of
+algorithms.
+
+3
+00:00:09,022 --> 00:00:13,668
+The problem is very simple to state.
+And the algorithms we're going to look at
+
+4
+00:00:13,668 --> 00:00:16,890
+are among the most ingenious that we've
+seen, so far.
+
+5
+00:00:16,890 --> 00:00:22,384
+So it's useful to introduce the problem,
+very simple to state the problem.
+
+6
+00:00:22,384 --> 00:00:28,030
+We have two strings, one we call the
+pattern and the other we call the text.
+
+7
+00:00:28,030 --> 00:00:33,963
+And usually, it's good to think of the
+pattern as relatively small, and the text
+
+8
+00:00:33,963 --> 00:00:38,470
+as relatively long.
+In fact, usually we want to think of text
+
+9
+00:00:38,470 --> 00:00:42,150
+as unlimited length, coming in on an input
+stream.
+
+10
+00:00:42,150 --> 00:00:47,934
+And we have a small pattern, we want to
+find out if the pattern occurs in the
+
+11
+00:00:47,934 --> 00:00:50,700
+text.
+So you're doing this.
+
+12
+00:00:50,924 --> 00:00:54,136
+All the time.
+When you do a, a simple search.
+
+13
+00:00:54,360 --> 00:01:01,311
+On your computer or on the web.
+And there's practical applications where,
+
+14
+00:01:01,576 --> 00:01:08,810
+for various reasons, people want to search
+the entire contents of memory or disc for
+
+15
+00:01:08,810 --> 00:01:15,101
+a particular pattern, to make sure to
+check for whether there's something in the
+
+16
+00:01:15,101 --> 00:01:18,955
+computer that's of interest.
+And again, you've got to, such an
+
+17
+00:01:18,955 --> 00:01:22,872
+application you've got a small pattern and
+maybe a huge text.
+
+18
+00:01:22,872 --> 00:01:27,882
+Or maybe you're looking for your e-mail
+which you can think of as a continuous
+
+19
+00:01:27,882 --> 00:01:33,020
+stream of stuff coming in nowadays, and
+you want to look for patterns that might
+
+20
+00:01:33,020 --> 00:01:38,671
+indicate that there's spam and certainly
+you're all familiar with these types of
+
+21
+00:01:38,671 --> 00:01:42,154
+patterns.
+And so what we want is to be able to
+
+22
+00:01:42,154 --> 00:01:47,526
+identify the pattern quickly and
+efficiently in a huge text file.
+
+23
+00:01:47,744 --> 00:01:53,190
+That's the, one of the most important
+indicators of skipped spam, I guess.
+
+24
+00:01:53,190 --> 00:01:54,586
+.
+Okay.
+
+25
+00:01:54,586 --> 00:02:00,034
+So we'll try to set this up.
+This isn't really a real situation but
+
+26
+00:02:00,034 --> 00:02:05,401
+it's not too far actually.
+And so we're going to have these few
+
+27
+00:02:05,401 --> 00:02:11,418
+characters to try to point out the kinds
+of issues that might be involved.
+
+28
+00:02:11,418 --> 00:02:15,158
+So imagine an Internet surveillance
+situation.
+
+29
+00:02:15,158 --> 00:02:21,420
+Where there's a need to monitor what's on
+the Internet for needs of security.
+
+30
+00:02:21,641 --> 00:02:27,393
+But there might be a, a judge saying, wait
+a minute, you can't be looking at all
+
+31
+00:02:27,393 --> 00:02:32,482
+Internet traffic.
+That's private information particularly
+
+32
+00:02:32,482 --> 00:02:36,760
+among private individuals in, in the U S
+for example.
+
+33
+00:02:36,981 --> 00:02:40,770
+Well,
+So what about if we just look for this one
+
+34
+00:02:40,770 --> 00:02:46,422
+pattern, that, we really need to know
+about and that, that, really shouldn't
+
+35
+00:02:46,422 --> 00:02:49,620
+violate anybody's privacy, like tank or
+dorm.
+
+36
+00:02:49,822 --> 00:02:55,412
+And the Judge can say, okay, how about if
+you build a machine that just looks for
+
+37
+00:02:55,412 --> 00:02:58,578
+that?
+And that's what we're going to talk about
+
+38
+00:02:58,578 --> 00:03:02,552
+today, actually.
+One of the techniques that we look at is
+
+39
+00:03:02,552 --> 00:03:08,615
+perfect for, actually building hardware,
+that can, be, put on, a stream of data
+
+40
+00:03:08,615 --> 00:03:14,003
+passing by, and just light the light if,
+that, particular pattern is seen.
+
+41
+00:03:14,205 --> 00:03:19,863
+So you attach one of those machines, all
+over the web, and, if attack at dawn
+
+42
+00:03:19,863 --> 00:03:24,793
+happens, then you find it.
+That's the I would say a simplified
+
+43
+00:03:25,011 --> 00:03:29,070
+explanation of what it is that we're going
+to try to do.
+
+44
+00:03:29,331 --> 00:03:35,604
+Here's another kind of application.
+This is called, screen scraping.
+
+45
+00:03:35,604 --> 00:03:43,096
+So, we might want to and, and you can do
+this, write programs to do this for,
+
+46
+00:03:43,358 --> 00:03:51,411
+extracting relevant data from a webpage.
+And the idea is that there's different
+
+47
+00:03:51,411 --> 00:03:57,215
+institutions out there that are committed
+to providing information on the web.
+
+48
+00:03:57,215 --> 00:04:03,808
+And they'll promise to, for example this
+is Yahoo's page that gives the stock price
+
+49
+00:04:03,808 --> 00:04:07,534
+of Google.
+When you look at the page, it says last
+
+50
+00:04:07,534 --> 00:04:13,983
+trade but if you write a program to look
+at the code that produces the page it also
+
+51
+00:04:13,983 --> 00:04:18,403
+says last trade.
+And since this HTML code is produced by a
+
+52
+00:04:18,403 --> 00:04:21,048
+program.
+It's always going to have the same
+
+53
+00:04:21,048 --> 00:04:25,630
+structure.
+So if we want to find, write a program to
+
+54
+00:04:25,630 --> 00:04:34,034
+find Google's stock price at any time what
+we can do is take this page put it on an
+
+55
+00:04:34,034 --> 00:04:38,971
+input stream, and search for the pattern,
+last trade.
+
+56
+00:04:38,971 --> 00:04:44,148
+And then just after last pray, trade,
+there's the price, in bold.
+
+57
+00:04:44,148 --> 00:04:50,599
+So what we really want is the string
+between, B and backslash B, which delimits
+
+58
+00:04:50,599 --> 00:04:55,218
+bold, after the first occurrence of the
+pattern last trade.
+
+59
+00:04:55,457 --> 00:05:00,554
+And it's simple to write a Java program
+that, implements this.
+
+60
+00:05:00,793 --> 00:05:05,890
+This is the program, and, the key is,
+well, number one, our input.
+
+61
+00:05:05,890 --> 00:05:11,759
+Standard N, input stream methods.
+Allow a webpage, as argument.
+
+62
+00:05:11,759 --> 00:05:19,682
+So in this case, we provide a command line
+argument, which is whatever company you
+
+63
+00:05:19,682 --> 00:05:25,747
+want the quote for.
+And we simple read in the whole webpage.
+
+64
+00:05:25,747 --> 00:05:30,150
+So now you have the webpage in a long
+string.
+
+65
+00:05:30,610 --> 00:05:36,793
+And then Java.
+Has a, what's, index of method for every
+
+66
+00:05:36,793 --> 00:05:41,185
+string.
+And it tells you, where that particular
+
+67
+00:05:41,185 --> 00:05:47,370
+string occurs.
+And so, we'll start at index of last, last
+
+68
+00:05:47,370 --> 00:05:51,852
+trade.
+And then, what we wanna do is find the
+
+69
+00:05:51,852 --> 00:05:54,880
+first B.
+In brackets after that position.
+
+70
+00:05:55,096 --> 00:06:00,800
+And the first being closed with backslash
+being brackets, starting from that
+
+71
+00:06:00,800 --> 00:06:04,626
+position.
+And skipping over the, angle bracket b
+
+72
+00:06:04,626 --> 00:06:08,741
+closed bracket.
+You get the price, and you can print it
+
+73
+00:06:08,741 --> 00:06:12,510
+out.
+Now this is a little utility that screen
+
+74
+00:06:12,510 --> 00:06:18,996
+scraps from Yahoo's website.
+So sub string searching is quite in quite
+
+75
+00:06:18,996 --> 00:06:24,691
+useful in it's built in as a method in
+Java's string data type.
+
+76
+00:06:24,691 --> 00:06:28,884
+So it's practically useful that's an
+introduction.
+
+77
+00:06:28,884 --> 00:06:32,760
+So now let's look at algorithms for
+implementing.
+
+78
+00:06:33,153 --> 00:06:35,380
+String searching.

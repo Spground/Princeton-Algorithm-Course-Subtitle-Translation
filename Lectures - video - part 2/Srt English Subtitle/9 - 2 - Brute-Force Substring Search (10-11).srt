@@ -1,0 +1,568 @@
+1
+00:00:03,320 --> 00:00:11,039
+As usual, it's very instructive to take a
+look at the simplest brute force algorithm
+
+2
+00:00:11,039 --> 00:00:15,412
+for the problem.
+We'll look at that in a little detail,
+
+3
+00:00:15,412 --> 00:00:21,567
+because it illustrates, really what,
+fundamental issues involved with getting
+
+4
+00:00:21,567 --> 00:00:27,478
+efficient algorithms for this.
+And it's also the basis for more efficient
+
+5
+00:00:27,478 --> 00:00:31,609
+algorithms.
+So the brute force method, we could give
+
+6
+00:00:31,609 --> 00:00:37,440
+in a beginning programming class.
+You have your text, you have an index I
+
+7
+00:00:37,440 --> 00:00:43,552
+that index as in to text, and you have an
+index j that indexes into the pattern.
+
+8
+00:00:43,552 --> 00:00:50,947
+And, start out with both i and j at zero,
+and you compare text to pattern, and you
+
+9
+00:00:50,947 --> 00:00:56,916
+keep going until you find a mismatch.
+If you find a mismatch before the end of
+
+10
+00:00:56,916 --> 00:01:01,752
+the pattern, then what you do is move the
+pattern over one position,
+
+11
+00:01:01,752 --> 00:01:05,795
+That corresponds to simply incremental the
+text pointer.
+
+12
+00:01:05,795 --> 00:01:10,919
+And then, here we have a mismatch right
+away, so we move the pattern over one
+
+13
+00:01:10,920 --> 00:01:16,045
+position, increment the text pointer.
+And then starting with I at two, we
+
+14
+00:01:16,045 --> 00:01:21,604
+compare the second text character with j
+of zero, the first pattern character.
+
+15
+00:01:21,604 --> 00:01:25,863
+Increment j to one, increment i to three,
+we have a mismatch.
+
+16
+00:01:25,863 --> 00:01:32,646
+Mismatch happens at j and +J, j. the jth
+character the pattern versus the iJ +
+
+17
+00:01:32,646 --> 00:01:37,859
+character of the text.
+Now we have a mismatch, move over.
+
+18
+00:01:37,859 --> 00:01:45,568
+That's increment i to three, compare the
+first character of the pattern, j = zero
+
+19
+00:01:45,568 --> 00:01:50,663
+would be the i plus j pattern of the text.
+That's a mismatch.
+
+20
+00:01:50,906 --> 00:01:55,192
+Move over one.
+So we go first one is a match.
+
+21
+00:01:55,192 --> 00:02:00,773
+The second one j of i is four compare
+against five, that's a mismatch.
+
+22
+00:02:00,773 --> 00:02:04,332
+Move the pattern over one, that's a
+mismatch.
+
+23
+00:02:04,574 --> 00:02:10,613
+Finally get to i = position six, and we go
+for j equals zero, one, two, three, all
+
+24
+00:02:10,613 --> 00:02:14,050
+matches.
+When j gets to four, which is the number
+
+25
+00:02:14,050 --> 00:02:18,700
+of characters in the pattern that's when
+we know we've found a match.
+
+26
+00:02:18,905 --> 00:02:23,570
+So, in this table, the entry's engraved,
+just there for a reference.
+
+27
+00:02:23,775 --> 00:02:29,057
+The black ones are where when we found
+matches, and the red ones are where we
+
+28
+00:02:29,057 --> 00:02:33,379
+found mismatches.
+So, that's, we do the trace before the
+
+29
+00:02:33,379 --> 00:02:36,260
+code, because the code is extremely
+simple.
+
+30
+00:02:36,495 --> 00:02:42,622
+So this is, to implement brute force
+substring search, to look for a pattern, a
+
+31
+00:02:42,622 --> 00:02:49,298
+given pattern, in a given text, or for job
+as index of, this woud be, on the index of
+
+32
+00:02:49,298 --> 00:02:55,749
+method in, string, takes the argument
+pattern. So we get the pattern length, and
+
+33
+00:02:55,749 --> 00:03:00,889
+we get the text length.
+And we're going to potentially look at
+
+34
+00:03:01,146 --> 00:03:07,915
+every, straight, the pattern could start
+at any position in the text from zero to N
+
+35
+00:03:07,915 --> 00:03:12,758
+- M.
+And for every value of i, we've create a
+
+36
+00:03:12,758 --> 00:03:19,869
+new j and we look for the match between
+the pattern in position j and the text
+
+37
+00:03:19,869 --> 00:03:26,460
+character of position + j.
+If we get all, all the way to j = m, then
+
+38
+00:03:26,720 --> 00:03:32,183
+we found a match in i.
+If we get a mismatch, then we get a break
+
+39
+00:03:32,183 --> 00:03:37,040
+before j = m, and we go and try the next
+value of i.
+
+40
+00:03:37,040 --> 00:03:43,085
+And if we get all the way through there
+without returning, then we just return N,
+
+41
+00:03:43,085 --> 00:03:48,978
+which is one past the index of the last
+text character, the length of the text.
+
+42
+00:03:48,978 --> 00:03:54,117
+And that's an indication that the pattern
+was not found in the text.
+
+43
+00:03:54,117 --> 00:03:59,180
+Very straightforward implementation of the
+pattern match algorithm.
+
+44
+00:03:59,640 --> 00:04:06,215
+Now, the key point is that,
+This algorithm is fine in, in many
+
+45
+00:04:06,215 --> 00:04:10,703
+contexts, and actually it's the one that
+Java's index of uses.
+
+46
+00:04:10,913 --> 00:04:14,770
+But the real problem is that it can be
+slow. Number one,
+
+47
+00:04:14,770 --> 00:04:19,252
+Just the algorithmic problem,
+It can be slow if there's a lot of,
+
+48
+00:04:19,252 --> 00:04:23,243
+repeat, repetitive characters in the text
+and the pattern.
+
+49
+00:04:23,243 --> 00:04:28,776
+For example, suppose, that the, text is,
+all A's and a B, and imagine that there is
+
+50
+00:04:28,776 --> 00:04:34,378
+a million A's and a B or whatever.
+And then the pattern also was a smaller
+
+51
+00:04:34,378 --> 00:04:40,039
+copy of the same thing, all A's and a B.
+Then what happens in this case is that for
+
+52
+00:04:40,039 --> 00:04:45,421
+every possible position matching the
+pattern against the text, we go through
+
+53
+00:04:45,421 --> 00:04:50,190
+all the pattern characters and only find
+the mismatch on the last one.
+
+54
+00:04:50,190 --> 00:04:54,796
+So,
+And then we find a mismatch, we have to go
+
+55
+00:04:54,796 --> 00:04:58,725
+over one and try them all and find the
+mismatch in the last one.
+
+56
+00:04:58,725 --> 00:05:04,474
+And we eventually do find a match, but for
+every text character we've looked at
+
+57
+00:05:04,474 --> 00:05:10,151
+almost M - one pattern characters.
+So, this is a worst case that shows that
+
+58
+00:05:10,151 --> 00:05:15,902
+the running time of the brute force
+algorithm can be proportional to M  N,
+
+59
+00:05:15,902 --> 00:05:20,925
+where M is the pattern length.
+And the pattern could be long, say that
+
+60
+00:05:20,925 --> 00:05:26,531
+the pattern could be hundred characters
+and N can be huge, like a billion and
+
+61
+00:05:26,531 --> 00:05:30,534
+that's going to be slow,
+Particularly by comparison to the
+
+62
+00:05:30,534 --> 00:05:36,504
+alternatives that we're going to look at.
+Now a more important issue than just the
+
+63
+00:05:36,504 --> 00:05:39,780
+worst case performance is the idea of
+backup.
+
+64
+00:05:39,780 --> 00:05:45,873
+As I mentioned, for lots of applications,
+if we're going to put our machine in, on
+
+65
+00:05:45,873 --> 00:05:52,361
+one of the wires of the Internet and watch
+the input go by or if we just take the
+
+66
+00:05:52,361 --> 00:05:57,109
+abstract standard input model, you don't
+get to go, you don't get to back up when
+
+67
+00:05:57,109 --> 00:06:02,727
+you find a mismatch but the brute force
+algorithm is always backing up.
+
+68
+00:06:02,727 --> 00:06:07,080
+If we go through, matching our pattern
+against our text,
+
+69
+00:06:07,080 --> 00:06:11,645
+When we find a mismatch,
+We say we want to move the potential
+
+70
+00:06:11,645 --> 00:06:16,210
+pattern over one position,
+But that means backing up in the text.
+
+71
+00:06:16,445 --> 00:06:23,209
+So, we would that's, ways to deal with
+that by, saving the most recent M text
+
+72
+00:06:23,209 --> 00:06:29,422
+characters that we've seen.
+But it's definitely problematic for larger
+
+73
+00:06:29,422 --> 00:06:35,949
+patterns and certainly inconvenient. so
+the brute force algorithm uses backup.
+
+74
+00:06:36,185 --> 00:06:40,117
+And so you could maintain a buffer as I
+mentioned,
+
+75
+00:06:40,117 --> 00:06:46,409
+But what we're going to look at is an
+ingenious way couple of ingenious ways to
+
+76
+00:06:46,645 --> 00:06:50,529
+avoid having to do backup.
+To setup for that,
+
+77
+00:06:50,792 --> 00:06:56,222
+We're going to look at,
+A slightly different implementation or
+
+78
+00:06:56,222 --> 00:07:00,251
+alternate implementation of brute force.
+It, it,
+
+79
+00:07:00,251 --> 00:07:05,507
+Compares the same characters as the
+previous, implementation.
+
+80
+00:07:05,770 --> 00:07:12,282
+But, it, does things in a slightly
+different order, without, without a second
+
+81
+00:07:12,282 --> 00:07:17,226
+for loop. And it does the explicit backup,
+so let's look at that.
+
+82
+00:07:17,226 --> 00:07:23,030
+So, we have our i and j pointers, and, and
+we initialize them both at zero.
+
+83
+00:07:23,033 --> 00:07:29,467
+And so it's a for loop where, I gets
+incremented on every iteration through the
+
+84
+00:07:29,467 --> 00:07:36,550
+loop.
+And so what we do is, as long as we see a
+
+85
+00:07:36,550 --> 00:07:43,732
+match we also increment J, so that while
+the pattern is matching we're implementing
+
+86
+00:07:43,732 --> 00:07:48,751
+both I and J.
+When we see a mismatch what we do is just
+
+87
+00:07:48,751 --> 00:07:53,062
+subtract.
+The current value of j from i the pointer.
+
+88
+00:07:53,062 --> 00:07:57,222
+That's the next, character that we have to
+look at.
+
+89
+00:07:57,457 --> 00:08:03,737
+So, when we find this mismatch, we wanna,
+subtract the current value of J.
+
+90
+00:08:03,973 --> 00:08:07,505
+Then increment I at the end of the four
+loop.
+
+91
+00:08:07,505 --> 00:08:14,569
+And that puts us right on the, next, text
+character that we wanna look at and then
+
+92
+00:08:14,569 --> 00:08:19,472
+we reset j to zero.
+So this, does the same, Character
+
+93
+00:08:19,472 --> 00:08:23,777
+comparisons.
+But it explicitly shows that we're backing
+
+94
+00:08:23,777 --> 00:08:28,231
+up in the text.
+And then, if we ever get to the end of the
+
+95
+00:08:28,231 --> 00:08:33,947
+pattern then we return I minus M.
+Which is the position of the first
+
+96
+00:08:33,947 --> 00:08:39,663
+character in the text that matches the
+pattern which we found there was M
+
+97
+00:08:39,663 --> 00:08:42,336
+matches.
+So it's an alternate implem,
+
+98
+00:08:42,336 --> 00:08:49,037
+implementation that will come back to.
+So, the ideas that there are a couple of
+
+99
+00:08:49,037 --> 00:08:55,477
+out rhythm challenges even though this
+brute force method, is simple it is not
+
+100
+00:08:55,477 --> 00:09:00,327
+always good enough.
+And so the first one is just, from a
+
+101
+00:09:00,327 --> 00:09:04,541
+purely algorthmic stand point.
+This is a challenge.
+
+102
+00:09:04,780 --> 00:09:08,176
+Do we need N  M?
+Or M is the length of the pattern?
+
+103
+00:09:08,176 --> 00:09:11,982
+Or can we do it in time independent of the
+length of the pattern?
+
+104
+00:09:12,158 --> 00:09:16,550
+What we want is a linear time guarantee.
+And that was a fundamental problem
+
+105
+00:09:16,550 --> 00:09:19,420
+algorithmic problem that people worried
+about.
+
+106
+00:09:19,420 --> 00:09:25,173
+And for a, for a, for a bit and we're
+going to look at the, how people approach
+
+107
+00:09:25,173 --> 00:09:30,392
+this fundamental algorithmic problem.
+And then there's the practical challenge
+
+108
+00:09:30,392 --> 00:09:36,881
+of we don't, we might not have the room or
+the time to save the text and actually the
+
+109
+00:09:36,881 --> 00:09:41,631
+judge might not be happy about us saving
+text away in some computer.
+
+110
+00:09:41,832 --> 00:09:44,910
+So we want to avoid backup in the text
+stream.
+
+111
+00:09:45,110 --> 00:09:48,322
+All we're supposed to know about is our
+pattern.
+
+112
+00:09:48,322 --> 00:09:53,340
+And we're supposed to light the light if
+we find our pattern and that's it.
+
+113
+00:09:53,340 --> 00:10:00,354
+So what we're gonna see next is a way to
+deal with both of those challenges at the
+
+114
+00:10:00,354 --> 00:10:01,200
+same time.

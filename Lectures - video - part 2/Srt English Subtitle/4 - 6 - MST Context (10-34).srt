@@ -1,0 +1,564 @@
+1
+00:00:03,300 --> 00:00:09,312
+So we're going to complete our study of
+MST algorithms by considering some context
+
+2
+00:00:09,530 --> 00:00:15,470
+both as an unsolved problem in theoretical
+computer science and as a practical
+
+3
+00:00:15,470 --> 00:00:18,975
+problem.
+So the unsolved problem in theoretical
+
+4
+00:00:18,975 --> 00:00:24,300
+computer science that has defied
+researchers for many decades is, it is
+
+5
+00:00:24,300 --> 00:00:27,675
+possible to find a linear-time MST
+algorithm?
+
+6
+00:00:27,675 --> 00:00:33,600
+Is there an algorithm that only examines
+each edge at most once on the average?
+
+7
+00:00:33,600 --> 00:00:36,980
+Now, this doesn't have.
+That much practical comp.
+
+8
+00:00:36,980 --> 00:00:43,148
+Consequence since the versions of Primm's
+algorithm that we've talked about can get
+
+9
+00:00:43,148 --> 00:00:49,170
+the running time down quite low for the
+sparse graphs, the huge sparse graphs that
+
+10
+00:00:49,170 --> 00:00:52,548
+we encounter in practice.
+But it's still, its...
+
+11
+00:00:52,548 --> 00:00:55,706
+Like union find, it's a tantalizing
+problem.
+
+12
+00:00:55,706 --> 00:00:59,084
+Unlike union find, it hasn't been resolved
+yet.
+
+13
+00:00:59,084 --> 00:01:04,959
+Union find remember, we couldn't get a
+linear algorithm but at least Tarjan
+
+14
+00:01:04,959 --> 00:01:10,100
+proved that no such algorithm exists.
+For MST, we're not even there yet.
+
+15
+00:01:10,392 --> 00:01:18,489
+And a lot of people have worked on it.
+So let's go with the simple model where
+
+16
+00:01:18,489 --> 00:01:24,584
+what you get to do is compare edges.
+Compare weights on edges.
+
+17
+00:01:24,870 --> 00:01:32,870
+In 1975 Yao proved that there exists an
+algorithm that's worst case running time
+
+18
+00:01:32,870 --> 00:01:37,727
+is e log, log v.
+In 1976, Cheriton and Tarjan came up with
+
+19
+00:01:37,727 --> 00:01:44,680
+another such algorithm.
+And then Fredman and Tarjan found the e
+
+20
+00:01:44,680 --> 00:01:52,333
+plus e log v algorithm or e log star v For
+MST's in'84.
+
+21
+00:01:53,152 --> 00:01:56,067
+Here's another one.
+E log, log star v.
+
+22
+00:01:56,310 --> 00:02:02,300
+Now remember, log star v is the number of
+times you take log to get to one.
+
+23
+00:02:02,300 --> 00:02:06,995
+So it's, less than, six, in the natural
+universe.
+
+24
+00:02:07,238 --> 00:02:11,286
+So these are very, very close to linear
+algorithms.
+
+25
+00:02:11,529 --> 00:02:15,819
+The names in orange are people who work at
+Princeton.
+
+26
+00:02:15,819 --> 00:02:20,271
+So, we're now trumpeting Princeton a
+little bit here.
+
+27
+00:02:20,271 --> 00:02:26,910
+In'97, Chazelle showed that, its close to
+the, inverse Ackerman function.
+
+28
+00:02:26,910 --> 00:02:32,000
+That, even more slowly growing than log
+star v.
+
+29
+00:02:32,623 --> 00:02:39,168
+In 2000, got rid of the log factor, so
+very, very close to linear.
+
+30
+00:02:40,610 --> 00:02:46,304
+That now.
+In 2002, Optimal, well, let's, talk about
+
+31
+00:02:46,304 --> 00:02:49,719
+that.
+They, they, they showed an, an algorithm
+
+32
+00:02:49,719 --> 00:02:53,579
+that it, better not to talk about the
+theory of that.
+
+33
+00:02:53,579 --> 00:02:57,365
+[laugh].
+And that the, still, the open question is,
+
+34
+00:02:57,588 --> 00:03:03,156
+is there, an algorithm whose worst case
+running time is guaranteed to be
+
+35
+00:03:03,156 --> 00:03:07,387
+proportional to e?
+Or could, someone prove that no such
+
+36
+00:03:07,387 --> 00:03:11,915
+algorithm exists?
+It's one of the most, tantalizing open
+
+37
+00:03:11,915 --> 00:03:18,281
+questions in computer science.
+As we get into, graph algorithms in more
+
+38
+00:03:18,281 --> 00:03:22,183
+detail.
+We'll see some other examples of problems
+
+39
+00:03:22,183 --> 00:03:28,713
+for which we know pretty good algorithms
+but would like to know whether there are
+
+40
+00:03:28,713 --> 00:03:33,411
+better algorithms or not.
+And MST is a fine example of that.
+
+41
+00:03:33,411 --> 00:03:38,827
+That's the orange means Princeton.
+There is a randomized linear time
+
+42
+00:03:38,827 --> 00:03:45,357
+algorithm that was discovered in 1995, but
+that's not the same as solving it worst
+
+43
+00:03:45,357 --> 00:03:48,658
+case in linear time.
+So that's one context.
+
+44
+00:03:48,891 --> 00:03:54,950
+Mxt is an important problem that's still
+been studied by theoretical computer
+
+45
+00:03:54,950 --> 00:03:59,068
+scientist and we still don't know the best
+algorithm.
+
+46
+00:03:59,301 --> 00:04:04,140
+Here's another one, So-called Euclidean
+MST.
+
+47
+00:04:04,140 --> 00:04:09,742
+And this one is what's appropriate in some
+practical situations.
+
+48
+00:04:09,742 --> 00:04:16,482
+So now you have points in the plane and
+the graph is an implicit dense graph.
+
+49
+00:04:16,482 --> 00:04:23,659
+That is, we take as an edge in the graph,
+the distance between this point and every
+
+50
+00:04:23,659 --> 00:04:27,469
+other point.
+So if there's n points there's n squared
+
+51
+00:04:27,469 --> 00:04:31,439
+edges because every point's connected to
+every other point.
+
+52
+00:04:31,439 --> 00:04:36,487
+And what we want is, in that graph, we
+want to find the subset of edges that
+
+53
+00:04:36,487 --> 00:04:41,669
+connects all the points, that's minimal.
+That's actually, in a lot of practical
+
+54
+00:04:41,669 --> 00:04:46,515
+problems, that's what you want.
+So as it stands, the algorithms that we've
+
+55
+00:04:46,515 --> 00:04:51,764
+talked about are not useful for this
+beacause they're going to take quadratic
+
+56
+00:04:51,764 --> 00:04:56,206
+time, because e's quadratic.
+That's how many edges there are in the
+
+57
+00:04:56,206 --> 00:04:59,727
+graph.
+So you know, you could just go ahead and
+
+58
+00:04:59,727 --> 00:05:05,082
+build the graph with the N squared over
+two distances and run Prim's algorithm.
+
+59
+00:05:05,285 --> 00:05:09,284
+But that's not very satisfying for a huge
+number of points.
+
+60
+00:05:09,487 --> 00:05:15,169
+It's actually not
+Too difficult to exploit the geometry of
+
+61
+00:05:15,169 --> 00:05:19,976
+the situation.
+And get it done in time proportional to N
+
+62
+00:05:19,976 --> 00:05:23,953
+log N.
+What is typically done is to build a sub
+
+63
+00:05:23,667 --> 00:05:31,221
+graph, where each point is connected to a
+certain number of points that are close to
+
+64
+00:05:31,221 --> 00:05:34,740
+it.
+There's a particular graph called the
+
+65
+00:05:34,740 --> 00:05:40,234
+Voronoi diagram, or the Delaunay
+triangulation, that does that.
+
+66
+00:05:40,234 --> 00:05:47,837
+And it's been proved, number one that,
+that graph has linear number of edges not,
+
+67
+00:05:48,097 --> 00:05:55,303
+quadratic, and it's also the MST is a sub
+graph of the d-linear triangulation.
+
+68
+00:05:55,303 --> 00:06:01,380
+So you can get it done in linear
+arrhythmic time for Euclidean MST.
+
+69
+00:06:01,678 --> 00:06:10,346
+Separate problem related but still a very
+interesting in many practical
+
+70
+00:06:10,346 --> 00:06:17,718
+applications.
+Here's another application in se, several
+
+71
+00:06:17,718 --> 00:06:22,700
+scientific studies, there's the idea of
+clustering.
+
+72
+00:06:22,928 --> 00:06:29,241
+And so what we wanna do is, we have a set
+of objects and they're related by a
+
+73
+00:06:29,241 --> 00:06:35,782
+distance function that specifies how close
+they are and what we wanna do is divide
+
+74
+00:06:35,782 --> 00:06:41,487
+the objects into a given number k of
+coherent groups so that objects in
+
+75
+00:06:41,487 --> 00:06:47,116
+different clusters are far apart.
+So wanna see how things cluster together.
+
+76
+00:06:47,116 --> 00:06:53,581
+And here's a really old example of a
+application of this where there was an
+
+77
+00:06:53,581 --> 00:07:00,132
+outbook, outbreak of cholera deaths in.
+London in the 1850s and, if you plot where
+
+78
+00:07:00,132 --> 00:07:06,671
+all of the deaths happened, scientific
+study could find that they were clustered
+
+79
+00:07:06,671 --> 00:07:11,738
+around certain places.
+And, actually they were able to identify
+
+80
+00:07:11,738 --> 00:07:18,195
+well pumps that were leading to the, the
+cholera just by doing clustering study.
+
+81
+00:07:18,195 --> 00:07:23,998
+And, that is a very special case.
+There are many, many other applications
+
+82
+00:07:23,998 --> 00:07:30,700
+where clustering is an important process,
+an important thing to be able to compute.
+
+83
+00:07:30,926 --> 00:07:37,356
+So like mobile networks for web search
+there's an idea of the distance between
+
+84
+00:07:37,356 --> 00:07:41,591
+doc, documents and you wanna categorize
+them in clusters.
+
+85
+00:07:41,818 --> 00:07:47,718
+There's the, all the objects that have
+been discovered in the sky, you wanna
+
+86
+00:07:47,718 --> 00:07:55,300
+cluster them together in a reasonable way.
+And all kinds of. Of processing having to
+
+87
+00:07:55,300 --> 00:08:01,557
+do with huge data bases, trying to get
+information that seems close together to
+
+88
+00:08:01,557 --> 00:08:06,212
+be close together into a relatively small
+number of clusters.
+
+89
+00:08:06,441 --> 00:08:11,020
+So there's, a, a approach called single
+link clustering.
+
+90
+00:08:11,020 --> 00:08:18,237
+Where you talk about the single length,
+the distance between two clusters equaling
+
+91
+00:08:18,237 --> 00:08:23,756
+the distance between the two closest
+objects, one in each cluster.
+
+92
+00:08:23,756 --> 00:08:29,191
+And so, so-called single length clustering
+is given at integer K.
+
+93
+00:08:29,191 --> 00:08:36,239
+Find the K clustering that maximizes the
+distance between the two closest clusters.
+
+94
+00:08:36,239 --> 00:08:40,230
+So that's a well defined computational
+problem.
+
+95
+00:08:40,439 --> 00:08:45,896
+And there's a very well-known algorithm,
+in the science literature for this
+
+96
+00:08:45,896 --> 00:08:51,843
+problem, signal, signal-link clustering.
+Form of e-clusters, find the closest pair
+
+97
+00:08:51,843 --> 00:08:57,160
+of objects such that each object's in a
+different cluster, and merge the two
+
+98
+00:08:57,160 --> 00:09:00,098
+clusters.
+And repeat until they're exactly
+
+99
+00:09:00,098 --> 00:09:03,456
+k-clusters.
+You'll find this algorithm in the
+
+100
+00:09:03,456 --> 00:09:07,583
+scientific literature.
+What's amazing is that, this is
+
+101
+00:09:07,583 --> 00:09:13,530
+Crussical's algorithm, just stop when you
+found the k-connected components, so that,
+
+102
+00:09:13,740 --> 00:09:21,578
+the, Or another thing you could do is just
+run Prim's algorithm and then after you've
+
+103
+00:09:21,578 --> 00:09:28,201
+run Prim's algorithm get rid of the
+largest edges until you're left with
+
+104
+00:09:28,201 --> 00:09:32,643
+k-clusters.
+So out of all the efficient Algorithms
+
+105
+00:09:32,643 --> 00:09:38,638
+that we've talked about are gonna apply
+for single-link clustering.
+
+106
+00:09:38,638 --> 00:09:45,947
+And actually scientists who also know some
+computer science now are able to handle
+
+107
+00:09:46,194 --> 00:09:52,435
+huge problems that would not be possible
+without efficient algorithms.
+
+108
+00:09:52,682 --> 00:09:59,744
+This is just one, one example where a, a
+cancer study where experiments are
+
+109
+00:09:59,991 --> 00:10:07,227
+connecting genes with the way they're
+expressed in different parts of the body,
+
+110
+00:10:07,227 --> 00:10:11,264
+and trying to cluster together tumors in
+similar tissues.
+
+111
+00:10:11,264 --> 00:10:16,788
+And again, such experimental results can
+amount, result in huge amounts of data,
+
+112
+00:10:16,788 --> 00:10:22,030
+and MST algorithms are playing a role in
+scientific research of this type.
+
+113
+00:10:22,030 --> 00:10:26,260
+That's our context for minimal spanning
+trees.

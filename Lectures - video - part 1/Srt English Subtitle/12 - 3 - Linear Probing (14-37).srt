@@ -1,0 +1,693 @@
+1
+00:00:02,012 --> 00:00:09,019
+Another popular closure resolution method
+is known as linear probing. In this you
+
+2
+00:00:09,019 --> 00:00:16,019
+know many different versions of hashing
+that are based on this idea. With linear
+
+3
+00:00:16,019 --> 00:00:23,044
+probing is called open addressing and is
+also around the same time in the 50's the
+
+4
+00:00:23,044 --> 00:00:29,006
+idea is just use an array. Instead of
+using space for the length in a length
+
+5
+00:00:29,006 --> 00:00:34,034
+list. I use that same space, and just,
+allocate an array. In this case, the size
+
+6
+00:00:34,034 --> 00:00:39,016
+of the array is going to have to be bigger
+than the number of keys that we
+
+7
+00:00:39,016 --> 00:00:45,846
+[inaudible] expect. And we use the empty
+slots in the array. To. Essentially
+
+8
+00:00:45,846 --> 00:00:51,762
+terminate the length of the [inaudible]
+list that we have to search through when
+
+9
+00:00:51,762 --> 00:00:57,589
+we're doing a insertion. So let's look at
+a demo of how it looks. So to hash again
+
+10
+00:00:57,589 --> 00:01:03,200
+we do the same thing, we just map the key
+to a index. But, in linear probing, to
+
+11
+00:01:03,200 --> 00:01:08,640
+insert what we do is when we put it in
+position I if that's free, if not we just
+
+12
+00:01:08,640 --> 00:01:14,508
+look at I plus one, and I plus two, and
+wrap around to the beginning if we reach
+
+13
+00:01:14,508 --> 00:01:19,533
+the end. Now that's also simple to
+implement and it works well as long the
+
+14
+00:01:19,533 --> 00:01:24,899
+size of the array is, significantly bigger
+than the number of keys. Let's look at,
+
+15
+00:01:25,094 --> 00:01:32,076
+Well it's a demo. So we start with an
+empty table, insert s, it's hash value is
+
+16
+00:01:32,076 --> 00:01:40,230
+six, six is empty so we put it there. Now
+we look at e, hash of e is ten, we look at
+
+17
+00:01:40,230 --> 00:01:46,802
+ten, it's empty so we put e there. So at
+the beginning we're going to be fine. A is
+
+18
+00:01:46,802 --> 00:01:53,875
+four, empty, put it there. R is fourteen,
+empty, put it there. So we just
+
+19
+00:01:53,875 --> 00:02:02,743
+essentially, using the hash funtion as an
+array index. C is five, that's empty and
+
+20
+00:02:02,743 --> 00:02:10,473
+we put it there. So H now, the hash value
+of H is four. So now we look at four, and
+
+21
+00:02:10,473 --> 00:02:14,966
+that's occupied, so we can't put the H
+there. And then linear probing says, just
+
+22
+00:02:14,966 --> 00:02:20,643
+look at the next position, look at five.
+That's still not empty. So we look at six.
+
+23
+00:02:20,837 --> 00:02:25,781
+And we keep going till we find an empty
+place, and then we put H there. Now when
+
+24
+00:02:25,781 --> 00:02:30,312
+we search, we're going to have to do the
+same thing. We'r e going to have to look
+
+25
+00:02:30,312 --> 00:02:36,390
+at all those positions to look at H. The.
+Group of four key, continuous keys in a
+
+26
+00:02:36,390 --> 00:02:43,150
+table space there is called a cluster and
+clearly we want to keep those clusters
+
+27
+00:02:43,150 --> 00:02:49,885
+small. And we do that by juts by not
+putting too many keys in to the table. So
+
+28
+00:02:49,885 --> 00:02:56,610
+X hashes to fifteen, that's empty so we
+put it there, M hashes to one, that's
+
+29
+00:02:56,610 --> 00:03:04,352
+empty and we put it there. P hashes to
+fourteen, 14's occupied, 15's also
+
+30
+00:03:04,352 --> 00:03:12,705
+occupied, now we run off the end of the
+table, and look at zero, and that's empty
+
+31
+00:03:12,705 --> 00:03:19,633
+so we put it there. L hashes to six. Six
+is occupied. We look at seven, seven is
+
+32
+00:03:19,633 --> 00:03:27,703
+occupied. We look at eight, and we put it
+there. And, so that's an example of
+
+33
+00:03:27,703 --> 00:03:34,123
+inserting, keys into a hash table. And
+now, for a search, we just do the same
+
+34
+00:03:34,123 --> 00:03:41,089
+thing. We, use the hash function. To
+search for E, E's hash value is ten so we
+
+35
+00:03:41,089 --> 00:03:48,010
+look in ten and there it is. So that's a
+search hit. If we're going to search for
+
+36
+00:03:48,010 --> 00:03:55,511
+say L L's hatch value is six so it's not
+there. So in order to look at every place
+
+37
+00:03:55,511 --> 00:04:02,039
+in the table where L could be, we have to
+keep looking til we found an empty table
+
+38
+00:04:02,039 --> 00:04:07,973
+position, or we find L itself. So now we
+look at seven L not there, we look at
+
+39
+00:04:07,973 --> 00:04:14,870
+eight L is there, that's a search hit. If
+we have a value that's not in the table
+
+40
+00:04:14,870 --> 00:04:22,128
+like K, well hash and is in position five,
+no, six no, seven no, eight no and we find
+
+41
+00:04:22,128 --> 00:04:28,787
+an empty position at that point we can
+conclude that K is not in the table.
+
+42
+00:04:28,787 --> 00:04:36,148
+Because if K were in the table it would be
+somewhere between it's hash point five and
+
+43
+00:04:36,148 --> 00:04:43,461
+that empty position nine. That's a search
+miss, and we return all. So that's a short
+
+44
+00:04:43,461 --> 00:04:51,020
+demo of linear probing hashing. So here's
+a summary of linear probing, hashing. To.
+
+45
+00:04:51,020 --> 00:04:58,390
+To get started we map a key to a integer
+between zero and m-1 where m is the sides
+
+46
+00:04:58,390 --> 00:05:04,561
+of our array where we are storing the
+keys. To insert we put the key value pair.
+
+47
+00:05:04,561 --> 00:05:11,063
+Use parallel arrays [inaudible] and the
+value array with the same index. We put
+
+48
+00:05:11,063 --> 00:05:16,537
+the entry at the table index A for three.
+If not try I+1 I+2 until getting to a
+
+49
+00:05:16,537 --> 00:05:23,068
+empty position. And for search you do the
+same thing you hash to the table position
+
+50
+00:05:23,068 --> 00:05:28,698
+and you look there into the right. To find
+the key and you stop when you find an
+
+51
+00:05:28,698 --> 00:05:34,583
+empty table position. Find the key or find
+an empty table position. Now, it's
+
+52
+00:05:34,583 --> 00:05:42,987
+essential that the array size is greater
+than the number of key value pairs N. And
+
+53
+00:05:42,987 --> 00:05:51,710
+for linear probing hashing, really, the
+implementation needs to include array
+
+54
+00:05:51,710 --> 00:06:00,080
+resizing, whenever the hash table gets too
+full. Here's the implementation. And it's,
+
+55
+00:06:00,314 --> 00:06:06,692
+quite straightforward, given the demo that
+we talked about. You use the same hash
+
+56
+00:06:06,692 --> 00:06:12,550
+function. And we use parallel arrays for
+the value in the keys. And we have to use
+
+57
+00:06:12,550 --> 00:06:20,277
+ugly cast, 'cause we can't have a race of
+generics. Then let's do the search. So. We
+
+58
+00:06:20,277 --> 00:06:28,293
+just have a for loop starting at hash of
+key and going until we get to a position
+
+59
+00:06:28,293 --> 00:06:34,560
+that's null. As long as it's not null, we
+stay in the loop and increment I mod m. So
+
+60
+00:06:34,560 --> 00:06:39,819
+that's when I gets to the end it gets to
+the end, it's in the position m minus one
+
+61
+00:06:39,819 --> 00:06:45,554
+and it goes... In the next increment goes
+back to zero at the left end of the table
+
+62
+00:06:45,554 --> 00:06:51,084
+and we just test for all the non null
+keys. If it's equal, if it is, go ahead
+
+63
+00:06:51,084 --> 00:06:56,525
+and return the associated value and if you
+get to an empty position, then return
+
+64
+00:06:56,525 --> 00:07:03,284
+null. And the implementation of put is
+similar. Find a, a position, if it's,
+
+65
+00:07:03,524 --> 00:07:10,450
+that's equal, And then, reset the key, in
+the value. If the key's there, it just
+
+66
+00:07:10,450 --> 00:07:17,111
+resets the value. If they key's not there,
+it puts a new entry in. So again, that's,
+
+67
+00:07:17,349 --> 00:07:23,492
+fairly little code, to implement, a fast
+symbol table and insert, search and
+
+68
+00:07:23,492 --> 00:07:29,703
+insert. But it's only going to be fast, if
+the, table size is set appropriately. In
+
+69
+00:07:29,703 --> 00:07:35,692
+ancient times, memory was, at quite a
+premium and so people were very concerned
+
+70
+00:07:35,692 --> 00:07:42,029
+in m-m-making sure that the hash table
+never, got too empty. Remember in the
+
+71
+00:07:42,029 --> 00:07:47,926
+first computers, each bit was a physical
+thing, a magnetic core that somebody had
+
+72
+00:07:47,926 --> 00:07:53,146
+to string a wire through, so. The bits
+were really expensive, and people wanted
+
+73
+00:07:53,146 --> 00:07:58,430
+to make sure, that they were making best
+use of the memory. And just leaving empty
+
+74
+00:07:58,430 --> 00:08:04,009
+positions around, in a hash table, or
+using links in a link list, did not seem
+
+75
+00:08:04,009 --> 00:08:08,606
+like an appropriate use of space. And, so
+there was quite a bit of effort, devoted
+
+76
+00:08:08,606 --> 00:08:14,094
+to figuring it out, how full we could get
+the hash table, in linear probing. And how
+
+77
+00:08:14,094 --> 00:08:19,132
+close it could get to full without
+sacrificing performance. And one way to
+
+78
+00:08:19,132 --> 00:08:27,139
+think about what goes on is to just watch
+what happens when a hash table fills up.
+
+79
+00:08:27,139 --> 00:08:33,370
+So here we just as, as it goes up we're
+showing each key getting inserted in the
+
+80
+00:08:33,850 --> 00:08:40,375
+number of probes of the table that are
+needed for the insertions are J hash to
+
+81
+00:08:40,375 --> 00:08:47,000
+the same position that A; you had to look
+for a while, and the one thing to notice
+
+82
+00:08:47,000 --> 00:08:54,062
+is as the table gets full, is that first
+of all. You have, these clusters or these
+
+83
+00:08:54,062 --> 00:09:01,030
+chains building. And so, what's clear
+about that is that, it means that, the new
+
+84
+00:09:01,030 --> 00:09:07,098
+hash is likely to hash into a big cluster.
+>> And not only that once you have a big
+
+85
+00:09:07,098 --> 00:09:13,013
+cluster and you hash into the middle of it
+you've got a good chance that, that
+
+86
+00:09:13,013 --> 00:09:17,089
+clusters going to get longer, or worse.
+That's it's even going to merge with
+
+87
+00:09:17,089 --> 00:09:22,390
+another big cluster. And so, that's the
+situation as the table fills up. You get
+
+88
+00:09:22,390 --> 00:09:29,020
+long clusters and they're likely to get
+longer. And the math bares that out. Now
+
+89
+00:09:29,020 --> 00:09:35,097
+this was studied in detail by Knauf, Don
+Knauf, in the 1960's and actually this
+
+90
+00:09:35,097 --> 00:09:40,838
+problem, Knauf says, was the origin of the
+origin of analysis of algorithms.
+
+91
+00:09:40,838 --> 00:09:46,712
+Mathematicians were trying hard to
+understand this problem and were ready to
+
+92
+00:09:46,712 --> 00:09:52,007
+give up and he realized you could use
+classical balls and bins type
+
+93
+00:09:52,007 --> 00:09:57,056
+probabilistic analysis. Not an easy
+analysis, but we actually could make
+
+94
+00:09:57,056 --> 00:10:03,047
+precise accurate statements about the
+performance of this algorithm. And those
+
+95
+00:10:03,047 --> 00:10:08,075
+statements can be borne out in practice,
+because the hash functions approximate
+
+96
+00:10:08,075 --> 00:10:14,010
+random, the math assumes random and the
+formulas predict what actually happened in
+
+97
+00:10:14,010 --> 00:10:19,020
+practice. No way can you formulate the
+problem as so called parking problem. So,
+
+98
+00:10:19,020 --> 00:10:24,560
+what happens is that you are on a one way
+street and you are looking for a parking
+
+99
+00:10:24,560 --> 00:10:30,302
+place and, it's, the idea's you start
+looking for a parking place at particular
+
+100
+00:10:30,302 --> 00:10:35,459
+times and say "Okay, now I need a parking
+place", and what you're doing is linear
+
+101
+00:10:35,459 --> 00:10:41,123
+probing hashing. If the current space is
+taken, you try the next space and the one
+
+102
+00:10:41,123 --> 00:10:47,824
+after and so forth. And the question is.
+If every car. Starts looking for a place
+
+103
+00:10:47,824 --> 00:10:52,973
+at a random time. That. Then that models
+the hash function, then how far do they
+
+104
+00:10:52,973 --> 00:10:58,355
+have to go to look for a place? That's
+canoot's parking problem. And he was able
+
+105
+00:10:58,355 --> 00:11:04,565
+to show, and we'll talk just a little bit
+about this, that if, there's, only half of
+
+106
+00:11:04,565 --> 00:11:10,410
+the parking spaces are occupied, then, on
+average, half the people find, find it
+
+107
+00:11:10,410 --> 00:11:15,534
+after one place and the other half have to
+look one extra. So that's the kind of
+
+108
+00:11:15,534 --> 00:11:21,714
+performance that we want. But as it gets
+full. The displacement gets up to square
+
+109
+00:11:21,714 --> 00:11:27,594
+root, of pi M over eight. Which is
+obviously much higher than we want. We
+
+110
+00:11:27,594 --> 00:11:34,017
+don't want our searches to take that long.
+And that actually, the analysis, is
+
+111
+00:11:34,229 --> 00:11:40,412
+amazing function that goes back to famous
+Roman Nuygen and other classical results
+
+112
+00:11:40,412 --> 00:11:46,531
+from our commentorial analysis. What
+Canute's theorem says is that under the
+
+113
+00:11:46,531 --> 00:11:53,226
+uniform hashing assumption, the number of
+probes in the linear hash table size M,
+
+114
+00:11:53,226 --> 00:12:00,178
+that is alpha percent full, so the number
+of keys is a fraction of M, is for a
+
+115
+00:12:00,178 --> 00:12:06,645
+search miss half one plus one over alpha,
+and a search miss one plus one over one
+
+116
+00:12:06,645 --> 00:12:12,954
+minus alpha squared. One myse alpha is for
+the hit, one myse alpha for the squared
+
+117
+00:12:12,954 --> 00:12:19,084
+for the insert. Now as alpha gets close to
+one, you can see these things are going to
+
+118
+00:12:19,084 --> 00:12:24,830
+grow, and particularly the search miss is
+growing to grow quite, quite a bit. If
+
+119
+00:12:24,830 --> 00:12:31,622
+it's 9/10's full one over one minus alpha
+squared is 100 one over 100, so it means
+
+120
+00:12:31,622 --> 00:12:37,308
+it's going to be 50 p robes for a search
+miss if it's 9/10's full, and that's
+
+121
+00:12:37,308 --> 00:12:43,806
+independent of N and M, whereas if it's
+half full then we get the nice. Numbers of
+
+122
+00:12:43,806 --> 00:12:50,595
+only 3-house for a hit, and only 5-house
+for a miss. And, again these formulas are
+
+123
+00:12:50,595 --> 00:12:59,011
+nice approximate formulas, but Knuth, once
+he figured this out, in 1963, tells
+
+124
+00:12:59,011 --> 00:13:06,017
+stories, that time, he decided to write
+his famous series of books on algorithms.
+
+125
+00:13:06,017 --> 00:13:12,673
+Now there's four volumes out and more
+planned, and this is where, all computer
+
+126
+00:13:12,673 --> 00:13:19,461
+scientists go. For detailed information on
+a performance, eval grievance. So, in, in
+
+127
+00:13:19,461 --> 00:13:28,089
+summary. You can't have M too large, what
+we want to use nowadays is array resizing
+
+128
+00:13:28,305 --> 00:13:33,857
+to make sure that the array is always
+about half time, half full. And if we can
+
+129
+00:13:33,857 --> 00:13:39,902
+keep the array about half full then we get
+constant time performance for search hit
+
+130
+00:13:39,902 --> 00:13:46,134
+and search miss. And linear probing is
+very attractive in this case. There's
+
+131
+00:13:46,134 --> 00:13:51,035
+other things that we can do
+algorithmically to bring down the search
+
+132
+00:13:51,035 --> 00:13:56,575
+time a little bit. Like using another
+hatch function rather than looking at the
+
+133
+00:13:56,575 --> 00:14:01,584
+next entry. Use another hatch function to
+determine the stride that we're going to
+
+134
+00:14:01,584 --> 00:14:06,804
+use. And that brings it down somewhat and
+allows us to keep the tables more full.
+
+135
+00:14:06,804 --> 00:14:12,150
+But the bottom line is that now we have
+two methods that under the uniform hashing
+
+136
+00:14:12,150 --> 00:14:17,846
+assumption can give us constant time,
+search, search it insert and delete. For
+
+137
+00:14:18,051 --> 00:14:23,221
+symbol table implementations where we
+don't need ordering. And we've got a
+
+138
+00:14:23,221 --> 00:14:29,027
+reasonable hash function. So, that's a
+summary of linear probing or second hash,
+
+139
+00:14:29,217 --> 00:14:31,058
+collision avoidance strategy.

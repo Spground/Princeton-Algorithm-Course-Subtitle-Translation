@@ -1,0 +1,388 @@
+1
+00:00:01,034 --> 00:00:06,408
+So far, we've been talking about running
+time. Now we have to talk about the memory
+
+2
+00:00:06,408 --> 00:00:11,047
+requirements over our programs as well.
+Well, the basics are we want to know how
+
+3
+00:00:11,047 --> 00:00:16,088
+many bits the program use or bytes, eight
+bits at a time. And actually, we'll be
+
+4
+00:00:16,088 --> 00:00:22,064
+talking in terms of millions of bits or
+billions of bits and actually surprisingly
+
+5
+00:00:22,064 --> 00:00:27,608
+there is a controversy about even these
+basic definitions. Computer scientists
+
+6
+00:00:27,608 --> 00:00:34,683
+think of a million bits is two^20 and a
+billion is two^30 because that's a number
+
+7
+00:00:34,683 --> 00:00:40,949
+of possible things that you can fit into
+30 bits and everything is consistent with
+
+8
+00:00:40,949 --> 00:00:46,889
+our calculations. Other scientists stick
+to one million or one billion for a lots
+
+9
+00:00:46,889 --> 00:00:54,014
+of reasons we'll usually use two^20, I
+mean, a megabyte. Now an old computers we
+
+10
+00:00:54,014 --> 00:01:00,437
+used to for many years, we use a 32-bit
+machine so that pointers were four bytes.
+
+11
+00:01:00,662 --> 00:01:07,042
+Just in recent years we've mostly switched
+to a model where machines are 64-bits and
+
+12
+00:01:07,042 --> 00:01:12,765
+pointers are eight bytes. That allows us
+to address much more memory but pointers
+
+13
+00:01:12,765 --> 00:01:19,278
+use much more space and actually this
+transition caused a lot of problems
+
+14
+00:01:19,510 --> 00:01:25,230
+initially because programs were using way
+more space than people thought they
+
+15
+00:01:25,230 --> 00:01:30,121
+should. You're not going to have to go
+through this kind of transition the way
+
+16
+00:01:30,121 --> 00:01:35,997
+that we did because 64 bits is definitely
+enough to address anything that you might
+
+17
+00:01:35,997 --> 00:01:41,720
+need to address, two^64 is really a huge
+number. So in terms of bytes we have to
+
+18
+00:01:41,720 --> 00:01:47,751
+start out with typical memory usage. Now,
+again, this is very dependent on machine
+
+19
+00:01:47,751 --> 00:01:53,432
+and implementation but these numbers are
+reasonable and are found on typical
+
+20
+00:01:53,432 --> 00:01:58,294
+implementations. So a boolean, it will be
+nice of a boolean just took a bit cuz
+
+21
+00:01:58,294 --> 00:02:03,834
+that's just true or false but actually,
+usually we have to count for a byte for a
+
+22
+00:02:03,834 --> 00:02:09,343
+boolean. All byte is a byte. Character
+nowadays is two byte, 16-bit characters.
+
+23
+00:02:09,541 --> 00:02:16,788
+Not that a long ago we used eight bit for
+chars. Integer regular int is four bytes
+
+24
+00:02:16,788 --> 00:02:23,226
+or 32 bits and a float is also four bytes
+long int is eight and a double is eight.
+
+25
+00:02:23,227 --> 00:02:29,932
+Usually, we use double for floating point
+and ints for integers in most
+
+26
+00:02:30,169 --> 00:02:37,093
+applications. So, that's for primitive
+types. And then for arrays there's a
+
+27
+00:02:37,093 --> 00:02:44,086
+certain amount of overhead for making an
+array and then if there's n items, it's
+
+28
+00:02:44,345 --> 00:02:51,763
+whatever the cost of the primitive type
+times n so an array of doubles is say 8n +
+
+29
+00:02:51,763 --> 00:02:58,439
+24. And two-dimensional array then well,
+we can go ahead and compute the exact
+
+30
+00:02:58,439 --> 00:03:03,376
+thing but now, now, it's time to use, the
+tilde notation. And then for arrays we
+
+31
+00:03:03,376 --> 00:03:08,957
+could say a double is tilde 8n for
+one-dimensional. For two-dimensional,
+
+32
+00:03:09,197 --> 00:03:15,878
+two-dimensional array of doubles is tilde
+8mn. And there's extra terms for the over
+
+33
+00:03:15,878 --> 00:03:22,483
+head but for large m and n that's going to
+be pretty accurate. So, that's our basic
+
+34
+00:03:22,483 --> 00:03:29,675
+usage for primitive types and arrays in a
+typical Java implementation. Now, a lot of
+
+35
+00:03:29,675 --> 00:03:35,580
+our programs and objects like link list
+and so forth. So, we have to also factor
+
+36
+00:03:35,580 --> 00:03:42,250
+in object overhead to crossover reference
+and also there's padding built in, in
+
+37
+00:03:42,250 --> 00:03:48,599
+typical implementations to make it so that
+each object has used a multiple of eight
+
+38
+00:03:48,599 --> 00:03:55,869
+bytes. So, for example if you have a date
+object that had three int instance
+
+39
+00:03:55,869 --> 00:04:03,256
+variables then that object would take a
+total of 32 bytes. Each int takes four
+
+40
+00:04:03,256 --> 00:04:10,571
+bytes, object overhead is sixteen bytes.
+It needs four bytes for padding so it's a
+
+41
+00:04:10,571 --> 00:04:17,784
+total of 32 bytes. So and the other one
+that often comes up is a string and the
+
+42
+00:04:17,784 --> 00:04:25,274
+string is a little bit more complicated
+than a than an array but the typical
+
+43
+00:04:25,274 --> 00:04:32,577
+implementation of a string in Java has a,
+a reference out to an array of characters
+
+44
+00:04:32,819 --> 00:04:39,649
+and then, its got int values for offset
+count in a hash value and then some
+
+45
+00:04:39,649 --> 00:04:46,864
+padding and adding it all together the
+[cough] cost of the string is about 2n +
+
+46
+00:04:46,864 --> 00:04:54,023
+64 bytes. So, these are the basics that we
+need to analyze the memory usage for a
+
+47
+00:04:54,023 --> 00:04:59,011
+typical Java program. A h, so for
+primitive, for data type value, if it's a
+
+48
+00:04:59,011 --> 00:05:03,947
+primitive type it's four for an eight, and
+eight for a double, and so forth. If it's
+
+49
+00:05:03,947 --> 00:05:09,600
+a reference, it's going to be eight bytes
+and that's for the pointer takes array 24
+
+50
+00:05:09,600 --> 00:05:15,416
+bytes plus the memory for each entry in an
+object sixteen bytes plus the memory for
+
+51
+00:05:15,416 --> 00:05:22,061
+the instance variable plus if there's an
+inner class , it's another eight bytes as
+
+52
+00:05:22,061 --> 00:05:29,381
+we talked about with nodes for link list.
+And then there's the padding. So then we
+
+53
+00:05:29,381 --> 00:05:34,234
+have to, to think about who is responsible
+for referenced objects, you know, in, in
+
+54
+00:05:34,234 --> 00:05:41,163
+some cases. And we'll take care of that
+when we get to these situations. So, as an
+
+55
+00:05:41,163 --> 00:05:46,374
+example, a simple example of memory use
+analysis, let's take a look at how much
+
+56
+00:05:46,374 --> 00:05:52,052
+memory are rated quick union UF function
+from a, a few lectures ago, uses as a
+
+57
+00:05:52,052 --> 00:06:00,305
+function of n. And there's only a couple
+of memory elements and each one of them
+
+58
+00:06:00,305 --> 00:06:07,675
+are easily analyzed using the basics that
+we just gave it's an object so the sixteen
+
+59
+00:06:07,681 --> 00:06:14,878
+bytes of object overhead there's two int
+arrays. Each one of them have array
+
+60
+00:06:14,878 --> 00:06:22,530
+overhead of 24 plus and then 4n for the n
+entries. Each and vn entries takes four
+
+61
+00:06:22,530 --> 00:06:29,784
+bytes and there's four bytes for the count
+and there's four bytes for the padding and
+
+62
+00:06:29,784 --> 00:06:36,147
+if you add it altogether it gets 8n + 88
+which is tilde 8n and again, all that's
+
+63
+00:06:36,147 --> 00:06:42,661
+saying is when n is large, all we are
+going to care about in terms of analyzing
+
+64
+00:06:42,661 --> 00:06:51,260
+the memory is that we've got [cough] 2n
+integers two arrays of size n each one of
+
+65
+00:06:51,260 --> 00:06:59,364
+which takes four bytes for a grand total
+of 8n bytes. Okay. So, in summary we
+
+66
+00:06:59,364 --> 00:07:05,670
+really can figure out how many times we
+have to turn the crank on modern
+
+67
+00:07:05,670 --> 00:07:11,267
+computers. We can do it with empirical
+analysis where we actually execute the
+
+68
+00:07:11,267 --> 00:07:15,604
+program, can do experiments and use
+[inaudible] power law, formulate
+
+69
+00:07:15,604 --> 00:07:20,748
+hypothesis and make predictions. But we
+can do more, we can do mathematical
+
+70
+00:07:20,748 --> 00:07:26,452
+analysis where we can identify the most
+costly operations, analyze the frequency
+
+71
+00:07:26,452 --> 00:07:32,020
+of execution of those operations and using
+the tilde notation to simplify analysis.
+
+72
+00:07:32,020 --> 00:07:37,664
+We can actually explain the behavior, not
+just predict it. And this is a fine
+
+73
+00:07:37,664 --> 00:07:42,819
+example of the use of the scientific
+method to understand the artifacts that
+
+74
+00:07:42,819 --> 00:07:46,890
+we're studying, the algorithms. Our
+mathematical models are usually
+
+75
+00:07:46,890 --> 00:07:51,562
+independent of a particular computer
+system and even implied to machines that
+
+76
+00:07:51,562 --> 00:07:56,411
+are not yet built. But we always validate
+our mathematical models by running
+
+77
+00:07:56,411 --> 00:08:05,677
+experiments on real machines so that we
+can be confident where we're making
+
+78
+00:08:05,677 --> 00:08:13,000
+predictions and analyzing algorithms.

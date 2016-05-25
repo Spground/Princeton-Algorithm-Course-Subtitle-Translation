@@ -1,0 +1,484 @@
+1
+00:00:02,215 --> 00:00:06,226
+with mergesort is a good opportunity to
+take a look at the intrinsic difficulty in
+
+2
+00:00:06,226 --> 00:00:10,091
+the sorting problem, now that is called
+complexiting and we'll look at that next.
+
+3
+00:00:10,091 --> 00:00:16,011
+The idea of complexity is it's a frame
+work for studying the efficiency of all
+
+4
+00:00:16,011 --> 00:00:21,024
+the algorithms for solving a particular
+problem. That's called Computational
+
+5
+00:00:21,024 --> 00:00:26,012
+Complexity. And in order to do this
+sensibly, we need what's called a model of
+
+6
+00:00:26,012 --> 00:00:30,080
+computation. The operations that the
+algorithms are allowed to perform. For
+
+7
+00:00:30,080 --> 00:00:35,371
+sorting that's kind of straight forward,
+what we're going to do is have a cost
+
+8
+00:00:35,371 --> 00:00:40,749
+model where we count the comparisons. Now
+in framing of the difficulty of problems
+
+9
+00:00:40,969 --> 00:00:46,463
+were only two things. One is an, what's
+called an upper bound which is a cost
+
+10
+00:00:46,463 --> 00:00:51,077
+guarantee that's provided by some
+algorithm for solving the problem. That's
+
+11
+00:00:51,077 --> 00:00:56,694
+an upper bound and how difficult it is to
+solve the problem. We have an algorithm
+
+12
+00:00:56,694 --> 00:01:02,564
+that can solve it it's the least that
+easy. And then we also look for a lower
+
+13
+00:01:02,564 --> 00:01:07,621
+bound which is a limit on the cost
+guarantee of all algorithms. No algorithm
+
+14
+00:01:07,621 --> 00:01:13,566
+can do better. Now, what we seek ideally
+is what's called an optimal algorithm
+
+15
+00:01:13,566 --> 00:01:19,031
+where we prove that the upper bound and
+the lower bound are the same. That's an
+
+16
+00:01:19,031 --> 00:01:24,092
+algorithm that's, that we know that has
+the best possible cost guarantee. That's
+
+17
+00:01:24,092 --> 00:01:30,013
+the idea for solving any problem. So, for
+sorting, let's look at what each of these
+
+18
+00:01:30,013 --> 00:01:34,348
+are. The model of computation is what's
+called a decision tree, tree. And what
+
+19
+00:01:34,348 --> 00:01:39,048
+that mans is that all we can use is
+compare, that's the only way we can access
+
+20
+00:01:39,048 --> 00:01:43,714
+the data. So, our cost model is the number
+compares. Mergesort provides, provides an
+
+21
+00:01:43,714 --> 00:01:48,089
+upper bound, that's an algorithm that's
+guaranteed to get the sort done in time
+
+22
+00:01:48,089 --> 00:01:53,058
+proportional to N log N. And what we'll
+look at now is the lower bound. There's a
+
+23
+00:01:53,058 --> 00:01:57,522
+trivial lower bound which says you have to
+look at all the data, that's N and we'll
+
+24
+00:01:57,522 --> 00:02:03,807
+look at a better lower bound and see that
+mergesort is optimal. So, here's the basic
+
+25
+00:02:03,807 --> 00:02:10,031
+idea for proving a lower bound for
+sorting. Let's say, we ha ve three
+
+26
+00:02:10,031 --> 00:02:17,027
+different items, a, b and c. Whatever
+algorithm we have is going to, first, do a
+
+27
+00:02:17,027 --> 00:02:23,262
+comparison between two of the items. Let's
+say, there a and b. And then there's two
+
+28
+00:02:23,262 --> 00:02:28,681
+cases. Either it's yes or it's not yes,
+let's, let's say, they're distinct. And
+
+29
+00:02:28,681 --> 00:02:33,971
+there will be some code between the
+compares but either way then there is
+
+30
+00:02:33,971 --> 00:02:39,529
+going to be a different compare. If it's
+less than b, maybe the next compare is b
+
+31
+00:02:39,529 --> 00:02:45,344
+against c. And if you find that b is less
+than c and a is less than b, then you know
+
+32
+00:02:45,344 --> 00:02:50,910
+that they're in the, any algorithm that
+does that knows that the items are in the
+
+33
+00:02:50,910 --> 00:02:57,014
+order a, b, c. If b less than c goes the
+other way, then it takes another
+
+34
+00:02:57,014 --> 00:03:03,069
+comparison to determine the order. In this
+case, if c is less than b and a is less
+
+35
+00:03:03,069 --> 00:03:09,501
+than c then those three compares show that
+the order has to be a, c, b and if c is
+
+36
+00:03:09,501 --> 00:03:15,637
+less than a, then it's going to be c, a,
+b, those three compares that c is less
+
+37
+00:03:15,637 --> 00:03:22,172
+than a, c less than b and a is less than
+b. The only possibility is c, a, b. In
+
+38
+00:03:22,172 --> 00:03:30,604
+continuing on the right perhaps the next
+compare is a less than c and maybe if c is
+
+39
+00:03:30,604 --> 00:03:36,527
+less than a, then another compare, b less
+than c. So, in this case, if you go from
+
+40
+00:03:36,527 --> 00:03:42,801
+top to bottom in the tree with three
+compares at most you can determine the
+
+41
+00:03:42,801 --> 00:03:49,163
+ordering of the three different items. The
+idea of the lower bound generalizes this
+
+42
+00:03:49,163 --> 00:03:55,420
+argument to figure out a number of
+compares that you need for a minimum to
+
+43
+00:03:55,420 --> 00:04:00,524
+determine the ordering among N items. Now,
+the height of the tree, as I just
+
+44
+00:04:00,524 --> 00:04:05,908
+mentioned, is the worst case number of
+compares. Out of all the orderings the one
+
+45
+00:04:05,908 --> 00:04:10,882
+that's further stand in the tree that's
+the worst case and so the algorithm, no
+
+46
+00:04:10,882 --> 00:04:15,886
+matter what the input is, the tree tells
+us a bound, the number of compares taken
+
+47
+00:04:15,886 --> 00:04:20,577
+by the algorithm. And there's got to be at
+least one leaf for each possible ordering.
+
+48
+00:04:20,737 --> 00:04:25,562
+If there's some ordering that is not
+appear in a tree corresponding the
+
+49
+00:04:25,562 --> 00:04:30,662
+particular algorithm then that algorithm
+hasn't can't sort, can't, can't tell the
+
+50
+00:04:30,662 --> 00:04:34,821
+difference between two different
+orderings. So, the lower bound as a
+
+51
+00:04:34,821 --> 00:04:40,342
+proposition, that uses the decision tree
+like that to prove that any compare base
+
+52
+00:04:40,342 --> 00:04:45,943
+sorting algorithm has to use at least log
+base two (N) factorial compares in the
+
+53
+00:04:45,943 --> 00:04:51,033
+worst case. And by Stirling's
+approximation, we know that log base
+
+54
+00:04:51,033 --> 00:04:56,740
+two(N) factorial is proportional to N log
+based 2N. And then the proof is
+
+55
+00:04:56,977 --> 00:05:03,236
+generalizes what I talked about on the
+decision tree on the last side, slide. We
+
+56
+00:05:03,236 --> 00:05:08,940
+assume that the array consist of N
+distinct values there's a position created
+
+57
+00:05:08,940 --> 00:05:14,614
+that describes the performance of any
+algorithm to compare sequence done by any
+
+58
+00:05:14,614 --> 00:05:21,009
+algorithm to determine the N factorial
+different orderings. So, this three has to
+
+59
+00:05:21,009 --> 00:05:27,800
+have at least N factorial leaves and if
+the three of height h, it has utmost two^h
+
+60
+00:05:27,802 --> 00:05:34,339
+leaves. The only, the, the tree that has
+the most leaves of height h is totally
+
+61
+00:05:34,339 --> 00:05:42,385
+complete and that one has two^h leaves.
+And those observations give us the lower
+
+62
+00:05:42,385 --> 00:05:48,228
+bound. Two^h has to be greater than or
+equal to the number of leaves. And the
+
+63
+00:05:48,228 --> 00:05:53,368
+number of leaves has to be greater or
+equal to N factorial so that implies the
+
+64
+00:05:53,368 --> 00:05:57,456
+height of the tree has to be greater than
+or equal to log base two(N) factorial
+
+65
+00:05:57,616 --> 00:06:03,233
+which is proportional to N log N by
+Stirling's formula. That's a lower bound
+
+66
+00:06:03,233 --> 00:06:08,024
+on the complexity of sorting. So, we knew
+that the upper bound was N log,
+
+67
+00:06:08,024 --> 00:06:13,183
+proportional to N log N and we just proved
+that the lower bound is proportional to N
+
+68
+00:06:13,183 --> 00:06:18,877
+log N and that means that mergesort is an
+optimal algorithm. That's the first goal
+
+69
+00:06:18,877 --> 00:06:24,093
+of algorithm design is to try and find
+optimal algorithms for the problems that
+
+70
+00:06:24,093 --> 00:06:30,081
+we need to solve. Now, you have to take
+these results in context. Really what we
+
+71
+00:06:30,081 --> 00:06:36,097
+proved is that mergesort is optimal with
+respect to number of compares but we
+
+72
+00:06:36,097 --> 00:06:42,756
+already know that it's not optimal with
+respect to space usage. Mergesort uses
+
+73
+00:06:43,013 --> 00:06:49,022
+twice as extra space proportional to the
+size of the array it has to sort. And
+
+74
+00:06:49,022 --> 00:06:54,745
+simple algorithms like insertions or dump,
+they've they don't use any extra space at
+
+75
+00:06:54,745 --> 00:07:00,025
+all. So , what we want to take from these
+theoretical results is, is a guide when
+
+76
+00:07:00,025 --> 00:07:05,047
+we're looking at implementations and
+trying to solve practical problems. In
+
+77
+00:07:05,047 --> 00:07:10,638
+this example what it tells us, what theory
+tells us is don't try to design a sorting
+
+78
+00:07:10,638 --> 00:07:16,023
+algorithm that guarantees to use
+substantially for your compares than merge
+
+79
+00:07:16,023 --> 00:07:20,843
+sort. Say, one-half N log N compares. Is
+there a method that use one-half N log N
+
+80
+00:07:20,843 --> 00:07:25,713
+compares? The lower bound says, no. And
+that's a very useful thing because
+
+81
+00:07:25,713 --> 00:07:31,081
+otherwise, we might try to define such an
+algorithm. On the other hand, maybe there
+
+82
+00:07:31,081 --> 00:07:37,148
+is an algorithm that uses N log N compares
+and also uses optimal space. It's optimal
+
+83
+00:07:37,148 --> 00:07:43,075
+with respect to both space and time. And
+that's what we're going to look at soon.
+
+84
+00:07:43,299 --> 00:07:48,677
+The other thing is that the lower bound is
+for the particular model of computation
+
+85
+00:07:48,677 --> 00:07:54,032
+being studied. In this case, compares. It
+might not hold if the algorithm has more
+
+86
+00:07:54,032 --> 00:07:59,038
+information about the keys, for example,
+if it's known that the input is almost
+
+87
+00:07:59,038 --> 00:08:04,495
+ordered, we saw that insertion sort can be
+linear time for files that are almost
+
+88
+00:08:04,495 --> 00:08:09,936
+ordered. Or it's something about the
+distribution of key values if there are a
+
+89
+00:08:09,936 --> 00:08:15,735
+lot of equal keys we can get sorted, get
+it sorted faster than, N log N. And maybe
+
+90
+00:08:15,735 --> 00:08:20,837
+the way the keys are represented. We'll
+look at different methods that take
+
+91
+00:08:20,837 --> 00:08:25,965
+advantage of such properties. So,
+partially ordered arrays we may not need N
+
+92
+00:08:25,965 --> 00:08:31,821
+log N compares. Duplicate keys, we may not
+need N log N compares, we're going to look
+
+93
+00:08:31,821 --> 00:08:37,916
+at the method that I guess that down in
+linear time and a lot of situations. And
+
+94
+00:08:37,916 --> 00:08:43,652
+later on, we'll look at digital properties
+of keys where we can use digital character
+
+95
+00:08:43,652 --> 00:08:49,201
+compares instead of whole key compares and
+got a faster sort for certain practical
+
+96
+00:08:49,201 --> 00:08:56,852
+applications. Computational complexity is
+very useful way to help us understand
+
+97
+00:08:56,852 --> 00:09:05,047
+properties of algorithm and help guide our
+design decisions.

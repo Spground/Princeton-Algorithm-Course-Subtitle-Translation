@@ -1,0 +1,449 @@
+Now we're going to look at shortest paths
+and edge weighted dags.
+This is a very common situation and we'll
+see a couple of important applications.
+Suppose that you've got an edge weighted
+digraph.
+That's our input to shortest paths.
+But you konw there's no directed cycles.
+And actually that's true and in many
+applications we see some.
+The question is this fact that it has no
+directed cycles make it easier to find the
+surest path than in a general digraph,
+And the answer is yes, it certainly does.
+So lets take a look at what happens.
+And the algorithm is very simple.
+What we're going to do is, just consider
+the vertices in topological order.
+Since there's no cycles, we know there's a
+topological ordering where we can lay out
+the graph and all the edges point to
+vertices that we haven't seen yet.
+And so we're just relaxed all edges,
+pointing from each vertex, taking them in
+topological order.
+Again, this'll be easy to see in an
+example.
+Alright, so here's a edge-weighted
+directed acyclic graph.
+And the first thing that we do is sort it
+in topological,
+Sort the vertices in topological order.
+And we talked about an algorithm for doing
+that a couple of lectures ago.
+So just using that first search.
+So we consider vertex zero, and relax all
+the edges coming from vertex zero.
+And that gives us shortest paths to one
+four and seven.
+So next we consider vertex one.
+We don't do anything except take the next
+vertex in topological order.
+We could of also taken four in this case.
+And so we're going to add that.
+And then just relax along all the edges
+coming from that vertex.
+In this case that gives us new shortest
+paths to two and to three.
+Next is four relax and that gives us new
+shortest paths to five and six.
+Next in topological left quarter is seven.
+Relax and that gives us a new shortest
+path to two, but not to five.
+The path that we had to five was better.
+So next in the order is five.
+Relax along its edges.
+And it gives us better ways to get to both
+two and to six.
+Then 2's next.
+Relax along its edges.
+And it gives us, new better ways to get
+both three and six.
+Then we do three, and relax.
+And that doesn't help.
+And then we do six.
+And, when we're done all we did was
+consider the edges in topological order
+and relax.
+Then we have a shortest path tree.
+From the source to every vertex in the
+directed acyclic weighed digraph.
+So that's a demo of a simple algorithm for
+that case.
+Alright, why does that algorithm
+considering the vertices and topological
+work for edge-weighted dags.
+Now, one thing that's pretty important
+about this is that the edge weights could
+even be negative doesn't matter to this
+algorithm.
+So let's look again.
+Every edge is relaxed exactly once.
+When, we add a vertex to the tree we,
+relax each of the edges that go from that
+vertex.
+And, again, just as, with Dykestra, after
+we're done with the relaxation, we have
+this condition holds that, distance to w
+is less than or equal to the distance to v
+plus the edge weight.
+Either it was before-hand and we ignored
+the weight, or we made it equal.
+And so. when we relax an edge we have that
+condition.
+And again, inequality holds until the
+algorithm terminates.
+Well, first, again, we only.
+Decrease values in the distribute array.
+We don't change it to increase.
+So the only thing that can happen to this
+2W is that it gets smaller.
+And that's not going to violate the
+inequality.
+And then the other thing is, this 2V's not
+going to change because of the topological
+order.
+When we process v, it's in topological
+order.
+That means we're not going to find an edge
+that points 2V.
+So this two v's not going to change.
+And edge weight doesn't change, so the
+inequality holds.
+And this is true even if the edge weights
+are negative.
+So shortest path optimality conditions
+hold.
+And so this simple algorithm finds
+shortest paths in edge-weighted directed
+acyclic graphs.
+Whether or not the edge weights are
+positive or negative.
+Pretty easy algorithm to implement.
+So this, acyclic, shortest path.
+So, the goal is to compute edge two and
+disc two.
+And then we use those to respond to client
+queries of the length of the shortest path
+and the path itself.
+This is the constructor.
+We build the arrays.
+We initialize this distances to infinity.
+Distance the source to zero.
+Then we use our topological sort algorithm
+on di-graphs to compute an iterable that
+gives us the vertices in topological
+order.
+And that's the order method in this
+topological class.
+So that's using the API that we set up for
+topological sorting,
+Which has to be adapted to weighted
+di-graphs.
+But that's just adding some nomenclature.
+So we take the vertices in topological
+order.
+We take for every vertex in topological
+order, taken in topological order.
+We take every edge that emanates from that
+vertex and relax it.
+It couldn't be simpler.
+And then we're done we have the other
+shortest pass.
+And that works even for negative edge
+weights.
+Pretty simple.
+Now, as an example of a, familiar
+application of, shortest paths in dags and
+weighted dags we'll look at, the idea of
+scene carving.
+And this is a relatively recent algorithm
+that, was developed that has, important
+application that you'll see, in this,
+YouTube film clip.
+Scene carving for content-aware image
+resizing.
+Digital media today has the ability to
+support dynamic page layouts.
+By changing the window or display size, we
+can change the layout of a document.
+However, images imbedded in a document
+typically remain rigid in size and shape.
+Resizing is also important to put images
+into different displays.
+Current techniques, including cropping or
+scaling, are limited in their abilities to
+capture the image content.
+We present a method for content aware
+resizing of images.
+Our technique enables resizing while
+adapting the image content and layout.
+This is sometimes called re-targeting.
+We also define a flexible, multi-size
+representation for images that supports
+continuous resizing.
+An image can be shrunk in a non-uniform
+manner while preserving its features, but
+it can also be extended beyond its
+original size.
+Instead of scrolling through images that
+do not fit in a given display, we
+gracefully re-size them to fit inside the
+window.
+For example, assume that we need to change
+the width of an image.
+The simplest way to do this is to remove
+columns of pixels from the image.
+The best column to remove would be the
+least noticeable, or least important
+column.
+We can search for this column by defining
+the importance or energy function on the
+image.
+In this example, we use the gradient
+magnitude of the image.
+Next, we look for the column which
+contains the least energy and remove it.
+However, using such an approach quickly
+leads to serious artifacts.
+Therefore, instead of using rigid columns,
+we search for connected paths of pixels,
+or seams, from one side of the image to
+the other, that contain the least energy.
+This can be done using a simple dynamic
+programming algorithm as described in the
+paper in both vertical and horizontal
+directions.
+Here's another example of an image, its
+energy function, and the least noticeable
+horizontal and vertical seams.
+By successively removing horizontal and
+vertical seams, the image can be resized
+in a non-uniform manner.
+The order of seam removal in an image
+defines an order on the pixels on the
+image by storing the simple indexing
+information we create content to where
+multisize images.
+So that's a amazingly powerful image
+processing process.
+And you'll find it all over image
+processing applications, from Photoshop to
+GIMP to Image Magic.
+And actually nowadays almost any image
+that you see on your cell phone or your
+Tablet.
+And what really, does that have to do with
+shortest paths?
+Well, it's actually a direct application
+of shortest paths on a directed acyclic
+graph.
+So what we do is, build a huge directed
+acyclic graph.
+And this is a really huge graph.
+Because images now, at high resolution,
+can have millions or billions of pixels.
+And so.
+Every pixel corresponds to a vertex in
+this graph.
+And the edges are gonna be just directed
+edges from every pixel to its three
+downward neighbors.
+And then there's, what weight do we assign
+to the pixels?
+Well, there's an energy function that has
+to do with the image processing, that is,
+a function of the eight neighboring
+pixels.
+Every, every pixel, has a relationship
+with all its neighboring pixels.
+And, the energy function, has it, is, is a
+image processing, concept that, is.
+Perfect for, assigning weights, in, in
+this instance.
+And so, that gives, the weights.
+And then, a seam is just the shortest
+path, that goes from the top to the
+bottom.
+So you can, imagine an imaginary source
+that goes all to the top ones, and, just,
+run the shortest pass algorithm that we
+just gave, and, it'll find a seam.
+So that's the lowest energy, one pixel
+cut, through the image, and then, the
+resizing algorithm, just deletes, one, one
+pixel on each row, along that seam, and
+that's the algorithm.
+Which.
+The shortest pass algorithm,
+I'im I'm sorry, allows and enables the
+re-sizing for a really huge graph.
+And, and it's really important to realize
+that you have to have an efficient
+implementation of the shortest pass
+algorithm.
+Because there's so many pixels.
+And certainly the topological sort
+algorithm that we gave is extremely
+efficient linear time algorithm.
+And you can see the effects of that
+efficient algorithm all around you.
+Here's another completely different
+application of shortest paths in directed
+acyclic graphs.
+And the idea is that actually since
+negative weights are allowed, we can find
+longest paths in edge-weighted DAGs, just
+by negating all the weights.
+So what I want is I have edge.
+Again I have an edge weighted dag.
+And what I want is, this is with, I guess
+five as the source.
+I, I don't want the shortest path from
+five to two.
+I want the longest path from five to two.
+We'll see an application why that's
+important in a minute.
+And in order to get that, all I do is just
+negate all the weights, and the run
+shortest paths.
+And if you add up negative weights to get
+the smallest negative number, then to
+negate the answer that's the longest path,
+and it works because the algorithm, top
+logical sort algorithm, doesn't care
+whether the weights are positive or
+negative.
+In general graphs it does matter as we'll
+see in a minute, but for a cyclic graph it
+doesn't matter, we can find longest path
+in a cyclic graph just by negating all the
+weights, therefore we can solve the
+longest paths problem.
+So that's a key point.
+And now, now you can look at applications
+that had problems.
+And there's a really important application
+for longest paths in edge weighted
+directed A-cyclic graphs.
+And that's called the Job Scheduling
+Problem.
+And this is just another example to show
+the importance of the shortest paths
+problem as a problem solving model.
+This particular problem doesn't seem
+related to shortest paths at all.
+But we'll show how to formulate it as a
+shortest paths problem.
+And that's great, because we have an
+efficient solution to the shortest paths
+problems.
+Or actually, it's a longest paths problem
+in this case.
+So this is just an example that arises
+say, in man, in manufacturing.
+Or other applica, applications we have a
+complex set of interacting processes.
+So this we call, job scheduling.
+Parallel job scheduling.
+So we've got a bunch of let's say a
+factory manager has a bunch of jobs to
+manage, And they have.
+Durations and precedents constraints.
+So durations just means the job takes a
+certain amount of time.
+And precedents constraints means that you
+can't start job one until after job zero
+is done, or seven, or nine.
+One, seven and nine have to start sometime
+after jo-, job zero.
+And similarly three and eight have to
+start after six, and so forth.
+So maybe this is manufacturing a car.
+And, you know you can't, paint the car
+until after you put the doors on.
+Or whatever else you can imagine.
+Easily, setting up, precedence
+constraints, that are natural, for trying
+to complete this whole, set of jobs.
+And so what we want to do is, find a start
+time for each job.
+That minimizes the completion time.
+While still respecting all the precedence
+constraints.
+So when do we start each job?
+That's the parallel job scheduling
+problem.
+We, we assume that we got enough workers
+that we can have a bunch of jobs going on
+at the same time, same time.
+So, This graph model shows that we can
+change the job scheduling problem into a
+graph processing problem.
+So, what we're going to do is, create an
+edge weighted directed acyclic graph the
+following way.
+We're going to have a source and sync
+vortex that the source is, begin
+everything and the sync is, end
+everything.
+And then, well at the zero weightage from
+the.
+For every job will have a start and a
+finish vertex for that job, and then we'll
+have an edge, whose weight is the
+duration.
+And from the finished vertex of every job,
+we'll have edges to the start vertex of
+the jobs that it has to complete before.
+That's, those are the precedence
+constraints.
+We have a zero weight edge from, the,
+overall source to every job start, and a
+zero weight edge from the overall, from
+every job finish to, the, sink vertex.
+And so, in summary, there's three edges
+for every job.
+There's from the begin to the end, the
+start to the finish, weighted by the
+duration.
+From the source to the beginning, zero
+weight, and from the end to the sync, zero
+weight, in the edges for the precedence
+constraints, also have zero weight.
+So that's a graph model, we took our
+scheduling problem and now we have a
+graph.
+And what relates this to what we've been
+talking about is the longest path from the
+source to each job.
+It turns out to give a schedule.
+So the job scheduling problem corresponds
+to a solution to the longest path problem
+in directed acyclic graph by the way this
+graph doesn't have any cycles because that
+would mean we have to do a job before
+another job insist that one be done after
+zero and that two be done after one.
+We can't also insist that zero be done
+after two because that would be a present
+cycle that couldn't be satisfied at all.
+And so the, the n-, now you have to think
+of this quite a while to understand why
+the longest path from the source.
+We'll schedule each job, but, that's a
+fact in that it means, then, we have, a
+fast, linear time algorithm for solving
+this problem.
+Negate all the weights, run shortest paths
+with topological sort, and negate the
+answer, and you have the start times for
+every job.
+In fact, in the book and the book site,
+you'll find code that not solves, this,
+schedule, parallel job scheduling problem
+using the critical path method, Again,
+showing how important it is to have, a
+fast and efficient solution to the
+shortest paths problem.

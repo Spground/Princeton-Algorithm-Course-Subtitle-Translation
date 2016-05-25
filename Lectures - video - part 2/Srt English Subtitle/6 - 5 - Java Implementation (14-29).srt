@@ -1,0 +1,769 @@
+1
+00:00:03,540 --> 00:00:08,983
+Next, we're going to look at Java code for
+solving the max flow problem.
+
+2
+00:00:09,213 --> 00:00:14,476
+This is the most complex.
+Graph processing algorithm we have seen so
+
+3
+00:00:14,476 --> 00:00:21,324
+far but it's relatively a small amount of
+curve that builds upon the mechanisms that
+
+4
+00:00:21,557 --> 00:00:25,760
+we have been studying for the last couple
+of lectures.
+
+5
+00:00:25,993 --> 00:00:33,075
+So now, the graph that we are working with
+little more complicated because we have to
+
+6
+00:00:33,075 --> 00:00:37,900
+associate with each edge not just the
+capacity but also a flow.
+
+7
+00:00:37,900 --> 00:00:43,623
+So, we'll build a slightly more
+complicated data type for edges called a
+
+8
+00:00:43,623 --> 00:00:47,744
+flow edge.
+Where, for each edge, we can keep track of
+
+9
+00:00:47,744 --> 00:00:52,094
+that information.
+So, we not only have to keep the from
+
+10
+00:00:52,094 --> 00:00:57,817
+vertex V and the to vertex W.
+The weight or the capacity C, associated
+
+11
+00:00:57,817 --> 00:01:02,320
+with the edge but, and also the flow cuz
+that's a flow edge.
+
+12
+00:01:02,320 --> 00:01:07,892
+And then the flow network.
+Since we're going to go through edges in
+
+13
+00:01:07,892 --> 00:01:13,922
+the wrong direction we're going to have to
+put every flow edge, kind of like an
+
+14
+00:01:13,922 --> 00:01:20,358
+undirected graph in both adjacency lists.
+And then we're going to test whether we're
+
+15
+00:01:20,358 --> 00:01:24,372
+going, which direction we're going through
+an edge.
+
+16
+00:01:24,372 --> 00:01:27,905
+It's kind of like using an undirected
+graph.
+
+17
+00:01:28,226 --> 00:01:34,569
+But the flow network, anyway, has to have
+edges in both places so it can do backward
+
+18
+00:01:34,569 --> 00:00:58,764
+edges.
+A simple way to arrange for this is to
+
+19
+00:01:38,181 --> 00:01:44,524
+compute for the edges what's called the
+residual capacity, and that's just what
+
+20
+00:01:44,524 --> 00:01:49,585
+we're going to use to compute the
+bottleneck value, the only max amount of
+
+21
+00:01:49,585 --> 00:01:54,481
+flow we can pull through.
+So for the backward edge, we'll assign the
+
+22
+00:01:54,481 --> 00:01:59,784
+residualCapacityTo be the amount of flow.
+And for the forward edge, it'll be the
+
+23
+00:01:59,784 --> 00:02:04,204
+capacity minus the flow.
+So, that's the maximum amount of stuff we
+
+24
+00:02:04,204 --> 00:02:09,778
+can get through the edge when we're
+augmenting its residual capacity. so and
+
+25
+00:02:09,778 --> 00:02:15,650
+to actually do the augmentation, you will
+have a value which is your maximum that
+
+26
+00:02:15,650 --> 00:02:20,258
+you're going to, that you're going to
+augment and so if you are on the forward
+
+27
+00:02:20,258 --> 00:02:25,090
+edge, you add it and if you're on a
+backward edge, you subtract it.
+
+28
+00:02:25,292 --> 00:02:30,080
+And so, that's the basic idea and its just
+quite natural from the graph
+
+29
+00:02:30,080 --> 00:02:35,542
+representation we've been using and the
+way that the codes focus on how algorithm
+
+30
+00:02:35,542 --> 00:02:40,810
+woks.
+So one way to think of this is to little
+
+31
+00:02:40,810 --> 00:02:49,097
+bit closer to the representation that
+we're using, is to consider what's called
+
+32
+00:02:49,097 --> 00:02:57,870
+a residual network that for every edge
+every forward edge in the network, it has
+
+33
+00:02:57,870 --> 00:03:04,906
+the, the in, forward edge going that has
+the amount of flow left and a backward
+
+34
+00:03:04,906 --> 00:03:13,314
+edge with the amount of flow that's there.
+And if you have a, a full forward edge, or
+
+35
+00:03:13,314 --> 00:03:18,980
+a, or an empty backward edge then you only
+have one such.
+
+36
+00:03:18,980 --> 00:03:25,878
+So this an example of the residual network
+for this amount of flow.
+
+37
+00:03:26,074 --> 00:03:31,420
+You can't put any more flow through from
+this vertex to this vertex, so there's no
+
+38
+00:03:31,420 --> 00:03:35,202
+edge going that way.
+But you can remove four units of flow
+
+39
+00:03:35,202 --> 00:03:38,723
+going that way.
+So, that's because of the backward edge.
+
+40
+00:03:38,919 --> 00:03:42,244
+So and in this case we have a full forward
+edge.
+
+41
+00:03:42,244 --> 00:03:47,134
+So, there's no edge going this way, cuz we
+can't put any more flow through.
+
+42
+00:03:47,330 --> 00:03:52,285
+But there's nine going that way,
+That's another example of a full forward
+
+43
+00:03:52,285 --> 00:03:55,910
+edge.
+This empty one you can put eight units of
+
+44
+00:03:55,910 --> 00:04:00,972
+flow that way, so we have an edge in the
+residual network going that way.
+
+45
+00:04:01,183 --> 00:04:06,456
+But no way to go that way, because there's
+no flow, there's no backward edge.
+
+46
+00:04:06,456 --> 00:04:12,843
+And so this network is just a natural way
+to look at the network while the flow is
+
+47
+00:04:12,843 --> 00:04:17,887
+being computed cause it's a digraph that
+we're going to search to find the
+
+48
+00:04:17,887 --> 00:04:21,951
+augmenting path.
+If a directed path in this network that's
+
+49
+00:04:21,951 --> 00:04:28,327
+from s to t, that's an augmenting path.
+And that's a simple mechanism that helps
+
+50
+00:04:28,327 --> 00:04:33,407
+us write compact and elegant code.
+So that's an augmenting path in the
+
+51
+00:04:33,407 --> 00:04:39,286
+original network and that just turns out
+to be a directed path in the residual
+
+52
+00:04:39,286 --> 00:04:42,537
+network.
+So then, we can just use our algorithms
+
+53
+00:04:42,537 --> 00:04:48,140
+that we've already studied for finding
+directed paths in the residual network.
+
+54
+00:04:48,140 --> 00:04:55,155
+Alright, so here's the API for flow edges.
+And they just have the few extra methods
+
+55
+00:04:55,387 --> 00:05:01,786
+to allow us to compute and make decisions
+based on the amount of flow and capacity
+
+56
+00:05:01,786 --> 00:05:06,257
+in the edge.
+These are the computations that we need to
+
+57
+00:05:06,257 --> 00:05:12,194
+implement the forward focus in algorithm.
+So every edge has a from and a to.
+
+58
+00:05:12,194 --> 00:05:18,670
+If you have one point, it gives you the
+other one which we need just as we did in
+
+59
+00:05:18,670 --> 00:05:22,796
+undirected graphs.
+Every edge has capacity and a flow and a
+
+60
+00:05:22,796 --> 00:05:28,332
+residual capacity, which we compute from a
+capacity in flow, then we want to be an
+
+61
+00:05:28,332 --> 00:05:34,244
+addResidualFlow to any edge, and its added
+and if its forward, and it gets subtracted
+
+62
+00:05:34,244 --> 00:05:39,892
+if it's forward.
+So those are the basic methods in the API
+
+63
+00:05:39,892 --> 00:05:45,655
+for a flow edge and, and the
+implementation of all of them is
+
+64
+00:05:45,655 --> 00:05:51,773
+straightforward.
+So notice that one thing that's a little
+
+65
+00:05:51,773 --> 00:05:57,845
+different from many othe, you know,
+classes is that actually the goal of our
+
+66
+00:05:57,845 --> 00:06:00,966
+computation is to fill in these values
+flow.
+
+67
+00:06:00,966 --> 00:06:05,266
+So, they're not final variables that's
+what we're computing.
+
+68
+00:06:05,474 --> 00:06:10,259
+Now. we do it through addResidualFlow but
+still it's not a final.
+
+69
+00:06:10,467 --> 00:06:16,085
+So, create an edge, just with a V to W
+given capacity, just fill in the instance
+
+70
+00:06:16,085 --> 00:06:19,900
+variables and all these other ones are
+just getters.
+
+71
+00:06:20,108 --> 00:06:25,379
+Others just like in an undirected graph.
+And then, residualCapacity and
+
+72
+00:06:25,379 --> 00:06:28,500
+addResidualFlow are also easy to
+implement.
+
+73
+00:06:28,500 --> 00:06:33,937
+So, residualCapacity if it's on the from
+edge, you return the flow, if it's on the
+
+74
+00:06:33,937 --> 00:06:38,703
+to edge or it's the backward edge, you
+return capacity minus flow, just as we
+
+75
+00:06:38,703 --> 00:06:41,993
+said.
+And addResidualFlow makes the same test to
+
+76
+00:06:41,993 --> 00:06:44,880
+decide whether to add or subtract the
+flow.
+
+77
+00:06:44,880 --> 00:06:52,251
+So very simple implementations of all
+those operations for our flow edges in a
+
+78
+00:06:52,251 --> 00:06:57,214
+flow network.
+So, what about the floor network, API?
+
+79
+00:06:57,537 --> 00:07:05,072
+it's again going to be our standard API,
+just that floor graph, flow networks are
+
+80
+00:07:05,072 --> 00:07:11,903
+built from flow edges.
+And they're going to be built for the
+
+81
+00:07:11,903 --> 00:07:17,459
+client which is going to be the max flow
+algorithm. it's going to have a method
+
+82
+00:07:17,459 --> 00:07:23,082
+that gives an interval for every vertex of
+all the forward and backward edges instant
+
+83
+00:07:23,082 --> 00:07:27,920
+on that vertex and sh, so that client is
+going to use these basic things.
+
+84
+00:07:27,920 --> 00:07:34,286
+And given everything we've seen this
+implementation is pretty straightforward.
+
+85
+00:07:34,286 --> 00:07:40,330
+It's pretty much just like edge-weighted
+graph, except we use low edges now.
+
+86
+00:07:40,652 --> 00:02:35,484
+And then, when we add an edge even though
+it's kind of a directed network to handle
+
+87
+00:07:47,018 --> 00:07:53,304
+flow and forward and backward edges,
+We add every edge to both adjacency lists.
+
+88
+00:07:53,626 --> 00:07:58,220
+But simple code, quite similar to what
+we've seen before.
+
+89
+00:07:58,563 --> 00:08:04,510
+So we'll, again network is usually huge
+and sparse.
+
+90
+00:08:04,510 --> 00:08:10,857
+So, we use a vertex index array and each
+entry associated with each vertex will
+
+91
+00:08:10,857 --> 00:08:17,364
+contain references to all the edges that
+are incident on that vertex whether
+
+92
+00:08:17,364 --> 00:08:22,747
+they're forward or backwards.
+So, just like an un-directed graph, you
+
+93
+00:08:22,747 --> 00:08:26,764
+might have to, you'll have two references
+to the same edge.
+
+94
+00:08:26,764 --> 00:08:33,955
+One and it's a from and the other and it's
+to and then rather than just to wait, they
+
+95
+00:08:33,955 --> 00:08:39,236
+have a flow and a capacity.
+So from zero to two, it's got capacity
+
+96
+00:08:39,236 --> 00:08:44,436
+three and one unit of flow in it.
+So, that's an example of, of how to
+
+97
+00:08:44,436 --> 00:08:48,985
+represent that edge.
+So, flow network has got flows in it,
+
+98
+00:08:48,985 --> 00:08:53,616
+that's the grey and it's got capacities,
+and that's the white.
+
+99
+00:08:53,616 --> 00:08:59,710
+And otherwise, it's kind of similar to our
+undirected graph representation.
+
+100
+00:08:59,710 --> 00:09:03,674
+I've got one more processing, the,,
+processing the graph.
+
+101
+00:09:03,674 --> 00:09:10,306
+We use residualCapacity to make that kind
+of work in the residual path in natural
+
+102
+00:09:10,306 --> 00:09:13,478
+way.
+So, this is the implementation of the
+
+103
+00:09:13,478 --> 00:09:18,145
+forward focus in algorithm.
+And again h, pretty straightforward to
+
+104
+00:09:18,576 --> 00:09:24,239
+given the description that we've done, and
+the graph processing code that we've
+
+105
+00:09:24,239 --> 00:09:30,356
+written up to this time.
+So it's got you have an array of vertices
+
+106
+00:09:30,356 --> 00:09:36,310
+that we've been to.
+It's got an edge two array which is the
+
+107
+00:09:36,585 --> 00:09:45,011
+how do we get to each vertex so we can
+provide the client with the flow so that
+
+108
+00:09:45,011 --> 00:09:51,647
+we can process paths in the graph you
+know, it's got the value of the flow.
+
+109
+00:09:51,647 --> 00:09:56,085
+So, let's look at the code, it's kind of
+self-documenting.
+
+110
+00:09:56,300 --> 00:10:00,810
+So what we'll do is we'll set the value of
+the flow to zero.
+
+111
+00:10:01,061 --> 00:10:07,851
+So we're going to find out if it has a
+augmenting path and we'll look at that
+
+112
+00:10:08,102 --> 00:10:13,866
+method in a minute.
+As long as it has an augmenting path then
+
+113
+00:10:14,109 --> 00:10:20,018
+when we call, it has augmenting path,
+basically what that's going to do is
+
+114
+00:10:20,261 --> 00:10:26,898
+that's going to do a graph search and mark
+the verticies that it visits and if it
+
+115
+00:10:26,898 --> 00:10:33,454
+gets to this target, it's going to leave
+that path and now the edge to array in the
+
+116
+00:10:33,454 --> 00:10:40,313
+standard way. the edge to of t contains
+the, the edge that, that contains the
+
+117
+00:10:40,313 --> 00:10:47,816
+vertex that took us to t and so forth.
+And so we'll use that edge to, to go back
+
+118
+00:10:47,816 --> 00:10:52,544
+through the path and to figure out the
+bottleneck capacity,
+
+119
+00:10:52,544 --> 00:10:58,898
+Which is the minimum of the bottleneck
+capacity and the residual capacity in the
+
+120
+00:10:58,898 --> 00:11:05,977
+high edge that we're processing.
+So that's the, the maximum amount of flow
+
+121
+00:11:05,977 --> 00:11:12,390
+that we can push through the network does
+go through the path and find the minimum
+
+122
+00:11:12,390 --> 00:11:18,802
+of either the unused capacity in some
+forward edge or the available flow in some
+
+123
+00:11:18,802 --> 00:11:23,077
+backward edge.
+So once we have the bottleneck capacity,
+
+124
+00:11:23,127 --> 00:11:29,648
+then we just go back through the path
+again and addResidualFlow to every edge in
+
+125
+00:11:29,648 --> 00:11:33,094
+that path.
+So that's augment the flow.
+
+126
+00:11:33,094 --> 00:11:38,846
+And then, once we've augment the flow,
+then we update the value.
+
+127
+00:11:39,112 --> 00:11:46,349
+Notice that, when this terminates it
+terminated because we couldn't find an
+
+128
+00:11:46,349 --> 00:11:52,446
+augmenting path, and we couldn't find an
+augmenting path meant that, essentially,
+
+129
+00:11:52,446 --> 00:11:59,436
+we did a graph search that got stuck with
+finding all full-forward edges or empty
+
+130
+00:11:59,436 --> 00:12:04,567
+backward edges before getting to the
+target and that's precisely the
+
+131
+00:12:04,567 --> 00:12:08,880
+computation that we needed to do to
+compute the cut.
+
+132
+00:12:09,128 --> 00:12:13,598
+So to tell whether a vertex is reachable
+from s.
+
+133
+00:12:13,847 --> 00:12:20,801
+We just checkmarked v so we can tell the
+client which vertices are in the cut.
+
+134
+00:12:20,801 --> 00:12:28,460
+And then we can find the, the edges that
+leave that vertex with the edges that
+
+135
+00:12:28,460 --> 00:12:34,185
+comprise the cut. so now, all we have to
+do to finish is to look that it has
+
+136
+00:12:34,185 --> 00:12:39,477
+augmenting path, which is the graph search
+in the residual network.
+
+137
+00:12:39,477 --> 00:12:45,536
+And for this example we'll use
+breadth-first search although the other
+
+138
+00:12:45,536 --> 00:12:52,132
+search algorithms that we've studied can
+be adapted in the same way depth-first
+
+139
+00:12:52,132 --> 00:12:58,344
+search or using a priority queue as in
+Prim's algorithm or Dijkstra's algorithm.
+
+140
+00:12:58,574 --> 00:04:54,486
+So we have our standard edge to in marked
+arrays and so we already have a queue
+
+141
+00:13:05,485 --> 00:13:12,420
+which is going to contain the vertices
+that we've encountered but not yet
+
+142
+00:13:12,420 --> 00:13:16,918
+visited.
+We'll put the source on there while the
+
+143
+00:13:16,918 --> 00:13:20,855
+queue is not empty, we'll take a vertex
+off.
+
+144
+00:13:21,229 --> 00:13:27,696
+And so, we'll go through everybody
+associated that's connected to that
+
+145
+00:13:27,696 --> 00:13:33,975
+vertex, that's a flow edge.
+And then, you check the residual capacity.
+
+146
+00:13:34,350 --> 00:13:39,515
+And if, if it's bigger than zero that
+means h, you have a way to get to w, and
+
+147
+00:13:39,515 --> 00:13:43,659
+if it's not marked,
+You haven't been there yet then you go
+
+148
+00:13:43,659 --> 00:13:48,482
+ahead and go there and mark it.
+It's essentially a breadth-first search.
+
+149
+00:13:49,490 --> 00:13:52,965
+So that's the code for has augmenting
+path.
+
+150
+00:13:52,965 --> 00:13:59,653
+And that essentially completes the
+implementation of breadth-first search.
+
+151
+00:13:59,913 --> 00:14:04,778
+And mark t tells the, tells the returns
+true or false.
+
+152
+00:14:05,038 --> 00:14:11,900
+If you can get from t to s after that
+search is gone, then t will be marked, and
+
+153
+00:14:11,900 --> 00:14:16,330
+you can return true.
+This method can return true.
+
+154
+00:14:16,591 --> 00:14:20,500
+That's a Java implementation of the max
+flow.

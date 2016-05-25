@@ -1,0 +1,214 @@
+So the final step in our regular
+refreshing pattern matching algorithm is
+to construct and then determine the thick
+finite automaton. So how do we go ahead
+and do that? and this is an integral part
+of the algorithm. but we pretty much have
+got all the pieces, but really what makes
+it intricate is that if, an illustration
+of what a programming line has to do to
+when trying understand your program, what
+your programming does. What we need to do
+is somehow understand what's in the
+regular expression and then take that
+information and use it to build the
+machine. Now, that's what parson, that's
+called parsoning. to try to figure out the
+structure of your program or regular
+expression and then, do something with it.
+And this is a simple example of that but
+useful as well. So the first thing that
+needs clear what to do. So we're going to
+have one state per character as we talked
+about before, so that's easy to set up.
+and then the match transition edges. if a
+state contains a character in the
+alphabet, we just put in a match
+transition to the next state. and
+actually, that's implicit in our
+algorithm. so now what about other things?
+Well, if we have for any parenthesis we
+find, we'll just put in an epsilon
+transition to the next state. so our
+machines all have that. now closure is one
+that you know, has quite a bit of action.
+so, for every star let's look at the one
+that is just a one character closure. So
+we have a single character closure. So
+this is A star. and, and what we need is
+epsilon transitions for the star that
+allow the machine to go and pick up well,
+there has, there has to be one, an epsilon
+transition that goes out to the star to
+cover the case, so we have zero matches.
+and then after zero, then we want to go
+back to have as many matches as we want
+before taking the sorry, take the match
+transition. We're going to be able to go
+back and match as many as we want before
+going up to the next. So for star, we have
+to add three epsilon transitions. The one
+that goes if you have a character in I and
+a star in I + one , you have to add these
+edges going both ways and then an edge out
+to the next character for, to get out of
+the star. And that works also if there's a
+closure involving parentheses. If the
+character before the star is a parenthesis
+then we want to add the same kind of
+mechanism from the parenthesis, go out and
+skip the whole thing to cover the zero
+match case or go back and match as many
+times as we need to match and then
+finally, go out. So there's three edges
+have to be added for each star and defined
+and well defined what they are. and then
+or there's two epsilon transition edges
+that we have to add. and that is to allow
+the machine to skip the first part of the
+expression and do the second or to skip
+the, do the first part of the expression
+and skp the second. so if we keep track of
+where the left parenthesis is when we end
+the or operator when we get to the right
+parenthesis, we have all the information
+that we need in order to be able to add
+those two edges. so those are the edges
+that we have to put together to build the
+NFA. and the trick is keeping track of the
+information of where the previous
+operators are particularly since
+parentheses can be nested. but this is not
+that difficult to do because we have a
+mechanism for doing that. how to, to,
+remember where the left parentheses are
+and, and the or and that's to maintain a
+push down stack. and so the, the algorithm
+is to push left parenthesis in or onto the
+stack. And then when we hit right
+parenthesis, then we can pop of course the
+corresponding left parenthesis and maybe,
+maybe the or and that gives us all the
+information that we need to add the
+epsilon transition edges and so the stack
+takes care of the nesting of the
+parenthesis. and when you think about it,
+this is a very natural mechanism to use
+very similar to the early programs that we
+wrote using Dexter's algorithms for medic
+expressions. so let's look at a demo and
+you'll see how that works. So we're going
+to build the machine corresponding to this
+regular expression and it's the one that
+we've been working with. And so what we do
+is just go from left to right through the
+regular expression and , take the
+appropriate action, for each character. So
+for left parenthesis. there's always an
+epsilon transition from, left parenthesis
+to the next state. and then the other
+thing is, if you remember that last
+parenthesis on the push down stack. So we
+put the index zero onto the stack. so now
+we got another left parenthesis again, we
+put the epsilon transition on, and we push
+that one onto the stack. so now, if we
+have an alphabet symbol what we need to do
+is add the match transition to the next
+state. And then there's a couple ways to
+this, but one easy way, in this case, is
+to just look for the star and if you see
+that the next one is a star then you've
+got everything you need for the epsilon
+transitions. So, in this case the next one
+is a star so we'll add those epsilon
+transitions from the from two to three and
+from three to two.
+And adding epsilon transitions, that's
+just, adding edges to the phi graph. then
+with closure that just takes us to the
+next state and we took care of the other
+two earlier. now we have an alphabet
+symbol, that's the B, so we just put in
+the transition to the next state. Now we
+have an or. All we do for an or is put it
+on the stack. now it's got for A, we got
+the match transition, for C, we got the
+match transition. and now we have the
+first right parenthesis. so this right
+parenthesis so one thing we, the first
+thing we do is an epsilon period just to
+get it over to the next state. but then we
+go to the put down stack and we pop. and
+if the thing at the top of the stack is an
+or that's one thing, piece information
+that we need. the other piece of
+information we need is the position of the
+corresponding left parenthesis and that'll
+be the next thing on the stack. So we add
+the transition we pop the or off the stack
+and we pop the or on and off the stack and
+that gives us the information that we need
+to put in the epsilon transition. We're at
+stage eight.
+We put one from the or to eight, and then
+we put one from the one to the or + one.
+There's the, that's what we need to do.
+and, look for a star the same way as we
+did for one character. now in this case we
+have a no star. So we just do the finite
+alphabet symbol and we add the match
+transition. and now we have the right
+parenthesis and so we pop the
+corresponding left parenthesis. and it's
+not an or. so in this case you know,
+there's nothing to do except do the
+epsilon transition to the accept state. so
+that's the process for each character in
+the regular expression, it's well defined
+what we do. left parenthesis and or we put
+onto the stack characters we do the match
+transitions and right parenthesis we do a
+pop and if it's an or, put a numeric
+transitions. otherwise we do the look at
+to check for the star. and that's the demo
+of the construction for nondeterministic
+finite state of phenomena. So, it's
+actually a remarkably simple process. we
+figured out what to do with each character
+in the regular expression and this is the
+second part of the regular expression
+pattern-matching algorithm, which is
+constructing the NFA. And again it's a
+remarkably little code. So it's a routine
+that builds the epsilon transition. this
+is a part of the NFA. So it's got the
+regular expression . yes, a useless
+variable to refer to. and it's going to
+build a new diagraph with one state, one
+extra state, the accept state M+11 if the
+rate description has M characters. so, the
+and then we maintain a stack which is just
+integers. and for every character in a
+regular expression we do the processing
+that we just described. if it's a left
+parenthesis or an or we just put it on to
+the stack. and that's it. if it's a right
+parenthesis then we pop. If that pop is an
+or, then we put in the two edges to skip
+the or. and otherwise, we look ahead and
+do the closure exactly as described. If
+it's any one of the metal symbols, we just
+put in a next line transition to the next
+edge. And then a remarkably little code to
+go ahead and construct the NFA from a
+given regular expression. and so, the
+final step is the analysis that's going to
+take time and space proportional to M. and
+that's immediate, because for every
+character we do most of two stack
+operations and add at most three epsilon
+transitions. And, this is a generous upper
+bound, time and space proportional to the
+number of characters in the regular
+expression. So that's how we get the NFA

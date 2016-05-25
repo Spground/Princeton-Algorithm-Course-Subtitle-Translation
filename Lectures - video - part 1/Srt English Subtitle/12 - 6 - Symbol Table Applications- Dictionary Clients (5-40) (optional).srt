@@ -1,0 +1,264 @@
+1
+00:00:00,082 --> 00:00:07,017
+Now, let's look at a dictionary client,
+another very useful and common application
+
+2
+00:00:07,017 --> 00:00:13,336
+of symbol tables. So, in this case, we are
+going to write a client called Lookup CSV
+
+3
+00:00:13,549 --> 00:00:19,166
+that [cough] is going to take three
+arguments. The first will be a file name,
+
+4
+00:00:19,166 --> 00:00:24,924
+a so-called common separated value file
+and the next two arguments are integers
+
+5
+00:00:24,924 --> 00:00:32,660
+which will tell us what to treat as keys
+and values in the file. In this example or
+
+6
+00:00:32,660 --> 00:00:39,055
+CSV file relates URLs to IP addresses. So,
+each line has a URL and IP address and are
+
+7
+00:00:39,055 --> 00:00:45,089
+separated by commas. And in general, a CSV
+file might have many fields separated by
+
+8
+00:00:45,089 --> 00:00:50,838
+comma, comma. So, we number them zero,
+one, and so forth starting from the left.
+
+9
+00:00:50,838 --> 00:00:57,157
+So, what we are going to do with this
+client is specify with integers which
+
+10
+00:00:57,157 --> 00:01:03,778
+field is the key, and which is the value.
+So, if we call this client with second
+
+11
+00:01:03,778 --> 00:01:09,849
+argument zero and third argument one, that
+means we want to use the URL field zero on
+
+12
+00:01:09,849 --> 00:01:15,854
+the CSV file as the key, no one use the IP
+address that's field one in the CSV as the
+
+13
+00:01:15,854 --> 00:01:21,633
+value, you want to associate keys with
+values. So the client will build a symbol
+
+14
+00:01:21,633 --> 00:01:27,602
+table that makes us associations for every
+line in the file and this could be huge
+
+15
+00:01:27,602 --> 00:01:34,836
+file. And then, if we want to look up the
+IP address associated with a given URL we
+
+16
+00:01:34,836 --> 00:01:41,698
+can just type in URLs and the client will
+return the IP address, it'll do the look
+
+17
+00:01:41,698 --> 00:01:48,539
+up. So, Adobe.com has got this IP address
+that's shown if this line here in the
+
+18
+00:01:48,539 --> 00:01:55,145
+table, and so forth. Princeton.edu has
+this IP and ebay.edu is not in the file.
+
+19
+00:01:55,145 --> 00:02:00,898
+Now, on the other hand, we could, from
+this same file, we could build a symbol
+
+20
+00:02:00,898 --> 00:02:07,277
+table where we treat the IP address as
+the, as the key and the URL as the value.
+
+21
+00:02:07,277 --> 00:02:13,180
+So, in that case, it'll build a symbol
+table with IP addresses as keys and we can
+
+22
+00:02:13,180 --> 00:02:19,223
+type in an IP address and get the
+associated URL. So, with one client we can
+
+23
+00:02:19,223 --> 00:02:27,473
+handle lookups of all kinds in CSV files.
+For example, here's another CSV file that
+
+24
+00:02:27,473 --> 00:02:36,056
+from biology that deals with, amino acids
+and codons and names. So, in this case,
+
+25
+00:02:36,056 --> 00:02:44,332
+the first field is three letters from the
+DNA sequence which, represents a codon.
+
+26
+00:02:44,332 --> 00:02:51,926
+And certain codons have names, that's the
+amino acids. So, TCC is called serine, and
+
+27
+00:02:51,926 --> 00:03:01,152
+so forth. And that's an association that's
+well known to biologist and then you can
+
+28
+00:03:01,152 --> 00:03:08,259
+use this lookup CSV client to quickly get
+the name associated with any given codon.
+
+29
+00:03:08,493 --> 00:03:14,773
+That's just another simple example. This
+is a very general tool. Any CSV file, you
+
+30
+00:03:14,773 --> 00:03:21,389
+can pick any field as the key, any other
+field as the value. So here's still
+
+31
+00:03:21,389 --> 00:03:28,091
+another example where we might use for a
+class list, which has the person's year of
+
+32
+00:03:28,091 --> 00:03:36,046
+graduation, last name, first name precept
+name and login name. And so in the first
+
+33
+00:03:36,046 --> 00:03:43,006
+call over here, we might use the login
+name as the key and the first name as the
+
+34
+00:03:43,006 --> 00:03:48,027
+value. So, we type in somebody's login
+name we get their first name. And again,
+
+35
+00:03:48,027 --> 00:03:53,061
+with the same client login is key and get
+the section as a value. So, all kinds of
+
+36
+00:03:53,061 --> 00:03:58,069
+information processing that we might need
+to do for large amounts of data,
+
+37
+00:03:58,069 --> 00:04:03,476
+represented in comma, comma separated
+value files this one client which is based
+
+38
+00:04:03,476 --> 00:04:08,099
+on a symbol table will provide useful
+functionality. And here's the
+
+39
+00:04:08,099 --> 00:04:14,039
+implementation there's very little to it
+given the symbol table API that we've
+
+40
+00:04:14,039 --> 00:04:20,062
+articulated and the implementations that
+we have. So what do we do to get lookup
+
+41
+00:04:20,062 --> 00:04:27,069
+CSV implemented? Well, first thing is to
+set up the input stream from the first
+
+42
+00:04:27,069 --> 00:04:33,675
+argument, so that's our input file. And
+then, get the numbers of the fields, so
+
+43
+00:04:33,675 --> 00:04:39,072
+the key and the value. And now build a
+simple table that associates strings with
+
+44
+00:04:39,072 --> 00:04:46,007
+strings. Then there there's a while loop
+where we just read a new line in that read
+
+45
+00:04:46,007 --> 00:04:51,675
+line, read line and then split according
+to comma into tokens in an array. And
+
+46
+00:04:51,675 --> 00:04:57,549
+then, the index in the array is going to
+build the fields that we're going to use.
+
+47
+00:04:57,549 --> 00:05:03,496
+So, the key is the string in the key field
+entry of the array, and the value is the
+
+48
+00:05:03,496 --> 00:05:08,517
+string in the value field entry in the
+array, and we simpl y put that into symbol
+
+49
+00:05:08,517 --> 00:05:14,362
+table. So, this value loop just builds the
+symbol table from the file. Then from
+
+50
+00:05:14,362 --> 00:05:20,108
+standard input we take queries, just read
+a string, check if the symbol table
+
+51
+00:05:20,108 --> 00:05:26,177
+contains the string. It, it doesn't, print
+not found. And if it does, print the value
+
+52
+00:05:26,177 --> 00:05:31,091
+associated with the key. So, a very small
+amount of code based on a symbol table
+
+53
+00:05:31,091 --> 00:05:40,034
+implementation that gives us the
+dictionary functionality.

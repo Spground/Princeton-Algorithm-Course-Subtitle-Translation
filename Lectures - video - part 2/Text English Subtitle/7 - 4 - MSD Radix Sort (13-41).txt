@@ -1,0 +1,304 @@
+we can also get strings sorted by moving
+from left to right.
+That's called MSD string sorter.
+Most-significant-digit-first string sort.
+And this is going to kind of, kind of
+related to what we did with quick sort,
+and maybe viewed as a generalization of
+quick sort.
+So the idea is that we start with the
+first character, to use key index counting
+on the first character of the array and
+that will partition it into the strings
+that start with each character.
+So.
+If we use the first character, the
+left-most character in a string as, as the
+first character in this case, then we get
+all the strings that start with A followed
+by all the strings that start with B and
+so forth.
+And then recursively use the same method
+for each subfile.
+Essentially, we have a subarray for, each
+of the characters.
+And, that cumulate that we built with key
+index counting gives us the subarrays and
+actually completely delineates the
+subarrays that we need to sort.
+Remember we had built up this array that
+said that there's six keys less than d and
+eight keys less than e and so forth.
+So that tells us exactly precisely the
+boundaries of the subarray that contain
+the keys to start with d,
+And then we can just use the same method
+recursively to sort each of the subarrays
+one for each character.
+Mm.
+Now, this is a little bit complicated
+trace,
+But if you look at it more carefully after
+the lecture you'll see that it's pretty
+simple, setup for what we need to do.
+So, here's our input and we sort on the
+first character.
+If we sort on the first character,
+In this example, we have lots of s's.
+So the subfile for the s's, it's already
+sorted on the first character.
+This d is the digit that we're currently
+working on. So then, we sort that on,
+it's, the rest of it on its first
+character.
+So it's the second character and all the
+words that start with s.
+And then there's a lot of them that start
+with e,
+So we move on to the third character for
+those,
+And then there's some that start with a
+and so forth.
+So, recursively,
+Every time that we move on one character,
+we have to keep going until one thing we
+have to do, is if there's two keys that
+are equal, we have to examine every
+character in the key.
+We never find out that the two keys are
+equal until the end.
+And if we reach the end of a string, we
+can just assume that goes before any
+character value.
+And with those two things, then you, you
+can trace through the recursion to see how
+MSD string sort of works.
+So and again, in this case, it sorts by
+the first character, A and B have only
+size once, so you don't have to do
+anything.
+So then most of this slide is showing what
+happens in the keys that start with S, and
+then at the end, there's the two keys that
+start with T, and they have both h's and
+both e's, we have to go through the whole
+thing.
+So that's an example of MSD string sort.
+Now, if strings are variable length like
+they were in that example, we just treat
+them as if they had an extra character at
+the end that's smaller than any character.
+So they'll appear before they're supposed
+to appear alphabetically, before strings
+that have the same starting characters
+that are longer.
+And you can do that by overloading, you
+know, implementing charAt to just return
+minus one, if, if we're past the character
+that we're looking at.
+So, that's the easy part of the
+implementation.
+One thing to point out, the in the C
+programming language, the representation
+of strings puts an extra character that's
+zero at the end and those string has the
+zero character.
+So, actually not to do anything at all.
+But when that change the code for MSD
+string sort is also really an extremely
+simple modification or extension to key
+index counting.
+So we've got our sort and it takes its
+input array and then, output buffer,
+And then we have to take the deliminators
+of the subfile we're going to sort, low
+and high just like we've done for other
+recursive sorts.
+We go ahead and we do the key index
+counting, again, to take care of, we have
+to take care of the fact that we have an
+extra character that kind of the end of
+string character.
+And also, pull out the d character of our
+string just like we did for LSD sort.
+And we just go through the whole thing and
+sort according to the given character.
+And then, what we do next is just do a
+recursive call for every entry in the
+counter array where we, we just sort the
+part of the array from count of r to lo
+plus count of r or lo plus count of r plus
+one.
+Really just one line of curve for each
+subarray.
+And then we move to the right one
+character.
+So, again, this is very little code to get
+a very useful and powerful sorting method,
+That's MSD string sorting.
+One thing to notice is that, with the,
+extra output buffer,
+We can use that even with the recursive
+calls,
+But not the counter array,
+We have to keep the counter array around.
+So it's part, it's gotta be local to the
+recursive procedure,
+Cuz when we call for the next character,
+we're going to need, a new counter array
+for that character but have to save the
+old one to do the next subarray for, the
+calling, method.
+Well that turns out to be important
+because there's a potential for big
+problems with MSD sort when we start
+looking at the analysis.
+And the thing to notice is that if you
+have a tiny array, say an array of size
+two, it doesn't matter how small your
+array is, you need to have a counter array
+for each potential character in the
+alphabet.
+So for ASCII, just to, to initialize the
+counter and to set it to zero, just create
+it, it's going to be a hundred times
+slower, then just sorting the thing or
+just copying it back, even if you're using
+Unicode, it's 32,000 times slower. And
+what's worse is it's a recursive program,
+so there's going to be lots of small
+subarrays.
+Sorry.
+This feature or characteristic of MSD
+string sort actually [INAUDIBLE], we're
+having a lot of applications that were
+using it when people switched from ASCII
+to Unicode a while back.
+All of a sudden programs that were really
+efficient sorts,
+All of a sudden, became hundreds of times
+slower, with the switch to Unicode,
+Because these big arrays in the recursive,
+these big arrays in the recursive
+procedure.
+It was a, a serious performance problem,
+So we definitely have to watch out for
+that, with, MSD string sort.
+Now there is a good solution to avoid this
+danger and it's the same solution we've
+used before.
+If you've got a small subarray and the
+sort is going to be slower just cut off
+the insertion sort.
+The other thing you can do is and save
+some more time, is to just have insertion
+sort start at the character that we're
+currently working on.
+Cuz we know things are, equal, to the left
+and we're just looking for the right.
+And, that's easy to implement just by
+changing the implementation of the compare
+function, to take into account which
+character we're at.
+Notice it's quicker,
+And, and it happens to be quicker in Java
+to just pull out the substrings and use
+compare to, than to go in and get the
+charAt that's just a feature of the
+implementation.
+So switching to, cutting off the insertion
+sort for small subarrays is definitely a
+good idea for MSD string sort.
+And so, what about the performance of this
+method?
+Well the key characteristic of, of MSD
+string sorting, it examines just the
+characters that it needs to examine in
+order to get the C key sorted.
+So, that means that its performance is
+going to be really dependent on the data.
+Now, in the, worst case for the algorithm,
+it has to examine all the data, in this
+case all the characters in all the
+strings, and that's, for example, when
+they're all equal, it's going to look at
+all the characters.
+If you have some duplicate keys, it might
+have to examine all the characters in
+those duplicate keys, but there's plenty
+of other strings that it doesn't examine
+all the characters. so,
+That, depending on, and end of the keys
+are random in some way, if they, or
+they're approximated by random keys.
+Then it's not going to examine very many
+characters at all,
+Actually and this is a typical case, say,
+for account numbers or some situation
+library call numbers or some situation
+like that,
+In a case like that.
+Msd string sort will examine only a small
+fraction of the data,
+A small constant fraction of the data,
+And it's always going to be sublinear.
+Now, it's also possible that sorts that do
+comparisons can be sublinear, but MSD
+string sort is, you, you know, good and
+that it really only examines the
+characters that need to be examined in
+order to get the sort done.
+So this gives us another line on, on the
+table,
+And the key here is that if the data is
+approximated by random log base r of N is
+going to be pretty well approximated by a
+constant in the real world.
+So this is going to be a fast method.
+The one danger is that, you have to worry
+out [inaudible], worry about using too
+much extra space, with those big counter
+arrays.
+But that's a important and useful,
+practical sorting method.
+So now let's look at, MSD string sort
+versus Quicksort for strings.
+There, it, they are similar in many ways.
+They're both recursive methods that,
+partition a file up.
+So one of the problems with MSD string
+sort is that, It tends to, when it's doing
+the counting, it's kind of making random
+accesses to memory when it, particularly
+when it's distributing the keys out.
+So on modern systems that have caches not
+everything is in the fastest memory at, at
+the same time and programs that move from
+one piece of data to another right next
+are, are going to be much more efficient.
+And quicksorts like that, an MSD quicksort
+is not.
+Another disadvantage of MSD string sort is
+that there's actually quite a few
+instructions in, in our loop.
+With the indexing and accounting.
+And the plus and [inaudible] in the
+accumulating and so forth,
+Whereas Quicksort remember is fast,
+because it has only a few instructions in
+the inner loop.
+And amnesty strings are used as extra
+space,
+Whereas quick sort, there's two things,
+one is, it's not linear in these
+applications, where MSD string sort is,
+and kind of the reason that it's not
+linear, is that if you've got keys that
+have a lot of the same characters at the
+beginning, when it's doing the compares,
+it has to rescan or recompare, lots of
+those characters.
+So, what were going to look at next, is
+try to get this, achieve this goal, of
+combining the advantages of, of these two
+sorting algorithms.

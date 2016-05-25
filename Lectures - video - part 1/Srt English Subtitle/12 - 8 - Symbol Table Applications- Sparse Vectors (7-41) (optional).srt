@@ -1,0 +1,359 @@
+1
+00:00:00,076 --> 00:00:05,049
+As a final example of a symbol table
+client, we'll take a look at a
+
+2
+00:00:05,049 --> 00:00:10,479
+mathematical application where we want to
+implement sparse vectors and matrices. So,
+
+3
+00:00:10,479 --> 00:00:17,553
+this is a standard matrix vector
+multiplication that you learn in Math
+
+4
+00:00:17,812 --> 00:00:26,044
+where we have a square matrix and a column
+vector and we want to do a dot product of,
+
+5
+00:00:26,286 --> 00:00:33,713
+of first row with the column vector to get
+the first entry in the result. So, in this
+
+6
+00:00:33,713 --> 00:00:40,637
+case, they're all zero, except for 0.04
+0.9 which is 0.36. And then similarly, dot
+
+7
+00:00:40,637 --> 00:00:49,826
+product of this with that column is 0.297
+and so forth. So standard implementation
+
+8
+00:00:49,826 --> 00:00:56,904
+of this is quite easy. We have a
+two-dimensional matrix one-dimensional
+
+9
+00:00:57,171 --> 00:01:04,707
+column vector for the multiplicand and the
+result. And then they get initialized in
+
+10
+00:01:04,707 --> 00:01:10,596
+some way, but the main computation is a
+pair of nested four loops for each row in
+
+11
+00:01:10,596 --> 00:01:16,291
+the matrix we have to go through each
+entry in the column vector and compute a
+
+12
+00:01:16,291 --> 00:01:22,669
+running sum of for that row in the matrix,
+that corresponding expanding entry with
+
+13
+00:01:22,669 --> 00:01:27,797
+the entry in the column and them, keep the
+running sum and then that's the result
+
+14
+00:01:27,797 --> 00:01:34,505
+that we put in the result column factor
+for every value of i. And the key thing
+
+15
+00:01:34,505 --> 00:01:39,912
+about this standard implementation that
+it's two nested four loops that each run
+
+16
+00:01:39,912 --> 00:01:45,467
+up to N. So, that's N^2 or quadratic
+running time. And that's fine in typical
+
+17
+00:01:45,467 --> 00:01:51,417
+applications when the matrix is small, or
+when there's lots of entries in the
+
+18
+00:01:51,417 --> 00:01:56,423
+matrix. But the fact is that in many
+practical applications, the matrices are
+
+19
+00:01:56,423 --> 00:02:01,419
+what's called sparse. They, most of the
+entries are zero. And so, symbol tables
+
+20
+00:02:01,419 --> 00:02:06,636
+provide us with a way to provide a more
+efficient implementation of, of this
+
+21
+00:02:06,636 --> 00:02:13,511
+process when we have lots of zero entries.
+So in a typical thing, say, maybe the
+
+22
+00:02:13,511 --> 00:02:18,629
+matrix dimension would be 10,000, and
+maybe there would only be ten non-zero
+
+23
+00:02:18,629 --> 00:02:24,644
+entries per row. Or, even nowadays you
+might have matrices that are, are even
+
+24
+00:02:24,644 --> 00:02:30,922
+bigger. 10,000 by 10,000 if, if there was,
+if it was full, that would be a billi on
+
+25
+00:02:30,927 --> 00:02:37,783
+or 100 million entries. And so that's
+definitely going to be costly eh, if
+
+26
+00:02:37,783 --> 00:02:44,282
+you're doing this operation a, a lot. And
+the idea is to cut down on that cost by
+
+27
+00:02:44,525 --> 00:02:51,301
+taking advantage of idea that there's a
+lot of zeros. So let's start by just
+
+28
+00:02:51,301 --> 00:02:58,159
+looking at vectors. So the standard
+representation that we use for vector is
+
+29
+00:02:58,159 --> 00:03:03,374
+to simply use a one dimensional array. We
+have constant time access to every
+
+30
+00:03:03,374 --> 00:03:09,595
+element, but the space is proportional to
+N. So, even if there's a lot of zeros we,
+
+31
+00:03:09,595 --> 00:03:15,858
+we still have to take the space to store
+them all. Instead, we're going to use a
+
+32
+00:03:15,858 --> 00:03:22,009
+symbol table representation where our key
+is the index and the value is the entry.
+
+33
+00:03:22,009 --> 00:03:27,948
+And we just use that for every non-zero
+entry in the vector. So, this has got the
+
+34
+00:03:27,948 --> 00:03:34,904
+same amount of information. It says that
+index one has got 0.36, index five also
+
+35
+00:03:34,904 --> 00:03:40,938
+has 0.36, index fourteen has 0.18 and so
+forth. But the space is proportional
+
+36
+00:03:40,938 --> 00:03:47,161
+instead of to N, it's just proportional to
+the number of non-zero entries which
+
+37
+00:03:47,161 --> 00:03:52,725
+again, in typical applications, may be
+way, way less. And so now, just we, we
+
+38
+00:03:52,725 --> 00:03:58,949
+know we have a symbol table implementation
+that has efficient iterator. And also
+
+39
+00:03:59,168 --> 00:04:04,268
+access is not bad. It's just that we're
+able to do it with way less space. So,
+
+40
+00:04:04,268 --> 00:04:10,305
+here's what the implementation of a sparse
+vector might look like. So first thing is
+
+41
+00:04:10,305 --> 00:04:16,125
+the representation is going to be a symbol
+table. And in this case, we might as well
+
+42
+00:04:16,125 --> 00:04:22,272
+use a hash table because the order in
+which we process things is not important.
+
+43
+00:04:22,272 --> 00:04:30,909
+Uh-huh, we just want to get at the, all
+the non-zero entries. So the constructor
+
+44
+00:04:31,254 --> 00:04:39,997
+is going to create in this [cough] symbol
+table. Just a new symbol table that
+
+45
+00:04:39,997 --> 00:04:46,115
+associates integer indices with double
+values. So, the put which is to store a
+
+46
+00:04:46,115 --> 00:04:53,023
+value associated with an index i, is just
+put into that hash table, associate key i
+
+47
+00:04:53,023 --> 00:04:59,895
+with value x. Associate an integer with a
+double. And get I'll return zero if the
+
+48
+00:04:59,895 --> 00:05:06,515
+index key is not in the symbol table. We
+didn't, that's the whole poin t was, we
+
+49
+00:05:06,515 --> 00:05:13,070
+don't represent zeroes. Other, otherwise
+it returns the value associated with the
+
+50
+00:05:13,070 --> 00:05:19,541
+index. And the iterable just returns all
+the key to iterate. And the most important
+
+51
+00:05:19,541 --> 00:05:25,680
+thing is that if we want to do a dot
+product with a vector, say, then the time
+
+52
+00:05:25,680 --> 00:05:31,641
+that it takes is only proportional to the
+number of non-zero keys. The zero keys are
+
+53
+00:05:31,641 --> 00:05:37,685
+going to be zero on the dot product so
+what we're going to do is take the item
+
+54
+00:05:37,685 --> 00:05:43,323
+key of the vector and multiply it by
+whatever value we get for the non-zero
+
+55
+00:05:43,323 --> 00:05:49,303
+entries. So, it's a dot product that takes
+time proportional to the number of
+
+56
+00:05:49,303 --> 00:05:55,464
+non-zero entries in the vector. And, and
+that's going to be important in the use of
+
+57
+00:05:55,464 --> 00:06:01,138
+a matrix. So instead of using the standard
+matrix representation, where every row of
+
+58
+00:06:01,138 --> 00:06:07,176
+a matrix is an array, that's what a two
+dimensional array is and the space is
+
+59
+00:06:07,176 --> 00:06:12,815
+proportional to N^2. Now we're going to
+use a sparse matrix representation, where
+
+60
+00:06:12,815 --> 00:06:18,380
+each row of the matrix is a sparse vector.
+We can iterate through the elements in, in
+
+61
+00:06:18,380 --> 00:06:24,053
+constant time, and with a hash table, we
+can get at them in near constant time and
+
+62
+00:06:24,053 --> 00:06:31,034
+then constant time in the average. But the
+space is only proportional to the number
+
+63
+00:06:31,034 --> 00:06:38,025
+of non-zero elements plus N for the extra
+symbol table overhead. So, those are
+
+64
+00:06:38,025 --> 00:06:43,622
+independent symbol table objects. But they
+allow us to have a much more efficient
+
+65
+00:06:43,622 --> 00:06:50,095
+matrix multiplication method. So now if we
+have a sparse matrix times a vector our
+
+66
+00:06:50,095 --> 00:06:56,093
+running time is going to be constant for
+each row or proportional to the number of
+
+67
+00:06:56,093 --> 00:07:02,325
+non-zero entries for each row which means
+that the running time is going to be
+
+68
+00:07:02,325 --> 00:07:08,957
+linear for a sparse matrix just by the use
+of a symbol table. And this clearly can
+
+69
+00:07:08,957 --> 00:07:14,797
+make the difference between being able to
+address a huge problem. If we have a
+
+70
+00:07:14,797 --> 00:07:21,717
+10,000 by 10,000 matrix we can get it done
+nearly instantly linear time versus
+
+71
+00:07:22,002 --> 00:07:30,744
+10,000^2. If we now run out of space, we
+might run out of time. But with the symbol
+
+72
+00:07:30,744 --> 00:07:41,036
+table implementation we can ef ficiently
+process huge sparse

@@ -1,0 +1,533 @@
+1
+00:00:03,880 --> 00:00:08,637
+Next we'll look at a proof that the
+Ford-Fulkerson algorithm is valid, known
+
+2
+00:00:08,637 --> 00:00:13,965
+as the max-flow min-cut theorem.
+It also proves that the two problems are
+
+3
+00:00:13,965 --> 00:00:18,589
+equivalent.
+We need a couple more definitions to, to
+
+4
+00:00:18,589 --> 00:00:24,430
+show, first we want to show the
+relationship between a flow and a cut.
+
+5
+00:00:24,430 --> 00:00:32,092
+So in this case we've got a cut where T is
+on one side and all the other vertices are
+
+6
+00:00:32,092 --> 00:00:37,673
+on the same side as S.
+And what we talk about is the flow across
+
+7
+00:00:37,673 --> 00:00:41,971
+the cut.
+And that, what that is, is the sum of the
+
+8
+00:00:41,971 --> 00:00:49,506
+flow on it's edges that go from S to T,
+minus the amount that goes the other way.
+
+9
+00:00:49,506 --> 00:00:57,132
+That's the flow across the cut.
+So this, what's called the flow value
+
+10
+00:00:57,132 --> 00:01:01,400
+lemma is that, if you have a flow then for
+any cut.
+
+11
+00:01:01,654 --> 00:01:06,150
+The net flow across the cut is the value
+of the flow.
+
+12
+00:01:06,438 --> 00:01:13,740
+That's called the flow value lemma.
+Doesn't matter what the cut is, this, this
+
+13
+00:01:13,740 --> 00:01:22,004
+is a max flow, a flow with value 25 and
+every cut is going to have 25 flowing
+
+14
+00:01:22,004 --> 00:01:26,712
+across it.
+So, this cut, this is a more complicated
+
+15
+00:01:26,712 --> 00:01:31,708
+cut where S and these three vertices are
+colored.
+
+16
+00:01:31,997 --> 00:01:40,551
+So the flow of a, across that cut has to
+take the all the edges that go from a gray
+
+17
+00:01:40,551 --> 00:01:47,303
+vertex to a white one.
+So, there's ten plus ten, plus from a gray
+
+18
+00:01:47,303 --> 00:01:55,370
+vertex to a white one, five plus ten + 00.
+Then, we have to subtract off the edges
+
+19
+00:01:55,370 --> 00:02:01,204
+that go from a white to a gray one.
+So we add up all the ones that go from
+
+20
+00:02:01,417 --> 00:02:06,070
+gray to white.
+Ten + ten + five + ten + zero + zero and
+
+21
+00:02:06,070 --> 00:02:11,695
+subtract off the two that go from a white
+to a gray and, still, the net value across
+
+22
+00:02:11,695 --> 00:02:14,610
+the flow is the same, the value of the
+flow.
+
+23
+00:02:14,610 --> 00:02:21,864
+That's the flow value lemma that gives a
+particular relationship between flows and
+
+24
+00:02:21,864 --> 00:02:26,200
+cuts.
+And that's not too difficult to prove by
+
+25
+00:02:26,200 --> 00:02:33,139
+induction on the size of one of the sets.
+For example, if we do an induction on the
+
+26
+00:02:33,139 --> 00:02:39,526
+size of the set containing T, it's
+certainly true when that set consists of
+
+27
+00:02:39,526 --> 00:02:46,150
+just T, because the value of the flow is
+exactly equal to the edges coming into T.
+
+28
+00:02:46,150 --> 00:02:51,602
+And then to prove by induction, you can
+move any vertex from A to B in local
+
+29
+00:02:51,602 --> 00:02:57,399
+elibriums, local equilibrium's going to
+make sure that the flow value limma is
+
+30
+00:02:57,399 --> 00:03:00,298
+true.
+And so that's, that's how it's proved.
+
+31
+00:03:00,298 --> 00:03:05,681
+And a corollary of that is that, that
+outflow from S is equal to the inflow to
+
+32
+00:03:05,681 --> 00:03:10,030
+T, which is equal to the val, all equal to
+the value of the flow.
+
+33
+00:03:10,030 --> 00:03:13,550
+And that's also easy to see in all of our
+examples.
+
+34
+00:03:13,953 --> 00:03:23,500
+So to get started let's, let's look at
+what's called weak duality.
+
+35
+00:03:23,947 --> 00:03:32,590
+If, F is any flow at all, in network.
+If AB is any cut.
+
+36
+00:03:32,590 --> 00:03:37,510
+The value of the flow is going to be less
+than or equal to the capacity of the cut.
+
+37
+00:03:37,510 --> 00:03:43,337
+So in this case value of flow is 27 and
+the capacity of the cut is 30.
+
+38
+00:03:43,337 --> 00:03:49,011
+Value of the flow is always less than or
+equal to the capacity of the cut.
+
+39
+00:03:49,241 --> 00:03:56,295
+And well the net flow across a cut has got
+to be less than less than or equal to it's
+
+40
+00:03:56,295 --> 00:04:02,812
+capacity 'coz it's at least that and then
+if there's any edges going the other way,
+
+41
+00:04:02,812 --> 00:04:06,416
+they get subtracted to compute the lugnut
+flow.
+
+42
+00:04:06,646 --> 00:04:10,940
+So a weak duality, is that, that's an easy
+thing to prove.
+
+43
+00:04:10,940 --> 00:04:14,624
+So what we want to prove are these two
+theorems.
+
+44
+00:04:14,624 --> 00:04:21,273
+The max-flow min-cut theorem is really two
+theorems combined called the augmenting
+
+45
+00:04:21,273 --> 00:04:27,040
+path theorem that says the flow's at
+max-flow if and only if there's no
+
+46
+00:04:27,040 --> 00:04:33,369
+augmenting paths, and that the value of
+the max-flow equals the capacity of the
+
+47
+00:04:33,369 --> 00:04:35,229
+min-cut.
+In any network.
+
+48
+00:04:35,229 --> 00:04:40,717
+And the way we prove that is to prove that
+the following three conditions are
+
+49
+00:04:40,717 --> 00:04:44,443
+equivalent.
+Again this is a proof that's a little
+
+50
+00:04:44,443 --> 00:04:49,118
+intricate logically.
+It's worthwhile for me to go through it,
+
+51
+00:04:49,118 --> 00:04:54,944
+but to really understand it you're going
+to need to read it carefully and convince
+
+52
+00:04:54,944 --> 00:05:00,611
+yourself that these three conditions work.
+So here's the three conditions that we're
+
+53
+00:05:00,611 --> 00:05:05,315
+going to prove our equipment.
+First one is, there is a cut, there's some
+
+54
+00:05:05,315 --> 00:05:08,540
+cut whose capacity equals the value of the
+flow.
+
+55
+00:05:08,743 --> 00:05:14,453
+The second one is that f is a max flow.
+So if there's a cut whose capacity equals
+
+56
+00:05:14,453 --> 00:05:19,347
+the flow then f is a max flow.
+And if f is a max flow there's such a cut.
+
+57
+00:05:19,551 --> 00:05:23,698
+And then the third one is that there's no
+augmenting path.
+
+58
+00:05:23,698 --> 00:05:27,912
+So we're going to prove those three
+conditions are equivalent.
+
+59
+00:05:27,912 --> 00:05:30,971
+And we'll do it with a little logic
+trickery.
+
+60
+00:05:30,971 --> 00:05:34,030
+So first we could prove that one implies
+two.
+
+61
+00:05:34,030 --> 00:05:39,886
+If there exist a cut capacities equals the
+value flow, then f is the max flow.
+
+62
+00:05:39,886 --> 00:05:45,260
+Alright, so suppose that we have such a
+cut, capacity is equal the value of the
+
+63
+00:05:45,260 --> 00:05:51,254
+flow then any other flow by weak duality,
+flow is going to be less than or equal to
+
+64
+00:05:51,254 --> 00:05:56,008
+the capacity of that cut, .
+In fact that cuts equal to the value of
+
+65
+00:05:56,008 --> 00:05:59,453
+the flow, so therefore, that's the
+maximum, max flow.
+
+66
+00:05:59,453 --> 00:06:05,102
+The value of any flow, if less or equal in
+value of f, so it's the max flow.
+
+67
+00:06:05,102 --> 00:06:08,392
+So that proves that one implies two.
+Okay.
+
+68
+00:06:08,392 --> 00:06:11,630
+Now we're going to prove two implies
+three.
+
+69
+00:06:11,630 --> 00:06:14,869
+One implies two, and also two implies
+three.
+
+70
+00:06:14,869 --> 00:06:20,517
+That also means one implies three.
+So in order to prove that we're going to
+
+71
+00:06:20,517 --> 00:06:25,714
+prove the counter-positive.
+So we'll prove that not three implies not
+
+72
+00:06:25,714 --> 00:06:28,953
+two.
+That is, if there is an augmenting path
+
+73
+00:06:28,953 --> 00:06:32,848
+then F is not a max flow.
+Well, that's pretty straightforward, then,
+
+74
+00:06:32,848 --> 00:06:37,381
+'cuz that's what we do in the algorithm.
+We could improve the flow by sending flow
+
+75
+00:06:37,381 --> 00:06:39,676
+along the path.
+So it can't be a max flow.
+
+76
+00:06:39,676 --> 00:06:42,978
+So that's, pretty easy.
+If that was a max flow, there's no
+
+77
+00:06:42,978 --> 00:06:47,119
+augmenting path cuz if there is an
+augmenting path, that's not a max flow.
+
+78
+00:06:47,119 --> 00:06:52,100
+So that's the, second, part of the proof.
+And now the third part of the proof, will
+
+79
+00:06:52,100 --> 00:06:56,241
+prove that three implies one.
+So, that'll give you, the circular logic
+
+80
+00:06:56,241 --> 00:06:59,040
+condition that proves that they're all
+equivalent.
+
+81
+00:06:59,247 --> 00:07:04,786
+So we want to prove that if there is no
+augmenting path, then there is a cut in
+
+82
+00:07:04,786 --> 00:07:08,110
+this capacity that equals the value of the
+flow.
+
+83
+00:07:08,110 --> 00:07:14,252
+So if there's no augmenting path.
+Then what we're going to have is a cut
+
+84
+00:07:14,252 --> 00:07:20,394
+where A is the set of vertices.
+That are, connected to S by an undirected
+
+85
+00:07:20,394 --> 00:07:24,660
+path with no full forward or empty
+backward edges.
+
+86
+00:07:24,918 --> 00:07:30,257
+And so there has to be such a cut if
+there's no odd many path.
+
+87
+00:07:30,257 --> 00:07:37,490
+S has got to be in A and T has got to be
+in B otherwise there will be a path from A
+
+88
+00:07:37,490 --> 00:07:44,292
+to B with no four, four front and empty
+backward with edges and the capacity of
+
+89
+00:07:44,292 --> 00:07:51,353
+that cut equals the net flow across the
+cut but all the four edges are fallen, all
+
+90
+00:07:51,353 --> 00:07:58,070
+the backward edges are empty so that's
+exactly equal to the value of the flow.
+
+91
+00:07:58,298 --> 00:08:04,682
+So if there's no augmenting path then we
+can demonstrate a cut whose capacity
+
+92
+00:08:04,682 --> 00:08:11,294
+equals the value of the flow and that is
+completes the proof of the max flow and
+
+93
+00:08:11,294 --> 00:08:13,780
+the cut theorem.
+Sorry.
+
+94
+00:08:14,854 --> 00:08:19,067
+Alright.
+So the one last step is if we have
+
+95
+00:08:19,067 --> 00:08:26,944
+computed a max-flow, then what we can do
+is compute the min-cut by computing the
+
+96
+00:08:26,944 --> 00:08:33,355
+set of vertices.
+And we can do that just by a graph search.
+
+97
+00:08:33,630 --> 00:08:41,148
+We start at S and if there's a path that
+has no, has a, a forward edge that's not
+
+98
+00:08:41,148 --> 00:08:47,704
+full then we follow that path and if we
+have a backward edge that's not empty, we
+
+99
+00:08:47,704 --> 00:08:52,155
+follow the path.
+And we just do a, a graph search to get to
+
+100
+00:08:52,155 --> 00:08:57,780
+all the vertices that we can reach with
+forward edges that aren't full, and
+
+101
+00:08:57,780 --> 00:09:03,334
+backward edges that aren't empty.
+And then we treat the full forward edges
+
+102
+00:09:03,334 --> 00:09:06,507
+and the back empty edges as not being
+there.
+
+103
+00:09:06,723 --> 00:09:09,897
+Otherwise, we do just a regular graph
+search.
+
+104
+00:09:10,113 --> 00:09:18,882
+And that's, going to give us, the, the,
+then the set of edges that define by that
+
+105
+00:09:18,882 --> 00:09:24,610
+cut are going to be the min-cut.
+So, not difficult to compute a min-cut
+
+106
+00:09:24,610 --> 00:09:29,132
+from a max-flow.
+So that's a proof of the augmenting path
+
+107
+00:09:29,132 --> 00:09:31,620
+there min, max-flow min-cut there.

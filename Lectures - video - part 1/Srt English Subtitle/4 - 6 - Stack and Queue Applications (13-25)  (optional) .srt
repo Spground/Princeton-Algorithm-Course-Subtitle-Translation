@@ -1,0 +1,624 @@
+1
+00:00:01,062 --> 00:00:07,022
+Okay. Those are some basic data structures
+and implementations and it seem quite
+
+2
+00:00:07,022 --> 00:00:13,011
+elementary and simple but actually right
+away we can get to some very sophisticated
+
+3
+00:00:13,011 --> 00:00:18,085
+applications of these basic concepts and
+that's what we're going to consider next.
+
+4
+00:00:18,085 --> 00:00:27,076
+Now, first thing to mention is that often
+the kinds of data types and data
+
+5
+00:00:27,076 --> 00:00:33,668
+structures that we implement or found in a
+Java library. So, that's true in many
+
+6
+00:00:33,898 --> 00:00:40,698
+programming environments. So, for example
+stacks and queues you can find those words
+
+7
+00:00:40,698 --> 00:00:46,728
+mentioned in the Java library so there's a
+Java collection library and the so-called
+
+8
+00:00:46,926 --> 00:00:53,203
+List interface which is displayed here. So
+Java has general API for sequences of
+
+9
+00:00:53,203 --> 00:01:00,099
+items and its got things like a, append at
+the end, remove from the beginning, and
+
+10
+00:01:00,099 --> 00:01:07,611
+so forth. Any uses of the resizing array,
+so many of the principles that we consider
+
+11
+00:01:07,867 --> 00:01:15,075
+does also a, a link list interface. So,
+why not just use those? Why use our own
+
+12
+00:01:15,075 --> 00:01:22,901
+implementations? Well, the problem is
+often in such library code is kind of
+
+13
+00:01:22,901 --> 00:01:32,367
+designed by committee phenomenon that more
+and more operations get added and the API
+
+14
+00:01:32,367 --> 00:01:39,679
+becomes too broad or bloated. It's not a
+good idea to have lots and lots of, you
+
+15
+00:01:39,679 --> 00:01:47,019
+know, operations in the same API. And
+we'll see example in a second. The
+
+16
+00:01:47,019 --> 00:01:53,427
+problem, the real problem is that when you
+do that you can't know much about the
+
+17
+00:01:53,427 --> 00:02:01,347
+performance or you can't assume much about
+the performance. And so you can kind of
+
+18
+00:02:01,347 --> 00:02:06,949
+immediately arrive at that performance
+even for simple clients. So our best
+
+19
+00:02:06,949 --> 00:02:12,918
+practice that we recommend is so few that
+these basic data structures that we use
+
+20
+00:02:12,918 --> 00:02:18,467
+and there's so simple is to go ahead and
+use the implementations that we've just
+
+21
+00:02:18,467 --> 00:02:24,233
+discussed for these fundamental data
+structures. Maybe later, later on, after
+
+22
+00:02:24,813 --> 00:02:30,745
+an experienced programmer who knows what
+he or she is doing could use some of these
+
+23
+00:02:30,745 --> 00:02:36,767
+library collections effectively. But
+inexperienced programmers often have
+
+24
+00:02:36,767 --> 00:02:43,793
+trouble with it. Here's a war story from
+students Programming assignments not that
+
+25
+00:02:43,793 --> 00:02:50,211
+long ago. So, we have an assignment where
+you need to generate a random open sites
+
+26
+00:02:50,211 --> 00:02:55,969
+in a percolation system. We have one
+student who was paying attention to what
+
+27
+00:02:55,969 --> 00:03:01,677
+we're saying and uses an array and can
+pick the indices into that array at random
+
+28
+00:03:01,863 --> 00:03:07,737
+check whether they're open and, and
+repeat. And so the array is N by N, it's
+
+29
+00:03:07,737 --> 00:03:13,955
+N^2 things and it takes about N^2 time,
+which is actually a linear time for this
+
+30
+00:03:13,955 --> 00:03:20,113
+application. But then we have another
+student who had some Java before coming to
+
+31
+00:03:20,113 --> 00:03:25,247
+us and considered himself an expert and
+said, well, I'm going to use linked list
+
+32
+00:03:25,437 --> 00:03:31,615
+because I could use Java's library and I
+don't have to worry about downloading your
+
+33
+00:03:31,615 --> 00:03:38,121
+stupid code. And so, I'll just use that
+one and pick an index at random and delete
+
+34
+00:03:38,345 --> 00:03:44,094
+and that program took quadratic time and
+poor Kenny, when trying to run his program
+
+35
+00:03:44,094 --> 00:03:50,806
+for the huge instance that we asked found
+out that it wasn't finishing. And the
+
+36
+00:03:50,806 --> 00:03:59,050
+reason is that the Java linked list
+implementation takes a linear time to find
+
+37
+00:03:59,050 --> 00:04:06,456
+an item with a given index. Not constant
+time like an array. And that's difficult
+
+38
+00:04:06,456 --> 00:04:12,800
+for Kenny to think about and difficult to
+drive that information from the
+
+39
+00:04:12,800 --> 00:04:19,055
+implementation so program is just too
+slow. And with the Swiss knife
+
+40
+00:04:19,055 --> 00:04:25,623
+implementation with so many operations
+it's hard to know whether or not the
+
+41
+00:04:25,623 --> 00:04:30,682
+particular set of operations that your
+client needs is efficiently implemented. So
+
+42
+00:04:30,953 --> 00:04:38,444
+our insistence in this course is that
+students should not use the library until
+
+43
+00:04:38,444 --> 00:04:44,551
+we've implemented it in class. At least
+that some indication that you understand
+
+44
+00:04:44,551 --> 00:04:50,546
+the performance characteristics. So now,
+let's look at some applications then of,
+
+45
+00:04:50,546 --> 00:04:56,976
+of stacks. There's the stacks are really
+actually fundamental underlying
+
+46
+00:04:56,976 --> 00:05:03,716
+computation because they implement ,
+recursion and so, you use stacks often
+
+47
+00:05:03,716 --> 00:05:09,860
+everyday when you wrote, use the Back
+button in the Web browser, the places that
+
+48
+00:05:09,860 --> 00:05:16,496
+you've been are saved on a stack. Right
+now we will look at two examples. One,
+
+49
+00:05:16,496 --> 00:05:22,377
+having to deal with compiling from a
+programming language or interpreting into
+
+50
+00:05:22,377 --> 00:05:28,544
+an actual computation and then the other
+one is the PostScript language which is
+
+51
+00:05:28,544 --> 00:05:35,249
+widely used for, for printing and
+publishing. So, so the way the compilers
+
+52
+00:05:35,249 --> 00:05:41,524
+implement functions is using stacks. When
+there's a function call the whole local
+
+53
+00:05:41,524 --> 00:05:48,198
+environment is pushed and then along with
+the return address and then the function
+
+54
+00:05:48,198 --> 00:05:53,623
+returned is pop the return address in the
+local environment. So there is the stack
+
+55
+00:05:53,623 --> 00:05:58,917
+there that contains all that information
+and whether the function calls itself or
+
+56
+00:05:58,917 --> 00:06:04,119
+not is not relevant. The stack contains
+the recursion. In fact, you can always use
+
+57
+00:06:04,119 --> 00:06:09,929
+an explicit stack to make a recursive
+program non-recursive. So, this is so when
+
+58
+00:06:09,929 --> 00:06:16,011
+we have the GCD function, computing the
+greatest common denominator, greatest
+
+59
+00:06:16,011 --> 00:06:23,402
+common denominator p and q is greatest
+common denominator of q and p mod q and it
+
+60
+00:06:23,402 --> 00:06:30,425
+just calls itself until q gets to be zero.
+And as this graphic integrates, it just
+
+61
+00:06:30,425 --> 00:06:37,849
+does it by saving the information on a
+stack. Now a specific example that really
+
+62
+00:06:38,087 --> 00:06:47,568
+shows this off and also will illustrate
+the utility of being able to process
+
+63
+00:06:47,568 --> 00:06:53,472
+multiple types of data with the same code
+is this example is Dijkstra's two-stack
+
+64
+00:06:53,472 --> 00:06:58,576
+algorithm for arithmetic expression
+evaluation. So the goal is, you got an
+
+65
+00:06:58,576 --> 00:07:03,601
+arithmetic expression this is just
+actually like a simple stand in for a
+
+66
+00:07:03,601 --> 00:07:08,398
+program and we'll talk about that in a
+second but let's say, arithmetic
+
+67
+00:07:08,398 --> 00:07:13,936
+expressions. We have operands and
+operators and you want to evaluate it. And
+
+68
+00:07:13,936 --> 00:07:19,897
+Dijkstra's algorithm is very simple to
+express. You processes through the
+
+69
+00:07:19,897 --> 00:07:25,485
+expression from left to right. If you see
+a value, you put it, you maintain two
+
+70
+00:07:25,485 --> 00:07:31,232
+stacks and if you see a value, you put it
+on the value stack and if you see an
+
+71
+00:07:31,232 --> 00:07:37,117
+operator, you put on the operator stack.
+Left parenthesis you ignore. Right
+
+72
+00:07:37,117 --> 00:07:43,584
+parenthesis, you pop the operator and two
+values and push the result. Now that's a
+
+73
+00:07:43,584 --> 00:07:51,334
+lot of words let's look at a demo. So we
+start out with the empty value stack and
+
+74
+00:07:51,334 --> 00:07:57,476
+operator stack and we're going to move
+from left to right. So, and those are the
+
+75
+00:07:57,703 --> 00:08:04,319
+a top is summarize the four type of things
+that we could wind up with and what to do
+
+76
+00:08:04,319 --> 00:08:09,608
+so the left parenthesis we've ignored, a
+value we put on to the value stack. So,
+
+77
+00:08:09,608 --> 00:08:14,985
+that one goes right in to the value stack.
+Operator, we put on to the operator stack.
+
+78
+00:08:14,985 --> 00:08:20,066
+And plus it goes on the operator stack.
+Left parenthesis you ignore. It seems strange
+
+79
+00:08:20,066 --> 00:08:24,568
+to be ignoring parenthesis and we'll get
+back to that in a second. Value, put in
+
+80
+00:08:24,568 --> 00:08:29,677
+the value stack. Operator, put on the
+operating stack. Doesn't seem like we're
+
+81
+00:08:29,677 --> 00:08:35,062
+doing much except putting stuff on stacks
+and now, when we come to our right
+
+82
+00:08:35,062 --> 00:08:40,322
+parenthesis and that's when it gets
+interesting. What it says is to you have
+
+83
+00:08:40,322 --> 00:08:45,573
+the top operator and the top two values
+and that's what you want to do. Supply
+
+84
+00:08:45,573 --> 00:08:52,136
+that operator to those values and put the
+resulting value that you get back on to the
+
+85
+00:08:52,136 --> 00:08:57,758
+operation stack. So, we take off the top
+two things, we do the operation and then we
+
+86
+00:08:57,758 --> 00:09:05,024
+put the thing that we get onto the value
+stack. And that's right parenthesis. So
+
+87
+00:09:05,024 --> 00:09:14,720
+now continuing along we put a star on.
+Left parenthesis, we ignore. Four on, star.
+
+88
+00:09:14,991 --> 00:09:21,088
+The right goes to the value stack and now
+we got a lot of stuff on the stacks and we
+
+89
+00:09:21,088 --> 00:09:25,971
+got through right parenthesis and that's
+going to finish up the computation, take
+
+90
+00:09:25,971 --> 00:09:30,530
+the top two items off the stack and the
+top operator off the operator stack,
+
+91
+00:09:30,530 --> 00:09:35,400
+perform the operation, put the result
+back on the value stack. Another right
+
+92
+00:09:35,400 --> 00:09:40,392
+parenthesis, take the top two values off.
+Perform the operation. Put the value on to
+
+93
+00:09:40,392 --> 00:09:45,696
+the value stack and finally, the last
+right parenthesis, take the two operators
+
+94
+00:09:45,696 --> 00:09:51,508
+of the value stack, operators of the value
+stack, and operator of the operator stack,
+
+95
+00:09:51,508 --> 00:09:56,874
+perform the operation, put the result back
+on the value stack. And we're at the end
+
+96
+00:09:56,874 --> 00:10:06,352
+of the computation and that's the result.
+The value that arithmetic expression is
+
+97
+00:10:06,352 --> 00:10:19,447
+101. Okay? Yup. Here's the code that
+implements Dijkstra's two-stack algorithm.
+
+98
+00:10:19,737 --> 00:10:26,915
+We have two different stacks. The operand
+stack the operator stack is string, it
+
+99
+00:10:26,915 --> 00:10:32,962
+could be characters which is just our
+operator. Then our value stack is doubled
+
+100
+00:10:32,962 --> 00:10:39,034
+so that's the same stack code but with
+generics, we're using, using two different
+
+101
+00:10:39,034 --> 00:10:44,492
+types of data. And then simply perform
+Dijkstra's algorithm. If we have a left
+
+102
+00:10:44,492 --> 00:10:50,397
+parenthesis... Read a new string. If we have
+a left parenthesis, do nothing. If we have
+
+103
+00:10:50,397 --> 00:10:57,089
+plus or times, push it. If we have a right
+parenthesis, then go ahead and pop the
+
+104
+00:10:57,089 --> 00:11:05,216
+operator. And if it's plus, add the result
+of the two values at the top of the value
+
+105
+00:11:05,216 --> 00:11:13,757
+stack and if it's a star, multiply the two
+values on the top of the stack and, and
+
+106
+00:11:13,757 --> 00:11:20,392
+then push the result. So and then when
+you're done then simply print out the
+
+107
+00:11:20,392 --> 00:11:26,749
+value on the stack and that's a fine and
+elegant implementation using stacks for
+
+108
+00:11:26,749 --> 00:11:33,027
+any arithmetic expression. And it's easy
+to extend that to handle other types of
+
+109
+00:11:33,027 --> 00:11:40,754
+things and so, why does this work? Well,
+when the algorithm encounters an operator,
+
+110
+00:11:40,754 --> 00:11:46,910
+say, in the inside, we got the parenthesis,
+operand, operator, operand, parenthesis
+
+111
+00:11:47,125 --> 00:11:53,697
+its easy to see that what its going to do
+inside there is put the at the top of the
+
+112
+00:11:53,697 --> 00:11:59,647
+stack whatever it is, is to put the two
+and three on the top of the value stack
+
+113
+00:11:59,647 --> 00:12:05,534
+and plus on the top of the operating stack
+and when it hits that right parenthesis,
+
+114
+00:12:05,534 --> 00:12:11,089
+it's going to perform the operation and
+it's going to proceed then exactly as if
+
+115
+00:12:11,089 --> 00:12:17,064
+the original input where that, where the
+value replaced. So, just go in from the
+
+116
+00:12:17,064 --> 00:12:23,314
+inside out for every operation enclosed
+within parenthesis like that it's just
+
+117
+00:12:23,314 --> 00:12:29,169
+repeat the argument that's exactly as if
+the original expression were (one + five)
+
+118
+00:12:29,169 --> 00:12:34,981
+twenty and then again, replacing that one,
+one + 100, 101. That's, that's why
+
+119
+00:12:34,981 --> 00:12:41,487
+Dijkstra's algorithm works. Actually
+fairly easy to understand why it works.
+
+120
+00:12:41,487 --> 00:12:48,066
+And you can go ahead and extend this
+algorithm to add functions like logs and
+
+121
+00:12:48,066 --> 00:12:54,376
+sines or other operators and have
+precedence among operators, have them
+
+122
+00:12:54,376 --> 00:13:01,602
+associate and multiple operations, and so
+forth. And actually that's on the road to
+
+123
+00:13:01,845 --> 00:13:08,720
+developing a compiler or a way to
+translate a, a program from a programming
+
+124
+00:13:08,720 --> 00:13:16,585
+language to a computation, so
+Dijkstra's algorithm that uses stack is
+
+125
+00:13:16,948 --> 00:13:25,072
+one way for entering and understanding of
+the basis of computation.

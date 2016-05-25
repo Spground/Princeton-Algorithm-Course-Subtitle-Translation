@@ -1,0 +1,529 @@
+1
+00:00:00,000 --> 00:00:04,085
+Welcome back to algorithms. Today, we're
+going to talk about the union find
+
+2
+00:00:04,085 --> 00:00:09,098
+problem. A set of algorithms for solving
+the so-called dynamic connectivity
+
+3
+00:00:09,098 --> 00:00:14,091
+problem. We'll look at two classic
+algorithms. Quick Find and Quick Union,
+
+4
+00:00:14,091 --> 00:00:20,078
+and some applications and improvements of
+those algorithms. The subtext of today's
+
+5
+00:00:20,078 --> 00:00:27,039
+lecture really is to go through the steps
+that we'll follow over and over again to
+
+6
+00:00:27,039 --> 00:00:32,039
+develop a useful algorithm. The first step
+is to model the problem. Try to
+
+7
+00:00:32,039 --> 00:00:37,031
+understand, basically, what are the main
+elements of the problem that need to be
+
+8
+00:00:37,031 --> 00:00:41,681
+solved. Then we'll find some algorithm to
+solve the problem. In many cases, the
+
+9
+00:00:41,681 --> 00:00:46,486
+first algorithm we come up with would be
+fast enough and maybe it fits in memory
+
+10
+00:00:46,486 --> 00:00:52,024
+and, we'll go ahead and use it, and be off
+and running. But in many other cases maybe
+
+11
+00:00:52,024 --> 00:00:56,074
+it's not fast enough, or there's not
+enough memory. So, what we do is try to
+
+12
+00:00:56,074 --> 00:01:01,037
+figure out why, find a way to address
+whatever's causing that problem, find a
+
+13
+00:01:01,037 --> 00:01:06,051
+new algorithm and iterate until we're
+satisfied. This is the scientific approach
+
+14
+00:01:06,051 --> 00:01:11,099
+to designing and analyzing algorithms,
+where we build mathematical models to try
+
+15
+00:01:11,099 --> 00:01:17,061
+and understand what's going on, and then
+we do experiments to validate those models
+
+16
+00:01:17,061 --> 00:01:22,089
+and help us improve things. So, first
+we'll talk about the dynamic connectivity
+
+17
+00:01:22,089 --> 00:01:29,021
+problem, the model of the problem for
+union find. So, here's the idea. They're
+
+18
+00:01:29,021 --> 00:01:33,090
+going to have a set of N objects. Doesn't
+really matter what they are. We're going
+
+19
+00:01:33,090 --> 00:01:39,002
+to use the numbers, zero through N to
+model our objects. And then, we have the
+
+20
+00:01:39,002 --> 00:01:43,082
+idea of a connection between two objects.
+And, we'll, postulate that there's going
+
+21
+00:01:43,082 --> 00:01:48,057
+to be a command that says, connect two
+objects. Given two objects, provide a
+
+22
+00:01:48,057 --> 00:01:53,093
+connection between them. And then key part
+of the problem is find query or the
+
+23
+00:01:53,093 --> 00:01:59,097
+connected query, which just asks, is there
+a path connecting the two objects. So for
+
+24
+00:01:59,097 --> 00:02:05,021
+example, in this set of ten objects, we
+performed already, a bunch of union
+
+25
+00:02:05,021 --> 00:02:10,278
+commands, connecting four and three, three
+and eight, six and five, nine and four,
+
+26
+00:02:10,278 --> 00:02:16,526
+two and one. And now we might have a
+connected query that says, is zero connect
+
+27
+00:02:16,526 --> 00:02:22,713
+ed to seven? Well, in this case, there is
+no connection, so we say no. But if we ask
+
+28
+00:02:22,713 --> 00:02:28,281
+is eight connected to nine? We are going
+to say yes, even no we don't have a direct
+
+29
+00:02:28,281 --> 00:02:33,629
+connection between eight and nine. There
+is a path from eight to three to four to
+
+30
+00:02:33,629 --> 00:02:39,783
+nine. So, that's our problem, to be able
+to officially support these two commands
+
+31
+00:02:39,783 --> 00:02:45,444
+for given set of objects. Now, let's say
+we add a union five, zero. So, that
+
+32
+00:02:45,444 --> 00:02:51,026
+creates a connection between five and
+zero. Seven and two creates a connection
+
+33
+00:02:51,026 --> 00:02:56,744
+between seven and two. And six and one,
+between six and one. So, now if we ask our
+
+34
+00:02:56,744 --> 00:03:02,836
+zero connected to seven, well one and zero
+we can do that too. And that's a redundant
+
+35
+00:03:02,836 --> 00:03:08,528
+connection. And now, if we ask is zero
+connected to seven we're going to answer
+
+36
+00:03:08,528 --> 00:03:13,858
+yes. So that's our problem, intermix
+union, commands and connected queries and
+
+37
+00:03:13,858 --> 00:03:18,991
+we need to be able to officially support
+those commands for a large number of
+
+38
+00:03:18,991 --> 00:03:23,833
+objects. So, here's a much bigger example.
+And you can see that we're going to need
+
+39
+00:03:23,833 --> 00:03:28,128
+efficient algorithms for this. First of
+all, you can see we're going to need a
+
+40
+00:03:28,128 --> 00:03:33,085
+computer for this. It would take quite,
+quite some time for a human to figure out
+
+41
+00:03:33,085 --> 00:03:38,205
+whether there's a connection. In this case
+there is a connection. Now, the algorithms
+
+42
+00:03:38,205 --> 00:03:43,805
+that we're looking at today are not going
+to actually give the path connecting the
+
+43
+00:03:43,805 --> 00:03:48,847
+two objects. It's just going to be able to
+answer the question, is there a path? In
+
+44
+00:03:48,847 --> 00:03:53,721
+part two of the course, we'll consider
+algorithms that explicitly find paths.
+
+45
+00:03:53,721 --> 00:03:59,220
+They're not as efficient as union find
+because they have more work to do. Now,
+
+46
+00:03:59,220 --> 00:04:05,972
+applications of these, these algorithms
+involve objects of all types. These are
+
+47
+00:04:05,972 --> 00:04:11,906
+used for digital photos, where the objects
+are pixels they're used for networks,
+
+48
+00:04:11,906 --> 00:04:17,444
+where the objects are computers, social
+networks, where it's people, or computer
+
+49
+00:04:17,444 --> 00:04:23,528
+chips, where it's circuit elements or
+abstract things like variable names in a
+
+50
+00:04:23,528 --> 00:04:29,334
+program, or elements in a mathematical
+set, or physical things like metallic
+
+51
+00:04:29,334 --> 00:04:34,802
+sites in a composite system. So, all
+different types of objects for, but for
+
+52
+00:04:34,802 --> 00:04:40,574
+programming we're going to associate each
+object with a name and we'll just name the
+
+53
+00:04:40,574 --> 00:04:46,810
+objects with a number, integers from zero
+to N-1. That's a very convenient initial
+
+54
+00:04:46,810 --> 00:04:53,605
+starting point for our programs because we
+can use integers as an index into an array
+
+55
+00:04:53,605 --> 00:05:00,160
+then, and then quickly access information
+relevant to each object. And it also just
+
+56
+00:05:00,160 --> 00:05:05,777
+supresses a lot of details that are not
+relevant to union find. In fact, to make
+
+57
+00:05:05,777 --> 00:05:10,444
+this mapping from an object name to the
+integer zero through N - one is to find
+
+58
+00:05:10,444 --> 00:05:14,914
+application of a symbol table or a
+searching algorithm, which is one of the
+
+59
+00:05:14,914 --> 00:05:20,300
+things that we'll be studying later in
+this course algorithms and data structures
+
+60
+00:05:20,501 --> 00:05:26,316
+for solving that problem. Now, the
+connections, well, we need, a few abstract
+
+61
+00:05:26,316 --> 00:05:33,545
+properties that these connections have to
+satisfy. And they're all quite natural and
+
+62
+00:05:33,775 --> 00:05:40,563
+intuitive. So we assume that is connected
+to is an equivalence relation. That is,
+
+63
+00:05:40,563 --> 00:05:47,148
+every object's connected to itself, it's
+symmetric. If P's connected to Q, then Q's
+
+64
+00:05:47,148 --> 00:05:53,205
+connected to P, and it's transitive. If
+P's connected to Q, and Q's connected to
+
+65
+00:05:53,205 --> 00:05:59,128
+R, then P's connected to R. Now these
+properties are very intuitive. But it's
+
+66
+00:05:59,128 --> 00:06:05,292
+worthwhile to state them explicitly and
+make sure that our algorithms maintain
+
+67
+00:06:05,292 --> 00:06:12,452
+them. When we have an equivalence relation
+a set of objects and connections divide
+
+68
+00:06:12,452 --> 00:06:19,172
+into subsets called connected components.
+A connected component is a maximal set of
+
+69
+00:06:19,172 --> 00:06:25,056
+objects that's mutually connected. For
+example in this small example here,
+
+70
+00:06:25,056 --> 00:06:30,936
+there's three connected components. One
+consisting of just object zero, second one
+
+71
+00:06:30,936 --> 00:06:36,239
+objects one, four and five. And third one
+the other four objects. And these
+
+72
+00:06:36,239 --> 00:06:42,244
+components have the property that if any
+two objects in them are connected and
+
+73
+00:06:42,244 --> 00:06:47,096
+there is no object outside that is
+connected to those objects, that's
+
+74
+00:06:47,096 --> 00:06:53,126
+connected components. Our algorithms will
+gain efficiency by maintaining connected
+
+75
+00:06:53,126 --> 00:06:59,319
+components and using that knowledge to
+efficiently answer the query that's, that
+
+76
+00:06:59,319 --> 00:07:04,949
+they're presented with. Okay, so to
+implement the operations, we have to find
+
+77
+00:07:04,949 --> 00:07:09,840
+query and the union command. And so we're
+going to mai ntain the connected
+
+78
+00:07:09,840 --> 00:07:14,449
+components. The find is going to have to
+check if two objects are in the same
+
+79
+00:07:14,449 --> 00:07:20,243
+component and the union command is going
+to have to replace components containing
+
+80
+00:07:20,243 --> 00:07:25,872
+two objects with their union. So, for
+example, if we have these components, and
+
+81
+00:07:25,872 --> 00:07:31,906
+we get the command to union connect, two
+and five. Essentially, we need to merge
+
+82
+00:07:31,906 --> 00:07:37,965
+the connected components containing the
+one containing two or the one containing
+
+83
+00:07:37,965 --> 00:07:44,453
+five to get a big connected components and
+now we have only two connected components.
+
+84
+00:07:44,453 --> 00:07:52,821
+All of that leads up to, in a programming
+world to specifying, a data type which is
+
+85
+00:07:52,821 --> 00:07:59,122
+simply specification of the methods that
+we are want to going to implement in order
+
+86
+00:07:59,122 --> 00:08:04,980
+to solve this problem. So you know,
+typical Java model, what we will do is
+
+87
+00:08:05,224 --> 00:08:12,425
+create a class called UF that contains two
+methods, one to implement union, the other
+
+88
+00:08:12,425 --> 00:08:19,052
+one to implement connected, which returns
+a boolean. The constructor, takes SR unit,
+
+89
+00:08:19,052 --> 00:08:26,030
+the number of objects, so that it can
+build data structure based on the number
+
+90
+00:08:26,030 --> 00:08:31,089
+of objects. So, and we have to, bear in
+mind, as we're building our logarithms,
+
+91
+00:08:31,089 --> 00:08:37,029
+that both the number of objects can be
+huge, but also, the number of operations.
+
+92
+00:08:37,029 --> 00:08:42,076
+We can have a, a very large number, of
+union and connected, operations and our
+
+93
+00:08:42,076 --> 00:08:48,315
+algorithms are going to have to be
+efficient, under those conditions. One of
+
+94
+00:08:48,315 --> 00:08:56,011
+the practices that will follow often in
+this course is to check our API design
+
+95
+00:08:56,011 --> 00:09:04,029
+before getting too far into dealing with
+the problem, by building a client that is
+
+96
+00:09:04,029 --> 00:09:11,050
+going to use the data type that we
+develop. So, for this example, we've got a
+
+97
+00:09:11,050 --> 00:09:19,074
+client that, Will read information from
+standard input. First, an integer which is
+
+98
+00:09:19,074 --> 00:09:27,381
+the number of objects that are going to be
+processed. And then a series of pairs of
+
+99
+00:09:27,381 --> 00:09:35,070
+object names. And what the client does is
+it, it'll, first it'll read the integer
+
+100
+00:09:35,070 --> 00:09:42,068
+from standard input, and create a, a UF
+object. And then as long as standard input
+
+101
+00:09:42,068 --> 00:09:47,089
+is not empty, it's going to read two
+integers from the input. And if they're
+
+102
+00:09:47,089 --> 00:09:52,663
+not connected, then it'll connect them and
+print them out. If they are connected
+
+103
+00:09:52,663 --> 00:09:58,266
+it'll ignore. So, that's our test client
+and that's a fine test client to make sure
+
+104
+00:09:58,266 --> 00:10:04,702
+that any implementation does what we
+expect that it will. So, that's the setup.
+
+105
+00:10:04,702 --> 00:10:10,348
+We've described the operations we want to
+implement all the way down to code and we
+
+106
+00:10:10,348 --> 00:10:15,091
+have client code that we're going to have
+to be able to service with our

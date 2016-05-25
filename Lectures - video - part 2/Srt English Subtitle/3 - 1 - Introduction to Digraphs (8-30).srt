@@ -1,0 +1,489 @@
+1
+00:00:03,880 --> 00:00:08,155
+Today, we're, we're going to look at the
+vector graphs, which is another graph
+
+2
+00:00:08,155 --> 00:00:11,636
+processing model that's very useful in
+many applications.
+
+3
+00:00:11,636 --> 00:00:17,010
+It's very similar to the undirected grpah
+model that we looked at last time, but
+
+4
+00:00:17,010 --> 00:00:19,636
+there are some really profound
+differences.
+
+5
+00:00:19,636 --> 00:00:24,705
+After introducing the concept and looking
+at the API, we'll look at three important
+
+6
+00:00:24,705 --> 00:00:28,125
+classic algorithms for processing directed
+graphs.
+
+7
+00:00:28,369 --> 00:00:32,400
+The intro, introduction has to deal with
+just explaining the concept and seeing
+
+8
+00:00:32,400 --> 00:00:36,941
+what it does to our graph processing
+problems like the ones that we talked
+
+9
+00:00:36,941 --> 00:00:42,570
+about for undirected graphs last time.
+So, the idea isn't that the edges now have
+
+10
+00:00:42,570 --> 00:00:46,987
+direction.
+A directed graph or a digraph is a set of
+
+11
+00:00:46,987 --> 00:00:51,508
+vertices that are connected pairwise by
+directed edges.
+
+12
+00:00:51,508 --> 00:00:57,427
+So, it's list of pairs of vertices where
+the order of the pair matters.
+
+13
+00:00:57,427 --> 00:01:03,345
+So, an edge we say an edge goes from one
+vertex to another one. whereas, in
+
+14
+00:01:03,345 --> 00:01:07,538
+undirected graphs, we just talked about
+connections.
+
+15
+00:01:07,949 --> 00:01:13,330
+When we're processing such graphs or
+travelling around them, we have to follow
+
+16
+00:01:13,330 --> 00:01:17,892
+edges in the given direction.
+So, for example, if we talk about a path
+
+17
+00:01:17,892 --> 00:01:22,877
+in the diagram there's, it looks like
+there's a connection between two and zero,
+
+18
+00:01:22,877 --> 00:01:27,068
+but it only goes from two to zero.
+If you want to go from zero to two, you
+
+19
+00:01:27,068 --> 00:01:31,730
+have to follow the edges in direction
+going from zero to five to four and then
+
+20
+00:01:31,730 --> 00:01:35,390
+to two.
+In the directed graph, in this digraph you
+
+21
+00:01:35,390 --> 00:01:40,257
+can see two directly from zero.
+Similarly, a directed cycle follows the
+
+22
+00:01:40,257 --> 00:01:46,550
+edges around the direction to get back to
+the original vertex. also vertices have
+
+23
+00:01:46,550 --> 00:01:51,757
+in-degree and out-degree in digraphs.
+And the out-degree, obviously, is the
+
+24
+00:01:51,757 --> 00:01:57,109
+number of variables leaving the vertex and
+in the in-degree is the number of
+
+25
+00:01:57,109 --> 00:02:02,678
+variables coming into the vertex.
+Those are the basic definitions. let's
+
+26
+00:02:02,678 --> 00:02:08,819
+look at a couple of applications one
+obvious one is road networks where we put
+
+27
+00:02:08,819 --> 00:02:12,815
+a vertex according to intersection in an
+edge for roads.
+
+28
+00:02:12,815 --> 00:02:18,524
+And we look at a situation where most,
+where the roads are one way or can be one
+
+29
+00:02:18,524 --> 00:02:21,592
+way.
+So, if you've driven in lower Manhattan,
+
+30
+00:02:21,592 --> 00:02:26,516
+you're very familiar with this map, which
+has lots of one-way streets.
+
+31
+00:02:26,516 --> 00:02:31,012
+And it's not always clear how to get from
+one place to another.
+
+32
+00:02:31,012 --> 00:02:35,793
+You can have some two-way streets that
+have edges in both directions.
+
+33
+00:02:35,793 --> 00:02:40,289
+But with digraphs, we allow the
+abstraction of one-way streets.
+
+34
+00:02:40,860 --> 00:01:11,162
+Here's another more abstract example.
+This is the political blogosphere with
+
+35
+00:02:46,406 --> 00:02:50,008
+connections.
+If, If blogs have links to one another as
+
+36
+00:02:50,008 --> 00:02:55,050
+you can see, most of the links go from
+blue to blue or from red to red.
+
+37
+00:02:55,699 --> 00:03:01,101
+Although there are some orange links that
+go from blue to red and a few purple ones
+
+38
+00:03:01,101 --> 00:03:07,008
+that go from red to blue.
+And this gives some insight to the in the
+
+39
+00:03:07,008 --> 00:03:11,670
+political blogosphere at least in 2004.
+Here's another one.
+
+40
+00:03:11,670 --> 00:03:19,320
+This is a study of the crash in 2008, and
+it was a graph that showed the structure
+
+41
+00:03:19,320 --> 00:03:25,160
+of banks lending to one another.
+An edge corresponds from an overnight loan
+
+42
+00:03:25,160 --> 00:03:31,480
+and a vertex corresponds to the bank.
+And from studying this diagram, experts
+
+43
+00:03:31,480 --> 00:03:37,960
+can see how the banks divided into groups
+and were therefore vulnerable in these
+
+44
+00:03:37,960 --> 00:03:43,960
+groups and we'll look at a more detailed
+definitions of how these groups are
+
+45
+00:03:43,960 --> 00:03:49,240
+defined a little later on.
+This is just an example of the use of a
+
+46
+00:03:49,240 --> 00:03:50,820
+digraph.
+And it's a digraph, the bank.
+
+47
+00:03:50,820 --> 00:03:55,898
+One bank lends money to another, that's
+not the same as the banks being connected,
+
+48
+00:03:55,898 --> 00:03:59,910
+in some as in an undirected graph.
+The direction really matters.
+
+49
+00:04:00,145 --> 00:04:07,274
+This is another one from logic where the
+vertices correspond to Boolean variables
+
+50
+00:04:07,274 --> 00:04:13,619
+and the edges correspond to implication.
+And people use graphs like this to study
+
+51
+00:04:13,854 --> 00:04:18,868
+in, in logical verification, and also
+studying electric circuits.
+
+52
+00:04:18,868 --> 00:04:24,900
+Electric circuits themselves can be
+diagraphs where circuit elements have
+
+53
+00:04:24,900 --> 00:04:29,287
+input and output.
+And so, the edge of course takes the
+
+54
+00:04:29,287 --> 00:04:32,891
+output of one element to the input of
+another.
+
+55
+00:04:33,126 --> 00:04:39,240
+Trying to understand the behavior of such
+a circuit involves processing a digraph.
+
+56
+00:04:39,462 --> 00:04:43,830
+Here's another abstraction so-called
+wordnet graph.
+
+57
+00:04:44,052 --> 00:04:50,568
+Where vertices correspond in what is
+called synsets and edges correspond to
+
+58
+00:04:50,568 --> 00:04:56,046
+hypernym relationships where a, a word is
+an instance of another one.
+
+59
+00:04:56,046 --> 00:05:02,635
+So, there's a lot of different events like
+a miracle or human activity and so forth.
+
+60
+00:05:02,858 --> 00:05:09,233
+And graphs of this type are very useful in
+studying applications involving meanings,
+
+61
+00:05:09,233 --> 00:05:12,829
+meanings in human languages.
+Here's a famous one.
+
+62
+00:05:13,077 --> 00:05:19,355
+General McChrystal said that once we
+understand this graph the war in
+
+63
+00:05:19,355 --> 00:05:24,469
+Afghanistan will be over.
+So, with all these types of applications
+
+64
+00:05:24,469 --> 00:05:28,967
+and there's many, many others just as with
+graph processing.
+
+65
+00:05:28,967 --> 00:05:34,761
+Now, the digraph as it, as it is modeled
+distinct from graph processing is
+
+66
+00:05:34,761 --> 00:05:39,183
+important.
+There's many direct applications where we
+
+67
+00:05:39,183 --> 00:05:45,740
+have connections between objects but the
+direction of the connection matters.
+
+68
+00:05:45,740 --> 00:05:49,191
+So, what about digraph processing
+algorithms.
+
+69
+00:05:49,191 --> 00:05:54,384
+Well, we're going to look at many problems
+that are very similar to the ones that we
+
+70
+00:05:54,384 --> 00:05:58,959
+looked at for undirected graphs.
+But you can see that they are going to be
+
+71
+00:05:58,959 --> 00:06:03,100
+a bit more complicated.
+Even a human has trouble looking at a
+
+72
+00:06:03,100 --> 00:06:08,231
+diagraph trying to figure out a simple
+problem like, is there a path from s to t
+
+73
+00:06:08,231 --> 00:06:11,693
+in this, in this diagraph.
+Seems like there's quite a few
+
+74
+00:06:11,693 --> 00:06:17,010
+possibilities to consider to convince
+yourself whether or not there's a path.
+
+75
+00:06:17,195 --> 00:06:22,953
+And for the huge diagraphs examples that I
+looked at before obviously we're going to
+
+76
+00:06:22,953 --> 00:06:27,078
+need a computer program.
+And we're going to have a bit of a
+
+77
+00:06:27,078 --> 00:06:31,868
+challenge figuring what's going on.
+Of course, you might want to know the
+
+78
+00:06:31,868 --> 00:06:37,324
+shortest directed path from s to t for
+example, if you are driving around lower
+
+79
+00:06:37,324 --> 00:06:41,716
+Manhattan and certainly, I want to have a
+solution to that problem.
+
+80
+00:06:41,915 --> 00:06:46,972
+Then, there's another problem called the
+topological sort problem which is a
+
+81
+00:06:46,972 --> 00:06:52,228
+general model that's useful in all kinds
+of applications where were scheduling
+
+82
+00:06:52,228 --> 00:06:55,090
+events that involve precedence
+constraints.
+
+83
+00:06:55,090 --> 00:07:00,363
+In the graph obstruction or the digraph
+obstruction, it amounts to the problem of
+
+84
+00:07:00,363 --> 00:07:04,450
+trying to draw the digraph so that all the
+edges point up.
+
+85
+00:07:04,450 --> 00:07:09,781
+That's called topological sorting.
+And then, connectivity is more complicated
+
+86
+00:07:09,781 --> 00:07:15,350
+for digraphs than for undirected graphs.
+There's the concept of strong
+
+87
+00:07:15,350 --> 00:07:21,636
+connectivity, which means for any given
+pair of vertices u and v, you want to know
+
+88
+00:07:21,636 --> 00:07:28,160
+is there going to be a directed path from
+u to v and another directed path from v to
+
+89
+00:07:28,160 --> 00:07:31,422
+u.
+That's a much more complicated problem
+
+90
+00:07:31,422 --> 00:07:38,012
+than connectivity in undirected graphs.
+And, a generalization of, of that or a
+
+91
+00:07:38,012 --> 00:07:43,076
+query related to strong connectivities,
+so-called transitive closure.
+
+92
+00:07:43,299 --> 00:07:49,108
+And for that, you just want to be able
+answer the query given vertices v and w as
+
+93
+00:07:49,108 --> 00:07:52,460
+their path from w to v, a transitive
+closure.
+
+94
+00:07:52,828 --> 00:07:58,813
+And actually, you're familiar with the web
+is a gigantic directed graph.
+
+95
+00:07:59,090 --> 00:08:04,615
+If there's a link from page a to page b,
+B, that's a directed edge.
+
+96
+00:08:04,983 --> 00:08:11,798
+And digraph processing is used in famous
+page rank algorithm to determine the
+
+97
+00:08:11,798 --> 00:08:17,691
+importance of a web page.
+Those are just a couple of examples of
+
+98
+00:08:17,691 --> 00:08:22,480
+digraph processing problems that introduce
+the idea.

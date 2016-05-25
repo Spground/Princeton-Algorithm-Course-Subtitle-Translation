@@ -1,0 +1,462 @@
+As our final digraph processing algorithm,
+we'll take a look at computing strong
+components.
+So the definition two vertices, v and w,
+in a digraph are strongly connected if
+there's a directed path from v to w and
+another directed path from w to v.
+And the thing about strongly connected is
+that it's unequivalence relation. That is
+each vertex is strongly connected to
+itself.
+If v is connected to w, strongly, and w is
+strongly connected to, to, then w is
+strongly connected to v.
+That just means that paths, directed paths
+connecting them.
+And it's also transitive.
+If v is connected to w and w to x,, then v
+is strongly connected to x.
+How to get from v to x? You go from w, v
+to w and w to x,
+And get from x to v, you go from x to w
+and w to v.
+So, that means that since it's an
+equivalence relation, it divides the
+digraph up into components, into sets
+called strongly connected components that
+have the property that there's directed
+paths connecting each pair of vertices in
+the set.
+So, for example nine and twelve are
+strongly connected,
+There's a path from twelve to nine,
+Another one from nine to twelve and so
+forth.
+So the,
+Our challenge is to compute the strong
+components in diagraphs.
+And it's worth comparing this to what we
+did for connected components in undirected
+graphs.
+So, this is just a quick review.
+In an undirected graph, if there's a path
+between two vertices that are connected,
+that's an equivalence relation, divides
+them up into connective components.
+And what we did was, our design pattern is
+to build our graph processing algorithm as
+a constructor that takes a graph and does
+the pre-processing to create a table like
+this one which assigns a unique ID to all
+the vertices in each given component.
+So, that we can have a constant time
+client query to check whether two given
+vertices are in the same connected
+component or not.
+So, linear time processing, pre-processing
+in the constructor to build the table,
+constant time client queries.
+And that's as good performance as we can
+expect to have for a graph for a graph
+processing algorithm.
+Remarkably, now, we're able to do the same
+thing for strong connectivity.
+It's a, it's a much more sophisticated
+algorithm but the design pattern and the
+bottom line for the client is the same.
+There's a constructor, it processes the
+graph in linear time.
+And it assigns a unique ID to each one of
+the strongly connected components in the
+graph.
+So, once in the component by itself,
+Zero, two, three, four, and five six, and
+eight, seven, and nine, ten, and twelve,
+There's five different strongly connected
+components in this graph.
+The constructor builds that array and the
+client gets to in constant time, know
+whether two vertices are strongly
+connected or not.
+It's quite amazing that we can solve this
+problem in this way.
+And as I'd mentioned it's got an
+interesting history that we'll talk about
+in a second.
+So, here's an example of strong component
+application.
+So, the food web graph,
+This is a very small subset of that graph.
+The vertices are all the, species and an
+edge goes from producer to consumer.
+So, if animal a eats animal b, there's an
+edge from a to b.
+And what a strong component corresponds to
+in this graph is a kind of a subset of
+species that, have a common energy flow.
+They naturally eat each other.
+And that's extremely important in
+ecological studies.
+Another example is again, in processing
+software big software is made up of
+modules.
+And the vertices are, are, are, are the
+modules.
+And edges is if one depends on another.
+And so a strong component in this graph is
+a subset of mutually interacting modules.
+And in a huge program like Internet
+Explorer you want to know what the strong
+components are so that you can package
+them together and maybe improve the
+design.
+So again, software you know, can, these
+graphs can be huge.
+And this kind of graph processing can be
+extremely important in improving the
+design of software.
+Now again this algorithm has an
+interesting history,, it along with
+scheduling and other things that's a core
+problem in operations research that was
+widely studied, but really not understood
+how difficult it was.
+In Tarjan's paper in 1972 was a big
+surprise that this could be solved in
+linear time with depth research.
+Now this algorithm had a couple of other
+data structures and this I guess,
+A diligent student in this class could
+understand it with quite a bit of work.
+But it really demonstrated the importance
+of depth-first search in great graph
+processing.
+Now, the algorithm that we're going to
+talk about today actually was invented in
+the 80s' by Kosaraju and, and
+independently by Sharir.
+The story goes that Kosaraju had to go
+lecture about Tarjan's algorithms and he
+forgot his notes.
+And he had taught it a number of times, he
+was trying to figure out what Tarjan's
+algorithm did and he developed this other
+algorithm that's extremely simple ro
+implement.
+That's what we're going to look at today,
+today.
+And actually in the 1990s Gabow and
+Mehlhorn and particularly, Melhorn had to
+implement this algorithm for a big
+software package and he found another
+simple linear time algorithm.
+Now, so, this story indicates even from
+fundamental problems in graph processing
+there's algorithms out there still waiting
+to be discovered and this, this algorithm
+is a good example of that.
+So we give the intuition in the code and
+you see how the algorithm works fully
+convincing yourself or proving why it
+works is a bit more of a challenge.
+Now, we'll leave that mostly for the book.
+But let's describe what it is.
+So, the first idea is to think about the
+reverse graph.
+So if we take a graph and we reverse the
+sense of all the edges we're going to get
+the same, strong components.
+We need edges in both directions.
+So, if we switch the directions, we're
+still going to have edges in both
+directions.
+The, the second concept is called the,
+the, the kernel DAG.
+And what that does, is it kind of, you
+think about contracting each strong
+component into a single vertex.
+And then, just to worry about the edges
+that go from one strong component to
+another.
+So the digraph that you get that way,
+turns out to be a cyclic.
+If it was cyclic, it would involve, it
+would create a bigger strong component, a
+couple of strong components into one.
+So if we think about that processing that
+kernel DAG, that's the edges that go
+between strong components and we get a DAG
+and we know how to deal with a DAG So, the
+idea of the algorithm is to go ahead and
+compute the topological order or the
+reverse post order in the kernel DAG.
+At least put up the edges of the original
+digraph in order so that all the edges in
+the kernel DAG point from right to left,
+That's like a topological sort.
+And then we run DFS but instead of
+considering the vertices in, in numerical
+order for the DFS, we consider them in
+that reverse topological order.
+So it's extremely easy to implement this
+algorithm.
+Of course, we're going to use DFS.
+So let's look at a demo at how the
+algorithm works., okay, so, this is a
+digraph, and our goal is to compute the
+strong components.
+And we're going to do it in two phases,
+two DFSs.
+One is to compute the reverse post order
+and the reverse of the graph.
+And the other is to run the DFS but for
+the other in which we visit the vertices,
+we use that reverse post order that we've
+computed. so here goes.
+So, first, we'll do the DFS and the
+reverse graph.
+So that's the graph, that's the reverse
+graph.
+Remember, these two has the same strong
+component.
+So, there's our marked array.
+We will do the DFS, and reverse post order
+means that when we are done with the
+vertex, we'll put it out.
+So checked six unmarked, checked eight
+unmarked checked six, it's marked. so
+we're done with a answer, that's the
+reverse post order. and again, as before,
+put it on a stack and but we'll just list
+them in reverse order in this demo.
+So, eight is done.
+So, six lots of places to go from six.
+So, let's check seven.
+That's unmarked, so we go to seven.
+No place to go from seven, so we're done
+with seven.
+We put it on the reverse post order list.
+We're also done with six.
+Cuz four and nine are coming in, in this
+example, so I put it on the list.
+Next place to go from zero is two, so we
+checked two
+That's unmarked so we mark it and recurse
+and we checked the vertices adjacent to
+two.
+First, four, that's unmarked.
+So, then we recurse and go to four.
+We gotta got to, to eleven first and
+recurse so now we're at eleven.
+And, and from eleven, we go to nine, which
+is unmarked.
+So we have a pretty long recursive stack
+right here.
+So, from nine, there's we have to check a
+bunch of things, we'll check twelve first
+and then visit twelve.
+It's unmarked from twelve, we checked
+eleven which is marked, nowhere to go.
+Then, we checked ten. That's unmarked, so
+we go to ten.
+Visit ten it's, it's unmarked so we
+recurse and then go to nine.
+And that's marked and that's everywhere we
+get from ten.
+So, we're done with ten, so we put it on
+the list and return. And now, where done
+with twelve, so we put it on the list and
+return.
+And now, at nine, we have to check seven,
+which is marked, and six, which is marked.
+And then, we're done so we put it on the
+list.
+Then, we're done with eleven we put it on
+the list.
+Then we're finished with four, so we
+checked six which is marked, then we
+checked five, which is unmarked so we
+recurse to five.
+From five, we checked three which is
+unmarked so we recurse.
+Then, we checked four which is mark, we
+checked two which is mark.
+And then we're done with three, so we put
+it on the list.
+And then from five we checked zero it's
+marked so we're done with five, we put it
+on the list.
+And that means that we're now done with
+four.
+And then, we're also done with two, after
+checking three.
+And then, we go to zero and put it on the
+list.
+So, that's all the vertices that, you
+know, you get through from zero.
+So, we look for more vertices and it's one
+and it's marked so that's the last one in
+the reverse post order.
+So, that's a reverse post order of the
+reverse graph.
+And all we're going to do is take that
+order and use that order to check vertices
+at the top level in the depth-first search
+of our regular graph.
+We have to check all the other vertices to
+make sure we are done.
+So, that's phase one.
+So now, we'll just do a DFS in the
+original graph, using that order that we
+just computed. So, we don't start with
+zero, the way we always have, now we start
+with one. we visit one, its unmarked and
+now all the vertices that we visit during
+that DFS are going to be in that same
+strong component, that's the theorem that
+makes this algorithm work, in this case,
+this is only the one, so vertex one is its
+own, is in its own strong component with
+label zero.
+So now, we've got to start, once all done,
+so now, we have to start with looking for
+another vertex to search from.
+In this case, it's zero that's second on
+the list.
+So that's where we start,
+With zero.
+And now, all the vertices that we can
+reach from zero are going to have strong,
+in this graph, are going to have strong
+component label one.
+So, we do the DFS.
+So, first, we get to five.
+That's in the same strong component we
+checked four.
+And it's unmarked.
+So, we label it.
+We checked three, it's unmarked.
+We checked five, which is marked.
+We checked two, which is unmarked.
+So now we have shown that zero, two,
+three, four, and five are all in the same
+strong component.
+And now we're going to find both vertices
+we can get three from two or mark.
+So we're done with two then we're done
+with three.
+Four, we have to check two, which is
+marked.
+And then, we're done with four and five.
+From zero we can check one but that's
+already marked so that's not relevant for
+this search and then we're done with zero.
+And we've established that zero, two,
+three, four, and five are all in the same
+strong component.
+, So that's the second one.
+So now, we continue and we check all of
+those and they're all marked. so, the next
+vertex in the reverse post order of the
+reverse graph is eleven so we visit
+eleven.
+Checked four,
+It's already marked.
+Checked twelve,
+It's not so aj. we mark it, and these are
+the third strong component.
+They get labeled with two.
+Then, we get to nine. from nine, we check
+eleven and nowhere to go. Then, we checked
+ten, and so that's seems a strong
+component. from ten, we checked twelve,
+which is marked. We're done with ten, were
+done with nine, were done with twelve, and
+were done with eleven. so, that's our
+second strong or third strong component
+nine, ten, eleven and twelve.
+So we're done with those and now we go
+through the list to find another unmarked
+vertex.
+Nine is marked, twelve is marked, ten is
+marked. we get to six from six nine is
+already marked. four is four is already
+marked.
+Eight is not marked so we go there. from
+eight, we get to six and that's it.
+Zero is already marked so we can only get
+to eight from six at this point, and so
+that's a strong component.
+And then finally, we finish up by doing
+seven.
+So the end of the computation gives us the
+strong component array, which is a unique
+ID for each of the vertices so that two
+vertices in the same strong component have
+the same ID.
+And that supports constant time strong
+connectivity checks for clients.
+And so, the bottom line is that this
+algorithm is a very simple even though it
+might be mysterious algorithm for
+computing the strong component.
+First, run DFS on the reverse graph to
+compute the reverse post order.
+Then, run DFS on the original graph
+considering the vertices in the order
+given by the first DFS.
+And so these, these diagrams give a
+summary of the computation.
+I'm not going to spend too much time
+explaining why and how it works in this
+lecture.
+But these kinds of diagrams give the
+detail that can give some intuition about
+how and why the algorithm works.
+The for the proof it requires some
+mathematical sophistication and find it in
+the book.
+But the programming of it is quite simple
+and proved that it's efficient is and all
+it does is run DFS twice but to really see
+the correctness proof you want to look a
+the second printing of the textbook. we
+got it wrong in the first printing.
+And, but look at the implementation so,
+this is connected components and in the
+undirected graph with DFS that we did last
+time and I'm sure many of you thought that
+it was one of the simplest algorithms that
+we looked at.
+We just marked the vertices and do
+recursive and that's the end of it.
+If you take that code and just had I'll
+change the names.
+And then just instead of going for the
+vertices from zero through v minus one if
+you first compute the depth-first order
+that you get by running doing that first
+search of the reverse graph and then you
+iterate through the vertices in that
+order, you get an algorithm for strong
+connectivity.
+It's really remarkable that just changing
+that one line will perform this
+computation that was thought to be
+difficult for,, for many years, and, and
+people were learning quite difficult codes
+for, for many, many years.
+So, that's a quick summary of digraph
+processing.
+We talked about single source reachability
+getting the paths from a vertex to any
+vertex that can be reached from that
+vertex with a directed path.
+We talked about topological sort in graphs
+that have no cycles and that uses DFS.
+And we talked about computing strong
+components in a digraph with two DFSs.
+Digraph processing is really h, a
+testimony to the ingenuity that's possible
+in algorithm and graph processing.

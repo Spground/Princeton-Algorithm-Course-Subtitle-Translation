@@ -1,0 +1,1224 @@
+1
+00:00:03,460 --> 00:00:11,326
+Let's finish up by looking at some
+applications of maxflow like shortest
+
+2
+00:00:11,326 --> 00:00:17,352
+paths maxflow is a very widely-applicable
+problem solving model. And it is really
+
+3
+00:00:17,548 --> 00:00:22,582
+important to recognize at this stage,
+We've looked at a lot of algorithms for
+
+4
+00:00:22,582 --> 00:00:26,308
+solving specific problems.
+And they're important problems.
+
+5
+00:00:26,308 --> 00:00:30,557
+And it's important to have efficient
+algorithms for solving them.
+
+6
+00:00:30,557 --> 00:00:36,245
+But when you have something like maxflow
+or shortest paths the, the importance that
+
+7
+00:00:36,245 --> 00:00:41,605
+we attach to them is really magnified by
+the idea that they have this property
+
+8
+00:00:41,605 --> 00:00:47,097
+that, that they're a very general way to
+state a problem and we have many, many
+
+9
+00:00:47,097 --> 00:00:52,470
+practical situations that we can cast in
+terms of these problems.
+
+10
+00:00:52,651 --> 00:00:57,141
+We looked at arbitrage coming or reducing
+down to a shortest paths problem.
+
+11
+00:00:57,323 --> 00:01:02,418
+And we'll look at a bunch of problems that
+don't seem to be related at all, that can
+
+12
+00:01:02,418 --> 00:01:06,742
+be modeled as maxflow problems.
+So, they're extremely important because
+
+13
+00:01:06,925 --> 00:01:11,628
+they're problem solving models that work
+for a broad variety of important
+
+14
+00:01:11,628 --> 00:01:15,232
+applications.
+Number one that wouldn't be any good if we
+
+15
+00:01:15,232 --> 00:01:18,286
+didn't have efficient algorithms for
+solving them.
+
+16
+00:01:18,286 --> 00:01:21,523
+But we do have efficient algorithms for
+solving them.
+
+17
+00:01:21,523 --> 00:01:26,226
+And so, that magnifies their importance.
+And that's why people work so hard on
+
+18
+00:01:26,226 --> 00:01:29,830
+finding efficient algorithms for solving
+these problems.
+
+19
+00:01:29,830 --> 00:01:32,640
+And we'll talk about that as well in a
+minute.
+
+20
+00:01:32,640 --> 00:00:58,905
+So, these are, again, just a few of the
+many, many algorithms applications of
+
+21
+00:01:38,410 --> 00:01:45,117
+maxflow We saw an image processing
+algorithm called syncarving for shortest
+
+22
+00:01:45,117 --> 00:01:48,626
+path.
+There's another one called segmentation
+
+23
+00:01:48,626 --> 00:01:55,098
+for maxflow. Again, if you have an image
+and you have one vertex per pixel you have
+
+24
+00:01:55,098 --> 00:01:59,855
+a huge, huge graph.
+And you have many explicit huge graphs and
+
+25
+00:01:59,855 --> 00:02:06,406
+we've talked about those types of things.
+But there are other things where the graph
+
+26
+00:02:06,406 --> 00:02:12,912
+is, is an abstraction that it gets
+involved in a model of the abstract graph
+
+27
+00:02:12,912 --> 00:02:18,114
+and the maxflow problem.
+Its maybe a bit surprising at first, and
+
+28
+00:02:18,114 --> 00:02:23,240
+we'll look at a couple examples of that to
+illustrate the point.
+
+29
+00:02:23,438 --> 00:02:27,200
+Over here is a medical example having to
+do with it.
+
+30
+00:02:27,200 --> 00:02:32,216
+That's the, the image processing one on a
+medical example to help identify some
+
+31
+00:02:32,216 --> 00:02:37,624
+important part of a medical image.
+So, we'll look at a, at a couple examples
+
+32
+00:02:37,624 --> 00:02:43,807
+to that the idea of a general problem
+solving model that, once we have an
+
+33
+00:02:43,807 --> 00:02:49,400
+efficient algorithm, then we can think
+about using the problem solving model.
+
+34
+00:02:49,400 --> 00:02:55,582
+And later on, we'll see that this, this
+concept of a general problem solving model
+
+35
+00:02:55,582 --> 00:03:01,250
+has really profound implications and we'll
+be looking at that later on.
+
+36
+00:03:01,250 --> 00:03:04,654
+So, let's just look at a, at a couple of
+examples.
+
+37
+00:03:04,654 --> 00:03:08,130
+Here's one called the bipartite matching
+problem.
+
+38
+00:03:08,352 --> 00:03:12,212
+So you have this is a bit of an idealized
+situation.
+
+39
+00:03:12,212 --> 00:03:16,072
+But it works in more messy, real life
+situations, too.
+
+40
+00:03:16,072 --> 00:03:20,378
+So, there's n jobs out there and n
+students apply for them.
+
+41
+00:03:20,378 --> 00:03:25,722
+And we'll use a small example where
+there's five students and five jobs.
+
+42
+00:03:25,722 --> 00:03:29,360
+But, of course, in the real world, this
+can be huge.
+
+43
+00:03:29,360 --> 00:03:35,446
+Now during hiring season, the students go
+out and apply for the jobs and they each
+
+44
+00:03:35,446 --> 00:03:40,481
+get a bunch of offers.
+So looking at it from a student's point of
+
+45
+00:03:40,481 --> 00:03:44,031
+view.
+Alice gets offers from Adobe, Amazon, and
+
+46
+00:03:44,031 --> 00:03:47,433
+Google.
+Adobe makes offers to Alice, Bob, and
+
+47
+00:03:47,433 --> 00:03:51,426
+Carol, and like that.
+So, this is an association between
+
+48
+00:03:51,426 --> 00:03:55,420
+students and jobs.
+Everybody gets several offers.
+
+49
+00:03:55,847 --> 00:04:03,491
+And in question is well, it would be good
+if everybody got a job, right?
+
+50
+00:04:03,731 --> 00:04:08,918
+And the question is, is there some way for
+everybody to get a job.
+
+51
+00:04:09,157 --> 00:04:12,749
+That's called the bipartite matching
+problem.
+
+52
+00:04:12,988 --> 00:04:19,532
+And it comes up in lots of forms directly
+related to graph processing.
+
+53
+00:04:19,532 --> 00:04:25,176
+Now, we could study and people do study
+algorithms for explicitly solving this
+
+54
+00:04:25,176 --> 00:04:29,216
+particular problem.
+But what I want to emphasize is that
+
+55
+00:04:29,216 --> 00:04:32,547
+actually, maxflow is a reasonable model
+for it.
+
+56
+00:04:32,547 --> 00:04:37,437
+So, we can use our efficient maxflow
+implementation to get it solved.
+
+57
+00:04:37,650 --> 00:04:42,470
+We don't have to come up with a
+specialized algorithm for this problem.
+
+58
+00:04:42,678 --> 00:04:47,619
+So, in terms of graphs, it's called the
+bipartite matching problem,
+
+59
+00:04:47,619 --> 00:04:50,959
+Given a bipartite graph, find a perfect
+matching.
+
+60
+00:04:50,959 --> 00:04:56,735
+And a bipartite graph is one where you
+have two sets of vertices, in this case,
+
+61
+00:04:56,735 --> 00:05:02,048
+one to corresponding to students and
+another corresponding to companies.
+
+62
+00:05:02,270 --> 00:05:08,321
+And you have every edge in the graph goes
+from one type of vertex to other, the
+
+63
+00:05:08,321 --> 00:05:13,192
+other type of vertex.
+And a matching in the graph is a set of
+
+64
+00:05:13,192 --> 00:05:19,570
+edges that are disjoint that disconnects
+two vertices but that's it.
+
+65
+00:05:19,776 --> 00:05:25,360
+And so, in this case, there's a perfect
+matching works out that if Alice takes the
+
+66
+00:05:25,360 --> 00:05:30,943
+Google job and Bob takes the Adobe job and
+Carol takes the Facebook job and like
+
+67
+00:05:30,943 --> 00:05:35,264
+that, then everybody gets a job.
+So, that's a perfect matching.
+
+68
+00:05:35,469 --> 00:05:39,771
+But you can also have a situation where
+that's not possible.
+
+69
+00:05:39,976 --> 00:05:45,165
+So let's look at how to formulate,
+How to, well, the one thing is, how do we
+
+70
+00:05:45,165 --> 00:05:49,603
+find the matching?
+And then the other thing is, is there one?
+
+71
+00:05:49,808 --> 00:05:54,383
+So this is easy to formulate as a matching
+network flow problem.
+
+72
+00:05:54,383 --> 00:05:59,481
+That's what this diagram shows.
+So, what we'll do is we'll create our
+
+73
+00:05:59,481 --> 00:06:05,041
+source and target vertices.
+We'll have one vertex for each student.
+
+74
+00:06:05,041 --> 00:06:08,909
+One vertex for each company in the flow
+network.
+
+75
+00:06:09,150 --> 00:06:13,743
+And we'll add a capacity one edge from s
+to each student.
+
+76
+00:06:13,743 --> 00:06:20,673
+And a capacity one edge from t to from
+each company to t and then it doesn't
+
+77
+00:06:20,673 --> 00:06:25,992
+matter what the capacity.
+We'll add an infinite capacity edge from
+
+78
+00:06:25,992 --> 00:06:33,434
+each student to each job offer.
+And then, we'll ask for a maximum flow in
+
+79
+00:06:33,434 --> 00:06:38,982
+this graph.
+So, you can see that the flow, every
+
+80
+00:06:38,982 --> 00:06:49,560
+augmenting path has to go from s to a
+student to a company to t and so, the flow
+
+81
+00:06:49,560 --> 00:06:54,201
+will give us the match and let's see how
+it works.
+
+82
+00:06:54,464 --> 00:07:01,556
+This is a, a one to one correspondence
+between perfect matchings and bipartite
+
+83
+00:07:01,556 --> 00:07:08,824
+graphs, and integer value maxflows. so, in
+this case, there's a flow of value five.
+
+84
+00:07:08,824 --> 00:07:13,290
+And that flow gives us the matching
+immediately.
+
+85
+00:07:13,589 --> 00:07:21,274
+So what the mean cut tells us if, if
+there's a no perfect matching, explain
+
+86
+00:07:21,274 --> 00:07:26,065
+why.
+So, here's an example that maybe could
+
+87
+00:07:26,065 --> 00:07:34,348
+have happened with the job offers.
+And when the we're algorithm terminates it
+
+88
+00:07:34,348 --> 00:07:43,064
+terminates with a cut we're the, a cut of
+the bipartite graph, which separates two,
+
+89
+00:07:43,064 --> 00:07:48,647
+four, and five from seven and ten.
+And essentially the cut tells us that
+
+90
+00:07:48,873 --> 00:07:54,606
+students in two, four, or five can only be
+matched to companies seven and ten.
+
+91
+00:07:54,606 --> 00:08:00,038
+You could see all the edges from two,
+four, five go to seven and ten, so you
+
+92
+00:08:00,038 --> 00:08:06,601
+have two companies and three students.
+So, there's no way that everybody can be
+
+93
+00:08:06,601 --> 00:08:14,516
+matched, somebody's gonna be left out.
+So that's a the students, so that they'll
+
+94
+00:08:14,516 --> 00:08:19,423
+be a mean cut, and the s will be the
+students on the s side and t will be the
+
+95
+00:08:19,423 --> 00:08:24,782
+companies on the s side and if it's bigger
+than, s is bigger than t, then I can't
+
+96
+00:08:24,782 --> 00:08:28,592
+have a matching.
+So in this case at, there's only, four
+
+97
+00:08:28,592 --> 00:08:34,399
+jobs and somebody is going to be left out.
+It's also interesting to trace through
+
+98
+00:08:34,399 --> 00:08:39,740
+what happens with the maxflow algorithm on
+bipartite graphs like this.
+
+99
+00:08:39,968 --> 00:08:46,057
+Essentially augmenting paths or usually
+forward edges makes some matching.
+
+100
+00:08:46,285 --> 00:08:51,841
+And then if it's possible to find a path
+that undoes some matching.
+
+101
+00:08:52,070 --> 00:08:59,148
+It, zig zags through, undoing matching and
+trying other ones to find a way through to
+
+102
+00:08:59,148 --> 00:09:03,943
+the target.
+But if there's no perfect matching,
+
+103
+00:09:03,943 --> 00:09:08,510
+there'll be a mean cut.
+And that one will explain why.
+
+104
+00:09:08,510 --> 00:09:13,213
+So, that's a problem,
+The bipartite matching problem that we can
+
+105
+00:09:13,213 --> 00:09:18,630
+model as a maxflow algorithm and just use
+our existing code to solve it.
+
+106
+00:09:18,630 --> 00:09:22,605
+Here's another one that's even further
+away.
+
+107
+00:09:22,673 --> 00:09:27,427
+It doesn't seem to have a graph at all,
+but it does.
+
+108
+00:09:27,427 --> 00:09:31,233
+It's called the baseball elimination
+problem.
+
+109
+00:09:31,487 --> 00:09:39,270
+In this is again, just to show the breadth
+of applicability of the maxflow model.
+
+110
+00:09:39,486 --> 00:09:45,397
+It's interesting at certain times of year,
+you get near the of the baseball season
+
+111
+00:09:45,613 --> 00:09:52,172
+and often you'll hear in the news, or see
+in the paper, or see in the web, that your
+
+112
+00:09:52,172 --> 00:09:57,843
+team is mathematically eliminated.
+Actually most of the time, they don't
+
+113
+00:09:57,843 --> 00:10:04,094
+really get that right because they don't
+do the computation that we're going to
+
+114
+00:10:04,094 --> 00:10:08,559
+talk about next.
+Sometimes, it's easy this is an example
+
+115
+00:10:08,559 --> 00:10:13,267
+where it's easy.
+So we've got four teams, they already have
+
+116
+00:10:13,267 --> 00:10:18,220
+this win-loss record and this is the
+number of games to play.
+
+117
+00:10:18,715 --> 00:10:28,088
+So in this case Montreal has only three
+games to play. so the best they could do
+
+118
+00:10:28,088 --> 00:10:32,489
+is win 80.
+Ag, but Atlanta has already got 83 wins so
+
+119
+00:10:32,489 --> 00:10:38,935
+there's no way Montreal is going to win.
+So, that's a mathematical elimination that
+
+120
+00:10:38,935 --> 00:10:44,201
+anyone could figure out.
+Usually the newspaper will get that one
+
+121
+00:10:44,201 --> 00:10:48,682
+right.
+So but sometimes it's more complicated if
+
+122
+00:10:48,682 --> 00:10:54,942
+you look, say, this case.
+So Philly has 80 wins, three games to
+
+123
+00:10:54,942 --> 00:10:59,103
+play.
+So the best they can do is 83 wins.
+
+124
+00:10:59,394 --> 00:11:06,749
+So that's interesting.
+But the thing is that Atlanta has a bunch
+
+125
+00:11:06,749 --> 00:11:12,460
+of games against, it's got six games
+against the Mets.
+
+126
+00:11:12,790 --> 00:11:19,149
+And either Atlanta wins one of them, which
+would give Atlanta 84 wins, or the Mets
+
+127
+00:11:19,149 --> 00:11:23,030
+win all of them, in which case, they get
+84 wins.
+
+128
+00:11:23,030 --> 00:11:27,407
+Either way, Philadelphia is mathematically
+eliminated.
+
+129
+00:11:27,985 --> 00:11:32,444
+That's a bit more complicated decision
+about which team wins.
+
+130
+00:11:32,774 --> 00:11:38,060
+The thing is and there's many more
+complicated situations that show up. And
+
+131
+00:11:38,342 --> 00:11:43,915
+the observation, just from these two easy
+examples, is that you can't figure out
+
+132
+00:11:43,915 --> 00:11:49,206
+who's mathematically eliminated without
+knowing the full schedule of games.
+
+133
+00:11:49,206 --> 00:11:54,568
+It depends, not only on how many games
+were already won, how many are left to
+
+134
+00:11:54,568 --> 00:11:58,659
+play, but it depends on the schedule and
+who's playing who.
+
+135
+00:11:58,942 --> 00:12:04,585
+And usually, your average sportswriter is
+not going to do that computation without a
+
+136
+00:12:04,585 --> 00:12:07,830
+computer.
+And I hope that one of you becomes a
+
+137
+00:12:07,830 --> 00:12:11,570
+sportswriter and puts this in for the
+future for us.
+
+138
+00:12:11,829 --> 00:12:15,805
+So let's look at a more complicated
+situation.
+
+139
+00:12:16,064 --> 00:12:23,238
+So this is the American League East awhile
+ago near the end of the season.
+
+140
+00:12:23,584 --> 00:12:29,634
+And question is which teams are
+mathematically eliminated and which ones
+
+141
+00:12:29,634 --> 00:12:38,019
+aren't.
+Now in this case it turn's out that the,
+
+142
+00:12:38,019 --> 00:12:42,955
+this is pretty far from the end of the
+season actually.
+
+143
+00:12:42,955 --> 00:12:48,843
+These 27 games to finish.
+And this is a proof here that Detroit is
+
+144
+00:12:48,843 --> 00:12:54,687
+mathematically eliminated.
+But it's a pretty complicated argument and
+
+145
+00:12:54,921 --> 00:12:58,894
+well, you can, you can reason it out with
+arithmetic.
+
+146
+00:12:59,128 --> 00:13:04,192
+The tough part is to figure out this set
+of teams here are.
+
+147
+00:13:04,192 --> 00:13:10,659
+So what we're going to see is that you can
+do a maxflow computation to figure out
+
+148
+00:13:10,659 --> 00:13:15,256
+this sets of teams.
+And this, let's just look at it for this
+
+149
+00:13:15,256 --> 00:13:18,676
+example.
+So, at this point, Detroit is
+
+150
+00:13:18,676 --> 00:13:26,365
+mathematically eliminated.
+And so it's got 27 games to play, so it
+
+151
+00:13:26,365 --> 00:13:35,327
+could in theory, win 76 of the games.
+Now but the logic that will convince you
+
+152
+00:13:35,327 --> 00:13:42,764
+that they are eliminated is that if you
+take the four teams the other four teams
+
+153
+00:13:43,050 --> 00:13:48,294
+and add up all their wins there's 278 of
+them.
+
+154
+00:13:48,580 --> 00:13:53,347
+And you look at the remaining games
+there's 27.
+
+155
+00:13:53,347 --> 00:13:58,019
+So somebody's gotta win every one of those
+games.
+
+156
+00:13:58,305 --> 00:14:07,084
+The total number of games won for that set
+of The teams is 305, and if you divide by
+
+157
+00:14:07,084 --> 00:14:10,346
+four.
+It means the average is 76.25.
+
+158
+00:14:10,346 --> 00:14:15,940
+And right there is a proof that one of
+them is got to win 77 games.
+
+159
+00:14:16,190 --> 00:14:22,287
+That takes a little thought, but if you
+have the four teams, then from the
+
+160
+00:14:22,287 --> 00:14:28,718
+remaining games, you can figure out that
+Detroit is mathematically eliminated.
+
+161
+00:14:28,718 --> 00:14:32,643
+But the key is, how do we find those four
+teams.
+
+162
+00:14:32,977 --> 00:14:39,241
+And the answer, as I've already said, is
+it's maxflow. and so this is a maxflow
+
+163
+00:14:39,241 --> 00:14:45,955
+network that can be used to solve the
+baseball elimination problem.
+
+164
+00:14:46,262 --> 00:14:54,561
+So the intuition is that, that you have a
+source vertex and you have what happens in
+
+165
+00:14:54,561 --> 00:15:00,624
+the remaining games flowing from the
+source to the target.
+
+166
+00:15:00,840 --> 00:15:06,956
+So here we're trying to prove that team
+four is we're trying to decide if team
+
+167
+00:15:06,956 --> 00:15:11,058
+four is eliminated or not.
+That's Detroit, in this case.
+
+168
+00:15:11,058 --> 00:15:17,031
+And so, what we need is a vertex for each
+pair of vertices that are not the team
+
+169
+00:15:17,031 --> 00:15:21,852
+we're interested in.
+And so, that's going to relate to all the
+
+170
+00:15:22,068 --> 00:15:25,881
+remaining games because these are the
+pairs of teams.
+
+171
+00:15:25,881 --> 00:15:31,644
+And then you have an edge from the source
+to each one of those vertices.
+
+172
+00:15:31,644 --> 00:15:37,610
+And the capacity of the edge is the number
+of games left between those two.
+
+173
+00:15:37,884 --> 00:15:43,840
+So that's on one end.
+And then, you have a vertex for each team.
+
+174
+00:15:44,138 --> 00:15:48,025
+And then what we do for each one of these
+pair of vertices,
+
+175
+00:15:48,025 --> 00:15:52,285
+We put infinite capacity edges to the two
+teams involved.
+
+176
+00:15:52,509 --> 00:15:58,040
+So, the flow is going to be an integer
+flow, so some of it will go one way and
+
+177
+00:15:58,040 --> 00:16:03,646
+some of it will go the, the other way.
+But then, for each of the teams what we're
+
+178
+00:16:03,646 --> 00:16:09,625
+going to do is, make sure that they don't
+win more games than team four, the team
+
+179
+00:16:09,625 --> 00:16:14,494
+we're interested in.
+So, we'll put this upper bound on the flow
+
+180
+00:16:14,494 --> 00:16:21,324
+here that we won't let the numbers of wins
+get better than what our team of interest,
+
+181
+00:16:21,324 --> 00:16:26,160
+team four can do.
+And the fact is that if you compute a
+
+182
+00:16:26,160 --> 00:16:33,949
+maxflow of this you can convince yourself,
+that if you can fill this network up
+
+183
+00:16:34,203 --> 00:16:41,229
+going, going from s in, in the maxflow
+Then team four, team four is not going to
+
+184
+00:16:41,229 --> 00:16:45,716
+be eliminated.
+Nobody's going to get more wins than team
+
+185
+00:16:45,716 --> 00:16:49,331
+four.
+And so the way to solve the baseball
+
+186
+00:16:49,331 --> 00:16:55,490
+elimination problem is to run maxflow on
+this network, and the mean cut will give
+
+187
+00:16:55,490 --> 00:17:01,724
+the set of keys, it's our, mean cut will
+give the set of teams that you needed in
+
+188
+00:17:01,724 --> 00:17:08,181
+this calculation to figure out to prove to
+a friend that, or to a sportswriter that
+
+189
+00:17:08,181 --> 00:17:11,669
+the team you're interested in is, is
+eliminated.
+
+190
+00:17:11,669 --> 00:17:17,532
+An interesting application of maxflow.
+Again, we just take our problem, use it to
+
+191
+00:17:17,532 --> 00:17:22,851
+build a network solve the problem on the
+network using our existing code and
+
+192
+00:17:22,851 --> 00:17:27,050
+translate that solution to a solution to
+our original problem.
+
+193
+00:17:27,226 --> 00:17:31,919
+That's called reduction and it's a very
+important technique that we're going to
+
+194
+00:17:31,919 --> 00:17:35,440
+use we're going to talk about it in some
+detail later on.
+
+195
+00:17:35,791 --> 00:17:42,236
+So now we come to the theory of maxflow
+algorithms.
+
+196
+00:17:42,588 --> 00:17:48,435
+This is ,, an even hotter area than
+minimum spanning tree and shortest paths
+
+197
+00:17:48,435 --> 00:17:53,676
+that we've looked at before and that it's
+a very frustrating situation for
+
+198
+00:17:53,676 --> 00:17:58,280
+theoretical computer scientists.
+And that we have this relatively
+
+199
+00:17:58,280 --> 00:18:03,947
+straightforward to state algorithm and we
+have this all, this design freedom,
+
+200
+00:18:03,947 --> 00:18:08,835
+forward focus in algorithm.
+There's lots and lots of ways that we
+
+201
+00:18:08,835 --> 00:18:14,430
+could try to find augmenting paths and
+there's even other methods that don't use
+
+202
+00:18:14,430 --> 00:18:20,297
+forward focus and that are almost as
+simple. and the question is, how difficult
+
+203
+00:18:20,297 --> 00:18:25,511
+is it to solve the maxflow problem?
+And there's literally hundreds of papers
+
+204
+00:18:25,511 --> 00:18:30,930
+in the scientific literature that are
+oriented at trying to solve this problem.
+
+205
+00:18:30,930 --> 00:18:36,410
+Now, again the, the theoretical computer
+scientists are trying to find an algorithm
+
+206
+00:18:36,410 --> 00:18:39,852
+that's guaranteed to work well in the
+worst case.
+
+207
+00:18:39,852 --> 00:18:45,473
+So, they're just counting the number of
+edges that the algorithms examine in the
+
+208
+00:18:45,473 --> 00:18:49,267
+worst case.
+But when related to practical graphs these
+
+209
+00:18:49,267 --> 00:18:54,887
+are very, very conservative upper bounds.
+And the real performance is going to be
+
+210
+00:18:54,887 --> 00:18:58,822
+totally different.
+So, you can't use these to compare the
+
+211
+00:18:58,822 --> 00:19:03,740
+performance of a given algorithm.
+The performance of a given algorithm
+
+212
+00:19:03,740 --> 00:19:07,740
+really depends on the characteristic of
+networks.
+
+213
+00:19:07,740 --> 00:19:13,220
+But still, there's a huge gap between the
+best algorithms that we know.
+
+214
+00:19:13,464 --> 00:19:17,450
+In a most recent one was discovered just
+this,
+
+215
+00:19:17,450 --> 00:19:25,413
+This year that can guarantee e squared
+over log e, number of edges examined to
+
+216
+00:19:25,413 --> 00:08:22,875
+try to find maxflow. and so, that's fine
+but there's a huge gap between, and very
+
+217
+00:19:33,888 --> 00:19:41,648
+small compared to say, shortest augmenting
+path which is e cubed essentially.
+
+218
+00:19:42,056 --> 00:19:49,101
+And that's, that's fine, but actually in
+practice, the running time of many of the
+
+219
+00:19:49,101 --> 00:19:53,799
+algorithms seems to be relatively small
+factor of e,
+
+220
+00:19:53,799 --> 00:19:59,328
+And no one can prove that there might not
+exist an algorithm, or no one has proved
+
+221
+00:19:59,328 --> 00:20:04,856
+yet, that there might not exist an
+algorithm that gets the job done in linear
+
+222
+00:20:04,856 --> 00:20:07,897
+time.
+So one of the exciting things about
+
+223
+00:20:07,897 --> 00:20:13,287
+studying the field of algorithms is
+there's still room to find, to discover
+
+224
+00:20:13,494 --> 00:20:18,884
+interesting and innovative algorithms that
+could have a huge practical impact.
+
+225
+00:20:18,884 --> 00:20:24,067
+Because we have algorithms that won't run
+well on practical networks.
+
+226
+00:20:24,275 --> 00:20:28,747
+Lots and lots of important practical
+applications use them.
+
+227
+00:20:28,747 --> 00:20:34,480
+And if someone, someone or discovered, to
+discover a fast, practical, guaranteed
+
+228
+00:20:34,480 --> 00:20:39,191
+linear time algorithm, it would
+immediately have huge impact.
+
+229
+00:20:39,426 --> 00:20:43,824
+So that's the first warning was worst case
+order of growth.
+
+230
+00:20:44,373 --> 00:20:47,828
+You're not going to compare algorithms in
+practice.
+
+231
+00:20:48,142 --> 00:20:54,424
+And there's plenty of research papers out
+there that have done empirical studies on
+
+232
+00:20:54,424 --> 00:21:01,126
+the maxflow algorithms for realistic
+networks in the so-called ath, best so far
+
+233
+00:21:01,126 --> 00:21:07,831
+in practice is known as the push-relabel
+method with gap relabeling, which runs in
+
+234
+00:21:07,831 --> 00:21:11,503
+time e square v, where e is the number of
+edges.
+
+235
+00:21:11,503 --> 00:21:17,730
+And, again, even that in practical
+networks is going to run faster than that.
+
+236
+00:21:17,730 --> 00:21:23,309
+So, there's numerous research challenges
+still to be addressed in studying the
+
+237
+00:21:23,309 --> 00:21:27,164
+maxflow problem.
+There's plenty of practitioners that are
+
+238
+00:21:27,164 --> 00:21:33,278
+using the codes like the one's that we've
+shown and, and variations to try to solve
+
+239
+00:21:33,502 --> 00:21:38,945
+a huge real maxflow mincut problems and
+trying to get them done in linear time.
+
+240
+00:21:39,392 --> 00:21:44,021
+There's many theoretical computer
+scientist that are trying to prove that
+
+241
+00:21:44,021 --> 00:21:49,490
+there exists or not exists, a maxflow
+algorithm that is guaranteed to run in
+
+242
+00:21:49,490 --> 00:21:55,232
+linear time, no matter what the input.
+There's many, many people doing and
+
+243
+00:21:55,232 --> 00:22:01,043
+there's still a great deal to be learned.
+It's a fine example of why it's exciting
+
+244
+00:22:01,043 --> 00:22:06,853
+to be working in the field of algorithms.
+There's, an opportunity for new knowledge
+
+245
+00:22:07,058 --> 00:22:11,160
+still available and many people are still
+working on them.

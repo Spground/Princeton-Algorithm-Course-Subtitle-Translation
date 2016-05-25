@@ -1,0 +1,574 @@
+1
+00:00:03,640 --> 00:00:10,484
+So, before we can develop code for our
+implementations we need to settle on an
+
+2
+00:00:10,484 --> 00:00:16,029
+API for edge weighted graphs.
+Now this actually needs a bit of
+
+3
+00:00:16,029 --> 00:00:21,072
+discussion.
+It would seem to be simple to add weights.
+
+4
+00:00:21,072 --> 00:00:27,397
+But there's a few technicalities that it's
+easy to understand.
+
+5
+00:00:27,397 --> 00:00:31,414
+But it's going to take a little
+explanation.
+
+6
+00:00:31,414 --> 00:00:36,030
+So, the whole idea is that we need an edge
+abstraction.
+
+7
+00:00:36,220 --> 00:00:41,167
+Before for directed graphs, undirected
+graphs, we're talking about graphs in
+
+8
+00:00:41,167 --> 00:00:44,720
+terms of connections, and the edges were
+really implicit.
+
+9
+00:00:44,950 --> 00:00:50,863
+So, for a vertex, we would keep a bag of
+vertices that its connected to but we
+
+10
+00:00:50,863 --> 00:00:57,084
+wouldn't explicitly represent edges.
+For weighted edges, we're going to need to
+
+11
+00:00:57,084 --> 00:01:01,615
+do that.
+So we're going to start out with an the
+
+12
+00:01:01,615 --> 00:01:07,701
+just for processing edges.
+Now, it's simple. The constructor is just
+
+13
+00:01:07,701 --> 00:01:12,305
+going to create an edge.
+So, what is an edge?
+
+14
+00:01:12,305 --> 00:01:19,337
+A weighted edge is two vertices that they
+connect, that, it connects and then a
+
+15
+00:01:19,337 --> 00:01:25,919
+double value, which is the weight.
+So that's clearly one thing we have to do
+
+16
+00:01:25,919 --> 00:01:31,728
+is, is construct the edge.
+Now what do we want to do when we process
+
+17
+00:01:31,728 --> 00:00:28,425
+edges?
+Well, one thing we want to do is compare
+
+18
+00:01:35,388 --> 00:01:42,310
+two edges, so that is, we want to compare
+the weights in, in a typical compare and
+
+19
+00:01:42,549 --> 00:01:49,472
+return a negative value of less than zero
+if equal and a positive value of one just
+
+20
+00:01:49,472 --> 00:01:55,069
+like any other compare.
+So we have one the method that takes an
+
+21
+00:01:55,069 --> 00:02:00,005
+edge as argument and compares that edge to
+this edge for sure.
+
+22
+00:02:00,005 --> 00:02:05,496
+We want to be able to extract the weight
+and have a string representation of the
+
+23
+00:02:05,496 --> 00:02:08,902
+edge.
+But then, what about getting the vertices
+
+24
+00:02:08,902 --> 00:02:12,586
+out of the edge?
+Well, the fact is that the, usually in
+
+25
+00:02:12,586 --> 00:02:16,270
+the, in the algorithm, we're holding on,
+to a vertex.
+
+26
+00:02:16,479 --> 00:02:20,302
+And generally, what we want to do is get
+the other vertex.
+
+27
+00:02:20,510 --> 00:02:26,677
+So, if we have a vertex v that we're
+holding on to, what we want is the other
+
+28
+00:02:26,677 --> 00:02:30,057
+vertex.
+So well that's the way that will get the
+
+29
+00:02:30,057 --> 00:02:35,324
+vertex to that a given edge.
+We're on a vertex and we have an edge we
+
+30
+00:02:35,324 --> 00:02:39,961
+want to get the edge that, that, the
+vertex that, that connects to,
+
+31
+00:02:39,961 --> 00:02:45,287
+We just call the other method.
+And if we have an idiom, we're just
+
+32
+00:02:45,287 --> 00:02:50,034
+getting started then, then we are happy to
+take either vertex.
+
+33
+00:02:50,034 --> 00:02:56,562
+So we have either and other for getting
+the vertices out of the edges and we
+
+34
+00:02:56,562 --> 00:03:02,994
+almost always do this kind of idiom where
+we pick out and we, we have an edge e that
+
+35
+00:03:02,994 --> 00:03:06,957
+we have to process.
+We pick out either edge, and we put that
+
+36
+00:03:06,957 --> 00:03:09,770
+in v,
+And we pick out the other edge, and put
+
+37
+00:03:09,770 --> 00:03:14,720
+that in w.
+So that's just a, a code for getting us
+
+38
+00:03:14,720 --> 00:03:22,241
+the v and w without adopting some
+convention on how to use those names that
+
+39
+00:03:22,241 --> 00:03:32,054
+might be required if you tried to access
+the instance variables directly or through
+
+40
+00:03:32,054 --> 00:03:36,090
+gutter methods.
+So, that's the edge API.
+
+41
+00:03:36,090 --> 00:03:41,454
+So it's easy to implement.
+So, now we're going to have instance
+
+42
+00:03:41,454 --> 00:03:48,001
+variables for v and w in the weight.
+The constructor just sets those instance
+
+43
+00:03:48,001 --> 00:03:53,129
+variables.
+Either just returns v arbitrarily ag, then
+
+44
+00:03:53,129 --> 00:03:59,282
+other, given a vertex that vertex is v, V
+or returns w, otherwise, it turns v, so
+
+45
+00:03:59,282 --> 00:04:03,621
+that's easy.
+And then, compared to is straightforward,
+
+46
+00:04:03,621 --> 00:04:10,991
+just using the weight instance variable of
+this, which is the keyword referring to
+
+47
+00:04:10,991 --> 00:04:16,234
+this object and that which is the argument
+edge that we're given.
+
+48
+00:04:16,234 --> 00:04:22,689
+So, that's a complete implementation of
+the weighted edge API and now our MST
+
+49
+00:04:22,689 --> 00:04:30,164
+algorithms can be clients of that.
+So well first, first we need a graph API
+
+50
+00:04:30,164 --> 00:04:35,594
+that has weighted edges.
+So we're going to use edge-weighted graph.
+
+51
+00:04:35,830 --> 00:04:41,418
+And it's going to have the same
+characteristics of the graph and
+
+52
+00:04:41,418 --> 00:04:46,062
+undirected graph API that we articulated
+before.
+
+53
+00:04:46,298 --> 00:04:52,673
+So we're going to create empty graph with
+a certain number of vertices and we do
+
+54
+00:04:52,673 --> 00:04:57,946
+that so we can use vertex index arrays as
+internal data structures.
+
+55
+00:04:58,182 --> 00:05:06,060
+We'll have a created a weighted graph from
+an input stream then the main operation to
+
+56
+00:05:06,060 --> 00:05:12,460
+build graphs is just to add edges.
+And then the key operation that all the
+
+57
+00:05:12,460 --> 00:05:19,420
+algorithms want to perform as usual is
+uniterable but give all the edges adjacent
+
+58
+00:05:19,420 --> 00:05:24,300
+to a given vertex.
+So now, we want the edges themselves cuz
+
+59
+00:05:24,300 --> 00:05:29,500
+they have the weights.
+Not just the vertex that it's connected
+
+60
+00:05:29,500 --> 00:05:32,780
+to.
+So, this, with the edge API, the edge
+
+61
+00:05:32,780 --> 00:05:38,670
+abstraction we get the edge, which gives
+us the weight and the other vertex at the
+
+62
+00:05:38,670 --> 00:05:43,110
+same time.
+Since we're using edges as distinct
+
+63
+00:05:43,110 --> 00:05:50,812
+entities it's easy to allow self loops in
+parallel edges in the graph API and it
+
+64
+00:05:50,812 --> 00:05:55,132
+doesn't have any impact on the MST
+algorithms.
+
+65
+00:05:55,132 --> 00:06:02,317
+So, we'll go ahead and do that.
+How do we represent edge-weighted graphs?
+
+66
+00:06:02,636 --> 00:06:10,731
+I, well, it's the straightforward
+extension of what we did for undirected
+
+67
+00:06:10,731 --> 00:06:15,951
+graphs.
+We're going to maintain a vertex index
+
+68
+00:06:15,951 --> 00:06:26,785
+array of edge lists.
+So for every vertex we have a list of the
+
+69
+00:06:26,785 --> 00:06:36,037
+edges connected to that vertex.
+For example in this graph weighted graph,
+
+70
+00:06:36,037 --> 00:06:43,219
+there is an edge the ones connected to
+vertex zero, or an edge that connects and
+
+71
+00:06:43,219 --> 00:06:48,653
+six and zero and has a weight 0.58 and an
+edge that connects two and zero and has
+
+72
+00:06:48,653 --> 00:06:53,929
+0.26, zero and four has 0.38, zero and
+seven has 0.16. As with our undirected
+
+73
+00:06:53,929 --> 00:06:58,969
+graph representations each edge object is
+going to appear twice.
+
+74
+00:06:59,205 --> 00:07:05,268
+Once for each vertex that it connects.
+And it's actually not an object, it's a
+
+75
+00:07:05,268 --> 00:07:11,838
+reference to an object in Java.
+So, a graph is a vertex index array of
+
+76
+00:07:11,838 --> 00:07:17,755
+bags of edges.
+Since it's undirected each edge is going
+
+77
+00:07:17,755 --> 00:07:23,222
+to appear twice.
+So, when we build a graph just as with
+
+78
+00:07:23,222 --> 00:07:30,552
+undirected unweighted graphs we have to
+add,, If, if we have an edge that connects
+
+79
+00:07:30,552 --> 00:07:36,013
+v and w we have to add that edge to both v
+and w's adjacency list.
+
+80
+00:07:36,250 --> 00:07:41,000
+Otherwise it's quite similar to R code for
+graph.
+
+81
+00:07:41,237 --> 00:07:47,411
+We have a bag of edges instead of a bag of
+integers, which were vertex indices.
+
+82
+00:07:47,411 --> 00:07:54,898
+Constructor builds the bag.
+And builds the array and then fills the
+
+83
+00:07:54,898 --> 00:07:59,600
+bag associated, associated with each
+vertex as a new empty bag.
+
+84
+00:07:59,828 --> 00:08:04,682
+And then add, add edge, adds the edge to
+both v and w's bag.
+
+85
+00:08:04,910 --> 00:08:10,750
+And interval just returns the bag
+associated with the given vertex and
+
+86
+00:08:10,750 --> 00:08:14,846
+that's all the edges that are incident on
+that vertex.
+
+87
+00:08:15,074 --> 00:08:20,763
+And that's a bag which is interval.
+So, again, as for all the algorithms that
+
+88
+00:08:20,763 --> 00:08:25,390
+we've been looking at, the clients will
+just iterate.
+
+89
+00:08:25,390 --> 00:08:30,991
+Usually, you have a vertex, and it'll
+iterate through the edges adjacent to that
+
+90
+00:08:30,991 --> 00:08:35,458
+vertex.
+So that's the representation of the graph.
+
+91
+00:08:35,458 --> 00:08:41,239
+What about representing the MST?
+Well, usually the client of an MST
+
+92
+00:08:41,239 --> 00:08:49,003
+algorithm is going to want to have us
+compute the MST for a given edge-weighted
+
+93
+00:08:49,003 --> 00:08:53,370
+graph.
+So, we'll just do that in a class named
+
+94
+00:08:53,370 --> 00:08:59,765
+MST and make that the constructor.
+So then, as usual, in our graph processing
+
+95
+00:08:59,765 --> 00:09:03,239
+paradigm, the constructor will do all the
+work.
+
+96
+00:09:03,466 --> 00:09:07,921
+And then the client can ask queries about
+what happened.
+
+97
+00:09:07,921 --> 00:09:12,905
+And in this case, what's relevant is, what
+are the edges in the MST?
+
+98
+00:09:12,905 --> 00:09:17,964
+And the MST client is just going to want
+to iterate through those edges.
+
+99
+00:09:18,190 --> 00:09:24,005
+It might also want the total weight of the
+MST, so we can provide that, too.
+
+100
+00:09:24,231 --> 00:09:31,145
+So for example if we take a, an example
+with our tiny edge-weighted graph,
+
+101
+00:09:31,145 --> 00:09:38,263
+We're going to have the number of
+vertices, the number of edges and then, a
+
+102
+00:09:38,263 --> 00:09:46,184
+list of vertex pairs, which are the edge
+connections and the associated weights.
+
+103
+00:09:46,184 --> 00:09:53,432
+Ahm the what we'll want is the this is the
+test client is just going to print the
+
+104
+00:09:53,432 --> 00:09:59,963
+edges in the MST the middle-weight edges
+that connect them all instead the edges on
+
+105
+00:09:59,963 --> 00:10:05,561
+MST and the weight.
+And this is the code for that test client.
+
+106
+00:10:05,561 --> 00:10:13,404
+So we build an input stream which is given
+the argument, so that's the filename. and
+
+107
+00:10:13,404 --> 00:10:21,060
+then, we use the constructor from the
+stream to build an edge-weighted graph.
+
+108
+00:10:21,329 --> 00:10:28,775
+Then we do an MST calling the MST
+constructor with that graph is an argument
+
+109
+00:10:28,775 --> 00:10:33,440
+that creates an MST.
+And then, we use the iterator.
+
+110
+00:10:33,676 --> 00:10:41,080
+That mst.edges will give us some interval
+set of the edges that are in the MST that
+
+111
+00:10:41,080 --> 00:10:46,829
+it computed in the constructor.
+And it will print out the edges using
+
+112
+00:10:46,829 --> 00:10:51,240
+two-string for edge and then print out the
+weight.
+
+113
+00:10:51,240 --> 00:10:57,147
+So that's the code that gives the test
+client for this MST API.
+
+114
+00:10:57,147 --> 00:11:01,480
+So, for that graph, we get that output
+with that code.
+
+115
+00:11:01,738 --> 00:11:08,200
+So, that's a, the quick introduction to
+the API, APIs we use for MSTs.

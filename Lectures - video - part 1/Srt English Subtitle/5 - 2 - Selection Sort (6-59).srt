@@ -1,0 +1,338 @@
+1
+00:00:01,024 --> 00:00:06,048
+The first elementary sorting method that
+we're going to take a look at is an easy
+
+2
+00:00:06,048 --> 00:00:11,083
+method known as selection sort. The idea
+of selection sort, is start out with a
+
+3
+00:00:11,083 --> 00:00:17,101
+unsorted array and we'll use these playing
+cards as an example. And in the ith iteration,
+
+4
+00:00:17,101 --> 00:00:22,867
+we go through the array to try to find the
+smallest remaining entry, in this case,
+
+5
+00:00:22,867 --> 00:00:28,693
+the 2 is the smallest from any entry. And
+then we'll swap that with the first entry
+
+6
+00:00:28,693 --> 00:00:34,199
+in the array and then we know we've got
+one step done. Selection sort is based on
+
+7
+00:00:34,199 --> 00:00:39,376
+iterating that idea. Okay. So, the basic
+selection sort method is to, in the ith
+
+8
+00:00:39,376 --> 00:00:44,626
+iteration, find the smallest remaining
+entry and to the right of i or bigger
+
+9
+00:00:44,626 --> 00:00:50,252
+index than i and then swap that with i.
+So, we start out i is at the left end and
+
+10
+00:00:50,252 --> 00:00:55,711
+then the remaining, all the remaining
+entries to the right. We scan through and
+
+11
+00:00:55,711 --> 00:01:02,516
+the smallest one is the two, three entries
+from the right so we swap that. So that's
+
+12
+00:01:02,516 --> 00:01:08,889
+the first step. Now, that part of the
+array to the left of i is in it's final
+
+13
+00:01:08,889 --> 00:01:15,193
+order and we simply continue. So now, the
+smallest is the three. Swap that with i,
+
+14
+00:01:15,193 --> 00:01:21,511
+increment i. So now, we have the two and
+three in order, continuing that way. Find
+
+15
+00:01:21,511 --> 00:01:27,958
+the smallest, the four. Swap that one with
+i, increment i. Find the smallest, it's
+
+16
+00:01:27,958 --> 00:01:34,712
+five, swap that with i, increment i. Find
+the smallest, swap that with i, increment
+
+17
+00:01:34,712 --> 00:01:40,689
+i.  Each time we have to scan
+through all the remaining entries in order
+
+18
+00:01:40,689 --> 00:01:45,788
+to find the smallest. But then, once we
+found it, we only have to swap two cards
+
+19
+00:01:45,979 --> 00:01:52,898
+those are both key properties of selection
+sort. Now the eight is the smallest and we
+
+20
+00:01:52,898 --> 00:01:59,486
+swap. And now, we know they're in order
+but the program doesn't so we have to look
+
+21
+00:01:59,486 --> 00:02:06,816
+and decide that i and n are the same and
+then it swaps it with itself and does the
+
+22
+00:02:06,816 --> 00:02:13,226
+same thing for the last. And so, after
+that process, then we know that the entire
+
+23
+00:02:13,226 --> 00:02:19,445
+array is in its final order, all sorted.
+Alright. So let's, one way to understand
+
+24
+00:02:19,445 --> 00:02:24,768
+the way that an algorithm works is to
+think about invariants . So, for the
+
+25
+00:02:24,768 --> 00:02:30,924
+selection sort, we have a pointer that was
+our variable i, that scans from left to
+
+26
+00:02:30,924 --> 00:02:36,345
+right. Now, it's indicated by a little red
+arrow in this representation. The
+
+27
+00:02:36,345 --> 00:02:42,235
+invariants are that the entries on onto
+the left of the arrow are never changed
+
+28
+00:02:42,235 --> 00:02:48,743
+and they're in ascending order. No entry
+to the right of the arrow is smaller than
+
+29
+00:02:48,743 --> 00:02:54,859
+any entry to the left of it. That's the
+way that we set it up. And the algorithm
+
+30
+00:02:54,859 --> 00:03:00,837
+maintains those invariants by finding the
+smallest entry to the right and exchange
+
+31
+00:03:00,837 --> 00:03:06,827
+it with the next one. So the code
+implements the invariants. So, to move the
+
+32
+00:03:06,827 --> 00:03:12,739
+pointer to the right, we increment i. So,
+now the invariant might be violated so we
+
+33
+00:03:12,739 --> 00:03:18,425
+have to fix it. It might be violated
+because you might have an element to the
+
+34
+00:03:18,425 --> 00:03:23,812
+right of the pointer that is 
+smaller than some, the element on the
+
+35
+00:03:23,812 --> 00:03:29,143
+pointer. So, what we have to do is
+identify the index or that minimum entry
+
+36
+00:03:29,143 --> 00:03:34,170
+and exchange it. Then once we've exchanged
+it, again, we preserved our invariant.
+
+37
+00:03:34,170 --> 00:03:38,846
+After that point, no element to the left
+of the pointer is going to change and all
+
+38
+00:03:38,846 --> 00:03:44,536
+the element, there's no smaller element to
+the right. [cough] and that gives us
+
+39
+00:03:44,768 --> 00:03:52,713
+immediately our code for the selection
+sort implementation. We identify the, the
+
+40
+00:03:52,713 --> 00:03:59,009
+length of the array that's n. Then we
+have a for loop that goes through every
+
+41
+00:03:59,009 --> 00:04:05,112
+element in the array, we keep a variable
+min in that is the index of the going to
+
+42
+00:04:05,112 --> 00:04:10,045
+be the index of the smallest element to
+the right of pointer i. We have an
+
+43
+00:04:10,045 --> 00:04:15,626
+inter-for loop that for j, if it finds a
+smaller one, resets min and then once
+
+44
+00:04:15,626 --> 00:04:21,509
+we've looked at all the elements to the
+right of i we exchange the smallest one
+
+45
+00:04:21,509 --> 00:04:27,083
+with i. That's a complete implementation
+of selection sort. Now it's easy to
+
+46
+00:04:27,083 --> 00:04:34,073
+develop on mathematical model for the cost
+of selection sort and here's the
+
+47
+00:04:34,073 --> 00:04:42,054
+proposition that describes that.
+Selections or uses about N^2 / 2
+
+48
+00:04:42,056 --> 00:04:48,011
+compares and exactly n exchanges. And
+just looking at this trace of selection
+
+49
+00:04:48,011 --> 00:04:55,525
+sort and operation really is a proof,
+visual proof of this proposition. In this
+
+50
+00:04:55,525 --> 00:05:00,493
+diagram, the entries in black, are the
+ones that are examined in order to find
+
+51
+00:05:00,493 --> 00:05:06,621
+the minimum each time with the minimum in
+red. Entries in gray are not touched,
+
+52
+00:05:06,621 --> 00:05:12,492
+they're in their final position. Well, you
+can see that this isn't going to be in
+
+53
+00:05:12,492 --> 00:05:19,709
+general an N by N square and about half of the
+elements in the square are black or about
+
+54
+00:05:19,709 --> 00:05:27,029
+N^2 / 2 and you can see also the exact
+formula (N - 1) + (N - 2) and so forth
+
+55
+00:05:27,245 --> 00:05:33,329
+is the total number of compares used. And
+then on each of the Ns values of the
+
+56
+00:05:33,329 --> 00:05:40,218
+variable i there's an exchange so that's
+the cost in terms of the number of
+
+57
+00:05:40,218 --> 00:05:48,070
+exchanges. Now, what's interesting about
+this proposition about selection sort is
+
+58
+00:05:48,070 --> 00:05:54,257
+that, it doesn't matter what order the
+input is. Selection sort is going to use
+
+59
+00:05:54,257 --> 00:06:00,458
+quadratic time because it always has to go
+through the whole thing to look for the
+
+60
+00:06:00,458 --> 00:06:06,752
+minimum. And another property is that you
+can't sort moving less data because
+
+61
+00:06:06,752 --> 00:06:12,842
+selection sort does just a linear number
+of exchanges. Every item is put in to
+
+62
+00:06:12,842 --> 00:06:19,459
+it's final position with just one
+exchange. Let's look at an animation of
+
+63
+00:06:19,459 --> 00:06:25,693
+selection sort in operation. [cough] You
+can see our pointer moving from right to
+
+64
+00:06:25,693 --> 00:06:31,919
+left every time it finds the smallest
+element to the right, it exchanges it into
+
+65
+00:06:31,919 --> 00:06:39,637
+position. Now, if the array is partially
+sorted, it doesn't matter to selection
+
+66
+00:06:39,637 --> 00:06:45,854
+sort. Still has to go through, even if
+it's totally sorted, still has to go
+
+67
+00:06:45,854 --> 00:06:51,359
+through to the side where that minimum
+element is. That selection sort, our first
+
+68
+00:06:51,359 --> 00:06:59,072
+elementary sorting method.

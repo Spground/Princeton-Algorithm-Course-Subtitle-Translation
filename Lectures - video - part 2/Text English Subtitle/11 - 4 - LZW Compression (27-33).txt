@@ -1,0 +1,476 @@
+So, Huffman coding is an optimal
+prefix-free code. And can we have a better
+data compression algorithm? and as you
+might suspect the answer is yes. And
+that's we're going to look at next it the
+LZW algorithm, named after Abraham Lempel
+and Jacob Ziv, and W is for Terry Welch
+who got involved. and so the way that we
+improve on Huffman coding is by changing
+the rules under which it operates. And
+we've already changed the rules once, so
+let's take a high level view. so one idea
+for codes is that we're going to, for all
+text that we ever encounter, we're going
+to use the same code or the same model of
+the text. and so everybody's got that
+model, we don't have to transmit it. but
+the problem is that one text might have a
+lot of As another one might have a lot of
+Zs. They have different statistical
+properties. so, it's not going to be
+optimal for a given text. but still, over
+the preponderance of text that we see this
+can be effective. And so, that's really
+what an ASCII is. but now, for Huffman,
+well, we consider, we change that rule.
+And we said, well, we're going to use
+different encodings depending on what the
+text is. so, we're going to look at the
+text, figure out the frequencies and then,
+go ahead and create a code that works for
+that text. now, we have to transmit the
+code. that's what the Huffman's code is.
+for every text we've got a code that's
+suited for that text. what we're going to
+look at now is another change in the
+rules, where it's called an adaptive
+model, where we're going to just read the
+text one character a time. but we're going
+to use the text to update the model and
+learn about the model as we read it. and
+we're going to assume the decoder does the
+same thing. And this gives perhaps it does
+give more accurate modelling and better
+compression over the, throughout the text.
+And it's a very effective method, so let's
+look at how it works. we'll just do this
+through an example. now, this is, We're
+going to use hex values. so, in LZW
+encoding we start with our input, which is
+which is characters. O r say, ASCII
+characters. and what we're going to do is
+keep a dictionary of code words. and the
+code words are going to be fixed length.
+and so, we'll use eight bits or two hex
+characters as an output. And we'll start
+out with just the ASCII value for all the
+characters that we're going to use in the
+message. so, that's the starting point.
+so, at the beginning, so this is going to
+be compression for this string here. at
+the beginning we just pick off characters
+and output their value from the from the
+table. but every character that we read,
+it gives us a little new information. For
+example, in this case we've seen AB and
+what we're going to do is say, okay, we've
+seen AB, maybe that occurs again in the
+text if it does we'll since, since we've
+seen it, we know where it is, we know what
+it is. we'll just give it the value 81 and
+we'll maintain this table. If we see AB
+again we'll use those eight bits. so we
+put out the B, but we remember the fact
+that we saw AB. And similarly, when we see
+BR then that will be an 8-bit code word
+that we can put out. and the idea is that
+the decoder or the expander can do the
+same thing. We don't actually have to
+transmit this table. we can know that the
+expander is going to do the same thing,
+and we'll have the same a table. So now,
+we see the R. So, this is BR. So then, and
+that's going to be encoded with 82 but the
+R is asking for R52 so we put that out.
+now we see the A and so, that's going to
+be 83. If we if we see it again and, but
+the A is just 41 and then the AC is going
+to be 84 the C is the 43. CA is going to
+be 85 and then 41. and so, what we're
+doing is building up a table that is a
+model for what the string has and it will
+allow us to get better compression as we
+get layer into the message. so now, we're
+reading the A after the B, so D is going
+to be 87. but now, we see that the next
+letter is B, we look in our table in for
+AB and it's there. So, we can put out 81
+instead of just putting that A out there.
+So at this point when we look at the B we
+can know that we had AB. And we can look
+that up on the table and just put out 81.
+and similarly we when we, but now, when we
+look at the R our previous character was
+AB. So now, we're going to code ABR with
+88. and again, RA if we look that up in
+the table and we can put out 83. and now,
+we can remember RAB is going to be 89. so
+now, what happens next? Now, we look at
+our next characters. we look for the
+longest prefix that we can match in the
+table and that's going to be the code word
+that we put out. So in this case, we have
+BR that's in there that's 82. and the next
+character is A so I'm going to put a BRA
+in there. and now this is the remaining to
+be encoded and we're going to look for the
+longest prefix that we know the code for,
+and in this case, it's going to be ABR,
+which is 88. So the previous characters in
+the text built a model that allow us to
+more effectively encode the text. and
+that's 88 ABR and then all that's left is
+the last A. so, for this small example
+the, compression is not great, but the
+idea is still there's definitely some
+savings in there, cuz these code words,
+the input was 8-bit ASCII code words, and
+these code words are, are also eight bits,
+and the key thing is we don't have to
+transmit the table, cuz we can assume that
+the expander is going to rebuild the
+table, the same way that we built it. so,
+that's the basic idea beside behind LZW
+compression. We also have a stop character
+at the end that says, it's the end of the
+message. So, this is the summary of LZW
+compression. we created a symbol table
+that associates fixed length code words
+with string keys. We initialize it with
+code words for single character keys. Now,
+when it's time to encode part of the
+input, we look for the longest string in
+the symbol table that's a prefix of the
+part of the input we haven't seen. and
+that string, that's the longest one, its
+the best we can do. we're going to have a
+fixed length code word for that string.
+And then, we look ahead to the next
+character in the input and add a new entry
+into the symbol table with tha t one extra
+character. that's the LZW compression. so
+one question that comes up is how do we
+represent that code table in, in code. And
+actually, the answer is really simple.
+we're going to use a trie. because what a
+trie can do for us is if you remember,
+when you looked at the tries, if you don't
+know, when we looked at tries, what we did
+was support longer prefix match operation.
+so, this trie represents all the prefixes
+that we have seen so far in the message,
+and it's very easy if the next four
+characters in the text for ABRA, then we
+have the code word for it. for anything
+that we've seen in the text we've got a
+code word for a fixed length code word.
+So, as the trie gets bigger, as we move
+down more into the trie, we get better
+compression cuz we're using the same
+length code word to compress more letters.
+so here's the implementation of LZW
+compression. again very simple
+implementation for such a sophisticated
+algorithm, really. and we're actually
+going to use the TST so that we'll have to
+worry about the extra space. and so, first
+thing we do is initialize the TST with a
+code word for each of the single
+characters, so it's rated XR, so there are
+different letters. and we'll just put an
+entry into the trie for each one of the
+letters along with its coding. and so we
+didn't show, we only showed a few letters
+in the examples, but in general, we'll,
+we'll assign the code word i to each one
+of the, to the ith letter. and then, the
+rest of the trie is built from the input
+string. And you know, so the very first
+thing we do is find the longest prefix of
+the input string in the symbol table. and
+that longest prefix of method just marches
+down the trie eating off the characters in
+the input string one character at a time
+until it gets to the bottom, because the
+bottom it has a code word. so it, it
+actually, the symbol table method actually
+gives us back the string. and so, then we
+can use that to get the value associated
+with that string out in the symbol, in the
+second call. And that gives us the code
+word. an d then what we want to do is get
+the length of that longest prefix match
+and add one more character to it and add
+which is the next character in the input.
+and add that code word to the to the
+symbol table. and then scan past that in
+the input. so that's the entire
+compression algorithm for LZW compression
+using a trie. and so, what it's doing is
+writing out a fixed-length code word and
+chewing up the longest substring that
+we've seen before. and then, at the end,
+it writes out a stop close code word, and
+closes out the input stream. so, using the
+tech, trie technology that we've developed
+we have a compact implementation of LZW
+compression. now, let's look at the
+expansion. And expansion is going to be
+basically the same code. All that the
+expansion algorithm get, gets is the list
+of fixed length code words. and it's going
+to maintain its own code word table in
+order to get the expansion done. now, we
+can start it out again by generating the
+table for a each other single letter
+that's going to be in the message or if
+it's only a few may be. there is some
+other sliding coding that needs to be done
+at the beginning. but so, it seems 41 in
+roles are switched. the fixed length code
+words of the key and the values are
+strings. So, we just look up the key and
+write out the values as we see at 42,
+that's a B we see. a 41, that's an A. but
+not only do we want to put, put out the,
+the character corresponding to the code
+word. but we also want to build up code
+words in the same way that the compression
+method would have done it. So, the
+compression method I want to see is an AB
+would have associated the string AB with a
+new key. And now, we read a 52. Look up
+52, that's an R but we also put a new
+entry in the table for the string BR. Same
+way the compression algorithm would have
+done. We see 41 we get an A. Now, we put
+RA in the table 43 we put a C and we put a
+C in the table 41, we put an A. we put CA
+in the table now 81. we look up at our
+table, and it's I'm sorry. the D is 44 and
+AD in the table. And now 81, we look at
+up, and we have AB and once we have seen
+the AB then we know the compression were
+to put DA on the table. And that's a
+little bit tricky because the expansion is
+kind of one step behind the compression.
+It's got to put out the characters before
+it knows it. And it does lead to a
+slightly tricky situation that we'll talk
+about. So now 83 is going to be RA. And
+once we put out the RA, then we know that
+compression would have done ABR now, so
+now 82 is BR. And again, we know
+compression would have put RAB in there.
+and 88 is ABR and compression would have
+put BRA in there. 41 is A and then 80 is
+the stop character. Oh, and we would have
+put and once it did the a, then it would
+have put ABRA in there. And then, 80 is
+the stop character. So, that's an
+expansion just building the table in the
+same way the compression would have and
+then, using the table to figure out the
+string associated with, with each fixed
+length code word. so this is a summary of
+expansion which is pretty much the same as
+for compression except the reverse. so
+we're going to create a symbol table that
+has fixed linked keys and associates
+string values with them. We put in the
+single character values. we read a key, we
+find the string value and write it out.
+And then, we update the symbol table from
+the last the two things that we, the first
+character, the thing we just wrote out and
+the thing we wrote out before that. and
+again you know, to represent the, the code
+table this time we can just use an array.
+and because we, our keys are, are fixed
+linked. And we assign them one, one bit at
+a time. So, we can just store the strings
+in an array. And use the, the key bits,
+the key values, the fixed bits, key values
+we get to index into the array and give us
+the right string. so that part's easier.
+so now there's a tricky case that really
+everyone needs to work through this case a
+few times to really understand what's
+going on. And it's worth doing once even
+in lecture. so, let's look at this case
+where we have AB, AB, ABA and just follow
+through th e algorithm for this for this
+case. so we get an A, and we look it up,
+and it's 41. and so, that's what we're
+going to put out. and then, we look at the
+next character. And it's AB so we're going
+to remember 81 in our code word table.
+then, we read a B. and we look it up, and
+it's 42. and the next character is A. So,
+we're going to say, well, BA is going to
+be, be 82. then next character is B. We
+look up AB and we have 81. and so, we can
+put out the 81. And now, the next, look
+ahead, the next character is A. So, we're
+going to do a code for ABA. That's going
+to be 83. now, we have the rest of our
+string to be encoded is ABA and our
+longest prefix match is ABA. so, we're
+going to put out 83. and that's the end of
+the string. so, we do the 80, which is the
+end of the string. So, that's compression
+for that string, working the same way as
+for the other example. now, lets look at
+expansion for this case. they start up the
+same way. so now, we see a 41 and we look
+it up in our table. and again, this can be
+just an indexed array. so it's going to be
+a so that's a starting point and now, 42
+is going to be a B and then we look back,
+we just put out an A and a B so our
+compression algorithm would have encoded
+an AB as 81, we know that. So now, we can
+when we see 81 we've got AB so we can put
+a B. and so now, we look at the and we put
+out the AD and the next entry in our table
+is going to be BA, because that's what our
+compression were to put out. but now, we
+just got a problem. the next character
+that we see that we need to expand is 83
+but we need to know what key has value 83
+but it's not in the symbol table yet. so
+that's definitely a tricky case for the
+now it is possible to when we go through
+that one again. so I, at the time that we,
+we read the 83, we need to know which key
+has value 83 before it gets into the
+symbol table. in all of its first
+characters is going to be A, so that means
+that ABA has convenience with the code. In
+a book which you can examine has a way to
+test for this case, and it's definitely a
+tr icky case that at least can be
+considered for LZW expansion. we expand 83
+at the same time that we put it in the
+symbol table, in this example. okay. So
+there are all different kinds of details
+for LZW, we've just given one sometimes
+people find it effective to clear out the
+symbol table after a while v maybe how big
+do we make this symbol table, how big do
+we let it get. maybe it's not worthwhile
+to keep older parts of the message. It
+should adapt the pieces of the message.
+there's many other variations like that,
+that have been developed. so, so, for
+example, what GIF does, is when the symbol
+table is full, we just throw it away and
+start over. Unix compress it's throws the
+keeps a measure of how well it's doing.
+And throws it away when it's not being
+effective. and there's many, many other
+variations. why not put even longer
+substrings? Why just one character at a
+time? Why not the double ones and so
+forth. And there have been many variations
+like that have been develop, developed.
+and actually in the real world the, the
+development of this tech, technology was
+influenced by patent law. There's a
+version called LZ77 and another version
+called LZW because these guys worked for a
+company in the summer and then it was
+patented for a while you couldn't use LZW
+unless you paid the patent holder. But
+that expired in 2003 and then things
+started to go up again. so there's lots
+and lots of different effective methods
+that are variants of LZW. and really to do
+a good job you might also, you need to
+include Huffman coding for the characters
+or run-length encoding and in really just
+combinations of these basic, basic methods
+that we talked about that are, are most
+effective. so you see this technology
+author up computational infrastructure
+that you use everyday. and, and at the
+time we were talking about tries, they
+seemed a bit abstract, but actually they
+are, tries are definitely part of the
+algorithmic infrastructure and they are
+really fine example of a clear, clean,
+elegent data structure and algorithmic
+idea of be ing used to great effect in the
+real world. and this is there's people,
+plenty of people still doing that
+research. Even on lossless data
+compression there's still ideas being
+developed. and these are the kind that
+does a famous benchmark of set of texts
+that if you think you have a good new
+compression algorithm you can run it on
+this benchmark. where it's asking you is a
+seven bits per character, it's eight bit
+but one of the bits is redundant, so you
+will immediately get down to seven. these
+are the kinds of compression ratios that
+people have achieved with various mostly
+levels of variance down to less than half
+of what you can get with asking. but it
+continues to drive down and there was a
+completely new method called the
+Burrows-Wheeler method developed in the
+90s' that took a, a big jump down and
+there's a few more that have continued to
+improve even through the 90s'. So there's
+still room for improvement in lossless
+data compression, but it's a really fine
+example of the power of good algorithmic
+technology. so here's our quick summary on
+data compression. so, we considered two
+classic fundamental algorithm. The first
+one, Huffman encoding, represents fixed
+length symbols with variable length codes.
+so the prefix code uses, tries to use
+smaller number of bits for the most
+frequently used symbols. the other way
+the, the LempelZiv method takes variable
+length symbols and uses fixed length code.
+So, it's interesting to think about those
+two ends of the spectrum. there's plenty
+of compression algorithms out there that
+don't try to get an exact compression, but
+just try to get an approximation using FFT
+and wavelets and many other mathematical
+techniques. And that's appropriate for
+things like pictures and movies where
+maybe you can miss a few bits. But
+lossless compression is still a very
+important when you download an application
+which is machine code onto your computer.
+you can't afford to have one of the bits
+be wrong. so that's why lossless
+compression will always be with us.
+there's a theory on compress ion.
+This theoretical limits that is, is a
+measure of the and it's called the
+entropy, Shannon entropy of a text that
+says a, a very fundamental way to indicate
+how much information there is in a text as
+a function of its frequency. So, it's a
+sum of overall characters of the product
+of the frequency. The log and the
+frequency with these methods we can get
+very close to the entropy in some
+theoretical session settings. but actually
+in, in practice the most effective methods
+uses tricks and techniques that have extra
+knowledge about the data being compressed
+to really get the most effective kind of
+results. as I explained, if you're doing a
+page like this, you better use a method
+that does really well on huge amounts of
+wide space for example. that's LZW
+compression and our last compression
+algorithm.

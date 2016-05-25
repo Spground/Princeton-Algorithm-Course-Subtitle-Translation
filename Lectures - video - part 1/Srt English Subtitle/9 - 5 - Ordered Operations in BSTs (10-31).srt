@@ -1,0 +1,513 @@
+1
+00:00:01,021 --> 00:00:06,002
+Now, we're going to take a look at ordered
+symbol table operations using the binary
+
+2
+00:00:06,002 --> 00:00:11,027
+search tree data structure as the
+underlying implementation. Well, each one
+
+3
+00:00:11,027 --> 00:00:19,072
+of these operations are fairly straight
+forward but just to check our ability to
+
+4
+00:00:19,072 --> 00:00:24,387
+manipulate this data structure, we'll take
+a look at each. Suppose, we wanted to find
+
+5
+00:00:24,387 --> 00:00:29,706
+the minimum key in a binary search tree,
+or the maximum key. Well, just looking at
+
+6
+00:00:29,706 --> 00:00:35,072
+one example you can see almost immediately
+what to do to find the minimum, we move
+
+7
+00:00:35,072 --> 00:00:40,011
+left from the root until we find a null
+key, that's where the smallest key in the
+
+8
+00:00:40,011 --> 00:00:44,594
+data structure is. To find the maximum, we
+move right from the root, until we find a
+
+9
+00:00:44,594 --> 00:00:49,632
+null key. What about floor and ceiling?
+Well, those are a little bit more
+
+10
+00:00:49,632 --> 00:00:55,594
+complicated and we'll have to, not quite
+the same as in the ordered array for the
+
+11
+00:00:55,594 --> 00:01:01,048
+binary search so we have to do a little
+bit more work for that. So just for
+
+12
+00:01:01,048 --> 00:01:07,757
+example, let's take a look at the problem
+of computing the floor. So, what we want
+
+13
+00:01:07,757 --> 00:01:14,656
+to find is so say, we're seeking the floor
+of G. So, that's the largest key in the
+
+14
+00:01:14,656 --> 00:01:20,685
+data structure that is less than G. In
+this case, the answer is E. So let's just
+
+15
+00:01:20,685 --> 00:01:27,769
+take a look at what we have to do in the
+tree, the path we have to take in the tree
+
+16
+00:01:27,769 --> 00:01:33,074
+to figure that out. Well so, we are
+looking for the largest key that's less
+
+17
+00:01:33,074 --> 00:01:38,294
+than G. And have S well, that key is
+definitely going to be in the left
+
+18
+00:01:38,294 --> 00:01:44,101
+subtree. Its not going to be bigger than S
+because S is bigger than G so we go to the
+
+19
+00:01:44,101 --> 00:01:52,032
+left. So now, we are sitting at E. And so
+what's the largest key that's less than G
+
+20
+00:01:52,032 --> 00:01:59,587
+in this, in this tree here. Well, it might
+be E but there's no way it's to the left
+
+21
+00:01:59,587 --> 00:02:05,442
+of E because those keys are all smaller
+than E and therefore smaller than G. So, E
+
+22
+00:02:05,442 --> 00:02:12,626
+is a key candidate. But it might also be
+in the right so we move to the right in
+
+23
+00:02:12,626 --> 00:02:18,934
+this case. Alright [cough]. So that's
+[cough] if K is equal to the key at the
+
+24
+00:02:18,934 --> 00:02:24,096
+root, the floor of K is K. If K is less
+than the key, it roots i n the left
+
+25
+00:02:24,096 --> 00:02:30,197
+subtree. That's the one we just did. If
+it's greater than the key at the root. The
+
+26
+00:02:30,197 --> 00:02:35,947
+floor of K is in the right subtree, if
+there is any key smaller than K in the
+
+27
+00:02:35,947 --> 00:02:41,012
+right subtree. So, in this case, there's
+no key smaller than G in the right
+
+28
+00:02:41,012 --> 00:02:46,710
+subtree. So therefore, the answer is E.
+So, our code has to check for these three
+
+29
+00:02:46,710 --> 00:02:52,722
+cases. And here's the code that does it.
+It's not that much code. It's just
+
+30
+00:02:52,722 --> 00:02:58,987
+complicated code to understand. So if we
+find our key, that's the floor. If we're
+
+31
+00:02:58,987 --> 00:03:05,563
+going to the left we find the floor, the
+one on the left. And in on the right we
+
+32
+00:03:05,563 --> 00:03:12,941
+have to do a, a little bit of tricky code
+to make sure that we return the floor on
+
+33
+00:03:12,941 --> 00:03:18,922
+the right subtree, if there's some tree
+there. If there's, if there's no node
+
+34
+00:03:18,922 --> 00:03:23,929
+there then, then, then we, we return the
+root itself. So, that's a, a
+
+35
+00:03:23,929 --> 00:03:30,379
+implementation that, that code is
+definitely tricky and a similar code for
+
+36
+00:03:30,379 --> 00:03:36,760
+ceiling. So now, what about operations
+like rank and select? How many keys are
+
+37
+00:03:36,760 --> 00:03:42,714
+there less than a given key? And, give us
+the seventh largest key to facilitate
+
+38
+00:03:42,904 --> 00:03:48,764
+implementing those operations and also
+size all we do is keep an extra field in
+
+39
+00:03:48,764 --> 00:03:54,250
+each node, which is the number of the
+nodes in the subtree rooted at that node.
+
+40
+00:03:54,250 --> 00:03:59,625
+So, this tree has got eight nodes in it.
+This subtree has six nodes in it and so
+
+41
+00:03:59,625 --> 00:04:05,718
+forth. And those counts are going to not
+only enable us to immediately implement
+
+42
+00:04:05,718 --> 00:04:11,942
+the size function, just return the count
+at the root but also, they'll give us good
+
+43
+00:04:11,942 --> 00:04:17,195
+implementations of rank and select. So,
+let's look at those now. So, we add
+
+44
+00:04:17,195 --> 00:04:24,129
+account field to every node and then to
+implement the size function well, if it's
+
+45
+00:04:24,129 --> 00:04:31,105
+null, we return zero. So a client might
+call us for a null tree or [cough] or an
+
+46
+00:04:31,105 --> 00:04:37,417
+empty tree. Otherwise we return, x.count,
+which is the number of nodes in that, in
+
+47
+00:04:37,417 --> 00:04:43,657
+that subtree by definition. The way we
+maintain, there's a number of ways we can
+
+48
+00:04:43,657 --> 00:04:49,693
+maintain the thing but the one that we'll
+adopt un iformly because it adapts to more
+
+49
+00:04:49,693 --> 00:04:55,782
+complicated situations is just before
+we're done with the put operation we'll
+
+50
+00:04:55,782 --> 00:05:03,125
+say, okay we've done all our work and
+before we return the pointer to the given
+
+51
+00:05:03,125 --> 00:05:10,949
+subtree we're going to take the size of
+what's on the left and the size of what's
+
+52
+00:05:10,949 --> 00:05:16,594
+on the right and add one for us and that's
+going to be our count. So, whether or not
+
+53
+00:05:16,594 --> 00:05:22,928
+there was a new node added we don't have
+to test for that this recursively takes
+
+54
+00:05:22,928 --> 00:05:28,858
+care of the problem of maintaining the
+size in every node when there's a new node
+
+55
+00:05:28,858 --> 00:05:35,145
+inserted. And, it also handles more
+general situations, as we'll see later on.
+
+56
+00:05:35,145 --> 00:05:41,020
+So, that's how to maintain size. So now,
+how do we implement rank? Well, it's a
+
+57
+00:05:41,020 --> 00:05:47,549
+little like floor. It's an easy recursive
+algorithm, but there are three cases. So
+
+58
+00:05:47,780 --> 00:05:54,430
+let's look at the, at the three cases. So,
+we want to know the number of keys less
+
+59
+00:05:54,430 --> 00:06:01,750
+than K. So [cough] we're going to have a
+recursive algorithm for our given key. So,
+
+60
+00:06:01,750 --> 00:06:08,622
+let's, one of the easy ones is, if our key
+is equal to the, if were [cough] to the,
+
+61
+00:06:08,622 --> 00:06:15,373
+the key at the current node then the
+number of keys less than our key is the
+
+62
+00:06:15,373 --> 00:06:22,228
+size of the left subtree of that node. So,
+if we're looking for the rank of E say,
+
+63
+00:06:22,228 --> 00:06:27,963
+how many keys are there less than E
+there's exactly two, that's by definition
+
+64
+00:06:27,963 --> 00:06:36,278
+in the data structure that's the number of
+keys that are less than E. So, that's that
+
+65
+00:06:36,278 --> 00:06:44,666
+one for rank. What about the [cough]
+starting at the root if we have the case
+
+66
+00:06:44,666 --> 00:06:51,702
+where E is less than S. So, the rank of E
+in this whole tree is the same as the rank
+
+67
+00:06:51,702 --> 00:06:58,116
+of E in the left subtree. So, there's that
+case and then if we're going to the right,
+
+68
+00:06:58,116 --> 00:07:03,416
+then we have to add one for the root and
+one for the left subtree of the root and
+
+69
+00:07:03,416 --> 00:07:08,288
+then find the rank of us on the right. So,
+that's an easy recursive algorithm for
+
+70
+00:07:08,288 --> 00:07:13,063
+finding out the rank. And it's definitely
+an instructive exercise to check that you
+
+71
+00:07:13,063 --> 00:07:19,047
+believe that, that method works. The other
+thing we h ave to do is iteration. And
+
+72
+00:07:19,047 --> 00:07:25,099
+iteration is a fundamental operation on
+tree structure. And it's based on so
+
+73
+00:07:25,099 --> 00:07:32,067
+called in-order traversal. And that's also
+a simple recursive algorithm. Traverse the
+
+74
+00:07:32,067 --> 00:07:39,026
+left subtree enqueue the key, traverse the
+right subtree. So, to iterate we're going
+
+75
+00:07:39,026 --> 00:07:44,486
+to maintain a queue of keys. And then,
+we're going to call this recursive
+
+76
+00:07:44,486 --> 00:07:51,688
+in-order [cough] method. And that method
+is going to add all the keys in the tree
+
+77
+00:07:51,688 --> 00:07:57,069
+to the queue. And then we'll just return
+that queue. And that's, a queue is an
+
+78
+00:07:57,069 --> 00:08:02,453
+iterable data structure, and the client
+can iterate that. And, in order, it's just
+
+79
+00:08:02,453 --> 00:08:08,518
+a simple recursive method. Put everybody
+to the left on the queue then put the root
+
+80
+00:08:08,518 --> 00:08:13,389
+on the queue, then put everybody to the
+right on the queue. And to believe this
+
+81
+00:08:13,389 --> 00:08:18,662
+method, you just have to think recursively
+and prove by induction that this in order
+
+82
+00:08:18,662 --> 00:08:23,372
+method puts all the keys in the data
+structure on the queue in their natural
+
+83
+00:08:23,372 --> 00:08:28,459
+order. First, it puts all the ones to the
+left on the queue. If that, that happens
+
+84
+00:08:28,459 --> 00:08:32,969
+in their natural order, then the next
+thing that has to appear is the key at the
+
+85
+00:08:32,969 --> 00:08:37,737
+root. And then if the ones on the right go
+in their natural order, and then, by
+
+86
+00:08:37,737 --> 00:08:44,768
+induction, they're all in their natural
+order. That's a very simple implementation
+
+87
+00:08:44,768 --> 00:08:55,221
+of an iterator for these symbol table with
+comparable keys. So we have to again prove
+
+88
+00:08:55,221 --> 00:09:01,468
+that property by induction. And that's
+easy to do. The diagram at the right gives
+
+89
+00:09:01,468 --> 00:09:06,791
+another simple way to look at it
+pictorially. All the keys that are smaller
+
+90
+00:09:06,791 --> 00:09:12,099
+on the left we are going to put them out,
+and then we put the key at the root and
+
+91
+00:09:12,099 --> 00:09:17,987
+then we put all the keys on the right out
+in order. And then that key is going to
+
+92
+00:09:17,987 --> 00:09:24,785
+have all those keys in order by induction.
+So, here's the operation summary for
+
+93
+00:09:24,785 --> 00:09:30,649
+ordered symbol table. And the quick
+summary is that every one of those
+
+94
+00:09:30,649 --> 00:09:36,781
+operations, while ordered iteration is
+optimal, it just gets them in linear time.
+
+95
+00:09:36,781 --> 00:09:42,052
+And all the res t of'em take time
+proportional to the height of the tree.
+
+96
+00:09:42,052 --> 00:09:47,428
+Now, if the, the keys are inserted in
+random order, we know that height by
+
+97
+00:09:47,428 --> 00:09:53,402
+analysis, is going to be proportional to
+log N. Or if it's some application where
+
+98
+00:09:53,402 --> 00:09:58,990
+the order of insertion of the keys is well
+modeled by random order and that's not
+
+99
+00:09:58,990 --> 00:10:04,880
+unusual at all. A binary search tree is a
+simple and extremely effective data
+
+100
+00:10:04,880 --> 00:10:10,088
+structure that can support all of these
+operations in a quickly, much better than
+
+101
+00:10:10,088 --> 00:10:17,109
+binary search in an ordered array which is
+not dynamic and slow for insertion. So,
+
+102
+00:10:17,109 --> 00:10:29,666
+that's a look at binary search tree
+implementations of ordered operations when
+
+103
+00:10:29,666 --> 00:10:33,072
+keys are comparable.

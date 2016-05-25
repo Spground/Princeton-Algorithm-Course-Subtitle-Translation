@@ -1,0 +1,1009 @@
+1
+00:00:04,186 --> 00:00:08,249
+Today we're gonna talk about String
+Processing and we're gonna start by
+
+2
+00:00:08,249 --> 00:00:13,030
+talking about String Sorting.
+We'll take a look at some classic methods
+
+3
+00:00:13,216 --> 00:00:17,562
+but first we need to talk a little bit
+about just what strings are.
+
+4
+00:00:17,748 --> 00:00:22,783
+And actually, that's really It's dependent
+on the programming language that you're
+
+5
+00:00:22,783 --> 00:00:25,311
+using.
+It's different programming languages
+
+6
+00:00:25,311 --> 00:00:29,903
+nowadays really have completely different
+implementations of strings.
+
+7
+00:00:29,903 --> 00:00:35,160
+So to get started, we need to take a look
+at efficient implementations of basic
+
+8
+00:00:35,160 --> 00:00:39,286
+operations on strings.
+We're going to tailor our algorithms to
+
+9
+00:00:39,286 --> 00:00:43,878
+particular Java implementation,
+And that can be made to work in other
+
+10
+00:00:43,878 --> 00:00:47,139
+situations,
+But certainly, it's starting point, you
+
+11
+00:00:47,139 --> 00:00:50,033
+have to be specific.
+So what is a string?
+
+12
+00:00:50,033 --> 00:00:55,426
+A string is just a, sequence of
+characters, and it's actually a very
+
+13
+00:00:55,426 --> 00:01:01,567
+important fundamental attraction that's
+been with us from the beginning of the
+
+14
+00:01:01,366 --> 00:01:06,368
+information processing.
+So pretty much everything we communicate
+
+15
+00:01:06,368 --> 00:01:09,964
+is a string, email or our programs are
+strings.
+
+16
+00:01:09,964 --> 00:01:15,904
+But even, another important area of
+significance that has arisen recently is
+
+17
+00:01:15,904 --> 00:01:21,844
+in Computational Biology, where our
+understanding of the way that life works
+
+18
+00:01:21,844 --> 00:01:26,692
+depends on genomic sequences, and is
+essentially based on string processing.
+
+19
+00:01:26,692 --> 00:01:32,363
+We'll see examples of that later on.
+This is a quote that's talks about that
+
+20
+00:01:32,363 --> 00:01:35,507
+issue.
+The" digital information that underlies
+
+21
+00:01:35,507 --> 00:01:41,306
+biochemistry, cell biology and development
+can be represented by a simple string of
+
+22
+00:01:41,306 --> 00:01:45,637
+G's, A's, T's, and C's.
+This string is the root data structure of
+
+23
+00:01:45,637 --> 00:01:49,690
+an organisms biology.
+So we're not talking just about data
+
+24
+00:01:49,690 --> 00:01:54,860
+structures for information processing but
+for life models of life itself.
+
+25
+00:01:54,860 --> 00:02:01,211
+Now back to computers.
+The Strings are made up of characters.
+
+26
+00:02:01,211 --> 00:02:07,124
+What's a character?
+Well the kind of classical representation
+
+27
+00:02:07,124 --> 00:02:11,890
+of what a character is, is so called 7-bit
+ASCII Code.
+
+28
+00:02:12,134 --> 00:02:19,074
+Where you have actually the underlying
+data type is 8-bit so you coud have up to
+
+29
+00:02:19,074 --> 00:02:23,891
+256 characters.
+But for many, many years programmers used
+
+30
+00:02:23,891 --> 00:02:30,831
+only 128 of those characters that would
+include all the upper case and lower case
+
+31
+00:02:30,831 --> 00:02:37,934
+letters and numbers and some punctuation.
+So that's, 7-bit ASCII that's the standard
+
+32
+00:02:37,934 --> 00:02:42,670
+for the C programming language, that's a
+very widely used language.
+
+33
+00:02:42,920 --> 00:02:46,670
+Nowadays, people use what's called
+Unicode.
+
+34
+00:02:46,670 --> 00:02:54,303
+Where a character is a 16-bit integer.
+And that's to allow for many, many more
+
+35
+00:02:54,303 --> 00:02:58,914
+characters,
+Two to the sixteenth, 65,536 instead of
+
+36
+00:02:58,914 --> 00:03:03,176
+only 256.
+And that allows for encoding characters
+
+37
+00:03:03,176 --> 00:03:10,310
+from, many different of the world's lang-,
+languages, and mathematical characters.
+
+38
+00:03:10,310 --> 00:03:18,133
+So it's a much more, general and generous,
+representation of what is a character.
+
+39
+00:03:18,409 --> 00:03:25,404
+But it's important to, be specific.
+So, in Java, the standard is that a char
+
+40
+00:03:25,404 --> 00:03:30,190
+is a sixteen bit unsigned integer.
+Now, not all.
+
+41
+00:03:30,190 --> 00:03:35,039
+Programming systems and applications have
+moved up to the Unicode standard so
+
+42
+00:03:35,039 --> 00:03:40,323
+sometimes you'll find programs looking for
+Unicode encoding and not finding it,
+
+43
+00:03:40,323 --> 00:03:45,669
+And this t-shirt is a joke that has
+something to do that to do with that.
+
+44
+00:03:45,856 --> 00:03:50,891
+It's supposed to be a heart which is a
+valid Unicode character in some worlds,
+
+45
+00:03:50,891 --> 00:03:55,443
+but not on that t-shirt.
+So we'll come back to what is a character.
+
+46
+00:03:55,443 --> 00:04:00,487
+We're gonna use a simpler version in
+between those two, or characters in the
+
+47
+00:04:00,487 --> 00:04:03,936
+8-bit integer.
+Now let's talk about what a string is in
+
+48
+00:04:03,936 --> 00:04:06,554
+Java.
+There's a built-in string data type.
+
+49
+00:04:06,554 --> 00:04:11,726
+It's not quite built-in, but many of the
+features for processing string are built
+
+50
+00:04:11,726 --> 00:04:15,557
+into the Java language.
+So it's okay to think of it as being
+
+51
+00:04:15,557 --> 00:04:19,069
+built-in.
+And so in Java, a string is a sequence of
+
+52
+00:04:19,069 --> 00:04:23,858
+characters and it's immutable.
+Once you create a string, you can't change
+
+53
+00:04:23,858 --> 00:04:27,190
+it.
+And, the primary operations that you can
+
+54
+00:04:27,190 --> 00:04:32,608
+perform efficiently with a string are to,
+number one find it's length,
+
+55
+00:04:32,608 --> 00:04:39,204
+So you can get the length of the string.
+And that's just the number of characters
+
+56
+00:04:39,204 --> 00:04:43,130
+in it.
+You can index into a string and get the IT
+
+57
+00:04:43,130 --> 00:04:48,792
+character, that's the charAt method.
+And, you can eps, extract a substring of a
+
+58
+00:04:48,792 --> 00:04:54,641
+string, to create a new string, that's a
+continuous subsequence of the characters
+
+59
+00:04:54,641 --> 00:04:58,790
+in the string.
+And. one of the, big, features of Java's
+
+60
+00:04:58,790 --> 00:05:03,687
+implementation is that you can get that
+operation done in constant time,
+
+61
+00:05:03,687 --> 00:05:09,128
+And then you can also do what's called
+concatenation, and that's add a character
+
+62
+00:05:09,128 --> 00:05:14,229
+to the end of another string,
+That one can't be done in constant time in
+
+63
+00:05:14,229 --> 00:05:20,125
+the standard Java string data type.
+So, this is what the implementation looks
+
+64
+00:05:20,125 --> 00:05:26,034
+like for the string datat type in Java.
+The private instance variables are an
+
+65
+00:05:26,034 --> 00:05:30,921
+array of characters,
+An offset that's an index into the first
+
+66
+00:05:30,921 --> 00:05:37,550
+character of a string in the array the
+length and also to make it more efficient
+
+67
+00:05:37,550 --> 00:05:44,565
+to search using string keys java keeps a
+private variable which is the hashcode for
+
+68
+00:05:44,565 --> 00:05:48,265
+that string.
+So, once the string is built and the
+
+69
+00:05:48,265 --> 00:05:55,357
+hashcode computed, then when it's time to
+use the hashcode and the hashing algorithm
+
+70
+00:05:55,588 --> 00:06:01,793
+it's immediately available.
+So, the length method simply returns that
+
+71
+00:06:01,793 --> 00:06:07,057
+length.
+To get the IT character of the string, we
+
+72
+00:06:07,057 --> 00:06:10,829
+add I to the offset, and get that
+character.
+
+73
+00:06:11,093 --> 00:06:18,180
+And, to, create a string given an offset
+length and a character array, we just
+
+74
+00:06:18,180 --> 00:06:22,942
+reset those, values.
+And then the key thing is the substring,
+
+75
+00:06:23,161 --> 00:06:27,044
+method.
+Since all it involves is, a pointer into
+
+76
+00:06:27,044 --> 00:06:31,878
+the immutable string.
+And, a length, the index of the first
+
+77
+00:06:31,878 --> 00:06:37,372
+character we can build a string in,
+constant time just by copying the
+
+78
+00:06:37,372 --> 00:06:43,166
+reference to the character array.
+So that implementation we give good
+
+79
+00:06:43,166 --> 00:06:47,810
+feeling of why, you know, substring method
+is constant in string.
+
+80
+00:06:48,024 --> 00:06:52,538
+So this is the performance.
+It's a sequence of characters, is
+
+81
+00:06:52,538 --> 00:06:55,905
+immutable.
+And the underlying implementation is
+
+82
+00:06:55,905 --> 00:07:00,920
+immutable instance variables that give the
+array, offset and length.
+
+83
+00:07:01,102 --> 00:07:06,704
+And so it means that we can get length out
+of constant time, charAt in constant time
+
+84
+00:07:06,704 --> 00:07:11,453
+just by adding in the offset indexing.
+Substring in constant time just by
+
+85
+00:07:11,453 --> 00:07:14,498
+essentially cons, copying those instance
+variables.
+
+86
+00:07:14,498 --> 00:07:19,490
+But to concatenate, to make a new string
+that results from adding one character to
+
+87
+00:07:19,490 --> 00:07:24,118
+a string, we have to create a whole new
+string; and make a copy of it, because the
+
+88
+00:07:24,118 --> 00:07:28,745
+string itself is immutable So it takes
+time proportional to the number of
+
+89
+00:07:28,745 --> 00:07:32,460
+characters in the string, and it involves
+making a new string.
+
+90
+00:07:33,772 --> 00:07:38,200
+You can imagine string implementations,
+And they exist in various programming
+
+91
+00:07:38,200 --> 00:07:41,765
+languages, where, these performance
+guarantees are different.
+
+92
+00:07:41,765 --> 00:07:46,077
+And actually, Java has different
+implementations for applications where you
+
+93
+00:07:46,077 --> 00:07:48,780
+might want different performance,
+guarantees.
+
+94
+00:07:49,012 --> 00:07:55,913
+At the if you work out the memory usage
+for a string of length and it's 40 + 2N
+
+95
+00:07:55,913 --> 00:07:59,868
+bytes.
+You might consider using a char array, but
+
+96
+00:07:59,868 --> 00:08:06,614
+then you, you lose a lot of convenience.
+So, for being able to produce substring
+
+97
+00:08:06,847 --> 00:08:12,120
+and sublink, and also the language
+features that supports strings.
+
+98
+00:08:12,120 --> 00:08:18,710
+So here's an implementation of a different
+implementation of sequence of characters
+
+99
+00:08:18,938 --> 00:08:23,938
+in Java that is mutable.
+So it's, the idea is that you can use this
+
+100
+00:08:23,938 --> 00:08:28,559
+data type when you're building up a string
+a piece at a time.
+
+101
+00:08:28,559 --> 00:08:33,256
+Like maybe reading characters off standard
+input or something.
+
+102
+00:08:33,256 --> 00:08:39,090
+The underlying implementation in this case
+is a resizing array of characters.
+
+103
+00:08:39,090 --> 00:08:43,311
+So when it fills up and doubles, as we've
+done, many times before.
+
+104
+00:08:43,492 --> 00:08:46,870
+And it keeps the, the length that's an
+instance variable.
+
+105
+00:08:46,870 --> 00:08:50,670
+So with string builder, you can get the
+length in constant time.
+
+106
+00:08:50,670 --> 00:08:55,736
+You can get characters in constant time
+just by doubling, And you can concatenate,
+
+107
+00:08:55,736 --> 00:08:58,571
+add a new character in amortized constant
+time.
+
+108
+00:08:58,571 --> 00:09:02,853
+Most of the time, it's constant.
+Every once in a while, you might have to
+
+109
+00:09:02,853 --> 00:09:05,989
+double.
+But you pay for that double by, the number
+
+110
+00:09:05,989 --> 00:09:11,481
+of operations, that you did.
+The thing you lose though, is that it
+
+111
+00:09:11,481 --> 00:09:17,411
+takes linear time to extract a sub-string,
+because to extract a sub-string, you have
+
+112
+00:09:17,411 --> 00:09:22,770
+to make a new char array that can be
+re-sizing and so forth, and can be
+
+113
+00:09:22,770 --> 00:09:28,745
+immutable to concat So that's two
+different implementations of sequence of
+
+114
+00:09:28,745 --> 00:09:33,673
+characters in Java, where these two
+different, importantly different
+
+115
+00:09:33,673 --> 00:09:38,380
+performance characteristics, so we have to
+keep in mind be mindful of that in
+
+116
+00:09:38,380 --> 00:09:43,749
+applications, and again in other
+programming languages, something like the
+
+117
+00:09:43,749 --> 00:09:49,266
+StringBuilder is more like the standard,
+and you just have to know what the
+
+118
+00:09:49,266 --> 00:09:53,742
+implementation is.
+There's another one called StringBuffer as
+
+119
+00:09:53,742 --> 00:10:01,345
+well in Java that we will skip for now.
+So here's a typical example that might
+
+120
+00:10:01,345 --> 00:10:08,478
+have a simple computation like how do we
+efficiently reverse a string.
+
+121
+00:10:08,783 --> 00:10:19,210
+So you could use a string or you could use
+a StringBuilder with string you get to, a
+
+122
+00:10:19,210 --> 00:10:26,965
+declare it almost like a built-in type and
+simply initialize with the null string,
+
+123
+00:10:27,229 --> 00:10:34,191
+And then to rev-, rev-, compute the
+reverse string, we go backwards through
+
+124
+00:10:34,191 --> 00:10:43,105
+the original string and concatenate the,
+characters starting at the back to create
+
+125
+00:10:43,105 --> 00:10:47,678
+our reverse string.
+Or with the StringBuilder, you use, the
+
+126
+00:10:48,178 --> 00:10:52,322
+StringBuilder data type,
+And so it create an object, and that uses
+
+127
+00:10:52,322 --> 00:10:56,250
+the doubling array,
+And you use the append operation.
+
+128
+00:10:56,250 --> 00:11:00,965
+So, what do you think?
+Which one of these is, is gonna be, most
+
+129
+00:11:00,965 --> 00:11:06,928
+efficient for, a long string?
+The answer is, that it's StringBuilder
+
+130
+00:11:07,196 --> 00:11:13,305
+because the, using the built-in string
+every time you do a concatenation, you
+
+131
+00:11:13,305 --> 00:11:18,516
+have to make a copy of the whole string,
+so if the string is of length N, that's
+
+132
+00:11:18,516 --> 00:11:24,235
+gonna take, one + two + three all the way
+up to N, which sums to, N square, about
+
+133
+00:11:24,235 --> 00:11:30,017
+N^2/2 so it takes quadratic time to do a,
+for this algorithm to run, for a long
+
+134
+00:11:30,017 --> 00:11:33,131
+string.
+And that's gonna preclude using it for,
+
+135
+00:11:33,322 --> 00:11:38,787
+huge strings. as we've seen so many times,
+can't be using a quadratic time algorithm
+
+136
+00:11:38,787 --> 00:11:42,917
+for, lot of data.
+On the other hand, with StringBuilder it's
+
+137
+00:11:42,917 --> 00:11:47,680
+linear time because the append operations
+are amortized in linear.
+
+138
+00:11:47,919 --> 00:11:52,622
+So that's a simple example.
+Here's another example.
+
+139
+00:11:52,622 --> 00:11:59,318
+A computation that we're gonna look at
+later on at the end of the lecture is how
+
+140
+00:11:59,318 --> 00:12:04,869
+do we form an array of suffixes?
+So that is, we have an input string in the
+
+141
+00:12:04,869 --> 00:12:10,001
+suffixes of the string or the strings that
+you get by starting each position.
+
+142
+00:12:10,001 --> 00:12:15,333
+So the first suffix is the whole string,
+the next one starts at position one, the
+
+143
+00:12:15,333 --> 00:12:19,465
+next one starts at position two and so
+forth, each one less.
+
+144
+00:12:19,465 --> 00:12:24,931
+And so we have algorithms that gain
+efficiency by forming an array of suffixes
+
+145
+00:12:24,931 --> 00:12:29,330
+of a given, given string.
+And so how do we create that thing in the
+
+146
+00:12:29,330 --> 00:12:32,900
+first place?
+Again, you can do it with string or you
+
+147
+00:12:32,900 --> 00:12:37,518
+can do it with StringBuilder. so, let's
+look at it with string.
+
+148
+00:12:37,731 --> 00:12:41,851
+We get the length, that's gonna be the
+length of the array.
+
+149
+00:12:42,064 --> 00:12:47,889
+And what we do is for all values of I, we
+set suffixes of I to the sub string of X.
+
+150
+00:12:47,889 --> 00:12:53,715
+S you get by starting at I and going all
+the way to N and that's our suffix array
+
+151
+00:12:53,928 --> 00:12:59,753
+and this is the corresponding code for
+StringBuilder. But, now in this case the
+
+152
+00:12:59,753 --> 00:13:05,617
+standard method is gonna be linear.
+Whereas the StringBuilder, because there's
+
+153
+00:13:05,617 --> 00:13:11,124
+only one string and the sub-strings are a
+few pointers into that string.
+
+154
+00:13:11,124 --> 00:13:17,292
+Whereas for a StringBuilder, we have to
+make a new string for each suffix and
+
+155
+00:13:17,292 --> 00:13:23,534
+there's a quadratic number of characters
+in the, in all of those strings and so it
+
+156
+00:13:23,534 --> 00:13:29,482
+takes quadratic time, so you can't use
+StringBuilder to build a suffix array for
+
+157
+00:13:29,482 --> 00:13:32,965
+a huge string.
+So again, those are typical examples of
+
+158
+00:13:32,965 --> 00:13:38,192
+string processing where it really matters
+which string implementations that you're
+
+159
+00:13:38,192 --> 00:13:43,103
+using and if you're not using, if you're
+using Java, these trade-offs are clear.
+
+160
+00:13:43,103 --> 00:13:48,015
+If you're using some other programming
+language, you better make sure you know
+
+161
+00:13:48,015 --> 00:13:52,990
+how strings are implemented before you
+even get started with string processing.
+
+162
+00:13:53,211 --> 00:13:57,411
+So here's a simple computation that we'll
+be using.
+
+163
+00:13:57,632 --> 00:14:04,043
+Suppose that we have two strings and what
+we're interested in knowing is the length
+
+164
+00:14:04,043 --> 00:14:10,558
+of the longest common prefix.
+So here's some a static method that will
+
+165
+00:14:10,558 --> 00:14:15,020
+implement this function.
+Takes two strings as argument.
+
+166
+00:14:15,020 --> 00:14:21,287
+We're gonna need to go as far as the
+length of the shortest of the two strings,
+
+167
+00:14:21,287 --> 00:14:25,651
+So that's N.
+And then we just go ahead and start at the
+
+168
+00:14:25,651 --> 00:14:31,204
+beginning and compare as long as the
+strings are equal we increment I.
+
+169
+00:14:31,204 --> 00:14:36,996
+And if we get to a point where they're
+non-equal, that's when we return I.
+
+170
+00:14:36,996 --> 00:14:41,280
+And that's the length of the longest
+common pre-fixes.
+
+171
+00:14:41,280 --> 00:14:47,310
+In this case, they're not equal at four,
+that means they match at four characters.
+
+172
+00:14:47,310 --> 00:14:51,661
+And if we get to the end of one of them
+then that's a prefix,
+
+173
+00:14:51,661 --> 00:14:56,012
+So we just return N.
+So that's just a little bit of warm-up
+
+174
+00:14:56,012 --> 00:15:02,207
+code, and the amount of time that takes is
+proportional to the length of the longest
+
+175
+00:15:02,207 --> 00:15:06,565
+common prefix.
+Although if the prefix is short, like if
+
+176
+00:15:06,565 --> 00:15:12,114
+the two strings have a different first
+character, then it's a sublinear doesn't
+
+177
+00:15:12,114 --> 00:15:16,550
+have to look at all the data, just has to
+look at the amount that matches.
+
+178
+00:15:16,749 --> 00:15:21,735
+So, the idea of a sub-linear time
+algorithm for a string processing is a
+
+179
+00:15:21,735 --> 00:15:27,186
+really important one that, you know, we're
+going to be taking advantage of, as we
+
+180
+00:15:27,186 --> 00:15:32,239
+move into more complicated algorithms.
+So, for example, you can compare two
+
+181
+00:15:32,239 --> 00:15:37,424
+strings without looking at them all.
+It depends, you just have to find, the
+
+182
+00:15:37,424 --> 00:15:42,876
+first place that they differ, so you don't
+look at all the data at sub-linear time.
+
+183
+00:15:42,876 --> 00:15:47,530
+And we're going to see sorting algorithms
+that take advantage of that.
+
+184
+00:15:49,151 --> 00:15:55,218
+Now we're not gonna really do it, in the
+code that we show in lecture or even in
+
+185
+00:15:55,218 --> 00:16:01,354
+the book but it's actually fairly easy to
+take many of the algorithms that we're
+
+186
+00:16:01,354 --> 00:16:06,927
+gonna look at, and make some so that they
+work for general alphabets and for
+
+187
+00:16:06,927 --> 00:16:13,135
+different applications you know, it might
+be entirely appropriate to customize the
+
+188
+00:16:13,135 --> 00:16:18,637
+code to a particular alphabet.
+So, like if the, the thing are the things
+
+189
+00:16:18,637 --> 00:16:22,940
+that are being processed are numbers or
+positive integers,
+
+190
+00:16:22,940 --> 00:16:28,730
+Or things like account numbers, maybe only
+ten decimal characters can occur.
+
+191
+00:16:28,730 --> 00:16:34,212
+So, we might as well work with strings
+made from those well-defined ten
+
+192
+00:16:34,212 --> 00:16:38,073
+characters.
+In DNA, there's only four characters, so
+
+193
+00:16:38,073 --> 00:16:42,860
+we might as well know that we're working
+with four characters.
+
+194
+00:16:42,860 --> 00:16:49,097
+And so it's the we'll often talk of the
+radix, which is the number of possible
+
+195
+00:16:49,097 --> 00:16:56,406
+different character values in the string.
+Now we're always gonna use what's called
+
+196
+00:16:56,406 --> 00:17:01,779
+an Extended ASCII, where just to fix
+ideas, where the radix is 256.
+
+197
+00:17:02,034 --> 00:17:07,119
+And the number of.
+Bits, therefore to represent a character
+
+198
+00:17:07,119 --> 00:17:10,669
+is the log base two of that, so 8-bits,
+256.
+
+199
+00:17:10,669 --> 00:17:17,347
+And when we talk about performance of
+algorithms, we'll use R and log, R just to
+
+200
+00:17:17,347 --> 00:17:23,855
+make sure that it's clear that if we're
+working with a smaller alphabet or a
+
+201
+00:17:23,855 --> 00:17:30,617
+larger alphabet we can still use the
+algorithms but the performance is going to
+
+202
+00:17:30,617 --> 00:17:35,350
+depend on the radix.
+So that's an introduction to String

@@ -1,0 +1,458 @@
+1
+00:00:03,640 --> 00:00:09,109
+That's another very important reason to
+use reductions. and that gets us closer to
+
+2
+00:00:09,109 --> 00:00:14,000
+our goal of being able to classify the
+difficulty of problems, and that's to
+
+3
+00:00:14,000 --> 00:00:19,403
+establish lower bounds. so let's take a
+look at that. So, what we want to do is
+
+4
+00:00:19,403 --> 00:00:25,290
+come up with a proof that a problem
+requires a certain number of computational
+
+5
+00:00:25,290 --> 00:00:31,326
+steps. and we had an example of that for
+sorting. We showed in the de, decision
+
+6
+00:00:31,326 --> 00:00:37,660
+tree model, any compare based sorting
+algorithm has to use at least at least N
+
+7
+00:00:37,213 --> 00:00:43,353
+log N and compares in the worst case. And
+we show that be showing that no matter
+
+8
+00:00:43,353 --> 00:00:48,680
+what the algorithm is, it has to
+distinguish between all the possible cases
+
+9
+00:00:48,680 --> 00:00:53,795
+of sorting. And that led us to in fact, a
+tree that has N factorial leaves on the
+
+10
+00:00:53,795 --> 00:00:59,429
+bottom. And the height of the tree has got
+to be at least log of that, which is N log
+
+11
+00:00:59,429 --> 00:01:05,050
+N. And you can go back to the sorting
+lecture and look at that. now that's a
+
+12
+00:01:05,050 --> 00:01:12,179
+complicated argument that certainly took
+you a little while to understand. and, in
+
+13
+00:01:12,179 --> 00:01:17,832
+general, it's extremely different,
+difficult to establish lower bounds
+
+14
+00:01:18,078 --> 00:01:22,923
+because it's generally requires a
+complicated argument like that. You have
+
+15
+00:01:22,923 --> 00:01:27,771
+to be arguing about all possible
+algorithms and that's very often tough to
+
+16
+00:01:27,771 --> 00:01:33,201
+do. Initially, there was a lot of optimism
+that we would be able to have lower bounds
+
+17
+00:01:33,201 --> 00:01:38,307
+as researchers worked more and more. And
+we'd be able to classify problems. This
+
+18
+00:01:38,307 --> 00:01:43,672
+actually worked out pretty difficult to
+get non-trivial lower bounds for all kinds
+
+19
+00:01:43,672 --> 00:01:49,026
+of computational problems where people
+thought it would be easy. But the good
+
+20
+00:01:49,026 --> 00:01:57,447
+news is that reduction allows us to take
+the ones that we have and spread the lower
+
+21
+00:01:57,447 --> 00:02:06,618
+bound. so, for, if we can reduce sorting
+to a new problem and, without too high a
+
+22
+00:02:06,618 --> 00:02:14,322
+cost of reduction, that gives us an N log
+N lower bound on that problem. So, let's
+
+23
+00:02:14,322 --> 00:02:21,099
+see how that works. so we have to make
+sure the cost of the reduction is not
+
+24
+00:02:21,099 --> 00:02:27,499
+high, that's key. so, and actually, most
+of the time, like in the examples that
+
+25
+00:02:27,499 --> 00:02:33,215
+we've looked at, we used linear time
+reductions. So, that is we only use a
+
+26
+00:02:33,215 --> 00:02:39,698
+constant number of calls to Y. and we use
+just a linea r number of steps, so usually
+
+27
+00:02:39,698 --> 00:02:45,343
+we're going through everything in the
+input and output to do some kind of
+
+28
+00:02:45,343 --> 00:02:51,750
+conversion, and that's what we've done in
+all the examples that we've seen so far.
+
+29
+00:02:52,304 --> 00:03:02,315
+so, then the idea is, so if there's a
+lower bound for X, and you reduce X to Y,
+
+30
+00:03:02,603 --> 00:03:08,080
+that establishes a lower bound than Y,
+right? So why is that? If I could solve
+
+31
+00:03:08,080 --> 00:03:13,990
+for Y more quickly, then I could use the
+reduction to solve X more quickly. so if I
+
+32
+00:03:13,990 --> 00:03:20,331
+have a reduction from X to Y and there's a
+lower bond of N log N and X, I can't have
+
+33
+00:03:20,331 --> 00:03:26,169
+a linear logarithm on Y. Because if I did
+and I have a linear time reduction, that
+
+34
+00:03:26,169 --> 00:03:31,657
+would give me a linear time algorithm for
+X. Same way if I have a lower bound of n
+
+35
+00:03:31,657 --> 00:03:36,783
+squared for X, I can't have an N login
+algorithm for Y. Because if I, if I did,
+
+36
+00:03:36,783 --> 00:03:42,681
+since I reduced X to Y, then that would
+give me linear time algorithm for Y. So,
+
+37
+00:03:42,681 --> 00:03:48,439
+the reduction allows us to propagate the
+lower bound. If I could solve Y, then I
+
+38
+00:03:48,439 --> 00:03:53,776
+could easily solve X but I know I can't
+easily solve X, so therefore I can't
+
+39
+00:03:53,776 --> 00:03:59,464
+easily solve Y. It's a very powerful
+technique and really where most of our
+
+40
+00:03:59,464 --> 00:04:07,571
+lower bounds comes from. So, just for an
+example, let's look at lower bound for the
+
+41
+00:04:07,571 --> 00:04:15,986
+convex hull algorithm. and it's again,
+convex hull certainly don't seem so
+
+42
+00:04:16,287 --> 00:04:25,420
+related but it's actually the case that in
+any algorithm for convex hull is going to
+
+43
+00:04:25,420 --> 00:04:31,746
+take N log N. And so we start with a more
+general statement about sorting. use the
+
+44
+00:04:31,746 --> 00:04:38,071
+so-called quadratic decision tree model.
+and this is just a detail about the model
+
+45
+00:04:38,071 --> 00:04:44,110
+of computation that makes the idea of
+comparing a serving algorithm to a, a
+
+46
+00:04:44,110 --> 00:04:50,219
+convex hull algorithm. It makes, it makes
+them both use the same operation. So quad,
+
+47
+00:04:50,219 --> 00:04:56,258
+quadratic decision tree you get not just
+these comparisons, but you can use tests
+
+48
+00:04:56,258 --> 00:05:02,409
+like this the, the product of the
+difference of two numbers. are they less
+
+49
+00:05:02,409 --> 00:05:08,630
+than zero or not? and those are the basic
+kinds of operations that you're going to
+
+50
+00:05:09,100 --> 00:05:16,399
+use in the in the geometric algorithms.
+And so, the proposition is that under this
+
+51
+00:05:16,399 --> 00:05:22,466
+model, sorting linear time reduces to
+convex hull. so that says, if I can com
+
+52
+00:05:22,466 --> 00:05:30,272
+pute the convex hull, then I can sort.
+since I can't sort faster than N log N, I
+
+53
+00:05:30,272 --> 00:05:36,665
+can't do convex hull faster than N log N.
+and the proof is not terribly difficult
+
+54
+00:05:36,665 --> 00:05:42,486
+but the implication is really important.
+So, convex hull algorithms it was just
+
+55
+00:05:42,486 --> 00:05:47,661
+based on that idea, am I making the right
+turn? that's called a CCW test in
+
+56
+00:05:47,855 --> 00:05:52,836
+computational geometry. I have three
+points, and going from first to second to
+
+57
+00:05:52,836 --> 00:05:58,334
+third, is that a count, counterclockwise
+turn? and then, you can implement that
+
+58
+00:05:58,334 --> 00:06:04,091
+test with these kind of quadratic things.
+It's just testing the slopes of two lines
+
+59
+00:06:04,091 --> 00:06:12,454
+and comparing them. So, it's kind of like
+a comparison. and, and the implication of
+
+60
+00:06:12,454 --> 00:06:17,918
+the fact that sorting reuses a convex hull
+means that you can't solve a convex hull
+
+61
+00:06:17,918 --> 00:06:23,250
+fast. and so how do we do the reduction
+between sorting and convex hull? and
+
+62
+00:06:23,250 --> 00:06:28,953
+again, the, I have a sorting instance, I
+have some numbers to sort. and what I want
+
+63
+00:06:28,953 --> 00:06:34,874
+to do is create a convex hull instance
+that gives me sort. Well, all we do is we
+
+64
+00:06:34,874 --> 00:06:41,245
+take the numbers that were supposed to be
+sorted and we convert them to points on a
+
+65
+00:06:41,245 --> 00:06:47,465
+parabola. so we just take X1 and X1
+squared, and X2 and X2 squared and like
+
+66
+00:06:47,465 --> 00:06:53,611
+that. Those are points parabola. now,
+there's no points and, and we give that to
+
+67
+00:06:53,611 --> 00:07:00,083
+the convex hull algorithm. Now, all of
+those points are on the convex hull. in a
+
+68
+00:07:00,083 --> 00:07:06,843
+convex hull algorithm, its supposed to
+return on in clockwise order. and you can
+
+69
+00:07:06,843 --> 00:07:13,400
+see with just finding the smallest that
+gives us the points in sorted order. So
+
+70
+00:07:13,400 --> 00:07:18,538
+the convex hull algorithm does its job.
+However, it does it we can take the
+
+71
+00:07:18,538 --> 00:07:24,009
+solution to the convex hull algorithm, and
+get a solution to the sorting algorithm.
+
+72
+00:07:24,009 --> 00:07:29,614
+Sorting reduces the convex hull. therefore
+our convex hull can't be easy cuz that
+
+73
+00:07:29,614 --> 00:07:35,286
+would make sorting easy. this kind of
+thinking is really, is really profound and
+
+74
+00:07:35,286 --> 00:07:40,691
+it has really done a lot to enhance our
+understanding of the difficulty of
+
+75
+00:07:40,891 --> 00:07:45,235
+different algorithmic problems. so,
+that's, that's the proof that I just
+
+76
+00:07:45,235 --> 00:07:50,568
+explained. this parabola thing is
+definitely going to be convex and all the
+
+77
+00:07:50,568 --> 00:07:56,186
+things are on the hull, so we just get the
+po int that's got the most negative X
+
+78
+00:07:56,186 --> 00:08:02,665
+coordinate and you've got the integers in
+order. so establishing lower bounds
+
+79
+00:08:02,665 --> 00:08:08,694
+through reduction is really important. we
+have a big convex hull problem to solve
+
+80
+00:08:08,694 --> 00:08:14,308
+and, and we're wondering, do we have a
+linear time algorithm for this? It's a
+
+81
+00:08:14,308 --> 00:08:19,921
+quite natural thing to wonder. and so how
+are you going to convince yourself that
+
+82
+00:08:19,921 --> 00:08:24,980
+there's no linear time convex hull
+algorithm? one thing you can do, and
+
+83
+00:08:24,980 --> 00:08:30,365
+believe me, a lot of people did this, is
+just try to find a linear time algorithm.
+
+84
+00:08:30,365 --> 00:08:35,816
+Keep working at it, keep working at it.
+you're going to use algorithms that are
+
+85
+00:08:35,816 --> 00:08:40,942
+based on this simple kind of comparison
+between points. It doesn't seem like it
+
+86
+00:08:40,942 --> 00:08:45,743
+should take N log N, it seems like we
+should be able to find a linear time
+
+87
+00:08:45,743 --> 00:08:51,259
+algorithm. and that's the hard way. The
+easy way is to know that reduction from
+
+88
+00:08:51,259 --> 00:08:56,514
+sorting, and that means there's no point
+in to try to put in our effort to try to
+
+89
+00:08:56,709 --> 00:09:01,575
+improve on the Graham scan. Graham scan
+gets it done in N log N. We can't do
+
+90
+00:09:01,575 --> 00:09:07,031
+better than N log N so we might as well
+call it a day and move on to some other
+
+91
+00:09:07,031 --> 00:09:12,371
+problem. and that's an example of
+reduction for proving lower bounds to help
+
+92
+00:09:12,371 --> 00:09:14,940
+us guide our algorithm design efforts.

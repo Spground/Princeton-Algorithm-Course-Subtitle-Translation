@@ -1,0 +1,449 @@
+Next we're going to look at a slightly
+different graph processing application.
+But it's a, a, a graph processing
+algorithm that's useful in many
+applications we'll see in a minute.
+And slightly different than, depth and
+breadth first search.
+It's called computing connected
+components.
+Now I mentioned this a little bit when we
+talked about basic definitions.
+So the idea is that if there's a path
+between two vertices we say they're
+connected.
+And what we want to do is reprocess the
+graph that is, build a data type that can
+answer queries of the form, is V connected
+to W in constant time.
+Now, we want to be able to do that for a
+huge, sparse graph of the type that
+appears in practice.
+So we can't use the, if we could use the
+adjacency matrix data structure, maybe we
+could do that but we can't.
+So we're going to build a class that uses
+our standard representation, that will
+enable clients to find connective
+components.
+It's really interesting to think about
+this one.
+We're getting the job done that we could
+get done if we get a huge, sparse matrix.
+But if we have billions of vertices,
+there's no way we can have billions
+squared in the matrix.
+So we have to find another way to do it.
+So here's the data type that we want to
+implement.
+So it's called and it's going to the
+constructor is going to build the data
+structure that finds the connected
+components in the given graph to be able
+to efficiently answer these connectivity
+queries.
+It'll also be able to count the number of
+connective components.
+And it also assigns an identifier from
+zero to count minus one, that identifies
+the connective component that every vertex
+is in.
+Now if you maybe, this sounds a little bit
+similar to what we did for the union sign
+problem.
+So when you union find problem we're,
+we're taking edges and we wanted to have
+queries that, that, well, well union is
+like adding edge to the graph and then
+find is like are these things connected
+yet.
+Now with union find, we found that we
+couldn't quite answer the thing in
+constant time.
+Are members are very slow growing on
+questions constant practical terms, but
+not, not really.
+So it's less efficient than the algorithm
+that we're going to talk about cause it
+doesn't quite get constant time.
+On the other hand in another way it's
+better than the algorithm we're going to
+talk about because you can either mix the
+unions and fines.
+And in this case, because we're working
+with the graph it's like we're taking all
+the unions and then we are handling fine
+requests.
+So anyway what we're going to use to
+implement this is a depth first search
+approach.
+So we'll do the depth first search, we'll
+just keep different data then we did, than
+when we were findings paths.
+So the algorithm is based on the notion
+that connection is an equivalence
+relation.
+So recall an equivalence relation has
+these three properties.
+Every vertex is connected to itself.
+If v is connected to w then w is connected
+to v.
+And if v is connected to w and w to x then
+v is connected to x.
+And those basic operations underlie the
+algorithm that we're going to talk about.
+So the equivalence relation is a, a
+general mathematical concept that implies,
+in graph theory in this case.
+And as I already mentioned, in the case of
+graph, it implies that.
+The vertices divide up into connected
+components which are maximal sets of
+connected vertices.
+So our sample graph has three connected
+components.
+And what we'll do is assign identifiers to
+each one of the components in that will
+for every vertex.
+Give us an identifier number for that
+vertex.
+And that's the data structure then our
+depth for search is going to built, and
+that immediately gives the constant time
+implementation of the connectivity
+queries.
+Given two vertices you look up their ID
+and if they're equal, they're in the same
+connected component, if they're different
+they're not.
+So that's the data structure that we're
+going to build it's like a unifying tree,
+where there's just, all the trees are
+flat.
+So that's where I just said, given
+connected components, we can answer
+queries in constant time.
+So here's a big graph, a big grid graph
+that we use in when we're talking about
+union find And turns out that this one's
+got 63 connected components.
+And again when you really think about it
+it's kind of amazing that we can do this
+computation in linear time even for a huge
+graph.
+And it's really important to be able to do
+so for the very huge graph that we talked
+about in so many applications.
+If you can process all the edges you can
+also find out the connective components
+and be set up to answer connect,
+connectivity queries.
+This is a simple algorithm but really it's
+ingenious.
+Okay.
+So let's look at the implementation.
+So our goal is to petition the vertices
+into connected components.
+So we're going to use DFS in marking.
+And so what we're going to do is for a
+general graph.
+For every unmarked vertex, we'rere going
+to run DFS to find all the vertices that
+are connected to that one.
+They are going to be part of the same
+component.
+So we used the marking to help control the
+DFS but also to control the connective
+components that the vertices that already
+have been processed and known to be in a
+given connective component.
+So let's look at a demo to understand how
+this algorithm works.
+So again, we're going to use depth for
+search and there, summary of depth for
+search, divisative vertex, we mark it as
+visitive and then recursively visit all
+the unmarked vertices that are adjacent.
+So in this case so we'll start we're going
+to visit all the vertices in the graph in
+order to identify the connected component.
+So we'll start by visiting zero.
+To visit zero, we have to check six, two,
+one, and five so we start by checking six.
+We mark it as visited.
+So that's entry six in the ray and now
+we're going to keep this other vertex
+indexed array which is the ID the
+connected component number.
+So or we're saying by putting a zero and
+that entry is that six and zero are in the
+same connected component.
+Every vertex that we encounter during the
+depth per search from zero we're going to
+assign a value of zero.
+Okay so, so what do we have to do to visit
+six.
+We have to check zero and then we have to
+check four so and four is unmarked so
+we're going to recourse and visit four.
+To visit four, we have to check five, five
+is unmarked.
+So we recourse to visit five.
+And to visit five we have to check three,
+four, and zero.
+Three is unmarked.
+This is same depth per search that we did
+before.
+But now we're just keeping track of the
+connective component number, and we're
+assigning every vertex that we encounter
+with the same idea as zero.
+Okay so, now, we have to visit three.
+To visit three we have to check five and
+four.
+Five was marked and nothing to do.
+Four was marked, nothing to do.
+So we're done with three.
+Done with three, we can continue the depth
+per search from five.
+We have to check four and zero.
+Four was marked.
+Zero was marked.
+So we're done.
+And now we could continue with the depth
+per search of four.
+We have to check six- three.
+Six was marked.
+Three was marked and we're done.
+And we can,
+Now six is done.
+And now we can continue with zero and we
+have to check two.
+Check two it's not marked.
+So we mark it and give it a connected
+component number of zero.
+To visit two, all we do is check zero
+which is marked, so we're done.
+And then we do the same thing with one,
+Unmarked.
+So we visit it, I guess assign it zero.
+And then visit one.
+And to do that, we check zero, which is
+marked.
+So we're done with one.
+And then, to finish zero we have to check
+five.
+And that's, marked so we don't have to do
+anything.
+And we're done with zero.
+So, now we're done with the first
+connected component.
+But, we're not done with the whole graph.
+So what we want to do is, Go look for, so
+that's a connected component,
+corresponding to zero.
+Now we want, what we want to do is go look
+for an unmarked vertex.
+So, we started at zero and we check one,
+two, three, four, five, and six.
+And they're all marked.
+And so the next unmarked vertex that we
+find in the graph is seven.
+So once we return from the depth first
+search for zero, we Increment, counter.
+Which is our, how many connected
+components have we seen.
+And now, we're going to assign that number
+to everything that's connected to seven on
+the depth-first search on seven.
+So what do we do to depth per research and
+sum we check eight.
+8s on the mark.
+And so we go visit it.
+So we assign it, connect the component of
+number of one same as seven.
+And mark it.
+And then go ahead and recourse to visit
+eight.
+We check seven which is marked.
+So there is nothing to do.
+We're done with eight.
+And then we're done with seven.
+So now we're done with all the vertices
+that were connected to seven.
+We increment our counter of number of
+components to two, and look for another
+vertex.
+So now we check eight, which we already
+know is marked, connected to seven.
+So now nine is unmarked so we're going to
+do a DFS from nine.
+So everybody connected to nine is going to
+get assigned a connected component number
+of two.
+So at nine, we have to check eleven and
+that was unmarked.
+So we visit it.
+Give it a two.
+To visit eleven, we have to check nine,
+which is marked.
+So nothing to do.
+And twelve, which is unmarked.
+So we visit it and, give it a number of
+two.
+To visit twelve, we have to check eleven,
+which is marked and nine which is also
+marked.
+And then we're done with twelve.
+And then we're done with eleven.
+And then, to finish doing nine, we have to
+check ten and twelve.
+Ten is unmarked.
+So we mark it and give it a number of two.
+To visit ten, we check nine which is
+marked, so we're done.
+And then finally, to finish, the DFS.
+We check, twelve from nine, and that's
+marked.
+So we're done with nine.
+And now we keep looking.
+And we find that, ten, eleven, twelve, are
+all marked.
+So we've completed the.
+Computation.
+And for every vertex we have a connected
+component number.
+And for any given query we can test
+whether their in the same connected
+component simply by looking up that number
+and seeing if it's equal.
+That's a demo of connected components
+computation.
+Okay, so here's the code for finding
+connected components with DFS.
+Which is, another straightforward DFS
+implementation.
+Just like the other one.
+And it just keeps, slightly, different,
+data structure.
+So, The We keep the marked data structure,
+which is the vertices that we visited.
+And then we keep this vertex index array
+ID which gives the identifier, the
+component containing V, I think we call it
+on the demo.
+And then a count of the number of
+components that we've seen.
+So the constructor creates, the, marked
+array and it creates this idea array.
+But now the constructor does more work
+than a single call on DFS.
+What it does is it goes through, this is
+the constructor.
+Goes through every vertex in the array in
+the graph.
+And if it's not marked, it does the DFS.
+And that DFS will mark a lot of other
+vertices.
+But when it's done that's all of those are
+going to get assigned a value of count.
+And we're going to increment count, then
+go and look for another unmarked vertex.
+Anything that wasn't marked by that first
+DFX, DFS, we'll do a DFS from that one,
+and mark all its vertices with the next
+value for the ID.
+So now let's look at the implementation of
+DFS.
+It's recursive array just like the one
+that we did.
+For, for path finding.
+Except all that we do, when we mark a
+vertex.
+We also simply set its ID to the current
+component name.
+So all the vertices that are discovered in
+the same call of DFS have the same ID.
+And to visit a vertex you go through all
+its adjacent vertices.
+And any that are not marked you give a
+recursive DFS call.
+Again, this code is amazingly compact and
+elegant.
+When we're going through the demo step by
+step maybe you, you can see that the
+underlying computation is actually kind of
+complex.
+But, but, recursion and the
+graph-processing API that we set up
+provides a compact and easy to understand
+implementation.
+So that's using DFS to find connector
+components and then to return the idea of
+a given vertex, just look at up in the
+array and to return then our components
+just you can count and then you can build
+up the needed connectivity API from those.
+So that's depth first search to find
+connected components.
+I will just talk briefly about two
+applications from scientific applications.
+So here's an application of sexually
+transmitted diseases at a high school.
+And, simply the vertices are people, blue
+are men and pink are women.
+And you I have an edge between if there
+was a contact.
+And so it's obvious that you're going to
+be interested in connective components of
+this graph.
+To be able to properly study sexually
+transmitted diseases.
+These individuals had no contact with
+these.
+Then, the, whichever one has the disease,
+maybe it won't spread.
+Or if you add a new edge, then maybe you
+have a problem.
+That's just one example of studying the
+spread of disease.
+Here's another example that we use, for,
+for that's similar to the flood fill
+example.
+And this is processing data from a
+scientific experiment.
+And in, in this case this image is comes
+from a photograph.
+And the white things are particles that
+are moving.
+And all we get is a image where it's a
+grey scale image.
+And so, what we'll do to do this
+processing is, we want to identify the
+movement of these particles over time.
+And the way we do it is build a grid
+graph, like the one for the flood fill
+application and do an edge connecting two
+vertices.
+If they're different,
+He said their gray scale values is greater
+than less than some threshold.
+And so then if you do that, and then find
+the connective components, then you can
+identify blobs which correspond to real
+particles in this simulation.
+And they do that every frame in a movie,
+then you can track moving particles over
+time.
+So these are maybe fairly high resolution
+images.
+These are graphs with lots and lots of
+edges, and you need to be able to do this
+computation quickly in order to do this
+scientific experiment.
+And we'd use this as an example.
+Example in our first year programming
+course it is based on computing connected
+components using depth-first search.
+So that's our third example of a graph
+processing algorithm.

@@ -1,0 +1,1133 @@
+1
+00:00:03,360 --> 00:00:09,259
+Next, we'll look at Huffman encoding. this
+is a classic algorithm that is still
+
+2
+00:00:09,465 --> 00:00:15,583
+widely-used and effectively used today.
+it's definitely on the list of algorithms
+
+3
+00:00:15,583 --> 00:00:21,805
+that everyone should know cuz it's quite
+ingenious. so we start out with the idea
+
+4
+00:00:21,805 --> 00:00:27,763
+of variable length codes. so far, we've
+talked about codes where every character
+
+5
+00:00:27,763 --> 00:00:33,010
+is represented with the same number of
+bits. But there's no reason to do that.
+
+6
+00:00:33,010 --> 00:00:39,279
+For example, look at Morse code. the idea
+in a way that we assign dots and dashes to
+
+7
+00:00:39,279 --> 00:00:44,798
+letters is that frequently, you'll use
+letters should have smaller number of
+
+8
+00:00:44,798 --> 00:00:51,134
+characters. so for example, an E is only
+one dot and so forth. And letters that are
+
+9
+00:00:51,134 --> 00:00:58,142
+used less frequently, like Q are going to
+be longer. More dashes and more
+
+10
+00:00:58,142 --> 00:01:06,242
+characters. So with this we can, it's an
+idea, a compression idea, of let's use
+
+11
+00:01:06,242 --> 00:01:12,993
+fewer characters for frequent fewer bits
+or fewer code characters for frequently
+
+12
+00:01:12,993 --> 00:01:19,789
+used characters. now, there's an issue
+with this and that is that it can be
+
+13
+00:01:19,789 --> 00:01:26,860
+ambiguous. So, this message everybody
+knows, looks like SOS, three dots followed
+
+14
+00:01:26,860 --> 00:01:34,147
+by three dashes, followed by three dots.
+but actually it could be it's any one of
+
+15
+00:01:34,147 --> 00:01:41,184
+these others. Like V is dot, dot, dot,
+dash. Thats good. and then, seven is dash,
+
+16
+00:01:41,184 --> 00:01:47,195
+dash, dot, dot, dot, so it could be V7. Or
+it could be either of these two. There's
+
+17
+00:01:47,195 --> 00:01:53,084
+lots of different things that this thing
+could be. So, Morse code is actually, it's
+
+18
+00:01:53,084 --> 00:01:59,324
+not just dots and dashes it actually has
+they have a little space between the code
+
+19
+00:01:59,324 --> 00:02:07,037
+words to avoid this problem that there's
+an ambiguity caused by the fact that one
+
+20
+00:02:07,037 --> 00:02:12,366
+code word can be prefix of another and
+there's no way to tell that it's not
+
+21
+00:02:12,366 --> 00:02:19,002
+without separating the code words. so now
+that's the way it's solved in Morse code
+
+22
+00:02:19,226 --> 00:02:25,046
+and that's not necessarily the most
+efficient way to solve it, and that's what
+
+23
+00:02:25,046 --> 00:02:30,791
+Huffman codes addresses. Also, a problem
+with Morse code is don't be trying to
+
+24
+00:02:30,791 --> 00:02:36,835
+transmit a lot of numbers with Morse code,
+because the codes for those are pretty
+
+25
+00:02:36,835 --> 00:02:42,580
+long and, and you'll have much longer
+representations for codes that involve a
+
+26
+00:02:42,580 --> 00:02:47,619
+lot of messages and involve a lot of
+numbers. But there's a really elegant way
+
+27
+00:02:47,619 --> 00:02:52,909
+to avoid ambiguity. And that is to just
+adopt a rule that no code word is going to
+
+28
+00:02:52,909 --> 00:02:57,877
+be a prefix of another one. so fixed
+length codes do that. If every code is the
+
+29
+00:02:57,877 --> 00:03:03,167
+same number of bits and every character
+encode different bits, then no code word's
+
+30
+00:03:03,167 --> 00:03:08,443
+a prefix of another. They're just all
+different. another thing you can do is
+
+31
+00:03:08,443 --> 00:03:14,161
+have a, a special stop character like,
+like the space in Morse Code to end to
+
+32
+00:03:14,161 --> 00:03:19,735
+each code word. That's really what it's
+doing. so the code words are all
+
+33
+00:03:19,735 --> 00:03:25,235
+different. And they end with a character
+that's special. And so, none can be a
+
+34
+00:03:25,235 --> 00:03:31,605
+prefix of another one. but there's also
+just an easy way to just make sure that
+
+35
+00:03:31,605 --> 00:03:37,830
+you use a code that has this prefix free
+property. so, for example, this code here
+
+36
+00:03:38,100 --> 00:03:45,411
+no code word is a prefix of another. And
+it means when you have bits there's a
+
+37
+00:03:45,411 --> 00:03:50,928
+unique way to decode. So here, the
+compressed bitstream starts with zero, the
+
+38
+00:03:50,928 --> 00:03:55,606
+only way that can happen is if the first
+letter is A. Then, when you're done with
+
+39
+00:03:55,606 --> 00:04:02,021
+the A you've got four ones and that means
+it's got to be a B. and then, you get rid
+
+40
+00:04:02,021 --> 00:04:07,427
+of the B, and so forth. And it's three
+ones and a zero, it's got to be an R, and
+
+41
+00:04:07,427 --> 00:04:13,914
+so forth. Since no code word is a prefix
+of another you can just read off the code
+
+42
+00:04:13,914 --> 00:04:20,422
+from the bit string without having any
+special stop character or any efficiency,
+
+43
+00:04:20,422 --> 00:04:26,519
+inefficiency caused by that. all we have
+is the bits and we are able to uniquely
+
+44
+00:04:26,519 --> 00:04:31,710
+decode it. And there is numerous
+prefix-free codes. For example here's
+
+45
+00:04:31,710 --> 00:04:38,735
+another prefix-free code that for the same
+five characters and it actually uses fewer
+
+46
+00:04:38,735 --> 00:04:45,570
+bits. So, the idea of Huffman encoding
+within these rules where we must have a
+
+47
+00:04:45,570 --> 00:04:52,189
+prefix-free, free code. And we've got a
+particular message. what's amazing about
+
+48
+00:04:52,189 --> 00:04:59,166
+Huffman encoding is, that it finds the
+code that uses the fewest bits for that
+
+49
+00:04:59,166 --> 00:05:05,492
+message. and that's why, you know, it's so
+effective. So the interesting thing one
+
+50
+00:05:05,492 --> 00:05:11,494
+interesting thing about prefix-free code
+is that they're really easy to represent
+
+51
+00:05:11,494 --> 00:05:17,691
+with trie. and, and the idea is very
+simple. We put characters in the leaves
+
+52
+00:05:17,691 --> 00:05:23,808
+and we imagine that every, this is binary
+trie, so we imagine that there's only two
+
+53
+00:05:23,808 --> 00:05:30,487
+links per node. And we imagine that every
+left link is labeled zero and every right
+
+54
+00:05:30,487 --> 00:05:36,523
+link is labeled one. and then, just
+following the path from the root to a
+
+55
+00:05:36,523 --> 00:05:42,307
+leaf, so say we go right, so it's one,
+zero, zero, that's D. Those bits are not
+
+56
+00:05:42,307 --> 00:05:48,095
+stored in the trie, we just keep, we just
+implicitly keep track of them. if we go
+
+57
+00:05:48,095 --> 00:05:54,169
+left we keep zero, if we go right we keep
+one. And so a try for prefix-free code
+
+58
+00:05:54,383 --> 00:06:01,993
+uniquely determines the code. and that
+means that just working with the trie we
+
+59
+00:06:01,993 --> 00:06:07,041
+can decompress a bit string just by
+starting at the root, reading the bits
+
+60
+00:06:07,238 --> 00:06:12,548
+take them where they take us, and when we
+get to a leaf, we've got a character. so
+
+61
+00:06:12,548 --> 00:06:17,400
+that's the trie corresponding to that
+code, that's the trie corresponding to
+
+62
+00:06:17,400 --> 00:06:22,645
+that code. this one starts out with one,
+one, so starting at the root, we go one,
+
+63
+00:06:22,645 --> 00:06:28,283
+one, and the first letter is A. And then,
+the next letters are zero, zero, and so we
+
+64
+00:06:28,283 --> 00:06:33,200
+go zero, zero, and we come to B, and so
+forth. a simple representation of a
+
+65
+00:06:33,200 --> 00:06:38,681
+prefix-free code that is that makes for
+easy decoding, given the bit, bit string
+
+66
+00:06:38,681 --> 00:06:47,030
+in the trie, it's pretty easy to decode.
+you could also keep a symbol table of
+
+67
+00:06:46,305 --> 00:06:53,192
+pairs but sorry, for compression, how do
+we do compression that was in expansion?
+
+68
+00:06:53,192 --> 00:07:00,260
+so, for compression, we can just keep the
+table and use it. you could also use the
+
+69
+00:07:00,260 --> 00:07:07,262
+trie to figure out the code by following
+the path h, up to the root. and for
+
+70
+00:07:07,262 --> 00:07:14,047
+expansion, as I just said, you start out
+at the root I go left at zero, right of
+
+71
+00:07:14,047 --> 00:07:22,014
+one and it's very easy. so for among comp,
+expansion, so we will look at the code for
+
+72
+00:07:22,169 --> 00:07:26,455
+both of these. The question is how to
+construct, the first question is how to
+
+73
+00:07:26,455 --> 00:07:33,770
+construct the trie. so let's start with
+the data type. so this is similar to other
+
+74
+00:07:33,770 --> 00:07:41,069
+tree structures that we've built before
+where we have a character that we don't
+
+75
+00:07:41,069 --> 00:07:48,452
+use for internal nodes, just for leaves.
+we've got the frequency that we use while
+
+76
+00:07:48,452 --> 00:07:55,581
+we're building the tribe, not when we're
+expanding and then every node has a left
+
+77
+00:07:55,581 --> 00:08:00,843
+and a right. and th is, is the
+constructor, you just fill in all the
+
+78
+00:08:00,843 --> 00:08:06,609
+fields. we need a method to tells us if
+the current node is a leaf. And that's
+
+79
+00:08:06,609 --> 00:08:13,175
+when so that's if both its links are null.
+and we need to compare it to, to compare
+
+80
+00:08:13,175 --> 00:08:19,762
+nodes by frequency. And we'll see why
+that's needed later on. so that's the data
+
+81
+00:08:19,762 --> 00:08:26,582
+type for the nodes that we're going to use
+to build the tries. and so now, let's look
+
+82
+00:08:26,582 --> 00:08:33,077
+at expansion. So, this is in code what I
+just talked about. so, we're going to have
+
+83
+00:08:33,077 --> 00:08:39,020
+a method that reads in some of the bit
+string, and converts it to a trie. Now,
+
+84
+00:08:39,020 --> 00:08:46,398
+that's one clever part of the algorithm.
+and then the first thing is the number of
+
+85
+00:08:46,627 --> 00:08:53,016
+characters in the code in the message, you
+know, we also get that. So, we get the
+
+86
+00:08:53,016 --> 00:08:59,481
+trie, and then, we get the number of
+characters. and then we simply for do a
+
+87
+00:08:59,481 --> 00:09:06,610
+for loop for the number of characters and
+start at the root. if we're not at a leaf
+
+88
+00:09:06,870 --> 00:09:13,303
+we read a bit. And if it's zero, we go
+left, and if it's one, we go right. and
+
+89
+00:09:13,303 --> 00:09:20,608
+that's it. if as soon as we get to a leaf,
+we just write out the character that we
+
+90
+00:09:20,608 --> 00:09:25,563
+get and then, go back to the root and keep
+going. We're not in a leaf if we read a
+
+91
+00:09:25,563 --> 00:09:30,856
+bit, we have zero, go to the left, one, go
+to the right. And when we get to a leaf,
+
+92
+00:09:30,856 --> 00:09:36,761
+we write out the character extremely
+compact code for expanding. given a bit
+
+93
+00:09:36,761 --> 00:09:41,987
+string, the first thing is to trie. We
+have to talk about how to get the trie in
+
+94
+00:09:41,987 --> 00:09:47,730
+from a bit string number of characters.
+and then, the simple loop that expands
+
+95
+00:09:47,923 --> 00:09:53,660
+according to the trie representation. so
+that's networks for any prefix-free code,
+
+96
+00:09:53,660 --> 00:09:59,635
+not just the Cuffman, Huffman code. in the
+running your time, it's obviously linear
+
+97
+00:09:59,635 --> 00:10:05,726
+in the number of bits cuz for it's just a
+loop that chews up a bit every time in the
+
+98
+00:10:05,726 --> 00:10:12,989
+loop. Okay. So, so again, for any
+prefix-free, free code, how are we
+
+99
+00:10:12,989 --> 00:10:21,639
+actually going to write the trie? well
+it's a little, little clever but by this
+
+100
+00:10:21,639 --> 00:10:30,691
+time, you should be ready for this kind of
+algorithm. what you can do is traverse the
+
+101
+00:10:30,691 --> 00:10:39,598
+trie in pre-order and when you and then
+come to an internal node you write a zero.
+
+102
+00:10:39,798 --> 00:10:45,615
+when you come to a leaf, you write a one f
+ollowed by the 8-bit character at that
+
+103
+00:10:45,615 --> 00:10:52,379
+leaf. so it's a simple pre-order
+traversal. if this is a recursive program
+
+104
+00:10:52,379 --> 00:10:59,863
+to write out in trie if you're at a leaf,
+you write a one followed by the 8-bit
+
+105
+00:11:00,204 --> 00:11:08,062
+characters at the leaf and you're done.
+and if you're not at the leaf, you simply
+
+106
+00:11:08,062 --> 00:11:15,706
+write a zero. and then recursively, do the
+two sub-tries. and that gives a unique
+
+107
+00:11:15,706 --> 00:11:23,180
+representation of the trie that can be
+used to construct the trie from that bit
+
+108
+00:11:23,180 --> 00:11:31,450
+string. so and the idea is that typically,
+we're talking about a, a very long message
+
+109
+00:11:31,677 --> 00:11:37,421
+the trie itself is just basically
+encodings of all the possible characters
+
+110
+00:11:37,421 --> 00:11:43,695
+in a message. and that's going to tend to
+be small compared to the length of the
+
+111
+00:11:43,695 --> 00:11:49,703
+message. so for say, a genomic sequence
+there would be only four characters and
+
+112
+00:11:49,703 --> 00:11:54,909
+the ones that used most frequently,
+hopefully would be encoded with not that
+
+113
+00:11:54,909 --> 00:12:00,180
+many bits. of course, but anyways, the
+size of the trie itself is going to be
+
+114
+00:12:00,180 --> 00:12:05,475
+much smaller than the length of the
+message. so reading in the trie and this
+
+115
+00:12:05,475 --> 00:12:11,271
+requires a little bit of thought, but and
+we see the code, the code is extremely
+
+116
+00:12:11,271 --> 00:12:17,299
+simple. We justreconstructed from the
+pre-order traversal to trie. So, this is
+
+117
+00:12:17,299 --> 00:12:23,714
+the readTrie method that we needed, that
+reads the bits from binary standard in and
+
+118
+00:12:23,714 --> 00:12:30,440
+produces the trie, and it's also
+recursive. and if the bit that you read is
+
+119
+00:12:30,738 --> 00:12:40,382
+zero that sorry, if the bit that you read
+is one that means you have to create a
+
+120
+00:12:40,382 --> 00:12:49,729
+leaf otherwise, you recursively read the
+left and read the right. and make a new
+
+121
+00:12:49,729 --> 00:12:57,121
+node that has a subtree that, that denotes
+to the left and the right. And it doesn't
+
+122
+00:12:57,338 --> 00:13:04,010
+it doesn't use the character in the second
+one, the frequency we initialize to zero.
+
+123
+00:13:04,305 --> 00:13:11,886
+so, in internal nodes, we don't use the
+character. So if you look at what would
+
+124
+00:13:12,182 --> 00:13:19,861
+this code do for this bit string so the
+first bit is zero. so it's going to
+
+125
+00:13:20,452 --> 00:13:28,526
+recursively call itself to read the trie
+on the left. and so, the next bit is a
+
+126
+00:13:28,526 --> 00:13:33,984
+one. so, it's going to read the next eight
+bits to get the A. And it's going to
+
+127
+00:13:33,984 --> 00:13:40,158
+return a new node with that character in
+it that's a leaf. so, that's going to be
+
+128
+00:13:40,158 --> 00:13:45,986
+the left subtree of the initial trie, the
+first recursive call. and then, it'll read
+
+129
+00:13:45,986 --> 00:13:51,120
+the right subtree, which is an internal
+node, another internal node. It takes a
+
+130
+00:13:51,120 --> 00:13:57,225
+little thinking to convince yourself this,
+this works. but it does. And it's very
+
+131
+00:13:57,225 --> 00:14:03,608
+compact and easy code. And again, works
+for an prefix code. you encode the trie
+
+132
+00:14:03,608 --> 00:14:09,200
+with the prefix traversal. And with a very
+small amount of code, you can reconstruct
+
+133
+00:14:09,200 --> 00:14:14,860
+the trie and transmit a bitstream. And so,
+this is a compression of a trie structure.
+
+134
+00:14:14,860 --> 00:14:19,826
+so now, the question is, how do we,
+there's a lot of prefix pre-codes, how we
+
+135
+00:14:19,826 --> 00:14:26,321
+will find the best one? well, and there's
+an idea called the Shannon-Fano Algorithm
+
+136
+00:14:26,321 --> 00:14:32,841
+which says the, the, the key idea is that
+you've got characters that appear with
+
+137
+00:14:32,841 --> 00:14:39,684
+different frequency. And you want to get
+the ones that appear very frequent to use
+
+138
+00:14:39,684 --> 00:14:45,634
+fewer bits. and so, it's of interest to
+find the ones that are very frequent, and
+
+139
+00:14:45,634 --> 00:14:51,384
+so the Shannon-Fano algorithm says, just
+divide all the symbols in, into two
+
+140
+00:14:51,384 --> 00:14:57,681
+roughly equal frequency and start the ones
+in the first one with zero and the ones in
+
+141
+00:14:57,681 --> 00:15:03,293
+the second one with one, it's kind of a
+balanced code. and then, and then kind of
+
+142
+00:15:03,293 --> 00:15:12,048
+re, recur. so if you have A appearing five
+times, and you C appearing one time at six
+
+143
+00:15:12,048 --> 00:15:19,660
+for those and then you get six for all of
+those. And then you try to encode those
+
+144
+00:15:19,660 --> 00:15:25,233
+with and try to use zeroes for roughly
+half the character. And one for roughly
+
+145
+00:15:25,233 --> 00:15:31,007
+half the character. so in order to deal
+with that, you have to figure out how to
+
+146
+00:15:31,007 --> 00:15:36,846
+divide up the symbols. And you can imagine
+an algorithm for doing that. but the real
+
+147
+00:15:36,846 --> 00:15:42,424
+problem with this method is that it's not
+optimal. and so that's the kind of
+
+148
+00:15:42,424 --> 00:15:48,132
+situation that Huffman was faced with way
+back when coming up with the algorithm.
+
+149
+00:15:48,329 --> 00:15:53,644
+and the best way to explain the Huffman
+algorithm is through a demo. And so,
+
+150
+00:15:53,644 --> 00:15:59,220
+that's what we'll do next. So, here's a, a
+demo of the Huffman algorithm. So, the
+
+151
+00:15:59,220 --> 00:16:05,302
+first thing that we do is count the
+frequency of each character in the input.
+
+152
+00:16:05,302 --> 00:16:11,384
+and so that's what the algorithm is based
+on. So, in this case, there's five As, two
+
+153
+00:16:11,384 --> 00:16:18,434
+Bs, o ne C, one D, and so forth. So our
+goal is to use fewer bits to encode A and
+
+154
+00:16:18,434 --> 00:16:23,843
+more bits to encode C, D, and exclamation
+point ,!,, for example and we want to
+
+155
+00:16:23,843 --> 00:16:32,763
+prefix-free code. so it's kind of a bottom
+up method. So what we do is we build one
+
+156
+00:16:32,763 --> 00:16:40,829
+node for each character and we keep in the
+node corresponding to each character, a
+
+157
+00:16:40,829 --> 00:16:47,645
+weight that's equal to the frequency. and
+then we imagine keeping them in a sorted
+
+158
+00:16:47,645 --> 00:16:53,835
+order. so that's how the method starts
+out. Now remember, our node representation
+
+159
+00:16:53,835 --> 00:17:00,026
+had an instance variable that allowed for
+storing these frequencies. And then the
+
+160
+00:17:00,026 --> 00:17:06,480
+idea is to given these are sub-tries of
+size one, the idea is to combine two of
+
+161
+00:17:06,480 --> 00:17:12,325
+them and merge them into a single tribe
+with a cumulative weight. And so we're
+
+162
+00:17:12,325 --> 00:17:18,832
+going to find the ones that are, the two
+that have the smallest weight and create a
+
+163
+00:17:18,832 --> 00:17:26,509
+new internal node for them. And the weight
+of that node is going to be the sum of the
+
+164
+00:17:26,753 --> 00:17:33,237
+two weights. So, that's the frequency of
+all the code characters below it. and
+
+165
+00:17:33,604 --> 00:17:42,758
+then, just put that into the mix. so now
+we have five sub-tries to deal with and
+
+166
+00:17:42,758 --> 00:17:49,336
+that's the algorithm. Select the two tries
+with minimum weight. in this case, it's,
+
+167
+00:17:49,336 --> 00:17:54,503
+since we're keeping them sorted so it's
+going to be the ones on the left. combine
+
+168
+00:17:55,070 --> 00:18:00,874
+them and add their two weights. So, make a
+parent node. It doesn't matter which goes
+
+169
+00:18:00,874 --> 00:18:06,324
+in left which goes right, really. and
+then, add the weights to the frequency of
+
+170
+00:18:06,324 --> 00:18:14,292
+the parent node and then put it into the
+list. Now, if you look up at the table at
+
+171
+00:18:14,292 --> 00:18:20,809
+the right what we're doing when we're
+doing this combination is building up the
+
+172
+00:18:20,809 --> 00:18:27,251
+code corresponding to the characters
+moving from left to right. So, so far, we
+
+173
+00:18:27,251 --> 00:18:33,616
+know that the code for D is going to end
+in zero and the code for C is going to end
+
+174
+00:18:33,616 --> 00:18:39,679
+in one, one. and so for exclamation is
+going to end in one zero. so that now
+
+175
+00:18:39,679 --> 00:18:48,107
+continue the rule. Now the B and R are get
+combined. And again we're figuring out how
+
+176
+00:18:48,107 --> 00:18:54,154
+those code words end. and so now, we have
+just three to choose from. Now, we're
+
+177
+00:18:54,154 --> 00:19:01,120
+going to combine the two big ones and now,
+we have new prefix bits for all of them.
+
+178
+00:19:01,962 --> 00:19:08,392
+and notice that our letter that appear
+with highest frequency gets added in late,
+
+179
+00:19:08,392 --> 00:19:14,756
+which means, it's going to be nearer the
+root. so now, we have just the two and we
+
+180
+00:19:14,756 --> 00:19:21,445
+finish the algorithm. there's only two
+left now, so we combine them. I merge into
+
+181
+00:19:21,445 --> 00:19:27,628
+a single try. And that corresponds to
+prepending a one to the codes for all the
+
+182
+00:19:27,628 --> 00:19:33,446
+other letters and just having a one bit
+code for A. And that now winds up with a
+
+183
+00:19:33,446 --> 00:19:39,298
+single try. that's a demo of Huffman's
+algorithm in operation. So, the Huffman
+
+184
+00:19:39,298 --> 00:19:45,105
+Code is an answer to the question of how
+to find the best prefix code that's really
+
+185
+00:19:45,105 --> 00:19:50,651
+very simple to describe. Count a frequency
+for each character in the input. And you
+
+186
+00:19:50,651 --> 00:19:55,870
+start with one node corresponding to each
+character with weight given by its
+
+187
+00:19:55,870 --> 00:20:00,763
+frequency. And just, until you have a
+single trie, you select the two with the
+
+188
+00:20:00,763 --> 00:20:05,853
+minimum weight and merge them into a
+single trie by creating a new node with a
+
+189
+00:20:05,853 --> 00:20:11,864
+weight sequel or the sum of the
+frequencies. this algorithm is used in
+
+190
+00:20:11,864 --> 00:20:19,780
+many different and familiar compression
+applications from PDFs to GZIP to MP3s to
+
+191
+00:20:19,780 --> 00:20:26,780
+JPEG. and it's pretty simple to code up in
+Java given the tools that algorithmic
+
+192
+00:20:27,104 --> 00:20:33,090
+tools that we've built up. so what we're
+going to do is this is the F of the
+
+193
+00:20:33,090 --> 00:20:38,767
+frequencies have been computed. And we're
+going to build a try given the
+
+194
+00:20:38,767 --> 00:20:44,230
+frequencies. and we're going to use a
+priority Q in our generic priority Q, we
+
+195
+00:20:44,230 --> 00:20:49,586
+might as well put nodes on it. we
+implemented a compare-to method. all we
+
+196
+00:20:49,586 --> 00:20:55,972
+need is the compare-to to be able to build
+a priority Q from data of that type. So,
+
+197
+00:20:55,972 --> 00:21:01,603
+we have a priority Q of nodes and for all
+the possible character values, if they,
+
+198
+00:21:01,603 --> 00:21:07,165
+and if they appear in the message, they
+have a nonzero frequency we'll just put in
+
+199
+00:21:07,165 --> 00:21:13,608
+a new node with the given frequency that's
+a leaf onto the priority Q. And then the
+
+200
+00:21:13,608 --> 00:21:19,873
+Huffman algorithm is just as long as
+there's more than one node in the priority
+
+201
+00:21:19,873 --> 00:21:26,575
+Q. we pull off the smallest two nodes, we
+create a new node, that's apparent. it's
+
+202
+00:21:26,575 --> 00:21:31,795
+character value is not used. we compute
+the total frequency, the sum of the two
+
+203
+00:21:31,795 --> 00:21:37,338
+children and we make those children of
+that nod e, and then we put that back onto
+
+204
+00:21:37,338 --> 00:21:42,622
+the priority Q. And that's it. Take two
+off, put one on. it reduces in size by
+
+205
+00:21:42,622 --> 00:21:47,263
+one. So, this while loop is eventually
+going to terminate. when it's done,
+
+206
+00:21:47,263 --> 00:21:53,333
+there's only one node on the priority Q
+and that's the root of the trie. extremely
+
+207
+00:21:53,574 --> 00:21:59,915
+simple implementation of Huffman's
+algorithm using our generic priority Q.
+
+208
+00:22:00,156 --> 00:22:07,126
+you can also implement it by presorting
+the of the nodes as well. but this is a
+
+209
+00:22:07,126 --> 00:22:14,480
+particularly nice way to do it. now you do
+have to prove that it produces an optimal
+
+210
+00:22:14,480 --> 00:22:21,515
+code. That's in the sense that no code
+produces, produce, uses fewer bits. and
+
+211
+00:22:21,515 --> 00:22:26,866
+that proof is in the book. it's, it's not
+terribly difficult but we're not going to
+
+212
+00:22:26,866 --> 00:22:31,670
+do it in the lecture. the, and that's,
+Huffman proved that it in the 1950s. So,
+
+213
+00:22:31,670 --> 00:22:36,808
+there's no point looking for a better
+prefix-free code. and prefix-free codes
+
+214
+00:22:36,808 --> 00:22:43,930
+are so convenient cuz you don't need to
+worry about the ambiguity it's a fine
+
+215
+00:22:43,930 --> 00:22:50,774
+method that's pretty easy to do. So now
+what we have to do, one disadvantage of
+
+216
+00:22:50,774 --> 00:22:56,639
+Huffman and some other methods don't have
+is, we have to have two passes through the
+
+217
+00:22:56,639 --> 00:23:02,714
+data. we have to go through and read all
+the character frequencies and then build
+
+218
+00:23:02,714 --> 00:23:08,091
+the trie and then we have to go back
+through the data and encode the file,
+
+219
+00:23:08,091 --> 00:23:16,499
+either traversing the trie from bottom up
+or using just a symbol table for to look
+
+220
+00:23:16,499 --> 00:23:24,214
+up the code for each symbol in the
+message. and the running time is pretty
+
+221
+00:23:24,214 --> 00:23:30,577
+clear from the use of the trie, the trie,
+the number of characters in the number of
+
+222
+00:23:30,577 --> 00:23:36,654
+nodes in the trie is just the alphabet
+size. and so it's going to be alphabet
+
+223
+00:23:36,654 --> 00:23:43,303
+size log R because there's trie operation
+that might involve depth of log for using
+
+224
+00:23:43,303 --> 00:23:51,431
+heap implementation. and then you have to
+be the for each character, you have to do
+
+225
+00:23:51,431 --> 00:23:57,485
+some kind of lookup to encode. and
+actually a question is, can we do better
+
+226
+00:23:57,712 --> 00:24:04,296
+in terms of running time? and well, stay
+tuned, we'll look at a different method.
+
+227
+00:24:04,296 --> 00:24:06,340
+That's Huffman compression.

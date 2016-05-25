@@ -1,0 +1,311 @@
+Now we're going to talk about P and NP,
+the two major classes of problems that
+form the basis for the theory of
+intractability. and so we've talked about
+search problems and what we're going to do
+is just name that class of problems and
+that's what we call NP. NP is the class of
+all search problems. now I just want to
+mention again that the classic definition
+that's often used in, in many books and
+papers that you'll read about this topic.
+the classic definition limits NP to yes/no
+problems. but again, the major conclusions
+that we draw are exactly the same. so, we
+just listed a bunch of problems that are
+in NP. And the way that we know is we had
+a very concrete definition of what we mean
+by a search problem. you have to be able
+to given a solution, you have to be able
+to verify in guaranteed polynomial time
+that you have a solution. and for
+satisfiability problems that we considered
+and factor all are in the class NP. so we,
+we're using the concept of a search
+problem to classify some problems. One way
+to think of NP is it's, it's really what
+we would like to be able to compute. We'd
+like to have algorithms that solve all of
+these problems. and it's a very, very
+general class of problems that's like,
+it's almost articulating in as general way
+as possible what we mean by a problem that
+we want to solve computationally. So,
+these are the problems that we'd like to
+solve. Some of them we can, we know how to
+solve, some of them we don't. that's the
+NP. now, by contrast, there is another
+class P where we add a, a restriction and
+that's the class of search problems that
+we know how to solve in polynomial time.
+So, that is we have, generally we have we
+prove that problems in P by demonstrating
+an algorithm that is guaranteed to run in
+polynomial time for any instance of that
+problem. And again, the classic definition
+is about yes/no problems. so here's bunch
+of problems that are in P. and so we
+already showed L solve cuz Gaussian
+elimination runs in polynomial time. And
+we already talked about LP cuz algorithm
+works for linear program, programming. and
+then pretty much all the algorithms that
+we've covered in this course like are cast
+as search problems. And also can, have
+polynomial time solutions. We've been
+talking about programs that are polynomial
+time solutions and just a little bit has
+to be done to convince yourself that, or
+to cast the problem as a search problem
+that many of them are explicit as search
+problems, like ST connectivity. You're
+searching for a path in a graph you know,
+and, and Theseus and the minotaur, you
+know, showed if you, if you are given a
+path, you can check that it's a path
+easily. So, it's a search problem. so P is
+the class of search problems that can be
+solvable in polynomial time. so the
+significance of p is, those are the ones
+that we actually do compute feasibly. So,
+NP's the ones, all the ones we would like
+to, and P is all the ones that we actually
+do compute feasibly. and those are
+perfectly well defined classes of
+problems. now, what is the N and NP for?
+Well, just the, a brief moment to talk
+about that. the N and NP stands for
+non-determinism. and the idea of a
+non-deterministic machine is one that can
+guess the desired solution. and that's an
+abstract machine. as far as we know, we
+don't have non-determinism in real life
+devices. but in, but it's fine to have an
+abstract machine of that sort. Remember,
+for our implementation for regular
+expression pattern matching, the way that
+we solved that practical problem was to
+image a non-deterministic machine. And
+then, write a program that would simulate
+that machine by trying all different
+possibilities. and, in fact, that whole
+exercise really gets at the difference
+between polynomial exponential time. first
+approach is the naive approach to
+simulating that machine turns out to be an
+algorithm that can run in exponential time
+for some inputs. And we actually saw that
+today there's implementations like that
+out there that hackers can exploit to deny
+service. The implementation we show had
+guaranteed polynomial time. So,
+non-determinism was an abstract device
+that we used to help us try to get to a
+real practical solution and that's what
+we're doing again. So, let's imagine, we
+have a non-deterministic machine that can
+guess the solution. so like if you're in,
+in a deterministic machine, if you make a,
+an array and create an array of size n,
+then it, Java we know deterministically,
+initializes the entries to all zero. but
+what if that array A is supposed to be our
+solution to a integer linear programming
+problem? we could have a non-deterministic
+machine initialize the entries to the
+solution. They could just guess what the
+right answer is and initialize it. So, it
+seems like a really, really powerful
+capability. so for example, for integer
+linear programming, we could just tell the
+non-deterministic machine guess the
+solution and we'd be done. and the same
+concept goes all the way down to a touring
+machine. the whole idea of the finite
+state machine or of any computation that
+people think about is the machine's in
+some state, and it's fully determined what
+the next state will be. And Turing
+machine's the simplest type of imaginary
+machine with that kind of capability. But
+it's very simple to make a Turing machine
+non-deterministic, the same way that we
+made Finite Automata non-deterministic.
+You just let it go to more than one
+possible state. So, when you think about
+non-determinism in this way, it is pretty
+clear almost immediately that NP is a
+class of search problems that are solvable
+in polynomial time on a non-deterministic
+Turing machine. Even, if the machine gives
+the solution, what we requiring is that we
+have to be able to check that there is a
+solution in polynomial time. and that's,
+that's NP. So, what we have led to
+immediately is the, what's called the
+extended Church-Turing thesis. and that's
+the idea that P is, is the ones that we
+know how to solve, but it's the class of
+the problems that we ever going to be able
+to solve in the, in the natural world. and
+again evidence were supporting the thesis
+is that all the computers that we know
+about were simulating in polynomial time.
+people wondered, have wondered and still
+wonder, is it possible that there are
+computers out there that work differently
+or more efficiently than the computers
+that we built. here's the an interesting
+and simple example. there's a thing called
+a Steiner tree, which is like an MST,
+except you're not restricted to have your
+lines go through the points that are
+given. Steiner tree you're given some
+points. And what you're supposed to do is
+find a set of lines of minimal length that
+connect the end points. Now, this is quite
+a bit of math and geometry even to prove
+that a given set of lines is a Steiner
+tree. But like for four points it's known
+like this, in a rectangle or array. that's
+what the Steiner tree looks like. Can we
+write a program to compute Steiner trees?
+it's a search problem. And although that
+it's not, not completely easy to
+characterize as a search problem, but it
+is. But anyway, the point for now is that
+people wondered actually if you put soap
+in between two glasses, the film formed by
+the soap or soap bubbles is another way to
+think about it. But this is a two, making
+it two-dimensional if you put four points
+and put soap and people have done this
+experiment, that's a photo off the, off
+the web, you get a Steiner tree. and, you
+know, who knows what kind of computation
+is involved to make that. if you put lots
+of points, people have done I, I, I don't
+know what number. but they can get Steiner
+trees for substantial numbers of points.
+can we really compute Steiner trees that
+way? Well, you can construct things where
+it doesn't actually get the actual Steiner
+tree. So, it doesn't really work. and
+that's just one example of an attempt.
+there's plenty other examples out there.
+but the Chur, extended Church-Turing
+thesis hasn't been with us for as long as
+the Church Turing thesis and maybe it's
+not quite as strong, but it's held for
+quite a, quite a long time. and people are
+assuming that there's not going to be a
+design that's going to make the differ
+ence between polynomial time in this
+natural world. if we're going to make
+future computers more efficient, we're
+just going to improve our existing
+designs. that's the extended church term
+thesis. but it leaves us with all of this
+leads us with a basic question. Does P
+equal NP? so P is all the problems we can
+solve in the natural world, and P is all
+the search problems that would like to
+solve. if we had non-determinism in the
+natural world do we have non-determinism
+in the natural world? Does non-determinism
+help? that's the question. Does P equals
+NP? this question has been around for a
+long time and has even made it into the
+popular culture. and I think it'll make it
+into the popular culture much more when we
+start having because we're starting to
+have massive online courses where many
+more people are learning about these
+fabulous concepts. now here's another way
+to think about P versus NP. it's the like
+idea of automating creativity. it's one
+thing to be creative, it's another thing
+to appreciate creativity. so Mozart comes
+up with music, a piece of music. Once that
+thing is created, we can appreciate it. Or
+Andrew Wiles proved with his last theorem
+and however he came up with it, there's a
+way to check it, somebody can check it. or
+a, somebody designs an, an air, air foiler
+or airplane wing, we can verify that it
+has the properties it's suppose to. or
+Einstein proposes a theory, somebody can
+validate it. So, there's the creative
+let's, let's, let's make something or, or
+come up with something, that's the analog
+to that is a solution to a problem, a
+search problem. and the ordinary thing to
+do is to check it. but if P equals NP,
+there's no difference. we can, we, it's
+really like automating creativity. that's
+the computational an analog to P equals NP
+question is the computational analog to
+automating creativity. Is P equals NP?
+That's the central question. , can you
+always avoid before searching and do
+better? for search problems, since we have
+a small solution that can be checked in
+palonomial time, ther e's always a
+exponential time solution, which is try
+all possible solutions. but that's not,
+the question is, can you can you always do
+better than that? That's the, the, the
+essence of the P equals NP question. so
+there's two possibilities. If P, if P is
+not, if P is a search problem so it's
+certainly an NP. Any problem in NP is also
+in P. so, the question is are there some
+problems, some search problems that we
+can't solve in polynomial time? so if the
+answer to the question is yes, then all
+the problems that I've mentioned that
+nobody knows the solution to despite
+people working on them for many decades.
+if P is equal to NP there's polynomial
+times out, algorithms for those out there,
+we just haven't found them yet. if the
+answer to that is no, if that that's
+really something fundamental about our
+universe that, that something, said
+something profound about the power of
+non-determinism, non-determinism. If, if P
+equals NP, non-determinism actually
+doesn't help, not equal NP. it would, now,
+the overwhelming consensus is that P
+equals, not equal to NP. and we'll talk
+some more about some reasons that people
+believe that. but when thinking about it
+and you can really convince yourself that
+it really seems as though having a
+machine. And a machine that can when you
+initialize a ray, an array, initialize it
+with a solution to a integer linear
+programming problem really would seem that
+a machine like that is going to be more
+powerful than the machines that we're
+using. and that's why people believe that
+P is not equal to NP. But the frustrating
+thing is that, theoretical computer
+scientist, and mathematicians have been
+working on this for many, many years and
+no one has been able to prove it. actually
+there's the Millenium Prize. you can earn
+a million dollars from Clay Mathematics
+Institute if you resolve PNP.
+Equals NP. actually there's other math
+problems on that list and but people who
+know algorithms. First of all, you could
+learn, earn way more than a million
+dollars if, if you resolve this problem.
+second of all, if you're expert in
+algorithms, there's lots of other ways to
+earn a million dollars. so it's not about
+the million dollars, it's about this is
+some would argue one of the most important
+open mathematical questions that faces us
+right now.

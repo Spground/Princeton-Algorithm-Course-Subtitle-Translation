@@ -1,0 +1,213 @@
+Next we'll look at a proof that the
+Ford-Fulkerson algorithm is valid, known
+as the max-flow min-cut theorem.
+It also proves that the two problems are
+equivalent.
+We need a couple more definitions to, to
+show, first we want to show the
+relationship between a flow and a cut.
+So in this case we've got a cut where T is
+on one side and all the other vertices are
+on the same side as S.
+And what we talk about is the flow across
+the cut.
+And that, what that is, is the sum of the
+flow on it's edges that go from S to T,
+minus the amount that goes the other way.
+That's the flow across the cut.
+So this, what's called the flow value
+lemma is that, if you have a flow then for
+any cut.
+The net flow across the cut is the value
+of the flow.
+That's called the flow value lemma.
+Doesn't matter what the cut is, this, this
+is a max flow, a flow with value 25 and
+every cut is going to have 25 flowing
+across it.
+So, this cut, this is a more complicated
+cut where S and these three vertices are
+colored.
+So the flow of a, across that cut has to
+take the all the edges that go from a gray
+vertex to a white one.
+So, there's ten plus ten, plus from a gray
+vertex to a white one, five plus ten + 00.
+Then, we have to subtract off the edges
+that go from a white to a gray one.
+So we add up all the ones that go from
+gray to white.
+Ten + ten + five + ten + zero + zero and
+subtract off the two that go from a white
+to a gray and, still, the net value across
+the flow is the same, the value of the
+flow.
+That's the flow value lemma that gives a
+particular relationship between flows and
+cuts.
+And that's not too difficult to prove by
+induction on the size of one of the sets.
+For example, if we do an induction on the
+size of the set containing T, it's
+certainly true when that set consists of
+just T, because the value of the flow is
+exactly equal to the edges coming into T.
+And then to prove by induction, you can
+move any vertex from A to B in local
+elibriums, local equilibrium's going to
+make sure that the flow value limma is
+true.
+And so that's, that's how it's proved.
+And a corollary of that is that, that
+outflow from S is equal to the inflow to
+T, which is equal to the val, all equal to
+the value of the flow.
+And that's also easy to see in all of our
+examples.
+So to get started let's, let's look at
+what's called weak duality.
+If, F is any flow at all, in network.
+If AB is any cut.
+The value of the flow is going to be less
+than or equal to the capacity of the cut.
+So in this case value of flow is 27 and
+the capacity of the cut is 30.
+Value of the flow is always less than or
+equal to the capacity of the cut.
+And well the net flow across a cut has got
+to be less than less than or equal to it's
+capacity 'coz it's at least that and then
+if there's any edges going the other way,
+they get subtracted to compute the lugnut
+flow.
+So a weak duality, is that, that's an easy
+thing to prove.
+So what we want to prove are these two
+theorems.
+The max-flow min-cut theorem is really two
+theorems combined called the augmenting
+path theorem that says the flow's at
+max-flow if and only if there's no
+augmenting paths, and that the value of
+the max-flow equals the capacity of the
+min-cut.
+In any network.
+And the way we prove that is to prove that
+the following three conditions are
+equivalent.
+Again this is a proof that's a little
+intricate logically.
+It's worthwhile for me to go through it,
+but to really understand it you're going
+to need to read it carefully and convince
+yourself that these three conditions work.
+So here's the three conditions that we're
+going to prove our equipment.
+First one is, there is a cut, there's some
+cut whose capacity equals the value of the
+flow.
+The second one is that f is a max flow.
+So if there's a cut whose capacity equals
+the flow then f is a max flow.
+And if f is a max flow there's such a cut.
+And then the third one is that there's no
+augmenting path.
+So we're going to prove those three
+conditions are equivalent.
+And we'll do it with a little logic
+trickery.
+So first we could prove that one implies
+two.
+If there exist a cut capacities equals the
+value flow, then f is the max flow.
+Alright, so suppose that we have such a
+cut, capacity is equal the value of the
+flow then any other flow by weak duality,
+flow is going to be less than or equal to
+the capacity of that cut, .
+In fact that cuts equal to the value of
+the flow, so therefore, that's the
+maximum, max flow.
+The value of any flow, if less or equal in
+value of f, so it's the max flow.
+So that proves that one implies two.
+Okay.
+Now we're going to prove two implies
+three.
+One implies two, and also two implies
+three.
+That also means one implies three.
+So in order to prove that we're going to
+prove the counter-positive.
+So we'll prove that not three implies not
+two.
+That is, if there is an augmenting path
+then F is not a max flow.
+Well, that's pretty straightforward, then,
+'cuz that's what we do in the algorithm.
+We could improve the flow by sending flow
+along the path.
+So it can't be a max flow.
+So that's, pretty easy.
+If that was a max flow, there's no
+augmenting path cuz if there is an
+augmenting path, that's not a max flow.
+So that's the, second, part of the proof.
+And now the third part of the proof, will
+prove that three implies one.
+So, that'll give you, the circular logic
+condition that proves that they're all
+equivalent.
+So we want to prove that if there is no
+augmenting path, then there is a cut in
+this capacity that equals the value of the
+flow.
+So if there's no augmenting path.
+Then what we're going to have is a cut
+where A is the set of vertices.
+That are, connected to S by an undirected
+path with no full forward or empty
+backward edges.
+And so there has to be such a cut if
+there's no odd many path.
+S has got to be in A and T has got to be
+in B otherwise there will be a path from A
+to B with no four, four front and empty
+backward with edges and the capacity of
+that cut equals the net flow across the
+cut but all the four edges are fallen, all
+the backward edges are empty so that's
+exactly equal to the value of the flow.
+So if there's no augmenting path then we
+can demonstrate a cut whose capacity
+equals the value of the flow and that is
+completes the proof of the max flow and
+the cut theorem.
+Sorry.
+Alright.
+So the one last step is if we have
+computed a max-flow, then what we can do
+is compute the min-cut by computing the
+set of vertices.
+And we can do that just by a graph search.
+We start at S and if there's a path that
+has no, has a, a forward edge that's not
+full then we follow that path and if we
+have a backward edge that's not empty, we
+follow the path.
+And we just do a, a graph search to get to
+all the vertices that we can reach with
+forward edges that aren't full, and
+backward edges that aren't empty.
+And then we treat the full forward edges
+and the back empty edges as not being
+there.
+Otherwise, we do just a regular graph
+search.
+And that's, going to give us, the, the,
+then the set of edges that define by that
+cut are going to be the min-cut.
+So, not difficult to compute a min-cut
+from a max-flow.
+So that's a proof of the augmenting path
+there min, max-flow min-cut there.
