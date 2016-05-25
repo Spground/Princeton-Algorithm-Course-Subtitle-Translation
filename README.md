@@ -1,5 +1,5 @@
 # Princeton-Algorithm-Course-Subtitle-Translation
-This a translation project for Princeton University algorithm course subtitle.
+This a translation project for Princeton University algorithm course subtitle.The online course including [Part I](https://www.coursera.org/course/algs4partI) and [Part II](https://www.coursera.org/course/algs4partII) is available on [Coursera](https://www.coursera.org/).
 
 License
 ---------
