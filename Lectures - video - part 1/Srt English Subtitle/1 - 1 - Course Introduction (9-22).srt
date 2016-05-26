@@ -1,7 +1,6 @@
 1
 00:00:01,420 --> 00:00:05,686
-Welcome. I'm Bob Sedgewick, professor of
-Computer Science at Princeton.
+大家好，我是普林斯顿计算机系教授 Bob Sedgewick。
 
 2
 00:00:05,686 --> 00:00:10,509
