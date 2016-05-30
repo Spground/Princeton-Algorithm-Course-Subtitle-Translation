@@ -1,305 +1,366 @@
 1
 00:00:00,000 --> 00:00:04,616
+ok,我们接下来要学习什么呢？让我们从一个典型的
 Okay, what are the rules that we're going
 to follow? Well, let's start with looking
 
 2
 00:00:04,616 --> 00:00:10,094
+排序问题开始吧。假如某个大学有许多信息学生记录
 at a typical basic sorting problem. Say,
 university has student records and for
 
 3
 00:00:10,094 --> 00:00:16,094
+每一个学生都有一定数量的信息。也许是班级序号、
 every student there is a certain amount of
 information. Maybe there's a class number,
 
 4
 00:00:16,094 --> 00:00:22,067
+成绩、电话号码或者地址。因此我们引用一项纪录，
 there is a grade, there's a phone number
 maybe an address so we refer to an item
 
 5
 00:00:22,067 --> 00:00:27,304
+这项纪录有我们将要排序的信息或者记录。但是
 and it has a record or the information
 that we're going to sort. But in
 
 6
 00:00:27,304 --> 00:00:32,118
+实际上，记录的某一部分叫做关键字，我们将做的工作就是
 particular, there's a piece of a record
 called a key and what we want to do is put
 
 7
 00:00:32,118 --> 00:00:37,175
+根据这些关键字来排序记录。这就是排序问题。
 the records into order according to the
 key. That's the sort problem. Re-arrange
 
 8
 00:00:37,175 --> 00:00:43,204
+根据每一项的关键字，重新升序排列一个n项的数组
 an array of n items into ascending order
 according to a defined key which is part
 
 9
 00:00:43,204 --> 00:00:49,165
+现在我们的目标是能够排序任何类型的数据，因此让我们
 of the item. Now, our goal is to be able
 to sort any type of data so let's look at
 
 10
 00:00:49,165 --> 00:00:55,608
+来看两个程序。第一个例子是升序排列一些随机的实数
 a couple of client programs. First example
 is to just sort some random real numbers
 
 11
 00:00:55,608 --> 00:01:00,884
+看，这儿有一个客户端来调用我们的插入排序方法，它先
 into ascending order. So, here's a client
 that calls our insertion sort method and
 
 12
 00:01:01,070 --> 00:01:07,068
+从标准输入读取数据到一个数组，然后调用插入排序
 all it does is read numbers from standard
 input than into an array a then calls
 
 13
 00:01:07,068 --> 00:01:12,515
+最后把排序后数组打印出来。在右边，你能看见
 insertion sort and then prints them out.
 And you can see on the right that the
 
 14
 00:01:12,515 --> 00:01:18,581
+这些数按顺序被打印出来了。这个看起来像是一个
 numbers are printed out in sorted order.
 This seems like an artificial kind of
 
 15
 00:01:18,581 --> 00:01:24,326
+人工的输入，但是我们在接下来会看见一个程序。
 input but actually we'll look at an
 application even in this lecture. And then
 
 16
 00:01:24,326 --> 00:01:31,300
+在一些程序里，随机输入时比较好的输入模型。排序字符串也许是
 there are many applications where random
 inputs are fine model. Here's maybe a more
 
 17
 00:01:31,300 --> 00:01:37,934
+更加常见的排序形式。在这种形式下，它使用我们的
 familiar sort client that sort strings.
 And in this case it reads the strings from
 
 18
 00:01:37,934 --> 00:01:44,232
+In类中的readString()方法从文件中读入字符串，
 a file using our readStrings() method in
 our In class that which takes a file as
 
 19
 00:01:44,232 --> 00:01:50,186
+这方法需要一个文件为参数。所以我们将这个文件名作为第一个
 argument. So we take the file name as the
 first command line argument, read in array
 
 20
 00:01:50,186 --> 00:01:56,389
+命令行参数，从文件中读取字符串到数组中，再一次调用Insertion.sort()方法。
 of string from that file separated by
 blanks, call an Insertion.sort() method again. So,
 
 21
 00:01:56,389 --> 00:02:03,047
+因此，Insertion.sort是一个需要一个数组作为参数的方法
 Insertion.sort is a method that takes an
 array a as its parameter and it, it's the
 
 22
 00:02:03,047 --> 00:02:08,817
+这个方法会将这个数组重新排序。在这个例子中，words three.txt
 first argument and it rearranges the
 strings in that array to be in sorted
 
 23
 00:02:08,817 --> 00:02:15,571
+文件中有一些三个字母的单词，然后这个客户端程序
 order. So in this case words, words
 three.text has the certain number of three
 
 24
 00:02:15,571 --> 00:02:22,014
+将按照字母序重新排列那些三字母单词。
 letter words and this client program will
 result in those three letter words being
 
 25
 00:02:22,014 --> 00:02:27,673
+如果我们完成了能够排序任何类型数据的目标的话，
 rearranged into alphabetical order.
 Here's another client that we could use
 
 26
 00:02:27,914 --> 00:02:34,371
+这儿是另一个能够使用我们的排序代码的客户端程序。
 our sort program for, if we achieved the
 goal of sorting any type of data. In this
 
 27
 00:02:34,371 --> 00:02:41,249
+在这个程序中，我们将要排序给定的一些文件的名字。
 one, we're going to sort file, file's name
 in a given directory. So again we use the
 
 28
 00:02:41,513 --> 00:02:49,508
+我们将再一次使用Java中的File类，我们使用这个类，
 File class from Java and we use, we go and
 use the listFiles() method from that class
 
 29
 00:02:49,508 --> 00:02:56,788
+然后得到一个包含一些给定文件的文件名数组。那是一个存储
 to get an array that contains all the file
 names in the given directory. That's an
 
 30
 00:03:00,205 --> 00:03:03,622
+文件名的数组。Insertion.sort()方法需要数组作为第一个
 array with file names in it and Insertion.sort()
 takes that array as its first
 
 31
 00:03:03,622 --> 00:03:10,287
+参数，然后将他们排序。然后我们继续，最后遍历并将
 argument and again sorts them and then we
 go ahead and use as, go through them one
 
 32
 00:03:10,287 --> 00:03:15,754
+他们一个个打印出来，最后的结果是按照文件名的顺序给出。
 by one and print them and they come out in
 order of file name. So that's three
 
 33
 00:03:15,754 --> 00:03:20,494
+ok，这就是三个不同的客户端程序，三个完全不同类型的数据。
 different clients, three completely
 different types of data. And the first
 
 34
 00:03:20,494 --> 00:03:25,508
+我们不得不思考的这个游戏的第一条规则就是
 rule of the game that we have to think
 about is, how can we make it so that we
 
 35
 00:03:25,508 --> 00:03:30,591
+我们怎么实现一个能够被三个不同的客户端程序使用去
 can implement one sort program that can be
 used by these three different clients to
 
 36
 00:03:30,591 --> 00:03:35,804
+排序三种不同类型数据的排序程序。在这种情况下
 implement three different types of data.
 In the way that, that happens is a
 
 37
 00:03:35,804 --> 00:03:41,555
+一种被称为回调的机制就很有用。因此，我们的
 mechanism known as a callback. So, that's
 our basic question, how can sort, now, how
 
 38
 00:03:41,555 --> 00:03:46,629
+基本的问题是就由怎么排序变为怎么在不给出关键字的类型信息
 to compare data of all those different
 types without being given any information
 
 39
 00:03:46,629 --> 00:03:52,692
+时去比较这些不同类型的数据。答案就是我们制定
 about the type of an item's key? And the
 answer is that what is we set up a
 
 40
 00:03:52,692 --> 00:03:59,517
+一个被称为回调的机制，或者说是一个在客户端程序可
 mechanism known as a callback or reference
 to executable code where the client, by
 
 41
 00:03:59,517 --> 00:04:05,644
+执行代码的引用的机制。在Java里面，有一个隐形
 passing an array of objects to the sort
 function. In Java, there's an implicit
 
 42
 00:04:05,644 --> 00:04:11,724
+机制，这个机制就是说一些存储对象的数组需要有
 mechanism that says that any such array of
 object is going to have the compareTo()
 
 43
 00:04:11,724 --> 00:04:17,604
+compareTo()方法，然后这个排序函数将调用数组元素
 method, then the sort function calls back
 the compareTo() method associated with the
 
 44
-00:04:17,604 --> 00:04:22,351
+00:04:17,604 --> 00:04:22,351】
+的compareTo方法当需要的时候，或者是说需要来比较
 objects in the array when it ever needs,
 whenever it needs to compare two items.
 
 45
 00:04:22,351 --> 00:04:26,645
+两个元素的时候。有许多不同的方式来实现回调，那是
 There's a lot of different ways to
 implement callbacks and that's
 
 46
 00:04:26,645 --> 00:04:32,837
+编程语言规范决定的。不同的语言有不同的机制。核心
 programming language specific. Different
 languages have different mechanisms. It's
 
 47
 00:04:32,837 --> 00:04:38,780
+思想就是将函数作为一个参数传递给其他的函数，这个是结对
 all about the idea of passing functions as
 arguments to other functions which is the
 
 48
 00:04:38,780 --> 00:04:45,206
+出现的，回想一下函数式编程和邱奇-图灵理论。
 pair and gets into functional programming
 and thinking all the way back to Turing and
 
 49
 00:04:45,206 --> 00:04:50,553
+对于Java,因为有编译时类型检查，所以这个回调机制
 Church. For Java, because of the desire
 to check types at compile time, the use of
 
 50
 00:04:50,553 --> 00:04:56,246
+的用法被称为一个接口，接下来我们将讨论使用java接口
 specific method called an interface and
 then, we'll look at the details of how to
 
 51
 00:04:56,246 --> 00:05:01,040
+来实现回调的细节。这些内容有点涉及到编程语言
 implement callbacks with the Java
 interfaces now. It's a little bit of
 
 52
 00:05:01,040 --> 00:05:06,086
+的细节，但是这是值得去讨论的。因为它允许我们
 programming language detailed but it's,
 it's really worthwhile because it allows
 
 53
 00:05:06,086 --> 00:05:12,011
+用一种类型安全的方式，使用自己开发的排序算法来排序任何类型的数据。
 us to use the sorts that we developed for
 any type of data in a type safe manner. So
 
 54
 00:05:12,011 --> 00:05:18,084
+因此我们已经看过了一些客户端程序。这是排序文件名的
 we already looked at some clients. This is
 the example of the client program that
 
 55
 00:05:18,084 --> 00:05:25,001
+客户端程序例子。它调用我们的sort()方法，并传递了
 sorts the files in a given directory by
 file name. So it just calls our sort()
 
 56
 00:05:25,001 --> 00:05:31,498
+一个某种类型的数组作为第一个参数。现在，Java语言内置
 method with a, an array some type of
 object as first argument. Now, built in to
 
 57
 00:05:31,498 --> 00:05:37,939
+的是一个被称为Comparable的接口，所有的实现comparable接口
 Java is the so-called the Comparable
 interface and all the Comparable interface
 
 58
 00:05:37,939 --> 00:05:45,024
+都任何数据类型都将实现一个compareTo()方法。
 is the specification that a type, data
 type that implements Comparable will have
 
 59
 00:05:45,024 --> 00:05:52,956
+它是泛型的，将同确定类型的元素进行比较。
 a compareTo() method. And it's generic and
 will be compared to against a certain type
 
 60
 00:05:52,956 --> 00:05:59,902
+现在我们将让那些需要排序的对象都实现comparable接口。
 of item. Now when we implement objects
 that are to be sorted we'll implement the
 
 61
 00:05:59,902 --> 00:06:06,370
+那是顶级类文件实现comparable接口。
 Comparable method. That's up in the top
 class file, implements comparable file.
 
