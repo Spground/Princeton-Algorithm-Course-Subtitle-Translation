@@ -366,121 +366,145 @@ class file, implements comparable file.
 
 62
 00:06:06,370 --> 00:06:13,351
+因为排序是一种常见的操作，一些常用的标准
 And since sorting is an operation that's
 used in so many situations, many of the
 
 63
 00:06:13,351 --> 00:06:20,026
+Java类也实现了Comparable接口。
 standard Java types that you would expect
 to involve sorts will implement
 
 64
 00:06:20,026 --> 00:06:27,040
+也就是说实现了comparable接口的那些类的
 Comparable. And all that means is that,
 that data type has an instance method that
 
 65
 00:06:27,040 --> 00:06:33,068
+实例都实现了compareTo方法，它根据一些
 will implement the compareTo() method.
 It'll compare this object against the
 
 66
 00:06:33,068 --> 00:06:40,296
+复杂的比较规则来比较方法参数给出的对象和自身对象
 object given as argument and depending on
 some complicated tests, it'll return -1,
 
 67
 00:06:40,296 --> 00:06:46,181
+返回-1代表小于或者少于，+1代表着大于或多余，0代表相等
 meaning less, +1, meaning greater or
 0, meaning equal. Now, that compareTo()
 
 68
 00:06:46,181 --> 00:06:50,726
+compareto方法是所有排序实现所必须的方法。
 method is really all that the sort
 implementation needs. First it says that,
 
 69
 00:06:50,726 --> 00:06:55,833
+首先，假如说，某种排序实现需要一个元素为Comparable类型的数组
 that it's going to take as argument an
 array of type Comparable. So that means,
 
 70
 00:06:55,833 --> 00:07:02,023
+作为参数，这就意味着数组里面的元素将实现Comparable接口
 the objects in the array are going to
 implement the Comparable interface or that
 
 71
 00:07:02,023 --> 00:07:08,000
+或者是说会有一个compareTo方法。然后排序代码
 it will have a compareTo() method. And then
 the sort code can just use that compareTo()
 
 72
 00:07:08,000 --> 00:07:13,052
+能够在数组中的某个元素上调用取compareTo方法
 method, invoked in a sense of the
 object like an entry in the array and as
 
 73
 00:07:13,052 --> 00:07:19,012
+并将另一个数组元素作为参数传入，以此来测试
 argument and another instance in the
 object like another entry in the array to
 
 74
 00:07:19,012 --> 00:07:24,092
+是否前者小于后者，正如这个例子所展示的一样。
 test whether the first is less than the
 second as in this example. The key point
 
 75
 00:07:24,092 --> 00:07:31,010
+关键的是排序实现并没有依赖所排序数据
 is that the sort implementation has no
 dependence on the type of data that's
 
 76
 00:07:31,010 --> 00:07:38,250
+的类型，不同的Comparable数组都将以同样的
 handled by the Comparable interface and a
 different Comparable array will be sorted
 
 77
 00:07:38,250 --> 00:07:44,862
+逻辑被排序，因为接口机制，最后他们实际回调待排对象
 in the same way though eventually, because
 of the interface mechanism, they call back
 
 78
 00:07:44,862 --> 00:07:50,944
+的compareTo方法。现在有几条很简单
 to the actual compareTo() code that goes
 with a type of object being sorted. Now
 
 79
 00:07:50,944 --> 00:07:57,603
+规则，但是值得我们去讨论和关注这些规则。
 there's a few rules and there's natural
 rules but they're worth talking about and
 
 80
 00:07:57,603 --> 00:08:05,112
+那就是compareTo方法必须满足全序顺序。
 paying attention to that the compareTo()
 method has to implement in the so called a
 
 81
 00:08:05,112 --> 00:08:13,220
+总的来说就是，通过排序，总是能够将待排序项
 total order. In all that saying is really
 that it must be possible to put items in
 
 82
 00:08:13,220 --> 00:08:19,133
+排列有序。因此，存在三个性质。第一个
 order in a sort. So there's three
 properties. First one says that if v is
 
 83
 00:08:19,133 --> 00:08:25,857
+如果v <= w，w <= v，那么 v == w，第二就是传递性
 less than or equal to w and w is less than
 or equal to v then the only way for that
 
 84
 00:08:25,857 --> 00:08:31,495
+如果v <= w， w <= x，那么 v <= x。
 to be true is if they're equal and then
 there's transitivity. If v less than w, w
 
 85
 00:08:31,495 --> 00:08:36,736
+第三就是，v 与 w的关系之后三种，< 、= 或者 >
 is less than x, then v must be less than
 or equal to x. In totality, is that either
 
@@ -491,26 +515,31 @@ than equal to v or both they are equal.
 
 87
 00:08:43,003 --> 00:08:49,420
+在我们想作为排序关键字的数据类型中，有许多
 And there's plenty of natural total orders
 in the types of data that we normally want
 
 88
 00:08:49,420 --> 00:08:55,097
+种自然全排序。比如说整数、自然数、实数序，或者字符串
 to consider for sort keys. Like the
 integers or natural numbers or real
 
 89
 00:08:55,097 --> 00:09:01,185
+的字母序，日期或时间的日历序等等。
 numbers or alphabetical order for strings,
 chronological order for dates or times and
 
 90
 00:09:01,185 --> 00:09:07,280
+右边的卡通表明不是所有的顺序都必须是全排序。
 so forth. The cartoon on the right shows
 that not all orders are necessarily total
 
 91
 00:09:07,280 --> 00:09:12,643
+因此，
 orders. So, rock, paper, scissors is intransitive.
 If you know that v is less
 
