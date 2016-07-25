@@ -450,6 +450,7 @@ that not all orders are necessarily total
 
 91
 00:09:07,280 --> 00:09:12,643
+因此，
 orders. So, rock, paper, scissors is intransitive.
 If you know that v is less
 
