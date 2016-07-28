@@ -539,277 +539,331 @@ that not all orders are necessarily total
 
 91
 00:09:07,280 --> 00:09:12,643
-因此，
+全序。比如，rock，paper，scissors不具有传递性。如果已知 v < w，
 orders. So, rock, paper, scissors is intransitive.
 If you know that v is less
 
 92
 00:09:12,643 --> 00:09:17,626
+w < v，不能得出v <= v。对不起，
 that w, w is less than v, you don't know
 that v is less than or equal to v. I'm
 
 93
 00:09:17,626 --> 00:09:22,135
+（如果已知）v < w，w <= x，并不能得出
 sorry, v is less than w, w less than equal
 to x that you don't necessarily know that
 
 94
 00:09:22,135 --> 00:09:30,219
+v <= x。好。接下来讲Comparable接口，按照惯例，
 v is less than or equal to x. Alright. So
 the Comparable API then, by convention in
 
 95
+在Java中我们总是需要实现compareTo()方法，以使 v与w满足
 00:09:30,219 --> 00:09:39,003
 Java we always need to implement compareTo()
 such that v that compared to w is a
 
 96
 00:09:39,003 --> 00:09:46,852
+全序。而且，同样根据惯例，小于返回一个负整数，
 total order. And also by convention, it
 returns a negative integer for its less
 
 97
 00:09:46,852 --> 00:09:54,408
+等于返回0，大于返回正整数。如果该对象大于
 zero if it's equal positive its greater.
 If this object is greater than the object
 
 98
 00:09:54,408 --> 00:10:00,754
+作为参数的对象。如果对象类型不兼容或某一对象为空，
 given as argument. If the types are
 incompatible or if either one is null
 
 99
 00:10:01,011 --> 00:10:07,466
+compareTo()方法应该抛出异常。再次说明，Java中许多
 compareTo() should throw an exception.
 Now, again, many of Java's standard types
 
 100
 00:10:07,713 --> 00:10:15,012
+存储数值、日期、文件等的标准数据类型通常都会实现compareTo()方法。
 for numbers and dates and files and so
 forth implement compareTo() by convention.
 
 101
 00:10:15,207 --> 00:10:20,018
+根据这些原则，如果我们要比较自己的数据类型，那么我们必须
 Now if we're going to implement our own
 type then we have to go ahead and
 
 102
 00:10:20,018 --> 00:10:24,092
+实现Comparable接口。一般来讲
 implement the Comparable interface
 according to these rules. And usually
 
 103
 00:10:24,092 --> 00:10:30,065
+这一点是很明确的。所以来看这个例子。这是Java内部Date类的简化版，
 that's fairly straightforward. So here's
 an example. It's a simplified version of
 
 104
 00:10:30,065 --> 00:10:37,099
+为了展示实现Comparable接口的思想。
 the Date class that's implemented within
 Java just to show the idea of implementing
 
 105
 00:10:37,099 --> 00:10:42,029
+首先，我们在类声明之后写上implements
 Comparable. So, after the class
 declaration, we write implements
 
-106
+106 
 00:10:42,029 --> 00:10:48,356
+***Comparable，然后。。。因为我们仅仅是
 Comparable and then we fill in the generic
 with the same type because we're only
 
 107
 00:10:48,356 --> 00:10:53,712
+与另一个日期比较。在此接口实现中，Date类有
 going to compare dates to other dates. In
 this implementation, the Date class has
 
 108
 00:10:53,712 --> 00:10:58,853
+三个实例变量，month，day，year，并且像你们看到的，构造函数
 three instance variables. The month, the
 day and the year and the constructor
 
 109
 00:10:58,853 --> 00:11:04,098
+将参数值赋给它们。所以现在，如果你想比较两个
 fills those from the arguments as you can
 see. So now, if you want to compare two
 
 110
 00:11:04,098 --> 00:11:10,238
+不同的日期，那么首先要做的是检查该年份是否小于
 different dates then the first thing to do
 is to check if this year is less than that
 
 111
 00:11:10,238 --> 00:11:15,696
+另一年份，通过比较年份，这两个日期存在几种情况。如果为真
 year, over that is the year given, the
 date given in the argument. If that's true
 
 112
 00:11:15,696 --> 00:11:20,291
+那么该年份小，返回-1，如果（为假）该年份大，返回+1。
 then it's less return -1 and if it's,
 the year is greater, return +1.
 
 113
 00:11:20,292 --> 00:11:26,226
+否则，这两个年份相等，我们必须通过月份来做
 Otherwise, the year, years must be equal
 so we have to look at the months to do the
 
 114
 00:11:26,226 --> 00:11:31,964
+比较，同理一直比较到日期。当且仅当年份、月份、日期均相等时
 compare and so forth down to do the days.
 Only if they're all equal that we return
 
 115
 00:11:31,964 --> 00:11:36,054
+返回0。这就是Comparable接口实现的例子，通过
 zero. So, that's an example of an
 implementation of Comparable by
 
 116
 00:11:36,054 --> 00:11:42,814
+实现compareTo()方法对日期排序。（总之，）
 implementing the compareTo() method to put
 dates in order as you might expect. So the
 
 117
 00:11:42,814 --> 00:11:49,775
+Java语言通过此Comparable接口机制让我们可以
 Java language helps us with this
 Comparable mechanism so that we can sort
 
 118
 00:11:49,775 --> 00:11:55,521
+对任何类型的数据排序。当我们接着实现排序算法时，
 data of any type. When we continue to
 implement sorting algorithms, we're
 
 119
 00:11:55,521 --> 00:12:02,245
+其实是在实现接口。这就是排序算法，
 actually even in a hide that beneath our
 own implementations. So, that are sorting
 
 120
 00:12:02,245 --> 00:12:08,728
+实际上它们的代码可以用来在许多其他语言中实现排序。
 algorithms actually their actual code can
 be used to implement sorting in many other
 
 121
 00:12:08,728 --> 00:12:14,650
+方式是采取两个主要操作——比较和
 languages. The way we do that is to take
 the two primary operations, compares and
 
 122
 00:12:14,650 --> 00:12:20,614
+交换——来引用数据，并把这两个操作封装成
 exchangers that were that were, were used
 to refer the data and encapsulate them
 
 123
 00:12:20,614 --> 00:12:26,137
+两个静态方法。所以，我们使用一个less()方法，它需要两个
 just the static methods. So, we're going
 to use a method less() that takes two
 
 124
 00:12:26,137 --> 00:12:31,878
+可比较的对象作为参数并且返回，v.compareTo(w)小于0。
 Comparable objects as arguments and it
 just returns, v.compareTo(w) less than
 
 125
 00:12:31,878 --> 00:12:39,218
+然后，对数组元素排序时另一件要做的事是
 zero. And then the other thing that we do
 when we sort items that are in an array is
 
 126
 00:12:39,218 --> 00:12:45,861
+将索引为i和j的数组元素相交换。
 to, to swap or exchange of the item at a
 given index i with the one at a given
 
 127
 00:12:45,861 --> 00:12:52,166
+这是每一个程序员首次接触赋值语句就会的。
 index j. And that's every programmer's
 first introduction to assignment
 
 128
 00:12:52,166 --> 00:12:59,014
+将a[i]存到变量swap，把a[j]赋给a[i]，再把 swap存回
 statements. We save a[i] in a variable swap,
 put a[j] in a[i], and then put swap back
 
 129
 00:12:59,014 --> 00:13:05,545
+到a[j]。因此现在，使用我们的排序方法引用数据将只使用这两个静态
 in a[j]. So now our sort methods to refer
 the data will just use this two static
 
 130
 00:13:05,545 --> 00:13:10,872
+方法。而且有一个很好的理由。下面是一个例子。假设我们想
 methods. And there's a good reason for
 that. Here's an example. Suppose we want
 
 131
 00:13:10,872 --> 00:13:16,285
+测试一个数组是否已排序。那么这是一个静态的方法，数组已排序返回真，
 to test if an array is sorted. So this is
 a static method that is supposed to return
 
 132
 00:13:16,285 --> 00:13:21,298
+否则返回假。它所做的只是遍历数组
 true if the array is sorted and false if it's
 not. And all it does is just go through
 
 133
 00:13:21,298 --> 00:13:26,411
+检查是否每个元素都小于
 the array from the one to the length of
 the array and test if each item is less
 
 134
 00:13:26,411 --> 00:13:31,440
+上一个元素。如果存在某元素小于上一个元素那么该数组
 than the one before. If you have an item
 that's less than one before then it's not
 
 135
 00:13:31,440 --> 00:13:36,352
+未排好序，返回假。遍历数组都没有这种情况，
 sorted you return false. If you get all
 the way through the array without that
 
 136
 00:13:36,352 --> 00:13:41,482
+那么数组已排序。这是非常简单的代码，问题是，
 happening, then you say the array is true.
 That's pretty simple code, the question
 
 137
 00:13:41,482 --> 00:13:47,415
+如果你有一个排序算法（经此算法排序的数组）通过了测试，你能肯定它
 is, if you have a sorting algorithm that
 passes that test, are you sure that it
 
 138
 00:13:47,415 --> 00:13:54,124
+就正确地排序了数组吗？ 答案是，是的如果，如果
 correctly sorted the array? Well the
 answer to that question is, yes if, yes if
 
 139
 00:13:54,124 --> 00:14:00,792
+你只是用less()和exchange()方法实现、引用数据，
 you used only the less() and exchange()
 methods to implement, to refer the data
 
 140
 00:14:00,792 --> 00:14:07,592
+因为那样你知道，你用的exchange()方法数组排序后的数据
 because then you know because you used the
 exchange() method that the data in the array
 
 141
 00:14:07,592 --> 00:14:13,489
+和排序前的数据一样。如果你
 after the sort is the same data as was in
 the array before the sort, sort. If you
 
 142
 00:14:13,489 --> 00:14:18,640
+有一种排序方法可以在数组中存储任何值，例如
 have a sort method that can store any
 values in an array, it could, for example,
 
 143
 00:14:18,640 --> 00:14:24,337
+将每个数组元素存为0，该排序方法（排序的结果）同样能通过测试，但是它不是
 store zeros in every array entry that
 method would pass this test, but it didn't
 
 144
 00:14:24,337 --> 00:14:29,046
+正确的数组排序，因为它重写了数组元素值。所以我们使用less()
 really correctly sort the array because
 overwrote all the values. So, we use less()
 
 145
 00:14:29,046 --> 00:14:39,306
+和exchange()方法，确保可以用这种方法测试我们的排序结果。
 and exchange() to be sure that we can test
 that our, our methods work with the method
 
