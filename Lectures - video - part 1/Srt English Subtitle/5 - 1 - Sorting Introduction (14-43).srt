@@ -533,13 +533,13 @@ chronological order for dates or times and
 
 90
 00:09:01,185 --> 00:09:07,280
-右边的卡通表明不是所有的顺序都必须是全排序。
+右边的卡通表明不是所有的顺序都是全序。
 so forth. The cartoon on the right shows
 that not all orders are necessarily total
 
 91
 00:09:07,280 --> 00:09:12,643
-全序。比如，rock，paper，scissors不具有传递性。如果已知 v < w，
+比如，rock，paper，scissors不具有传递性。如果已知 v < w，
 orders. So, rock, paper, scissors is intransitive.
 If you know that v is less
 
