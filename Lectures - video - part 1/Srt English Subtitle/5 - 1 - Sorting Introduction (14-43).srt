@@ -538,9 +538,9 @@ Java just to show the idea of implementing
 Comparable. So, after the class
 declaration, we write implements
 
-106 ***
+106 
 00:10:42,029 --> 00:10:48,356
-Comparable，然后。。。因为我们仅仅是
+***Comparable，然后。。。因为我们仅仅是
 Comparable and then we fill in the generic
 with the same type because we're only
 
