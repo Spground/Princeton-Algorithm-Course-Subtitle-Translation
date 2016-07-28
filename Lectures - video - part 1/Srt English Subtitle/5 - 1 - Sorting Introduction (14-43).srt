@@ -562,7 +562,7 @@ v is less than or equal to x. Alright. So
 the Comparable API then, by convention in
 
 95
-在Java中我们总是需要实现compareTo()方法，以使 v与w满足
+在Java中我们总是需要实现compareTo()方法，以使v与w满足
 00:09:30,219 --> 00:09:39,003
 Java we always need to implement compareTo()
 such that v that compared to w is a
