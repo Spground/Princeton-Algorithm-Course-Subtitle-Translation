@@ -1,15 +1,18 @@
 1
 00:00:01,072 --> 00:00:06,008
+现在，我们来看另一个基本的插入排序方法，
 Now, we look at insertion sort which is
 another elementary method and
 
 2
 00:00:06,008 --> 00:00:10,033
+有意思的是它和选择排序的效果和特点截然不同。
 interestingly has quite different
 performance, characteristics than
 
 3
 00:00:10,033 --> 00:00:16,059
+
 selection sort. Let's look at a demo of
 insertion sort. For insertion sort, what
 
