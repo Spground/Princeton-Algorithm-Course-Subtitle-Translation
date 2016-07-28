@@ -1,50 +1,60 @@
 1
 00:00:01,024 --> 00:00:06,048
+我们要看的第一个基本的排序方法是一种简单的
 The first elementary sorting method that
 we're going to take a look at is an easy
 
 2
 00:00:06,048 --> 00:00:11,083
+方法，叫做选择排序。选择排序的思想是从
 method known as selection sort. The idea
 of selection sort, is start out with a
 
 3
 00:00:11,083 --> 00:00:17,101
+一个未排序的数组开始，我们将用这些扑克牌为例。在第i次循环中，
 unsorted array and we'll use these playing
 cards as an example. And in the ith iteration,
 
 4
 00:00:17,101 --> 00:00:22,867
+遍历数组在剩余元素中找到最小项，在本例中，
 we go through the array to try to find the
 smallest remaining entry, in this case,
 
 5
 00:00:22,867 --> 00:00:28,693
+2是最小的元素。然后我们将其与第一个元素交换，
 the 2 is the smallest from any entry. And
 then we'll swap that with the first entry
 
 6
 00:00:28,693 --> 00:00:34,199
+这样就完成了一个步骤。选择排序基于
 in the array and then we know we've got
 one step done. Selection sort is based on
 
 7
 00:00:34,199 --> 00:00:39,376
+迭代思想。好，因此，基本的选择排序方法是，在第i次
 iterating that idea. Okay. So, the basic
 selection sort method is to, in the ith
 
 8
 00:00:39,376 --> 00:00:44,626
+迭代时从剩余元素中找到最小项，从第i个元素右侧或者
 iteration, find the smallest remaining
 entry and to the right of i or bigger
 
 9
 00:00:44,626 --> 00:00:50,252
+索引大于i的元素中，然后将最小项跟第i个元素交换。因此，从i在最左侧开始，
 index than i and then swap that with i.
 So, we start out i is at the left end and
 
 10
 00:00:50,252 --> 00:00:55,711
+接着是剩余的
 then the remaining, all the remaining
 entries to the right. We scan through and
 
