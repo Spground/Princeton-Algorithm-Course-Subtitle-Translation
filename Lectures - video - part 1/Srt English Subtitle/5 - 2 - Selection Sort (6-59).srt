@@ -60,7 +60,7 @@ entries to the right. We scan through and
 
 11
 00:00:55,711 --> 00:01:02,516
-最小项是2，从右数的第三项，进行交换。
+最小项是2，右数第三项，进行交换。
 the smallest one is the two, three entries
 from the right so we swap that. So that's
 
@@ -114,19 +114,19 @@ sort. Now the eight is the smallest and we
 
 20
 00:01:52,898 --> 00:01:59,486
-交换。现在我们知道它们是有序的，但程序不是这样，我们必须
+交换。现在我们知道它们是有序的，但程序不是这样，我们必须看一看，
 swap. And now, we know they're in order
 but the program doesn't so we have to look
 
 21
 00:01:59,486 --> 00:02:06,816
-确定i和n是相同的，然后与自己交换，
+确定i等于n，然后与自己交换，
 and decide that i and n are the same and
 then it swaps it with itself and does the
 
 22
 00:02:06,816 --> 00:02:13,226
-直到最后一次迭代。经过这样的过程，我们才能确定整个
+完成最后一次迭代。经过这样的过程，我们才能确定整个
 same thing for the last. And so, after
 that process, then we know that the entire
 
@@ -168,200 +168,239 @@ to the right of the arrow is smaller than
 
 29
 00:02:48,743 --> 00:02:54,859
-左侧的元素。i就是这样设定的。
+左侧的元素。i就是这样设定的。这个算法
 any entry to the left of it. That's the
 way that we set it up. And the algorithm
 
 30
 00:02:54,859 --> 00:03:00,837
+使左侧元素保持不变，通过找到右侧最小元素并与
 maintains those invariants by finding the
 smallest entry to the right and exchange
 
 31
 00:03:00,837 --> 00:03:06,827
+这些不变量的下一元素交换。所以代码得到了这些不变量。为了移动
 it with the next one. So the code
 implements the invariants. So, to move the
 
 32
 00:03:06,827 --> 00:03:12,739
+指针到右侧，我们将i增加1。现在这些不变量可能会受到影响，所以我们
 pointer to the right, we increment i. So,
 now the invariant might be violated so we
 
 33
 00:03:12,739 --> 00:03:18,425
+必须解决。它可能会受到影响，因为你可能有一个指针右侧的元素，
 have to fix it. It might be violated
 because you might have an element to the
 
 34
 00:03:18,425 --> 00:03:23,812
+比指针处的元素小。
 right of the pointer that is 
 smaller than some, the element on the
 
 35
 00:03:23,812 --> 00:03:29,143
+所以我们不得不确认哪个小，
 pointer. So, what we have to do is
 identify the index or that minimum entry
 
 36
 00:03:29,143 --> 00:03:34,170
+然后进行交换。一旦进行了交换，就再次保留了不变量。
 and exchange it. Then once we've exchanged
 it, again, we preserved our invariant.
 
 37
 00:03:34,170 --> 00:03:38,846
+这时，指针左边的元素都不变，所有
 After that point, no element to the left
 of the pointer is going to change and all
 
 38
 00:03:38,846 --> 00:03:44,536
+元素，右边没有更小的元素。这里
 the element, there's no smaller element to
 the right. [cough] and that gives us
 
 39
 00:03:44,768 --> 00:03:52,713
+给出了选择排序实现的代码。我们定义
 immediately our code for the selection
 sort implementation. We identify the, the
 
 40
 00:03:52,713 --> 00:03:59,009
+数组长度为。然后我们有一个for循环，遍历数组每个元素，
 length of the array that's n. Then we
 have a for loop that goes through every
 
 41
 00:03:59,009 --> 00:04:05,112
+我们保持一个变量时，
 element in the array, we keep a variable
 min in that is the index of the going to
 
 42
 00:04:05,112 --> 00:04:10,045
+还有一个
 be the index of the smallest element to
 the right of pointer i. We have an
 
 43
 00:04:10,045 --> 00:04:15,626
+嵌套for循环，循环变量为jm，如果找到一个更小的元素，赋给min，
 inter-for loop that for j, if it finds a
 smaller one, resets min and then once
 
 44
 00:04:15,626 --> 00:04:21,509
+然后，遍历完右侧所有元素后，将最小项与第i项交换。
 we've looked at all the elements to the
 right of i we exchange the smallest one
 
 45
 00:04:21,509 --> 00:04:27,083
+这就是一个完整的选择排序实现。现在很容易
 with i. That's a complete implementation
 of selection sort. Now it's easy to
 
 46
 00:04:27,083 --> 00:04:34,073
+开发数学模型计算选择排序的成本，这个
 develop on mathematical model for the cost
 of selection sort and here's the
 
 47
 00:04:34,073 --> 00:04:42,054
+命题就进行了描述。选择排序要进行N^2 / 2次左右
 proposition that describes that.
 Selections or uses about N^2 / 2
 
 48
 00:04:42,056 --> 00:04:48,011
+比较以及n次交换。只要看看这些选择排序和操作的过程
 compares and exactly n exchanges. And
 just looking at this trace of selection
 
 49
 00:04:48,011 --> 00:04:55,525
+就能知道，这是以上观点最直观的证明。在这幅
 sort and operation really is a proof,
 visual proof of this proposition. In this
 
 50
 00:04:55,525 --> 00:05:00,493
+图中，黑色的元素，是每次迭代时为了找到最小值依次比较
 diagram, the entries in black, are the
 ones that are examined in order to find
 
 51
 00:05:00,493 --> 00:05:06,621
+的元素，红色元素就是最小值。灰色是没有进行操作的元素，
 the minimum each time with the minimum in
 red. Entries in gray are not touched,
 
 52
 00:05:06,621 --> 00:05:12,492
+它们已经排好序。嗯，你可以看到，这是***
 they're in their final position. Well, you
 can see that this isn't going to be in
 
 53
 00:05:12,492 --> 00:05:19,709
+一个n乘n方阵，方阵中约一半的元素是黑色，
 general an N by N square and about half of the
 elements in the square are black or about
 
 54
 00:05:19,709 --> 00:05:27,029
+或者说约 N^2 / 2，你也可以确切地说 (N - 1) + (N - 2) + … 
 N^2 / 2 and you can see also the exact
 formula (N - 1) + (N - 2) and so forth
 
 55
 00:05:27,245 --> 00:05:33,329
+是进行比较的次数。然后每一次变量i的值加1
 is the total number of compares used. And
 then on each of the Ns values of the
 
 56
 00:05:33,329 --> 00:05:40,218
+有一次交换。所以 N 次是进行交换的成本。
 variable i there's an exchange so that's
 the cost in terms of the number of
 
 57
 00:05:40,218 --> 00:05:48,070
+现在，关于选择排序的成本，有趣的是，
 exchanges. Now, what's interesting about
 this proposition about selection sort is
 
 58
 00:05:48,070 --> 00:05:54,257
+输入的顺序并不重要。（无论顺序如何，）选择排序时间复杂度都是
 that, it doesn't matter what order the
 input is. Selection sort is going to use
 
 59
 00:05:54,257 --> 00:06:00,458
+N^2，因为它总是必须从整个数组寻找
 quadratic time because it always has to go
 through the whole thing to look for the
 
 60
 00:06:00,458 --> 00:06:06,752
+最小。另一个属性是，移动的数据量无法减少，因为
 minimum. And another property is that you
 can't sort moving less data because
 
 61
 00:06:06,752 --> 00:06:12,842
+选择排序的交换次数呈线性。每一个元素移动到
 selection sort does just a linear number
 of exchanges. Every item is put in to
 
 62
 00:06:12,842 --> 00:06:19,459
+最后位置只需要交换一次。让我们来看一个
 it's final position with just one
 exchange. Let's look at an animation of
 
 63
 00:06:19,459 --> 00:06:25,693
+选择排序运行时的动画。你可以看到我们的指针从右
 selection sort in operation. [cough] You
 can see our pointer moving from right to
 
 64
 00:06:25,693 --> 00:06:31,919
+到左移动，每一次发现右边最小的元素时；进行交换。
 left every time it finds the smallest
 element to the right, it exchanges it into
 
 65
 00:06:31,919 --> 00:06:39,637
+现在，数组是否已部分排序，对选择排序都没有影响。
 position. Now, if the array is partially
 sorted, it doesn't matter to selection
 
 66
 00:06:39,637 --> 00:06:45,854
+仍然要继续执行，即使已经全部排好序也不例外，还是要依次
 sort. Still has to go through, even if
 it's totally sorted, still has to go
 
 67
 00:06:45,854 --> 00:06:51,359
+比较找到最小元素。这就是选择排序，我们学习的第一个
 through to the side where that minimum
 element is. That selection sort, our first
 
 68
 00:06:51,359 --> 00:06:59,072
+基本的排序方法。
 elementary sorting method.
