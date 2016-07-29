@@ -1,24 +1,24 @@
 1
 00:00:01,024 --> 00:00:06,048
-我们要看的第一个基本的排序方法是一种简单的
+我们要看的第一个基本的排序方法很简单，
 The first elementary sorting method that
 we're going to take a look at is an easy
 
 2
 00:00:06,048 --> 00:00:11,083
-方法，叫做选择排序。选择排序的思想是从
+叫做选择排序。选择排序的思想是从
 method known as selection sort. The idea
 of selection sort, is start out with a
 
 3
 00:00:11,083 --> 00:00:17,101
-一个未排序的数组开始，我们将用这些扑克牌为例。在第i次循环中，
+一个未排序的数组开始，我们将以这些扑克牌为例。在第i次循环中，
 unsorted array and we'll use these playing
 cards as an example. And in the ith iteration,
 
 4
 00:00:17,101 --> 00:00:22,867
-遍历数组在剩余元素中找到最小项，在本例中，
+遍历数组在剩余元素中找到最小项，本例中，
 we go through the array to try to find the
 smallest remaining entry, in this case,
 
@@ -54,102 +54,121 @@ So, we start out i is at the left end and
 
 10
 00:00:50,252 --> 00:00:55,711
-接着是剩余的
+接着是剩余的，所有右侧剩余的。扫描一遍，
 then the remaining, all the remaining
 entries to the right. We scan through and
 
 11
 00:00:55,711 --> 00:01:02,516
+最小项是2，从右数的第三项，进行交换。
 the smallest one is the two, three entries
 from the right so we swap that. So that's
 
 12
 00:01:02,516 --> 00:01:08,889
+这就是第一步。现在，第i个元素左侧已经排好序，
 the first step. Now, that part of the
 array to the left of i is in it's final
 
 13
 00:01:08,889 --> 00:01:15,193
+我们只需要继续。所以现在，最小的是三。和第i项交换，
 order and we simply continue. So now, the
 smallest is the three. Swap that with i,
 
 14
 00:01:15,193 --> 00:01:21,511
+i自增。现在2和3都排好序了，继续这样的步骤。找到
 increment i. So now, we have the two and
 three in order, continuing that way. Find
 
 15
 00:01:21,511 --> 00:01:27,958
+（右侧）最小项，4。将4与第i项交换，i自增。找到最小项，
 the smallest, the four. Swap that one with
 i, increment i. Find the smallest, it's
 
 16
 00:01:27,958 --> 00:01:34,712
+5，与第i项交换，i自增。找到最小项，与第i项交换，i自增。
 five, swap that with i, increment i. Find
 the smallest, swap that with i, increment
 
 17
 00:01:34,712 --> 00:01:40,689
+每次（迭代）都必须依次扫描剩余的元素
 i.  Each time we have to scan
 through all the remaining entries in order
 
 18
 00:01:40,689 --> 00:01:45,788
+来找到最小的一项。但是，一旦找到，只需要交换这两张牌，
 to find the smallest. But then, once we
 found it, we only have to swap two cards
 
 19
 00:01:45,979 --> 00:01:52,898
+这是选择排序的关键属性。现在8是最小的，
 those are both key properties of selection
 sort. Now the eight is the smallest and we
 
 20
 00:01:52,898 --> 00:01:59,486
+交换。现在我们知道它们是有序的，但程序不是这样，我们必须
 swap. And now, we know they're in order
 but the program doesn't so we have to look
 
 21
 00:01:59,486 --> 00:02:06,816
+确定i和n是相同的，然后与自己交换，
 and decide that i and n are the same and
 then it swaps it with itself and does the
 
 22
 00:02:06,816 --> 00:02:13,226
+直到最后一次迭代。经过这样的过程，我们才能确定整个
 same thing for the last. And so, after
 that process, then we know that the entire
 
 23
 00:02:13,226 --> 00:02:19,445
+数组已经排好序。好。理解某个算法如何工作的一种方法
 array is in its final order, all sorted.
 Alright. So let's, one way to understand
 
 24
 00:02:19,445 --> 00:02:24,768
+是考虑不变量。所以，对选择排序来说，
 the way that an algorithm works is to
 think about invariants . So, for the
 
 25
 00:02:24,768 --> 00:02:30,924
+我们有一个指针，也就是变量i，它从左侧扫描到
 selection sort, we have a pointer that was
 our variable i, that scans from left to
 
 26
 00:02:30,924 --> 00:02:36,345
+右侧。现在，用一个小红箭头表示i。
 right. Now, it's indicated by a little red
 arrow in this representation. The
 
 27
 00:02:36,345 --> 00:02:42,235
+不变量就是箭头左侧的元素，箭头左侧的元素保持不变
 invariants are that the entries on onto
 the left of the arrow are never changed
 
 28
 00:02:42,235 --> 00:02:48,743
+并且升序排列。箭头右侧的元素没有一个小于
 and they're in ascending order. No entry
 to the right of the arrow is smaller than
 
 29
 00:02:48,743 --> 00:02:54,859
+左侧的元素。i就是这样设定的。
 any entry to the left of it. That's the
 way that we set it up. And the algorithm
 
