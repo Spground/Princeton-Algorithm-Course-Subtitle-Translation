@@ -12,167 +12,199 @@ performance, characteristics than
 
 3
 00:00:10,033 --> 00:00:16,059
-
+让我们来看看一个插入排序的Demo，对于插入排序
 selection sort. Let's look at a demo of
 insertion sort. For insertion sort, what
 
 4
 00:00:16,059 --> 00:00:22,009
+和前面一样，我们要做的是从左到右移动下标i，
 we're going to do is we'll move an index i
 from left to right as before. But now, in
 
 5
 00:00:22,009 --> 00:00:27,052
+但是现在，第i次迭代，我们将要在它左边的那些元素中间
 the ith iteration we're going to move a(i)
 into position among the elements to its
 
 6
 00:00:27,052 --> 00:00:37,620
+移动元素a[i]。让我们来瞧一瞧我们的例子。现在
 left. Let's look at how that works on our
 example with cards. So now we start by
 
 7
 00:00:38,007 --> 00:00:43,302
+我们开始初始化i为第一个卡片，我们要始终保证
 initializing i to first card and we take
 the idea that everything from i to its
 
 8
 00:00:43,302 --> 00:00:48,621
+i左边的元素都已经被排好序了，i右边的元素我们根本
 left is going to be sorted and everything
 from the right, we're not going to look
 
 9
 00:00:48,621 --> 00:00:54,423
+不用看。因此，i左边的元素都是升序排列，而
 at, at all. So, everything to the left of
 i is in ascending order everything to the
 
 10
 00:00:54,423 --> 00:01:00,319
+右边的元素还不可见。所以当我们增加i的值，
 right we haven't seen at all yet. So now,
 when we increment i, well, in this case
 
 11
 00:01:00,319 --> 00:01:05,258
+在这次迭代中，左边的元素已经有序，我们什么都不用做
 it's already an order, we don't have
 anything else to do. In the third case
 
 12
 00:01:05,258 --> 00:01:10,599
+在第三次迭代，现在，i指第三个元素，现在我们有下标
 now, when i at the third entry in the
 array. Now, we start a index j and we move
 
 13
 00:01:10,599 --> 00:01:16,750
+j，从i开始，向左移动下标j。我们需要做的就是
 that starting at i to the left and what we
 need to do is just exchange the five with
 
 14
 00:01:16,750 --> 00:01:21,867
+如果5的左边元素大于5，就彼此交换。因此，首先我们
 every element to its left that's greater.
 So, first we exchange it with the ten.
 
 15
 00:01:21,867 --> 00:01:27,358
+将5与10交换。但是5仍然没有在正确的位置上，我们仍然需要
 It's still not in place so we exchange it
 with the seven. Now, we get to the
 
 16
 00:01:27,358 --> 00:01:32,288
+将5与7交换。现在我们到了数组的起点。如果
 beginning array, of the array and once
 we've done that or we've hit a smaller
 
 17
 00:01:32,288 --> 00:01:38,342
+我们到达数组起点或者碰见一个比5小的元素，此时
 element then we have everybody to the left
 of i in order. [cough] So now we increment
 
 18
 00:01:38,342 --> 00:01:44,080
+i左边的元素都已经被排好序了，因此我们继续增加i
 i again and we come to the three. Again,
 we exchange as long as the card
 
 19
 00:01:44,080 --> 00:01:50,862
+现在元素是3。只要左边的卡片大于当前j指向的值，我们就交换。
 immediately to the left is greater. And
 once we've done that, then we have
 
 20
 00:01:50,862 --> 00:01:55,515
+一旦我们完成交互，i左边的元素就会是升序排列。现在，在这次迭代中
 everything to the left of i in ascending
 order. Now, in this case, we have the
 
 21
 00:01:55,515 --> 00:02:00,119
+当前元素是8，我们不得不将它进行交换，现在7在它左边。
 eight and we only have to exchange one and
 now, it's got the seven to its left and
 
 22
 00:02:00,119 --> 00:02:05,506
+那么所有的元素都已经排序完毕。这一次迭代我们做了很少的工作
 everything is in order. So, we've achieved
 putting it in order with less work in this
 
 23
 00:02:05,506 --> 00:02:11,015
+就让它有序了。我们不用一直回退到起点。只要它左边的
 case. We don't always have to go all the
 way back to the beginning. For exchange it
 
 24
 00:02:11,015 --> 00:02:18,107
+元素大于它，我们就交换，直到我们碰见一个小于它的值
 with everybody to its left that's greater,
 until we find a smaller element done in
 
 25
 00:02:18,107 --> 00:02:25,227
+2不得不回退到数组的起点。但是下一次，
 its ascending order. Two has to go all the
 way back to the begin ning [cough]. But
 
 26
 00:02:25,227 --> 00:02:32,729
+9，就回退一个位置。第6个就不得不回退一半。
 then the very next one, the nine, has to
 only go back one position. And the sixth
 
 27
 00:02:32,729 --> 00:02:40,802
+现在我们就已经排序完毕。
 has to go about halfway back. [cough] And
 then, we have the entire array sorted.
 
 28
 00:02:40,802 --> 00:02:46,828
+同样的，我们看看插入排序不变的地方。我们的指针
 Again, we can look at insertion sort in
 terms of invariants. Our pointers still
 
 29
 00:02:46,828 --> 00:02:51,906
+仍然是从左到右扫描，但是现在，指针的左边
 scans from left to right but now, the
 elements of the left of the pointer,
 
 30
 00:02:51,906 --> 00:02:56,729
+的元素包括它本身都是有序的。但是右边的元素是不可见的
 including it, are in order. But the
 elements to the right have not yet been
 
 31
 00:02:56,729 --> 00:03:01,423
+所以，当指针增加的时候，我们不得不
 seen at all. So, we have to look at the
 code that's going to maintain that
 
 32
 00:03:01,423 --> 00:03:07,213
+继续保持这个不变性。向右边移动指针。
 invariant as the pointer increments. Move
 the pointer to the right, it's incremented
 
 33
 00:03:07,213 --> 00:03:12,227
+现在这个不变性被打破，因为指针所指的元素
 again. Now, the invariant is broken
 because the elements the element on the
 
 34
 00:03:12,227 --> 00:03:17,507
+没有被正确排序，我们不得不自右向左移动
 pointer is not in sorted order to put it
 in sorted order, we have to move from
 
 35
 00:03:17,507 --> 00:03:22,356
+将它与较大的元素进行交换。
 right to left exchanging it with every
 larger elements to its left. And that's
 
